@@ -1,6 +1,7 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/instance_manager.dart';
+import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/splash/splash.controller.dart';
 
 class SplashView extends StatefulWidget {
@@ -11,20 +12,19 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-  /*
-  BluetoothDevice? _device;
+    SplashController splashController = Get.find();
+ /* BluetoothDevice? _device;
   List<BluetoothDevice> _devices = [];
-  BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;*/
-   bool _connected = false;
-   SplashController splashController = Get.find();
+  BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
+  bool _connected = false;
 
   @override
   void initState() {
     super.initState();
-    //initPlatformState();
+    initPlatformState();
   }
 
-  /*Future<void> initPlatformState() async {
+  Future<void> initPlatformState() async {
     bool? isConnected = await bluetooth.isConnected;
     List<BluetoothDevice> devices = [];
 
@@ -59,8 +59,8 @@ class _SplashViewState extends State<SplashView> {
         _connected = true;
       });
     }
-  }*/
-
+  }
+*/
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 1), () {
