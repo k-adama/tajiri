@@ -9,10 +9,10 @@ class HttpService {
     bool requireRestaurantId = false,
   }) {
     final options = BaseOptions(
-      baseUrl:  Environment.backendPoint,
-      connectTimeout: const Duration(milliseconds: 60 * 1000),
-      receiveTimeout:const  Duration(milliseconds: 60 * 1000),
-      sendTimeout: const Duration(milliseconds: 60 * 1000),
+      baseUrl: Environment.backendPoint,
+      connectTimeout: 60 * 1000,
+      receiveTimeout: 60 * 1000,
+      sendTimeout: 60 * 1000,
       headers: {
         'Accept':
             'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
@@ -26,7 +26,7 @@ class HttpService {
     dio.interceptors.add(
       RestaurantInterceptor(requireRestaurantId: requireRestaurantId),
     );
-   // dio.interceptors.add(RefreshTokenInterceptor(dio));
+    // dio.interceptors.add(RefreshTokenInterceptor(dio));
     dio.interceptors.add(
       LogInterceptor(
         responseHeader: false,

@@ -150,52 +150,52 @@ class HomeController extends GetxController {
     String? ownerId =
         user?.role?.permissions?[0].dashboardUnique == true ? user?.id : null;
 
-    // final [ordersResponse, comparaisonOders] = await Future.wait(
-    //   [
-    //     _ordersRepository.getOrders(DateFormat("yyyy-MM-dd").format(startDate),
-    //         DateFormat("yyyy-MM-dd").format(endDate), ownerId),
-    //     _ordersRepository.getOrders(
-    //         startDateComparaison, endDateComparaison, ownerId)
-    //   ],
-    // );
+    final [ordersResponse, comparaisonOders] = await Future.wait(
+      [
+        _ordersRepository.getOrders(DateFormat("yyyy-MM-dd").format(startDate),
+            DateFormat("yyyy-MM-dd").format(endDate), ownerId),
+        _ordersRepository.getOrders(
+            startDateComparaison, endDateComparaison, ownerId)
+      ],
+    );
 
-    // ordersResponse.when(success: (data) {
-    //   final top10FoodsValue = getTop10Foods(data);
-    //   top10Foods.assignAll(top10FoodsValue);
-    //   final groupByCategoriesValue = groupByCategories(data);
-    //   final ordersForCategoriesValue =
-    //       ordersForCategories(groupByCategoriesValue);
-    //   categoriesAmount.assignAll(ordersForCategoriesValue);
+    ordersResponse.when(success: (data) {
+      final top10FoodsValue = getTop10Foods(data);
+      top10Foods.assignAll(top10FoodsValue);
+      final groupByCategoriesValue = groupByCategories(data);
+      final ordersForCategoriesValue =
+          ordersForCategories(groupByCategoriesValue);
+      categoriesAmount.assignAll(ordersForCategoriesValue);
 
-    //   final groupedByPaymentMethodValue = groupedByPaymentMethod(data);
-    //   paymentsMethodAmount
-    //       .assignAll(paymentMethodsData(groupedByPaymentMethodValue));
+      final groupedByPaymentMethodValue = groupedByPaymentMethod(data);
+      paymentsMethodAmount
+          .assignAll(paymentMethodsData(groupedByPaymentMethodValue));
 
-    //   totalAmount.value = getTotalAmount(data);
-    //   ordersPaid.value = getTotalAmount(
-    //       data.where((item) => item['status'] == 'PAID').toList());
-    //   ordersSave.value = getTotalAmount(
-    //       data.where((item) => item['status'] == "NEW").toList());
-    //   getDayActive();
-    //   final int ordersComparaisonsAmount =
-    //       getTotalAmount(comparaisonOders.data);
-    //   percentComparaison.value =
-    //       ((totalAmount.value - ordersComparaisonsAmount) /
-    //               ordersComparaisonsAmount) *
-    //           100;
+      totalAmount.value = getTotalAmount(data);
+      ordersPaid.value = getTotalAmount(
+          data.where((item) => item['status'] == 'PAID').toList());
+      ordersSave.value = getTotalAmount(
+          data.where((item) => item['status'] == "NEW").toList());
+      getDayActive();
+      final int ordersComparaisonsAmount =
+          getTotalAmount(comparaisonOders.data);
+      percentComparaison.value =
+          ((totalAmount.value - ordersComparaisonsAmount) /
+                  ordersComparaisonsAmount) *
+              100;
 
-    //   isFetching.value = false;
+      isFetching.value = false;
 
-    //   final json = data as List<dynamic>;
-    //   final ordersData =
-    //       json.map((item) => OrdersDataEntity.fromJson(item)).toList();
-    //   orders.assignAll(ordersData);
-    //   isFetching.value = false;
-    //   update();
-    //   eventFilter(indexFilter: indexFilter ?? 0, status: "Succes");
-    // }, failure: (status, _) {
-    //   eventFilter(indexFilter: indexFilter ?? 0, status: "Failure");
-    // });
+      final json = data as List<dynamic>;
+      final ordersData =
+          json.map((item) => OrdersDataEntity.fromJson(item)).toList();
+      orders.assignAll(ordersData);
+      isFetching.value = false;
+      update();
+      eventFilter(indexFilter: indexFilter ?? 0, status: "Succes");
+    }, failure: (status, _) {
+      eventFilter(indexFilter: indexFilter ?? 0, status: "Failure");
+    });
   }
 
   void eventFilter({int indexFilter = 0, required String status}) {
