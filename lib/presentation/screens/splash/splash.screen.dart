@@ -12,8 +12,8 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-    SplashController splashController = Get.find();
- /* BluetoothDevice? _device;
+  SplashController splashController = Get.find();
+  /* BluetoothDevice? _device;
   List<BluetoothDevice> _devices = [];
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
   bool _connected = false;
@@ -61,9 +61,10 @@ class _SplashViewState extends State<SplashView> {
     }
   }
 */
+
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 3), () {
       splashController.getToken();
     });
     return Image.asset(
