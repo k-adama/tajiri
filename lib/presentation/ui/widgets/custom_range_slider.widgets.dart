@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:Tajiri/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 
 class CustomRoundRangeSliderThumbShape extends RangeSliderThumbShape {
   const CustomRoundRangeSliderThumbShape({

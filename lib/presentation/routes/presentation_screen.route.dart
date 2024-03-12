@@ -1,10 +1,10 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:Tajiri/presentation/controllers/demo/demo.binding.dart';
-import 'package:Tajiri/presentation/controllers/fisrt/first.binding.dart';
-import 'package:Tajiri/presentation/controllers/splash/splash.binding.dart';
-import 'package:Tajiri/presentation/screens/demo/demo.screen.dart';
-import 'package:Tajiri/presentation/screens/first/first.screen.dart';
-import 'package:Tajiri/presentation/screens/splash/splash.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/demo/demo.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/fisrt/first.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/splash/splash.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/demo/demo.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/first/first.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/splash/splash.screen.dart';
 
 part 'presentation_path.route.dart';
 
