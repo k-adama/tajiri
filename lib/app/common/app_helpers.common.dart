@@ -37,4 +37,12 @@ class AppHelpersCommon {
       ScaffoldMessenger.of(context).removeCurrentSnackBar();
     }
   }
+
+  static bool checkIsSvg(String? url) {
+    if (url == null || (url.length) < 3) {
+      return false;
+    }
+    final length = url.length;
+    return url.substring(length - 3, length) == 'svg';
+  }
 }

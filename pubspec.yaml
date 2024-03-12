@@ -48,6 +48,12 @@ dependencies:
   flutter_staggered_animations: ^1.1.1
   supabase_flutter: ^2.3.4
   mixpanel_flutter: ^2.2.0
+  cached_network_image: ^3.3.1
+  flutter_remix: ^0.0.3
+  fl_chart: ^0.66.2
+  intl: ^0.18.1
+  onesignal_flutter: ^3.5.0
+  flutter_native_splash: ^2.3.10
 
 dev_dependencies:
   flutter_test:

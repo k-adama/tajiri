@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/drawer_page_body.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/drawer_page_footer.component.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/drawer_page_header.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/drawer_page_header.component.dart';
 
 class DrawerPageComponent extends StatelessWidget {
   const DrawerPageComponent({super.key});

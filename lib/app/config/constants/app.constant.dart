@@ -253,30 +253,19 @@ List<Map<String, dynamic>> PAIEMENTS = [
     'icon': "assets/images/card24.png",
   },
 ];
+
 final tabs = [
-  Tab(text: "Toutes"),
-  Tab(text: "En cours"),
-  Tab(text: "Terminées"),
+  const Tab(text: "Toutes"),
+  const Tab(text: "En cours"),
+  const Tab(text: "Terminées"),
 ];
 
 final editFoodTab = [
-  Tab(
+  const Tab(
     text: 'Produit principal',
   ),
-  Tab(
+  const Tab(
     text: 'Variant',
-  ),
-];
-
-final filterScreen = [
-  Tab(
-    text: "Jour",
-  ),
-  Tab(
-    text: "Semaine",
-  ),
-  Tab(
-    text: "Mois",
   ),
 ];
 

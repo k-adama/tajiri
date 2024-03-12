@@ -1,6 +1,6 @@
 import 'package:tajiri_pos_mobile/domain/entities/customer.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_details.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/paiement_method_entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/paiement_method.entity.dart';
 
 class OrdersDataEntity {
   OrdersDataEntity({

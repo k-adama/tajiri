@@ -5,25 +5,24 @@ import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:ui' as ui;
 
-import 'package:tajiri_pos_mobile/app/config/common/app_helpers.common.dart';
+import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/mixpanel.dart';
-import 'package:tajiri_pos_mobile/domain/entities/categorie_amount_entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/categorie_amount.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_reports_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/payment_method_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/story.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/story_group.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/top_10_food.entity.dart';
-import 'package:tajiri_pos_mobile/repositories/orders.repository.dart';
+import 'package:tajiri_pos_mobile/domain/repositories/orders.repository.dart';
 
 class HomeController extends GetxController {
   final user = AppHelpersCommon.getUserInLocalStorage();
   bool isScrolling = false;
 
   int selectIndex = 0;
-  var startDateNow = DateTime.now();
-  var endDateNow = DateTime.now();
+
   List<String> tabs = ['Jour', 'Semaine', 'Mois'].obs;
   RxList<Top10FoodEntity> top10Foods = List<Top10FoodEntity>.empty().obs;
   RxString viewSelected = "Jour".obs;
@@ -31,8 +30,10 @@ class HomeController extends GetxController {
   Rx<DateTime> selectedDate = DateTime.now().obs;
   Rx<int> selectedMonth = 5.obs;
   RxString comparisonDate = "".obs;
+
   DateTime startDate = DateTime.now().obs.value;
   DateTime endDate = DateTime.now().obs.value;
+
   List<dynamic> weekDates = [];
   RxList<PaymentMethodDataEntity> paymentsMethodAmount =
       List<PaymentMethodDataEntity>.empty().obs;
@@ -67,6 +68,19 @@ class HomeController extends GetxController {
     super.onReady();
   }
 
+  StoryEntity getStorieEntity(int index) {
+    return StoryEntity(
+      shopId: 1,
+      logoImg: storiesGroup[index].logoImg,
+      title: storiesGroup[index].name,
+      productUuid: storiesGroup[index].id,
+      productTitle: storiesGroup[index].name,
+      url: "",
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+  }
+
   Future<dynamic> fetchGroupStories() async {
     final supabase = Supabase.instance.client;
     final response = await supabase.from('stories_group').select('*');
@@ -89,7 +103,7 @@ class HomeController extends GetxController {
         .select('*')
         .eq('userId', user!.id!)
         .eq('storyGroupId', id);
-    if (checkView.length == 0) {
+    if (checkView.isEmpty) {
       await supabase
           .from('storie_views')
           .insert({'userId': user!.id!, 'storyGroupId': id});
@@ -405,7 +419,7 @@ class HomeController extends GetxController {
       params["startDate"] = newDate;
       params["endDate"] = newDate;
 
-      debugPrint("${weekdays[newDate.weekday - 1]}");
+      debugPrint(weekdays[newDate.weekday - 1]);
       comparisonDate.value = "${weekdays[newDate.weekday - 1]} ${newDate.day}";
     }
 
@@ -418,7 +432,7 @@ class HomeController extends GetxController {
 
     DateTime startOfWeek = currentDate
         .subtract(Duration(days: dayOfWeek + 20 - (dayOfWeek == 7 ? 0 : 1)));
-    DateTime endOfWeek = startOfWeek.add(Duration(days: 36));
+    DateTime endOfWeek = startOfWeek.add(const Duration(days: 36));
 
     return {"start": startOfWeek, "end": endOfWeek};
   }
@@ -572,13 +586,5 @@ class HomeController extends GetxController {
     )..layout(minWidth: 0, maxWidth: double.infinity);
     if (text.length <= 6) return textPainter.width + 92;
     return textPainter.width + 80;
-  }
-
-  bool adaptivePadding(
-      BuildContext context, int tabControllerIndex, int index) {
-    if (tabControllerIndex == index && index == 2) {
-      return false;
-    }
-    return true;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tajiri_pos_mobile/app/config/common/app_helpers.common.dart';
-import 'package:tajiri_pos_mobile/app/config/common/utils.common.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/drawer_body_list_row.dart';
+import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
+import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/drawer_body_list_row.component.dart';
 
 class DrawerPageBodyComponent extends StatelessWidget {
   const DrawerPageBodyComponent({super.key});
@@ -15,7 +15,7 @@ class DrawerPageBodyComponent extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          title: const DrawerBodyListRow(
+          title: const DrawerBodyListRowComponent(
             name: "Rapport  de ventes",
             emoji: "assets/svgs/rapport de vente.svg",
           ),
@@ -29,7 +29,7 @@ class DrawerPageBodyComponent extends StatelessWidget {
         ),
         isShowStock
             ? ListTile(
-                title: const DrawerBodyListRow(
+                title: const DrawerBodyListRowComponent(
                   name: "Stocks",
                   emoji: "assets/svgs/stock.svg",
                 ),
@@ -43,7 +43,7 @@ class DrawerPageBodyComponent extends StatelessWidget {
               )
             : Container(),
         ListTile(
-          title: const DrawerBodyListRow(
+          title: const DrawerBodyListRowComponent(
             name: "Gestion des produits",
             emoji: "assets/svgs/Calque 1.svg",
           ),
@@ -57,7 +57,7 @@ class DrawerPageBodyComponent extends StatelessWidget {
         ),
         if (checkListingType(user) == ListingType.waitress)
           ListTile(
-            title: const DrawerBodyListRow(
+            title: const DrawerBodyListRowComponent(
               name: "Gestion des serveurs",
               emoji: "assets/svgs/waitress-gestion.svg",
             ),
@@ -71,7 +71,7 @@ class DrawerPageBodyComponent extends StatelessWidget {
           ),
         if (checkListingType(user) == ListingType.table)
           ListTile(
-            title: const DrawerBodyListRow(
+            title: const DrawerBodyListRowComponent(
               name: "Gestion des tables",
               emoji: "assets/svgs/waitress-gestion.svg",
             ),
@@ -84,7 +84,7 @@ class DrawerPageBodyComponent extends StatelessWidget {
             },
           ),
         ListTile(
-          title: const DrawerBodyListRow(
+          title: const DrawerBodyListRowComponent(
             name: "Tutoriels",
             emoji: "assets/svgs/icon_tuto.svg",
           ),

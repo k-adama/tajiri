@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tajiri_pos_mobile/app/config/common/app_helpers.common.dart';
+import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 
 class DrawerPageHearderComponent extends StatelessWidget {

@@ -3,10 +3,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/instance_manager.dart';
 import 'package:proste_indexed_stack/proste_indexed_stack.dart';
-import 'package:tajiri_pos_mobile/app/config/common/app_helpers.common.dart';
+import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/drawer_page.component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/home.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/keyboard_dismisser.ui.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -41,7 +42,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   @override
   void initState() {
     list = [
-      IndexedStackChild(child: Container()),
+      IndexedStackChild(child: const HomeScreen()),
       IndexedStackChild(
         child: Container(),
       ),
@@ -65,7 +66,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
               child: AppBar(
                 centerTitle: true,
                 elevation: 0,
-                title: Text("Hello"),
+                title: const Text("Hello"),
                 iconTheme: const IconThemeData(color: Style.secondaryColor),
                 backgroundColor: Style.white,
               ),

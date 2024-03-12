@@ -3,10 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 
-class DrawerBodyListRow extends StatelessWidget {
+class DrawerBodyListRowComponent extends StatelessWidget {
   final String name;
   final String emoji;
-  const DrawerBodyListRow({super.key, required this.name, required this.emoji});
+  const DrawerBodyListRowComponent(
+      {super.key, required this.name, required this.emoji});
 
   @override
   Widget build(BuildContext context) {

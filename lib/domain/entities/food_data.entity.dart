@@ -1,6 +1,6 @@
 import 'package:tajiri_pos_mobile/domain/entities/categorie_entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/stock_data_entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/stock_data.entity.dart';
 
 class FoodDataEntity {
   FoodDataEntity({
