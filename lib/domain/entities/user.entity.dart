@@ -1,5 +1,5 @@
-import 'package:tajiri_pos_mobile/domain/entities/restaurant_user.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/role.entity.dart';
+import 'package:Tajiri/domain/entities/restaurant_user.entity.dart';
+import 'package:Tajiri/domain/entities/role.entity.dart';
 
 class UserEntity {
   String? id;
