@@ -1,9 +1,9 @@
-import 'package:Tajiri/app/config/env/environment.env.dart';
-import 'package:Tajiri/app/config/theme/style.theme.dart';
-import 'package:Tajiri/app/services/local_storage.service.dart';
-import 'package:Tajiri/presentation/controllers/splash/splash.binding.dart';
-import 'package:Tajiri/presentation/routes/presentation_screen.route.dart';
-import 'package:Tajiri/presentation/ui/widgets/custom_range_slider.widgets.dart';
+import 'package:tajiri_pos_mobile/app/config/env/environment.env.dart';
+import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/app/services/local_storage.service.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/splash/splash.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/widgets/custom_range_slider.widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -52,7 +52,7 @@ void main() async {
               ),
               child: GetMaterialApp(
                 debugShowCheckedModeBanner: false,
-                title: "Tajiri",
+                title: "tajiri_pos_mobile",
                 initialBinding: SplashBinding(),
                 initialRoute: PresentationScreenRoute.INITIAL,
                 getPages: PresentationScreenRoute.routes,

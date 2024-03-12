@@ -1,8 +1,7 @@
-import 'package:Tajiri/app/config/env/environment.env.dart';
-import 'package:Tajiri/app/interceptors/restaurant.interceptor.dart';
-import 'package:Tajiri/app/interceptors/token.interceptor.dart';
+import 'package:tajiri_pos_mobile/app/config/env/environment.env.dart';
+import 'package:tajiri_pos_mobile/app/interceptors/restaurant.interceptor.dart';
+import 'package:tajiri_pos_mobile/app/interceptors/token.interceptor.dart';
 import 'package:dio/dio.dart';
-
 
 class HttpService {
   Dio client({
@@ -10,9 +9,9 @@ class HttpService {
     bool requireRestaurantId = false,
   }) {
     final options = BaseOptions(
-      baseUrl:  Environment.backendPoint,
+      baseUrl: Environment.backendPoint,
       connectTimeout: const Duration(milliseconds: 60 * 1000),
-      receiveTimeout:const  Duration(milliseconds: 60 * 1000),
+      receiveTimeout: const Duration(milliseconds: 60 * 1000),
       sendTimeout: const Duration(milliseconds: 60 * 1000),
       headers: {
         'Accept':
@@ -27,7 +26,7 @@ class HttpService {
     dio.interceptors.add(
       RestaurantInterceptor(requireRestaurantId: requireRestaurantId),
     );
-   // dio.interceptors.add(RefreshTokenInterceptor(dio));
+    // dio.interceptors.add(RefreshTokenInterceptor(dio));
     dio.interceptors.add(
       LogInterceptor(
         responseHeader: false,
