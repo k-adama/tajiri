@@ -29,16 +29,15 @@ class LocalStorageService {
     _preferences = await SharedPreferences.getInstance();
   }
 
-  String? get(String key){
+  String? get(String key) {
     return _preferences?.getString(key);
   }
 
-  Future<void> set(String key, String value) async{
+  Future<void> set(String key, String value) async {
     await _preferences?.setString(key, value);
   }
 
-  void delete(String key){
+  void delete(String key) {
     _preferences?.remove(key);
   }
-
 }

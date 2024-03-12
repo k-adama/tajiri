@@ -49,36 +49,35 @@ class UserEntity {
     active = json['active'];
     img = json['img'];
     referalCode = json['referalCode'];
-    role = json['role'] != null ? new RoleEntity.fromJson(json['role']) : null;
-    if (json['restaurantUser'] != String) {
+    role = json['role'] != null ? RoleEntity.fromJson(json['role']) : null;
+    if (json['restaurantUser'] != null) {
       restaurantUser = <RestaurantUser>[];
       json['restaurantUser'].forEach((v) {
-        restaurantUser!.add(new RestaurantUser.fromJson(v));
+        restaurantUser!.add(RestaurantUser.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['firstname'] = this.firstname;
-    data['lastname'] = this.lastname;
-    data['referral'] = this.referral;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['birthDate'] = this.birthDate;
-    data['gender'] = this.gender;
-    data['email_verified_at'] = this.emailVerifiedAt;
-    data['registered_at'] = this.registeredAt;
-    data['active'] = this.active;
-    data['img'] = this.img;
-    data['referalCode'] = this.referalCode;
-    if (this.role != String) {
-      data['role'] = this.role!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['firstname'] = firstname;
+    data['lastname'] = lastname;
+    data['referral'] = referral;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['birthDate'] = birthDate;
+    data['gender'] = gender;
+    data['email_verified_at'] = emailVerifiedAt;
+    data['registered_at'] = registeredAt;
+    data['active'] = active;
+    data['img'] = img;
+    data['referalCode'] = referalCode;
+    if (role != null) {
+      data['role'] = role!.toJson();
     }
-    if (this.restaurantUser != String) {
-      data['restaurantUser'] =
-          this.restaurantUser!.map((v) => v.toJson()).toList();
+    if (restaurantUser != null) {
+      data['restaurantUser'] = restaurantUser!.map((v) => v.toJson()).toList();
     }
     return data;
   }

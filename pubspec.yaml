@@ -54,6 +54,16 @@ dependencies:
   intl: ^0.18.1
   onesignal_flutter: ^3.5.0
   flutter_native_splash: ^2.3.10
+  flutter_launcher_icons: ^0.13.1
+  flutter_localizations:
+    sdk: flutter
+  blue_thermal_printer: ^1.2.3
+  
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo_tajiri.png"
+  min_sdk_android: 21  
 
 dev_dependencies:
   flutter_test:
@@ -83,6 +93,24 @@ flutter:
     - assets/lottie/
     - assets/payments/
     - assets/videos/
+
+flutter_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: 'assets/images/logo_tajiri.png'
+
+  fonts:
+    - family: Cereal
+      fonts:
+        - asset: assets/fonts/AirbnbCereal_W_Bk.otf
+          weight: 400
+        - asset: assets/fonts/AirbnbCereal_W_Md.otf
+          weight: 500
+        - asset: assets/fonts/AirbnbCereal_W_Bd.otf
+          weight: 700
+        - asset: assets/fonts/AirbnbCereal_W_Blk.otf
+          weight: 900    
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
