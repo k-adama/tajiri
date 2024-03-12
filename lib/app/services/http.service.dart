@@ -1,7 +1,8 @@
+import 'package:Tajiri/app/config/env/environment.env.dart';
+import 'package:Tajiri/app/interceptors/restaurant.interceptor.dart';
+import 'package:Tajiri/app/interceptors/token.interceptor.dart';
 import 'package:dio/dio.dart';
-import 'package:tajiri_pos_mobile/app/config/env/environment.env.dart';
-import 'package:tajiri_pos_mobile/app/interceptors/restaurant.interceptor.dart';
-import 'package:tajiri_pos_mobile/app/interceptors/token.interceptor.dart';
+
 
 class HttpService {
   Dio client({

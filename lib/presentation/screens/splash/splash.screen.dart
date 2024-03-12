@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/instance_manager.dart';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/splash/splash.controller.dart';
+import 'package:Tajiri/presentation/controllers/splash/splash.controller.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});

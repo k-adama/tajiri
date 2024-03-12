@@ -1,5 +1,4 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tajiri_pos_mobile/app/config/constants/auth.constant.dart';
 
 class LocalStorageService {
   static SharedPreferences? _preferences;

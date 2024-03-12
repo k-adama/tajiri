@@ -1,4 +1,4 @@
-import 'package:tajiri_pos_mobile/domain/entities/permission.entity.dart';
+import 'package:Tajiri/domain/entities/permission.entity.dart';
 
 class RoleEntity {
   String? id;

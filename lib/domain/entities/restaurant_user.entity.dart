@@ -1,4 +1,4 @@
-import 'package:tajiri_pos_mobile/domain/entities/restaurant.entity.dart';
+import 'package:Tajiri/domain/entities/restaurant.entity.dart';
 
 class RestaurantUser {
   String? id;
