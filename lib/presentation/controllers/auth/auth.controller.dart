@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
@@ -13,6 +12,8 @@ import 'package:tajiri_pos_mobile/app/services/app_connectivity.dart';
 import 'package:tajiri_pos_mobile/app/services/app_validators.dart';
 import 'package:tajiri_pos_mobile/app/services/local_storage.service.dart';
 import 'package:tajiri_pos_mobile/data/repositories/auth/auth.repository.dart';
+import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
+import 'package:get/route_manager.dart';
 
 class AuthController extends GetxController {
   bool isLoading = false;
@@ -79,27 +80,28 @@ class AuthController extends GetxController {
             'Gender': data?.gender,
             "Restaurant Name": data?.restaurantUser?[0].restaurant?.name
           };
+          if(data != null){
+            Mixpanel.instance.identify(data?.id as String);
+            profile.forEach((key, value) {
+              Mixpanel.instance.getPeople().set(key, value);
+            });
 
-          Mixpanel.instance.identify(data?.id as String);
-          profile.forEach((key, value) {
-            Mixpanel.instance.getPeople().set(key, value);
-          });
+            Mixpanel.instance.getGroup("Restaurant ID",
+                data?.restaurantUser?[0].restaurant?.id as String);
+            Mixpanel.instance.setGroup("Restaurant Name",
+                data?.restaurantUser?[0].restaurant?.name as String);
 
-          Mixpanel.instance.getGroup("Restaurant ID",
-              data?.restaurantUser?[0].restaurant?.id as String);
-          Mixpanel.instance.setGroup("Restaurant Name",
-              data?.restaurantUser?[0].restaurant?.name as String);
+            Mixpanel.instance.track('Login',
+                properties: {"Method used": "Phone", "Status": "Succes"});
 
-          Mixpanel.instance.track('Login',
-              properties: {"Method used": "Phone", "Status": "Succes"});
-
-          OneSignal.shared.setSMSNumber(smsNumber: "+225${data?.phone}");
-          OneSignal.shared.sendTags({
-            "Restaurant":
-            data?.restaurantUser?[0].restaurant?.name as String
-          });
-          OneSignal.shared.setExternalUserId(data?.id as String);
-          //Get.offAllNamed(Routes.MAIN);
+            OneSignal.shared.setSMSNumber(smsNumber: "+225${data?.phone}");
+            OneSignal.shared.sendTags({
+              "Restaurant":
+              data?.restaurantUser?[0].restaurant?.name as String
+            });
+            OneSignal.shared.setExternalUserId(data?.id as String);
+          }
+          Get.offAllNamed(Routes.NAVIGATION);
         },
         failure: (failure, status) {
           Mixpanel.instance.track('Login',
