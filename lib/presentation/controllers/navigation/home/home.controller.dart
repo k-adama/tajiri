@@ -51,6 +51,7 @@ class HomeController extends GetxController {
   RxList<StoryEntity> stories = List<StoryEntity>.empty().obs;
   RxList<StoryGroupEntity> storiesGroup = List<StoryGroupEntity>.empty().obs;
   String? storyGroup;
+
   List<OrdersReportsDataEntity> ordersReports =
       List<OrdersReportsDataEntity>.empty().obs;
   RxList<OrdersDataEntity> orders = List<OrdersDataEntity>.empty().obs;
@@ -251,7 +252,7 @@ class HomeController extends GetxController {
   }
 
   formatDate(DateTime date) {
-    var dateFormat;
+    String dateFormat;
     var formatter = DateFormat('EEE, d MMM yyyy HH:mm:ss', 'fr_FR');
     dateFormat = formatter.format(date);
     return dateFormat;
@@ -568,13 +569,13 @@ class HomeController extends GetxController {
   }
 
   int checkPercentValue(double value) {
-    if (value == "Infinity" || value == "NaN") return 0;
-    if (value > 0)
+    if (value > 0) {
       return 2;
-    else if (value < 0)
+    } else if (value < 0) {
       return 1;
-    else
+    } else {
       return 0;
+    }
   }
 
   double getTextWidth(String text, TextStyle style) {

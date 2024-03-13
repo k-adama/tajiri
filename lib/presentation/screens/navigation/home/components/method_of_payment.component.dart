@@ -20,7 +20,6 @@ class MethodOfPaymentComponent extends StatefulWidget {
 class _MethodOfPaymentComponentState extends State<MethodOfPaymentComponent> {
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Padding(
         padding: EdgeInsets.only(left: 8.w, right: 8.w),
         child: Container(

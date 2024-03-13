@@ -22,20 +22,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
   final navigationController = Get.find<NavigationController>();
   late List<IndexedStackChild> list;
   void handleBottomNavBarTap(int index) {
-    // final user = AppHelpersCommon.getUserInLocalStorage();
-    // bool isBottomBar = index == 1 && user != null;
-    // if (isBottomBar && Get.find<PosController>().cartItemList.isNotEmpty) {
-    //   AppHelpersCommon.showBottomSnackBar(
-    //     context,
-    //     const ProductInCart(),
-    //     const Duration(days: 6000000000000000),
-    //     true,
-    //   );
-    // } else {
-    //   AppHelpersCommon.showBottomSnackBar(context, const ProductInCart(),
-    //       const Duration(milliseconds: 500), false);
-    // }
-
     navigationController.selectIndexFunc(index);
   }
 
@@ -66,7 +52,11 @@ class _NavigationScreenState extends State<NavigationScreen> {
               child: AppBar(
                 centerTitle: true,
                 elevation: 0,
-                title: const Text("Hello"),
+                title: Text(
+                  "${user != null && user.restaurantUser != null ? user.restaurantUser![0].restaurant?.name : ""}",
+                  style:
+                      Style.interNormal(size: 16, color: Style.secondaryColor),
+                ),
                 iconTheme: const IconThemeData(color: Style.secondaryColor),
                 backgroundColor: Style.white,
               ),
