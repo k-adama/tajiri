@@ -36,17 +36,17 @@ class PermissionEntity {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['roleId'] = this.roleId;
-    data['dashboardGlobal'] = this.dashboardGlobal;
-    data['dashboardUnique'] = this.dashboardUnique;
-    data['inventory'] = this.inventory;
-    data['managementProducts'] = this.managementProducts;
-    data['managementCustomers'] = this.managementCustomers;
-    data['settingsRestaurant'] = this.settingsRestaurant;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['roleId'] = roleId;
+    data['dashboardGlobal'] = dashboardGlobal;
+    data['dashboardUnique'] = dashboardUnique;
+    data['inventory'] = inventory;
+    data['managementProducts'] = managementProducts;
+    data['managementCustomers'] = managementCustomers;
+    data['settingsRestaurant'] = settingsRestaurant;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
     return data;
   }
 }

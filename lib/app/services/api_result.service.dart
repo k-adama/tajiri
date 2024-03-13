@@ -1,20 +1,20 @@
-import 'network_exceptions.dart';
+import 'network_exceptions.service.dart';
 
-class ApiResult<T> {
+class ApiResultService<T> {
   final T? data;
-  final NetworkExceptions error;
+  final NetworkExceptionsService error;
   final int statusCode;
 
-  const ApiResult.success({required this.data})
-      : error = const NetworkExceptions(),
+  const ApiResultService.success({required this.data})
+      : error = const NetworkExceptionsService(),
         statusCode = 200;
 
-  const ApiResult.failure({required this.error, required this.statusCode})
+  const ApiResultService.failure({required this.error, required this.statusCode})
       : data = null;
 
   R when<R>({
     required R Function(T? data) success,
-    required R Function(NetworkExceptions error, int statusCode) failure,
+    required R Function(NetworkExceptionsService error, int statusCode) failure,
   }) {
     if (this.data != null) {
       return success(this.data);

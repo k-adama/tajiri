@@ -44,11 +44,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             LoginWelcomeWidget(),
                             OutlinedBorderTextFormField(
-                                labelText: TrKeys.phoneOrEmailLabelText,
+                                labelText: TrKeysConstant.phoneOrEmailLabelText,
                                 onChanged: authController.setEmail,
                                 isError: authController.isEmailNotValid,
                                 descriptionText: authController.isEmailNotValid
-                                    ? TrKeys.phoneOrEmailDescriptionText
+                                    ? TrKeysConstant.phoneOrEmailDescriptionText
                                     : null,
                                 //hint: "Numéro de téléphone",
                                 haveBorder: true,
@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 hintColor: Style.dark),
                             1.verticalSpace,
                             OutlinedBorderTextFormField(
-                              labelText: TrKeys.passwordLabelText,
+                              labelText: TrKeysConstant.passwordLabelText,
                               obscure: authController.showPassword,
                               //hint: "Mot de passe",
                               hintColor: Style.dark,
@@ -76,8 +76,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 icon: authController.password.isNotEmpty
                                     ? SvgPicture.asset(
                                         authController.showPassword
-                                            ? '${TrKeys.svgPath}fluent_eye-24-regular.svg'
-                                            : '${TrKeys.svgPath}tabler_eye-closed.svg',
+                                            ? '${TrKeysConstant.svgPath}fluent_eye-24-regular.svg'
+                                            : '${TrKeysConstant.svgPath}tabler_eye-closed.svg',
                                         height: 20.h,
                                       )
                                     : Container(),
@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               onChanged: authController.setPassword,
                               isError: authController.isPasswordNotValid,
                               descriptionText: authController.isPasswordNotValid
-                                  ? TrKeys.passwordDescriptionText
+                                  ? TrKeysConstant.passwordDescriptionText
                                   : null,
                             ),
                             Row(
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               children: [
                                 const SizedBox(),
                                 ForgotTextButton(
-                                  title: TrKeys.forgetPasswordText,
+                                  title: TrKeysConstant.forgetPasswordText,
                                   fontColor: Style.titleDark,
                                   onPressed: () {},
                                 ),
@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               background: Style.white,
                               textColor: Style.secondaryColor,
                               isLoadingColor: Style.secondaryColor,
-                              title: TrKeys.connexionButtonLoginText,
+                              title: TrKeysConstant.connexionButtonLoginText,
                               radius: 5,
                               onPressed: () {
                                 authController.login(context);

@@ -16,7 +16,7 @@ class LoginWelcomeWidget extends StatelessWidget {
             height: 200.h),
         RichText(
           text: TextSpan(
-            text:TrKeys.welcomeText ,
+            text:TrKeysConstant.welcomeText ,
             style: Style.interNormal(
                 size: 27.sp, color: Style.secondaryColor),
             children: <TextSpan>[
@@ -32,7 +32,7 @@ class LoginWelcomeWidget extends StatelessWidget {
         Container(
           width: 320.w,
           child: Text(
-            TrKeys.descriptionAppText,
+            TrKeysConstant.descriptionAppText,
             textAlign: TextAlign.center,
             style: Style.interNormal(
                 size: 15.sp, color: Style.secondaryColor),

@@ -2,195 +2,195 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
-class RequestCancelled implements NetworkExceptions {
+class RequestCancelled implements NetworkExceptionsService {
   const RequestCancelled();
 }
 
-class UnauthorisedRequest implements NetworkExceptions {
+class UnauthorisedRequest implements NetworkExceptionsService {
   const UnauthorisedRequest();
 }
 
-class BadRequest implements NetworkExceptions {
+class BadRequest implements NetworkExceptionsService {
   const BadRequest();
 }
 
-class NotFound implements NetworkExceptions {
+class NotFound implements NetworkExceptionsService {
   final String reason;
 
   const NotFound(this.reason);
 }
 
-class MethodNotAllowed implements NetworkExceptions {
+class MethodNotAllowed implements NetworkExceptionsService {
   const MethodNotAllowed();
 }
 
-class NotAcceptable implements NetworkExceptions {
+class NotAcceptable implements NetworkExceptionsService {
   const NotAcceptable();
 }
 
-class UnexpectedError implements NetworkExceptions {
+class UnexpectedError implements NetworkExceptionsService {
   const UnexpectedError();
 }
 
-class DefaultError implements NetworkExceptions {
+class DefaultError implements NetworkExceptionsService {
   final String error;
 
   const DefaultError(this.error);
 }
 
-class UnableToProcess implements NetworkExceptions {
+class UnableToProcess implements NetworkExceptionsService {
   const UnableToProcess();
 }
 
-class NoInternetConnection implements NetworkExceptions {
+class NoInternetConnection implements NetworkExceptionsService {
   const NoInternetConnection();
 }
 
-class FormatException implements NetworkExceptions {
+class FormatException implements NetworkExceptionsService {
   const FormatException();
 }
 
-class ServiceUnavailable implements NetworkExceptions {
+class ServiceUnavailable implements NetworkExceptionsService {
   const ServiceUnavailable();
 }
 
-class NotImplemented implements NetworkExceptions {
+class NotImplemented implements NetworkExceptionsService {
   const NotImplemented();
 }
 
-class InternalServerError implements NetworkExceptions {
+class InternalServerError implements NetworkExceptionsService {
   const InternalServerError();
 }
 
-class Conflict implements NetworkExceptions {
+class Conflict implements NetworkExceptionsService {
   const Conflict();
 }
 
-class SendTimeout implements NetworkExceptions {
+class SendTimeout implements NetworkExceptionsService {
   const SendTimeout();
 }
 
-class RequestTimeout implements NetworkExceptions {
+class RequestTimeout implements NetworkExceptionsService {
   const RequestTimeout();
 }
 
-class NetworkExceptions {
-  const NetworkExceptions();
+class NetworkExceptionsService {
+  const NetworkExceptionsService();
 
-  const factory NetworkExceptions.requestCancelled() = RequestCancelled;
+  const factory NetworkExceptionsService.requestCancelled() = RequestCancelled;
 
-  const factory NetworkExceptions.unauthorisedRequest() = UnauthorisedRequest;
+  const factory NetworkExceptionsService.unauthorisedRequest() = UnauthorisedRequest;
 
-  const factory NetworkExceptions.badRequest() = BadRequest;
+  const factory NetworkExceptionsService.badRequest() = BadRequest;
 
-  const factory NetworkExceptions.notFound(String reason) = NotFound;
+  const factory NetworkExceptionsService.notFound(String reason) = NotFound;
 
-  const factory NetworkExceptions.methodNotAllowed() = MethodNotAllowed;
+  const factory NetworkExceptionsService.methodNotAllowed() = MethodNotAllowed;
 
-  const factory NetworkExceptions.notAcceptable() = NotAcceptable;
+  const factory NetworkExceptionsService.notAcceptable() = NotAcceptable;
 
-  const factory NetworkExceptions.requestTimeout() = RequestTimeout;
+  const factory NetworkExceptionsService.requestTimeout() = RequestTimeout;
 
-  const factory NetworkExceptions.sendTimeout() = SendTimeout;
+  const factory NetworkExceptionsService.sendTimeout() = SendTimeout;
 
-  const factory NetworkExceptions.conflict() = Conflict;
+  const factory NetworkExceptionsService.conflict() = Conflict;
 
-  const factory NetworkExceptions.internalServerError() = InternalServerError;
+  const factory NetworkExceptionsService.internalServerError() = InternalServerError;
 
-  const factory NetworkExceptions.notImplemented() = NotImplemented;
+  const factory NetworkExceptionsService.notImplemented() = NotImplemented;
 
-  const factory NetworkExceptions.serviceUnavailable() = ServiceUnavailable;
+  const factory NetworkExceptionsService.serviceUnavailable() = ServiceUnavailable;
 
-  const factory NetworkExceptions.noInternetConnection() = NoInternetConnection;
+  const factory NetworkExceptionsService.noInternetConnection() = NoInternetConnection;
 
-  const factory NetworkExceptions.formatException() = FormatException;
+  const factory NetworkExceptionsService.formatException() = FormatException;
 
-  const factory NetworkExceptions.unableToProcess() = UnableToProcess;
+  const factory NetworkExceptionsService.unableToProcess() = UnableToProcess;
 
-  const factory NetworkExceptions.defaultError(String error) = DefaultError;
+  const factory NetworkExceptionsService.defaultError(String error) = DefaultError;
 
-  const factory NetworkExceptions.unexpectedError() = UnexpectedError;
+  const factory NetworkExceptionsService.unexpectedError() = UnexpectedError;
 
-  static NetworkExceptions getDioException(error) {
+  static NetworkExceptionsService getDioException(error) {
     if (error is Exception) {
       try {
-        NetworkExceptions? networkExceptions;
+        NetworkExceptionsService? networkExceptions;
         if (error is DioException) {
           switch (error.type) {
             case DioExceptionType.cancel:
-              networkExceptions = const NetworkExceptions.requestCancelled();
+              networkExceptions = const NetworkExceptionsService.requestCancelled();
               break;
             case DioExceptionType.connectionTimeout:
-              networkExceptions = const NetworkExceptions.requestTimeout();
+              networkExceptions = const NetworkExceptionsService.requestTimeout();
               break;
             case DioExceptionType.unknown:
               networkExceptions =
-                  const NetworkExceptions.noInternetConnection();
+                  const NetworkExceptionsService.noInternetConnection();
               break;
             case DioExceptionType.receiveTimeout:
-              networkExceptions = const NetworkExceptions.sendTimeout();
+              networkExceptions = const NetworkExceptionsService.sendTimeout();
               break;
             case DioExceptionType.badResponse:
               switch (error.response!.statusCode) {
                 case 400:
-                  networkExceptions = const NetworkExceptions.badRequest();
+                  networkExceptions = const NetworkExceptionsService.badRequest();
                   break;
                 case 401:
                   networkExceptions =
-                      const NetworkExceptions.unauthorisedRequest();
+                      const NetworkExceptionsService.unauthorisedRequest();
                   break;
                 case 403:
                   networkExceptions =
-                      const NetworkExceptions.unauthorisedRequest();
+                      const NetworkExceptionsService.unauthorisedRequest();
                   break;
                 case 404:
                   networkExceptions =
-                      const NetworkExceptions.notFound("Not found");
+                      const NetworkExceptionsService.notFound("Not found");
                   break;
                 case 409:
-                  networkExceptions = const NetworkExceptions.conflict();
+                  networkExceptions = const NetworkExceptionsService.conflict();
                   break;
                 case 408:
-                  networkExceptions = const NetworkExceptions.requestTimeout();
+                  networkExceptions = const NetworkExceptionsService.requestTimeout();
                   break;
                 case 500:
                   networkExceptions =
-                      const NetworkExceptions.internalServerError();
+                      const NetworkExceptionsService.internalServerError();
                   break;
                 case 503:
                   networkExceptions =
-                      const NetworkExceptions.serviceUnavailable();
+                      const NetworkExceptionsService.serviceUnavailable();
                   break;
                 default:
                   var responseCode = error.response!.statusCode;
-                  networkExceptions = NetworkExceptions.defaultError(
+                  networkExceptions = NetworkExceptionsService.defaultError(
                     "Received invalid status code: $responseCode",
                   );
               }
               break;
             case DioExceptionType.sendTimeout:
-              networkExceptions = const NetworkExceptions.sendTimeout();
+              networkExceptions = const NetworkExceptionsService.sendTimeout();
               break;
             default:
-              networkExceptions = const NetworkExceptions.badRequest();
+              networkExceptions = const NetworkExceptionsService.badRequest();
               break;
           }
         } else if (error is SocketException) {
-          networkExceptions = const NetworkExceptions.noInternetConnection();
+          networkExceptions = const NetworkExceptionsService.noInternetConnection();
         } else {
-          networkExceptions = const NetworkExceptions.unexpectedError();
+          networkExceptions = const NetworkExceptionsService.unexpectedError();
         }
         return networkExceptions;
       } on FormatException catch (_) {
-        return const NetworkExceptions.formatException();
+        return const NetworkExceptionsService.formatException();
       } catch (_) {
-        return const NetworkExceptions.unexpectedError();
+        return const NetworkExceptionsService.unexpectedError();
       }
     } else {
       if (error.toString().contains("is not a subtype of")) {
-        return const NetworkExceptions.unableToProcess();
+        return const NetworkExceptionsService.unableToProcess();
       } else {
-        return const NetworkExceptions.unexpectedError();
+        return const NetworkExceptionsService.unexpectedError();
       }
     }
   }
@@ -277,7 +277,7 @@ class NetworkExceptions {
     }
   }
 
-  static String getErrorMessage(NetworkExceptions networkExceptions) {
+  static String getErrorMessage(NetworkExceptionsService networkExceptions) {
     var errorMessage = "";
     if (networkExceptions is RequestCancelled) {
       errorMessage = "Request Cancelled";

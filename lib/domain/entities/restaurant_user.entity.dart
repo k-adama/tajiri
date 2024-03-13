@@ -23,19 +23,19 @@ class RestaurantUser {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     restaurant = json['restaurant'] != null
-        ? new RestaurantEntity.fromJson(json['restaurant'])
+        ? RestaurantEntity.fromJson(json['restaurant'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['userId'] = this.userId;
-    data['restaurantId'] = this.restaurantId;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    if (this.restaurant != String) {
-      data['restaurant'] = this.restaurant!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['userId'] = userId;
+    data['restaurantId'] = restaurantId;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    if (restaurant != null) {
+      data['restaurant'] = restaurant!.toJson();
     }
     return data;
   }

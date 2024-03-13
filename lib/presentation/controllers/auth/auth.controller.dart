@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/auth.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/user.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.dart';
-import 'package:tajiri_pos_mobile/app/services/app_helpers.dart';
 import 'package:tajiri_pos_mobile/app/services/app_validators.dart';
 import 'package:tajiri_pos_mobile/app/services/local_storage.service.dart';
 import 'package:tajiri_pos_mobile/data/repositories/auth/auth.repository.dart';
@@ -104,9 +104,9 @@ class AuthController extends GetxController {
         failure: (failure, status) {
           Mixpanel.instance.track('Login',
               properties: {"Method used": "Phone", "Status": "Faillure"});
-          AppHelpers.showCheckTopSnackBar(
+          AppHelpersCommon.showCheckTopSnackBar(
             context,
-            AppHelpers.getTranslation(status.toString()),
+            AppHelpersCommon.getTranslation(status.toString()),
           );
         },
       );
@@ -147,7 +147,7 @@ class AuthController extends GetxController {
           update();
           Mixpanel.instance.track('Login',
               properties: {"Method used": "Phone", "Status": "Faillure"});
-          AppHelpers.showCheckTopSnackBar(
+          AppHelpersCommon.showCheckTopSnackBar(
             context,
             status.toString(),
           );
