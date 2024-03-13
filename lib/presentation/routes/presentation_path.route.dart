@@ -5,6 +5,7 @@ abstract class Routes {
   static const SPLASH = _Paths.SPLASH;
   static const DEMO_APP = _Paths.DEMO_APP;
   static const FIRST = _Paths.FIRST;
+  static const NAVIGATION = _Paths.NAVIGATION;
 }
 
 abstract class _Paths {
@@ -12,4 +13,5 @@ abstract class _Paths {
   static const SPLASH = "/splash";
   static const DEMO_APP = "/demo_app";
   static const FIRST = "/first";
+  static const NAVIGATION = "/navigation";
 }

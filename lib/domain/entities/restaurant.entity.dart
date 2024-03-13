@@ -63,26 +63,26 @@ class RestaurantEntity {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['type'] = this.type;
-    data['ownerId'] = this.ownerId;
-    data['logoUrl'] = this.logoUrl;
-    data['coverUrl'] = this.coverUrl;
-    data['contactEmail'] = this.contactEmail;
-    data['contactPhone'] = this.contactPhone;
-    data['address'] = this.address;
-    data['city'] = this.city;
-    data['country'] = this.country;
-    data['currency'] = this.currency;
-    data['qrDetails'] = this.qrDetails;
-    data['whatsapMessage'] = this.whatsapMessage;
-    data['listingEnable'] = this.listingEnable;
-    data['listingType'] = this.listingType;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['type'] = type;
+    data['ownerId'] = ownerId;
+    data['logoUrl'] = logoUrl;
+    data['coverUrl'] = coverUrl;
+    data['contactEmail'] = contactEmail;
+    data['contactPhone'] = contactPhone;
+    data['address'] = address;
+    data['city'] = city;
+    data['country'] = country;
+    data['currency'] = currency;
+    data['qrDetails'] = qrDetails;
+    data['whatsapMessage'] = whatsapMessage;
+    data['listingEnable'] = listingEnable;
+    data['listingType'] = listingType;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
     return data;
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/user.constant.dart';
 import 'package:tajiri_pos_mobile/app/services/local_storage.service.dart';
@@ -16,9 +15,11 @@ class RestaurantInterceptor extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     if (requireRestaurantId) {
-      final String userEncoding = LocalStorageService.instance.get(UserConstant.keyUser) ?? "";
+      final String userEncoding =
+          LocalStorageService.instance.get(UserConstant.keyUser) ?? "";
       final UserEntity userDecoding = jsonDecode(userEncoding);
-      final String restaurantId = userDecoding.restaurantUser![0].restaurantId ?? "";
+      final String restaurantId =
+          userDecoding.restaurantUser![0].restaurantId ?? "";
       if (restaurantId.isNotEmpty) {
         options.headers.addAll({'restaurantId': restaurantId});
       }

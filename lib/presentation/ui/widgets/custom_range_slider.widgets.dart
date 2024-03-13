@@ -53,7 +53,6 @@ class CustomRoundRangeSliderThumbShape extends RangeSliderThumbShape {
       ..color = Style.brandGreen
       ..style = PaintingStyle.fill;
 
-
     if (isOnTop ?? false) {
       final Paint strokePaint = Paint()
         ..color = sliderTheme.overlappingShapeStrokeColor!
@@ -62,19 +61,14 @@ class CustomRoundRangeSliderThumbShape extends RangeSliderThumbShape {
       canvas.drawRRect(
           RRect.fromRectAndRadius(
               Rect.fromCenter(center: center, width: 36.r, height: 20.r),
-               Radius.circular(10.r)),
+              Radius.circular(10.r)),
           strokePaint);
     }
-
-
 
     final double evaluatedElevation =
         isPressed! ? elevationTween.evaluate(activationAnimation) : elevation;
     final Path shadowPath = Path()
-      ..addArc(
-          Rect.fromCenter(
-              center: center, width: 36.r, height: 20.r),
-          0,
+      ..addArc(Rect.fromCenter(center: center, width: 36.r, height: 20.r), 0,
           math.pi * 2);
 
     bool paintShadows = true;
@@ -90,17 +84,19 @@ class CustomRoundRangeSliderThumbShape extends RangeSliderThumbShape {
       canvas.drawShadow(shadowPath, Style.black, evaluatedElevation, true);
     }
 
-    canvas..drawRRect(
-        RRect.fromRectAndRadius(
-            Rect.fromCenter(center: center, width: 36.r, height: 20.r),
-             Radius.circular(10.r)),
-        sliderPaint)..drawRRect(
-        RRect.fromRectAndRadius(
-            Rect.fromCenter(center: center, width: 30.r, height: 12.r),
-             Radius.circular(10.r)),
-        Paint()
-          ..color = Style.white
-          ..style = PaintingStyle.fill);
+    canvas
+      ..drawRRect(
+          RRect.fromRectAndRadius(
+              Rect.fromCenter(center: center, width: 36.r, height: 20.r),
+              Radius.circular(10.r)),
+          sliderPaint)
+      ..drawRRect(
+          RRect.fromRectAndRadius(
+              Rect.fromCenter(center: center, width: 30.r, height: 12.r),
+              Radius.circular(10.r)),
+          Paint()
+            ..color = Style.white
+            ..style = PaintingStyle.fill);
   }
 }
 
