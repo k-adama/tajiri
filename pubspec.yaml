@@ -45,6 +45,10 @@ dependencies:
   flutter_localization: ^0.2.0
   pull_to_refresh: ^2.0.0
   supabase_flutter: ^2.3.4
+  connectivity_plus: ^5.0.2
+  top_snackbar_flutter: ^2.1.1
+  mixpanel_flutter: ^2.2.0
+  onesignal_flutter: ^3.5.0
 
 dev_dependencies:
   flutter_test:
