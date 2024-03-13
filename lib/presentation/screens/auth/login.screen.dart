@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +8,7 @@ import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/auth/auth.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/text/forgot_button.text.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/login_welcome.widget.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -42,40 +42,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
-                            50.verticalSpace,
-                            SvgPicture.asset("assets/svgs/logo_tajiri.svg",
-                                height: 200.h),
-                            RichText(
-                              text: TextSpan(
-                                text:TrKeys.welcomeText ,
-                                style: Style.interNormal(
-                                    size: 27.sp, color: Style.secondaryColor),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: " !",
-                                      style: Style.interNormal(
-                                          size: 30.sp,
-                                          color: Style.secondaryColor)),
-                                ],
-                              ),
-                            ),
-                            30.verticalSpace,
-                            Container(
-                              width: 320.w,
-                              child: Text(
-                                TrKeys.descriptionAppText,
-                                textAlign: TextAlign.center,
-                                style: Style.interNormal(
-                                    size: 15.sp, color: Style.secondaryColor),
-                              ),
-                            ),
-                            40.verticalSpace,
+                            LoginWelcomeWidget(),
                             OutlinedBorderTextFormField(
-                                labelText: "Numéro de téléphone",
+                                labelText: TrKeys.phoneOrEmailLabelText,
                                 onChanged: authController.setEmail,
                                 isError: authController.isEmailNotValid,
                                 descriptionText: authController.isEmailNotValid
-                                    ? "Entrer votre contact"
+                                    ? TrKeys.phoneOrEmailDescriptionText
                                     : null,
                                 //hint: "Numéro de téléphone",
                                 haveBorder: true,
@@ -87,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 hintColor: Style.dark),
                             1.verticalSpace,
                             OutlinedBorderTextFormField(
-                              labelText: "Mot de passe",
+                              labelText: TrKeys.passwordLabelText,
                               obscure: authController.showPassword,
                               //hint: "Mot de passe",
                               hintColor: Style.dark,
@@ -114,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               onChanged: authController.setPassword,
                               isError: authController.isPasswordNotValid,
                               descriptionText: authController.isPasswordNotValid
-                                  ? "Votre mot de passe doit contenir 8 caractères"
+                                  ? TrKeys.passwordDescriptionText
                                   : null,
                             ),
                             Row(
@@ -122,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               children: [
                                 const SizedBox(),
                                 ForgotTextButton(
-                                  title: "Mot de passe oublié",
+                                  title: TrKeys.forgetPasswordText,
                                   fontColor: Style.titleDark,
                                   onPressed: () {},
                                 ),
@@ -135,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               background: Style.white,
                               textColor: Style.secondaryColor,
                               isLoadingColor: Style.secondaryColor,
-                              title: 'Connexion',
+                              title: TrKeys.connexionButtonLoginText,
                               radius: 5,
                               onPressed: () {
                                 authController.login(context);
