@@ -8,6 +8,7 @@ import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/drawer_page.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/home.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/pos.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/keyboard_dismisser.ui.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -30,7 +31,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     list = [
       IndexedStackChild(child: const HomeScreen()),
       IndexedStackChild(
-        child: Container(),
+        child: const PosScreen(),
       ),
       IndexedStackChild(
         child: Container(),
