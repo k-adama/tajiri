@@ -10,9 +10,9 @@ class HttpService {
   }) {
     final options = BaseOptions(
       baseUrl: Environment.backendPoint,
-      connectTimeout: 60 * 1000,
-      receiveTimeout: 60 * 1000,
-      sendTimeout: 60 * 1000,
+     connectTimeout: const Duration(milliseconds: 60 * 1000),
+      receiveTimeout:const  Duration(milliseconds: 60 * 1000),
+      sendTimeout: const Duration(milliseconds: 60 * 1000),
       headers: {
         'Accept':
             'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',

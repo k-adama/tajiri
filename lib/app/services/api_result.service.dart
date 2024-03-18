@@ -9,8 +9,7 @@ class ApiResultService<T> {
       : error = const NetworkExceptionsService(),
         statusCode = 200;
 
-  const ApiResultService.failure(
-      {required this.error, required this.statusCode})
+  const ApiResultService.failure({required this.error, required this.statusCode})
       : data = null;
 
   R when<R>({

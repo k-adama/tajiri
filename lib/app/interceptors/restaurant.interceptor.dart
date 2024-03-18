@@ -17,7 +17,7 @@ class RestaurantInterceptor extends Interceptor {
     if (requireRestaurantId) {
       final String userEncoding =
           LocalStorageService.instance.get(UserConstant.keyUser) ?? "";
-      final UserEntity userDecoding = jsonDecode(userEncoding);
+      final UserEntity userDecoding = UserEntity.fromJson(jsonDecode(userEncoding));
       final String restaurantId =
           userDecoding.restaurantUser![0].restaurantId ?? "";
       if (restaurantId.isNotEmpty) {
