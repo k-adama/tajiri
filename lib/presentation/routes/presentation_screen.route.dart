@@ -1,3 +1,6 @@
+import 'package:get/route_manager.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/auth/auth.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/auth/login.screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/demo/demo.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/fisrt/first.binding.dart';
@@ -36,5 +39,10 @@ class PresentationScreenRoute {
       page: () => const NavigationScreen(),
       binding: NavigationBiding(),
     ),
+    GetPage(
+      name: _Paths.LOGIN,
+       page: ()=>LoginScreen(),
+       binding: AuthBinding()
+       )
   ];
 }

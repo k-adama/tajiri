@@ -7,9 +7,9 @@ import 'package:mixpanel_flutter/codec/mixpanel_message_codec.dart';
 
 /// The primary class for integrating Mixpanel with your app.
 class Mixpanel {
-  static const MethodChannel _channel = const MethodChannel(
+  static const MethodChannel _channel = MethodChannel(
       'mixpanel_flutter', StandardMethodCodec(MixpanelMessageCodec()));
-  static Map<String, String> _mixpanelProperties = {
+  static final Map<String, String> _mixpanelProperties = {
     '\$lib_version': '2.2.0',
     'mp_lib': 'flutter',
   };
@@ -22,7 +22,7 @@ class Mixpanel {
 
   Mixpanel(String token)
       : _token = token,
-        _people = new People(token);
+        _people = People(token);
 
   ///
   ///  Initializes an instance of the API with the given project token.
@@ -257,7 +257,7 @@ class Mixpanel {
   /// return an instance of MixpanelGroup that you can use to update
   ///     records in Mixpanel Group Analytics
   MixpanelGroup getGroup(String groupKey, dynamic groupID) {
-    return new MixpanelGroup(this._token, groupKey, groupID);
+    return MixpanelGroup(this._token, groupKey, groupID);
   }
 
   /// Add a group to this user's membership for a particular group key
@@ -445,7 +445,7 @@ class Mixpanel {
 /// persist across stops and starts of your application, until you make another
 /// call to identify using a different id.
 class People {
-  static const MethodChannel _channel = const MethodChannel('mixpanel_flutter');
+  static const MethodChannel _channel = MethodChannel('mixpanel_flutter');
 
   final String _token;
 
@@ -626,7 +626,7 @@ class People {
 ///
 /// The MixpanelGroup object is used to update properties in a group's Group Analytics record.
 class MixpanelGroup {
-  static const MethodChannel _channel = const MethodChannel('mixpanel_flutter');
+  static const MethodChannel _channel = MethodChannel('mixpanel_flutter');
 
   final String _token;
   final String _groupKey;

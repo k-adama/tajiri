@@ -2,27 +2,28 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tajiri_pos_mobile/app/config/constants/auth.constant.dart';
-import 'package:tajiri_pos_mobile/app/config/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/services/http.service.dart';
+import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/local_storage.service.dart';
 import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:get/route_manager.dart';
+import 'package:tajiri_pos_mobile/app/config/constants/user.constant.dart';
+import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 
 class AppHelpersCommon {
   AppHelpersCommon._();
 
   static UserEntity? getUserInLocalStorage() {
-    final userEncoding =
-        LocalStorageService.instance.get(AuthConstant.keyToken);
+    final userEncoding = LocalStorageService.instance.get(UserConstant.keyUser);
 
     if (userEncoding == null) {
       logoutApi();
       return null;
     }
-    final user = jsonDecode(userEncoding) as UserEntity;
+    final user = UserEntity.fromJson(jsonDecode(userEncoding));
     return user;
   }
 
@@ -37,20 +38,12 @@ class AppHelpersCommon {
       Mixpanel.instance
           .track("Logout", properties: {"Date": DateTime.now().toString()});
       Mixpanel.instance.reset();
-      logout();
-
-      // Get.offAllNamed(Routes.LOGIN);
+      LocalStorageService.instance.logout();
+      Get.offAllNamed(Routes.LOGIN);
     } catch (e) {
       print('==> login failure: $e');
     }
   }
-
-  static void logout() {
-    LocalStorageService.instance.delete(AuthConstant.keyToken);
-    LocalStorageService.instance.delete(AuthConstant.keyUser);
-  }
-
-  // SNACK BAR
 
   static showBottomSnackBar(BuildContext context, Widget content,
       Duration duration, bool isShowSnackBar) {
@@ -164,5 +157,16 @@ class AppHelpersCommon {
         return alert;
       },
     );
+  }
+
+  static String getTranslation(String trKey) {
+    /*    final Map<String, dynamic> translations =
+        LocalStorage.instance.getTranslations();
+    for (final key in translations.keys) {
+      if (trKey == key) {
+        return translations[key];
+      }
+    } */
+    return trKey;
   }
 }

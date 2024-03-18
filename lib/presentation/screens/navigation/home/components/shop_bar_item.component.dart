@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:tajiri_pos_mobile/app/config/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/domain/entities/story.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/home/home.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/components/shop_avatar.component.dart';

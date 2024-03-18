@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/instance_manager.dart';
 
@@ -103,65 +104,67 @@ class _FoodVariantComponentState extends State<FoodVariantComponent> {
                         ],
                       ),
                     ),
-                    (posController.cartItemList
-                            .where((item) =>
-                                item.variant != null &&
-                                item.variant!.id == foodVariant.id)
-                            .isNotEmpty)
-                        ? Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4.r),
-                              ),
-                              color: Style.white,
-                              border: Border.all(
-                                color: Style.white,
-                                width: 4.w,
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                UpdateCountProductButton(
-                                  iconData: Icons.remove,
-                                  onTap: () {
-                                    posController.removeCount(
-                                      context: context,
-                                      foodId: widget.food.id.toString(),
-                                      foodVariantId: foodVariant.id,
-                                    );
-                                  },
+                    Obx(() {
+                      return (posController.cartItemList
+                              .where((item) =>
+                                  item.variant != null &&
+                                  item.variant!.id == foodVariant.id)
+                              .isNotEmpty)
+                          ? Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(4.r),
                                 ),
-                                12.horizontalSpace,
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(right: 10.w, left: 10.h),
-                                  child: Text(
-                                    '${posController.cartItemList.firstWhereOrNull((item) => item.variant != null && item.variant!.id == foodVariant.id)?.quantity ?? 0}',
-                                    style: Style.interBold(
-                                      size: 14.sp,
-                                      color: Style.black,
+                                color: Style.white,
+                                border: Border.all(
+                                  color: Style.white,
+                                  width: 4.w,
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  UpdateCountProductButton(
+                                    iconData: Icons.remove,
+                                    onTap: () {
+                                      posController.removeCount(
+                                        context: context,
+                                        foodId: widget.food.id.toString(),
+                                        foodVariantId: foodVariant.id,
+                                      );
+                                    },
+                                  ),
+                                  12.horizontalSpace,
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        right: 10.w, left: 10.h),
+                                    child: Text(
+                                      '${posController.cartItemList.firstWhereOrNull((item) => item.variant != null && item.variant!.id == foodVariant.id)?.quantity ?? 0}',
+                                      style: Style.interBold(
+                                        size: 14.sp,
+                                        color: Style.black,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                12.horizontalSpace,
-                                UpdateCountProductButton(
-                                  iconData: Icons.remove,
-                                  onTap: () {
-                                    addCount(widget.food, foodVariant);
-                                  },
-                                ),
-                              ],
-                            ),
-                          )
-                        : CustomButton(
-                            background: Style.primaryColor,
-                            title: "Ajouter",
-                            radius: 3,
-                            textColor: Style.secondaryColor,
-                            onPressed: () {
-                              addCart(widget.food, foodVariant);
-                            },
-                          ),
+                                  12.horizontalSpace,
+                                  UpdateCountProductButton(
+                                    iconData: Icons.add,
+                                    onTap: () {
+                                      addCount(widget.food, foodVariant);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            )
+                          : CustomButton(
+                              background: Style.primaryColor,
+                              title: "Ajouter",
+                              radius: 3,
+                              textColor: Style.secondaryColor,
+                              onPressed: () {
+                                addCart(widget.food, foodVariant);
+                              },
+                            );
+                    }),
                   ],
                 ),
                 const Divider(),

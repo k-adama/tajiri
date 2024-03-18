@@ -21,6 +21,7 @@ class NavigationScreen extends StatefulWidget {
 
 class _NavigationScreenState extends State<NavigationScreen> {
   final navigationController = Get.find<NavigationController>();
+
   late List<IndexedStackChild> list;
   void handleBottomNavBarTap(int index) {
     navigationController.selectIndexFunc(index);

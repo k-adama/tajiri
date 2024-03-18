@@ -1,4 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tajiri_pos_mobile/app/config/constants/auth.constant.dart';
+import 'package:tajiri_pos_mobile/app/config/constants/user.constant.dart';
 
 class LocalStorageService {
   static SharedPreferences? _preferences;
@@ -40,4 +42,10 @@ class LocalStorageService {
   void delete(String key) {
     _preferences?.remove(key);
   }
+
+  void logout(){
+    delete(AuthConstant.keyToken);
+    delete(UserConstant.keyUser);
+  }
 }
+

@@ -7,7 +7,7 @@ import 'dart:ui' as ui;
 
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
-import 'package:tajiri_pos_mobile/app/config/mixpanel.dart';
+import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/domain/entities/categorie_amount.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_reports_data.entity.dart';
@@ -475,22 +475,22 @@ class HomeController extends GetxController {
       Map<String, List<dynamic>> groupedByPaymentMethod) {
     return groupedByPaymentMethod.entries
         .map((MapEntry<String, List<dynamic>> entry) {
-          String key = entry.key;
-          List<dynamic> items = entry.value;
+      String key = entry.key;
+      List<dynamic> items = entry.value;
 
-          if (key != "Carte bancaire") {
-            int total = items.fold(0,
-                (count, item) => count + (item['grandTotal'] as num).toInt());
-            dynamic id = items[0]['paymentMethod']?['id'] ??
-                PAIEMENTS.firstWhere((item) => item['name'] == "Cash",
-                    orElse: () => {'id': null})['id'];
+      if (key != "Carte bancaire") {
+        int total = items.fold(
+            0, (count, item) => count + (item['grandTotal'] as num).toInt());
+        dynamic id = items[0]['paymentMethod']?['id'] ??
+            PAIEMENTS.firstWhere((item) => item['name'] == "Cash",
+                orElse: () => {'id': null})['id'];
 
-            return PaymentMethodDataEntity(id: id, name: key, total: total);
-          }
+        return PaymentMethodDataEntity(id: id, name: key, total: total);
+      }
 
-          return PaymentMethodDataEntity(id: "", name: "", total: 0);
-        })
-        .where((element) => element != null)
+      return PaymentMethodDataEntity(id: "", name: "", total: 0);
+    })
+        // .where((element) => element != null)
         .toList();
   }
 

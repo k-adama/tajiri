@@ -8,8 +8,8 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
-import 'package:tajiri_pos_mobile/app/config/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/categorie_entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/customer.entity.dart';
@@ -28,7 +28,7 @@ class PosController extends GetxController {
   bool isLoading = true;
   String? selectedOption;
   bool isAddAndRemoveLoading = false;
-  bool isProductLoading = true;
+  final isProductLoading = true.obs;
   bool isCustomnersLoading = true;
   final foods = List<FoodDataEntity>.empty().obs;
   final foodsInit = List<FoodDataEntity>.empty().obs;
@@ -38,7 +38,7 @@ class PosController extends GetxController {
   Rx<dynamic> customerSelected = null.obs;
   int totalCartValue = 0;
 
-  List<MainItemEntity> cartItemList = List<MainItemEntity>.empty().obs;
+  final cartItemList = List<MainItemEntity>.empty().obs;
 
   RxString settleOrderId = "ON_PLACE".obs;
   RxString orderNotes = "".obs;
@@ -99,8 +99,7 @@ class PosController extends GetxController {
   Future<void> fetchFoods() async {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
-      isProductLoading = true;
-      update();
+      isProductLoading.value = true;
       final response = await _productsRepository.getFoods();
       final responseBundlePacks = await _productsRepository
           .getBundlePacks(); //TODO: GET BUNDLE PACK DOIT RETURNER PACK ENTITY ET NN DYNAMIC
@@ -118,12 +117,14 @@ class PosController extends GetxController {
 
           bundlePacks.assignAll(responseBundlePacks.data);
 
-          isProductLoading = false;
+          isProductLoading.value = false;
 
           final newCategories = data
-              .where((e) =>
-                  e.category != null) // Filter out items with null category
+              .where((e) {
+                return e.category != null;
+              }) // Filter out items with null category
               .map((e) => e.category!) // Safe to use non-nullable access now
+              .toSet()
               .toList();
 
           newCategories.insert(

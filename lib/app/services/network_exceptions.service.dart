@@ -79,8 +79,7 @@ class NetworkExceptionsService {
 
   const factory NetworkExceptionsService.requestCancelled() = RequestCancelled;
 
-  const factory NetworkExceptionsService.unauthorisedRequest() =
-      UnauthorisedRequest;
+  const factory NetworkExceptionsService.unauthorisedRequest() = UnauthorisedRequest;
 
   const factory NetworkExceptionsService.badRequest() = BadRequest;
 
@@ -96,23 +95,19 @@ class NetworkExceptionsService {
 
   const factory NetworkExceptionsService.conflict() = Conflict;
 
-  const factory NetworkExceptionsService.internalServerError() =
-      InternalServerError;
+  const factory NetworkExceptionsService.internalServerError() = InternalServerError;
 
   const factory NetworkExceptionsService.notImplemented() = NotImplemented;
 
-  const factory NetworkExceptionsService.serviceUnavailable() =
-      ServiceUnavailable;
+  const factory NetworkExceptionsService.serviceUnavailable() = ServiceUnavailable;
 
-  const factory NetworkExceptionsService.noInternetConnection() =
-      NoInternetConnection;
+  const factory NetworkExceptionsService.noInternetConnection() = NoInternetConnection;
 
   const factory NetworkExceptionsService.formatException() = FormatException;
 
   const factory NetworkExceptionsService.unableToProcess() = UnableToProcess;
 
-  const factory NetworkExceptionsService.defaultError(String error) =
-      DefaultError;
+  const factory NetworkExceptionsService.defaultError(String error) = DefaultError;
 
   const factory NetworkExceptionsService.unexpectedError() = UnexpectedError;
 
@@ -120,28 +115,25 @@ class NetworkExceptionsService {
     if (error is Exception) {
       try {
         NetworkExceptionsService? networkExceptions;
-        if (error is DioError) {
+        if (error is DioException) {
           switch (error.type) {
-            case DioErrorType.cancel:
-              networkExceptions =
-                  const NetworkExceptionsService.requestCancelled();
+            case DioExceptionType.cancel:
+              networkExceptions = const NetworkExceptionsService.requestCancelled();
               break;
-            case DioErrorType.connectTimeout:
-              networkExceptions =
-                  const NetworkExceptionsService.requestTimeout();
+            case DioExceptionType.connectionTimeout:
+              networkExceptions = const NetworkExceptionsService.requestTimeout();
               break;
-            case DioErrorType.other:
+            case DioExceptionType.unknown:
               networkExceptions =
                   const NetworkExceptionsService.noInternetConnection();
               break;
-            case DioErrorType.receiveTimeout:
+            case DioExceptionType.receiveTimeout:
               networkExceptions = const NetworkExceptionsService.sendTimeout();
               break;
-            case DioErrorType.response:
+            case DioExceptionType.badResponse:
               switch (error.response!.statusCode) {
                 case 400:
-                  networkExceptions =
-                      const NetworkExceptionsService.badRequest();
+                  networkExceptions = const NetworkExceptionsService.badRequest();
                   break;
                 case 401:
                   networkExceptions =
@@ -159,8 +151,7 @@ class NetworkExceptionsService {
                   networkExceptions = const NetworkExceptionsService.conflict();
                   break;
                 case 408:
-                  networkExceptions =
-                      const NetworkExceptionsService.requestTimeout();
+                  networkExceptions = const NetworkExceptionsService.requestTimeout();
                   break;
                 case 500:
                   networkExceptions =
@@ -177,13 +168,15 @@ class NetworkExceptionsService {
                   );
               }
               break;
-            case DioErrorType.sendTimeout:
+            case DioExceptionType.sendTimeout:
               networkExceptions = const NetworkExceptionsService.sendTimeout();
+              break;
+            default:
+              networkExceptions = const NetworkExceptionsService.badRequest();
               break;
           }
         } else if (error is SocketException) {
-          networkExceptions =
-              const NetworkExceptionsService.noInternetConnection();
+          networkExceptions = const NetworkExceptionsService.noInternetConnection();
         } else {
           networkExceptions = const NetworkExceptionsService.unexpectedError();
         }
@@ -206,21 +199,21 @@ class NetworkExceptionsService {
     if (error is Exception) {
       try {
         int? status;
-        if (error is DioError) {
+        if (error is DioException) {
           switch (error.type) {
-            case DioErrorType.cancel:
+            case DioExceptionType.cancel:
               status = 500;
               break;
-            case DioErrorType.connectTimeout:
+            case DioExceptionType.connectionTimeout:
               status = 500;
               break;
-            case DioErrorType.other:
+            case DioExceptionType.unknown:
               status = 500;
               break;
-            case DioErrorType.receiveTimeout:
+            case DioExceptionType.receiveTimeout:
               status = 500;
               break;
-            case DioErrorType.response:
+            case DioExceptionType.badResponse:
               switch (error.response!.statusCode) {
                 case 400:
                   status = 400;
@@ -253,10 +246,17 @@ class NetworkExceptionsService {
                   status = 500;
               }
               break;
-            case DioErrorType.sendTimeout:
+            case DioExceptionType.sendTimeout:
+              status = 500;
+              break;
+            case DioExceptionType.badCertificate:
+              status = 500;
+              break;
+            default:
               status = 500;
               break;
           }
+
         } else if (error is SocketException) {
           status = 500;
         } else {
