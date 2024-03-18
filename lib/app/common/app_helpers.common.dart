@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/auth.constant.dart';
+import 'package:tajiri_pos_mobile/app/config/constants/user.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/http.service.dart';
@@ -17,13 +18,13 @@ class AppHelpersCommon {
 
   static UserEntity? getUserInLocalStorage() {
     final userEncoding =
-        LocalStorageService.instance.get(AuthConstant.keyToken);
+        LocalStorageService.instance.get(UserConstant.keyUser);
 
     if (userEncoding == null) {
       // logoutApi();
       return null;
     }
-    final user = jsonDecode(userEncoding) as UserEntity;
+    final user = UserEntity.fromJson(jsonDecode(userEncoding));
     return user;
   }
 
