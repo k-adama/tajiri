@@ -6,7 +6,7 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/tr_keys.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/auth/auth.controller.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/auth/components/login_welcome.widget.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/auth/components/login_welcome.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/text/forgot_button.text.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
-                            const LoginWelcomeWidget(),
+                            const LoginWelcomeComponent(),
                             OutlinedBorderTextFormField(
                                 labelText: TrKeysConstant.phoneOrEmailLabelText,
                                 onChanged: authController.setEmail,

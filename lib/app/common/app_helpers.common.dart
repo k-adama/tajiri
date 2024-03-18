@@ -90,4 +90,14 @@ class AppHelpersCommon {
     } */
     return trKey;
   }
+
+  static showCheckTopSnackBarInfo(BuildContext context, String text,
+      {VoidCallback? onTap}) {
+    return showTopSnackBar(
+        context,
+        CustomSnackBar.info(
+          message: text,
+        ),
+        onTap: onTap);
+  }
 }
