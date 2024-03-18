@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'dart:async';
 
@@ -82,6 +83,12 @@ class PosController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    AppHelpersCommon.removeCurrentSnackBar(Get.context!);
+    super.onClose();
   }
 
   @override
