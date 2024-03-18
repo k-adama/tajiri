@@ -68,42 +68,42 @@ class AuthController extends GetxController {
       final response = await _authRepository.getProfileDetails();
       response.when(
         success: (data) async {
-          LocalStorageService.instance.set(UserConstant.keyUser,jsonEncode(data) ?? "");
+          LocalStorageService.instance.set(UserConstant.keyUser, jsonEncode(data));
           isLoading = false;
           update();
-          var profile = {
-            'Name': '${data?.firstname} ${data?.lastname}',
-            'first_name': '${data?.firstname}',
-            'last_name': '${data?.lastname}',
-            "Id": data?.id,
-            'Phone': data?.phone,
-            'Gender': data?.gender,
-            "Restaurant Name": data?.restaurantUser?[0].restaurant?.name
-          };
-          if(data != null){
-            Mixpanel.instance.identify(data?.id as String);
+            var profile = {
+              'Name': '${data?.firstname} ${data?.lastname}',
+              'first_name': '${data?.firstname}',
+              'last_name': '${data?.lastname}',
+              "Id": data?.id,
+              'Phone': data?.phone,
+              'Gender': data?.gender,
+              "Restaurant Name": data?.restaurantUser?[0].restaurant?.name
+            };
+          /*Mixpanel.instance.identify(data?.id as String);
             profile.forEach((key, value) {
               Mixpanel.instance.getPeople().set(key, value);
             });
 
             Mixpanel.instance.getGroup("Restaurant ID",
-                data?.restaurantUser?[0].restaurant?.id as String);
+                data?.restaurantUser?[0].restaurant?.id as String ?? "");
             Mixpanel.instance.setGroup("Restaurant Name",
-                data?.restaurantUser?[0].restaurant?.name as String);
+                data?.restaurantUser?[0].restaurant?.name as String ?? "");
 
             Mixpanel.instance.track('Login',
                 properties: {"Method used": "Phone", "Status": "Succes"});
 
-            OneSignal.shared.setSMSNumber(smsNumber: "+225${data?.phone}");
+            OneSignal.shared.setSMSNumber(smsNumber: "+225${data?.phone ?? ""}");
             OneSignal.shared.sendTags({
               "Restaurant":
-              data?.restaurantUser?[0].restaurant?.name as String
+              data?.restaurantUser?[0].restaurant?.name as String ?? ""
             });
-            OneSignal.shared.setExternalUserId(data?.id as String);
-          }
+            OneSignal.shared.setExternalUserId(data?.id as String ?? "");
+          }*/
           Get.offAllNamed(Routes.NAVIGATION);
         },
         failure: (failure, status) {
+          print("===================================== IN GetUser Failure");
           Mixpanel.instance.track('Login',
               properties: {"Method used": "Phone", "Status": "Faillure"});
           AppHelpersCommon.showCheckTopSnackBar(
