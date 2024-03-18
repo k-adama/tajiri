@@ -16,11 +16,6 @@ class AppConstants {
   static const String clientTypeRestaurant = 'RESTAURANT';
 
   static const String keyLangSelected = 'keyLangSelected';
-  static const String keyUserId = 'keyUserId';
-  static const String keyUserImage = 'keyUser';
-  static const String keyToken = 'keyToken';
-  static const String keyOnboarding = 'keyOnboarding';
-  static const String keyIsDemo = 'keyIsDemo';
   static const String keyShopId = 'keyShopId';
   static const String keyRestaurantId = 'keyRestaurantId';
   static const String keyRestaurantName = 'keyRestaurantId';

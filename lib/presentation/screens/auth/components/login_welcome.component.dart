@@ -4,8 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/tr_keys.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 
-class LoginWelcomeWidget extends StatelessWidget {
-  const LoginWelcomeWidget({super.key});
+class LoginWelcomeComponent extends StatelessWidget {
+  const LoginWelcomeComponent({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -158,4 +158,53 @@ class AuthController extends GetxController {
       );
     }
   }
+
+  Future<void> demoAuth(BuildContext context) async {
+    final connected = await AppConnectivity.connectivity();
+    if (connected) {
+      if (name.isEmpty || name.length <= 2) {
+        isNameNotValid = true;
+        update();
+        AppHelpersCommon.showCheckTopSnackBarInfo(
+            context, "Entrez un nom valide ");
+        return;
+      }
+
+      if (email.isEmpty || email.length < 10) {
+        isEmailNotValid = true;
+        update();
+        AppHelpersCommon.showCheckTopSnackBarInfo(
+            context, "Entrez un numéro de téléphone valide ");
+        return;
+      }
+      isLoading = true;
+      update();
+
+      final response = await _authRepository.demoSend(
+        name: name,
+        phone: email,
+      );
+
+      //Connect demo account
+      response.when(
+        success: (data) async {
+          LocalStorageService.instance
+              .set(AuthConstant.keyToken, data?.token ?? "");
+          LocalStorageService.instance.set(AuthConstant.keyIsDemo, "true");
+          await getUser(context);
+        },
+        failure: (failure, status) {
+          isLoading = false;
+          isLoginError = true;
+          update();
+          Mixpanel.instance.track('Login',
+              properties: {"Method used": "Phone", "Status": "Faillure"});
+          AppHelpersCommon.showCheckTopSnackBar(
+            context,
+            status.toString(),
+          );
+        },
+      );
+    }
+  }
 }
