@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get_rx/get_rx.dart';
@@ -12,9 +11,11 @@ import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/categorie_entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/customer.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/local_cart_enties/main_item.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/repositories/products.repository.dart';
@@ -29,10 +30,10 @@ class PosController extends GetxController {
   bool isAddAndRemoveLoading = false;
   bool isProductLoading = true;
   bool isCustomnersLoading = true;
-  List<FoodDataEntity> foods = List<FoodDataEntity>.empty().obs;
-  List<FoodDataEntity> foodsInit = List<FoodDataEntity>.empty().obs;
+  final foods = List<FoodDataEntity>.empty().obs;
+  final foodsInit = List<FoodDataEntity>.empty().obs;
   RxList bundlePacks = [].obs;
-  RxList categories = [].obs; // TODO: USE CATEGORIE ENTITY
+  final categories = List<CategoryEntity>.empty().obs;
   RxString categoryId = ''.obs;
   Rx<dynamic> customerSelected = null.obs;
   int totalCartValue = 0;
@@ -47,8 +48,8 @@ class PosController extends GetxController {
   Rx<bool> isLoadingOrder = false.obs;
   RxString emptySearchMessage = "".obs;
   RxList<String> searchResults = <String>[].obs;
-  Map<String, List<Map<String, dynamic>>> grouped = {};
-  RxList foodVariantCategories = [].obs;
+
+  final foodVariantCategories = List<FoodVariantCategoryEntity>.empty().obs;
 
   CustomerEntity currentCustomer = CustomerEntity();
   CustomerEntity newCustomer = CustomerEntity();
@@ -100,65 +101,61 @@ class PosController extends GetxController {
     if (connected) {
       isProductLoading = true;
       update();
-      final response = await _productsRepository
-          .getFoods(); //TODO: GET FOOD DOIT RETURNER FOOD ENTITY ET NON DYNAMIC
+      final response = await _productsRepository.getFoods();
       final responseBundlePacks = await _productsRepository
           .getBundlePacks(); //TODO: GET BUNDLE PACK DOIT RETURNER PACK ENTITY ET NN DYNAMIC
 
       response.when(
         success: (data) async {
-          final json = response.data as List<dynamic>;
-          final foodData =
-              json.map((item) => FoodDataEntity.fromJson(item)).toList();
-          foods.assignAll(foodData);
-          foodsInit.assignAll(foodData);
-          bundlePacks.assignAll(responseBundlePacks.data);
-          isProductLoading = false;
-
-          Map<String, List<Map<String, dynamic>>> grouped = {};
-
-          for (var order in data) {
-            final category = order['category'];
-            final categoryString = jsonEncode(category);
-
-            if (!grouped.containsKey(categoryString)) {
-              grouped[categoryString] = [];
-            }
-            grouped[categoryString]!.add(order);
+          if (data == null) {
+            return;
           }
 
-          List newCategories = grouped.keys.map((key) {
-            final category = jsonDecode(key);
-            return category;
-          }).toList();
-          newCategories
-              .insert(0, {'id': 'all', 'name': 'Tout', 'imageUrl': '🗂️'});
-          newCategories.insert(newCategories.length,
-              {'id': KIT_ID, 'name': 'Packs de vente', 'imageUrl': '🎁'});
+          foods.assignAll(
+              data.where((element) => element.isAvailable == true).toList());
+          foodsInit.assignAll(
+              data.where((element) => element.isAvailable == true).toList());
+
+          bundlePacks.assignAll(responseBundlePacks.data);
+
+          isProductLoading = false;
+
+          final newCategories = data
+              .where((e) =>
+                  e.category != null) // Filter out items with null category
+              .map((e) => e.category!) // Safe to use non-nullable access now
+              .toList();
+
+          newCategories.insert(
+            0,
+            CategoryEntity(
+              id: "all",
+              name: "Tout",
+              imageUrl: '🗂️',
+            ),
+          );
+          newCategories.insert(
+            newCategories.length,
+            CategoryEntity(
+              id: KIT_ID,
+              name: "Packs de vente",
+              imageUrl: '🎁',
+            ),
+          );
           categories.assignAll(newCategories);
 
-          Map<String, List<Map<String, dynamic>>> groupedFoodVariantCategory =
-              {};
-          for (var item in data) {
-            final foodVariantCategories = item['foodVariantCategory'];
-            if (foodVariantCategories.length != 0) {
-              for (var value in foodVariantCategories) {
-                final foodVariantCategoryString = jsonEncode(value);
-                if (!groupedFoodVariantCategory
-                    .containsKey(foodVariantCategoryString)) {
-                  groupedFoodVariantCategory[foodVariantCategoryString] = [];
-                }
-                groupedFoodVariantCategory[foodVariantCategoryString]!
-                    .add(value);
+          List<FoodVariantCategoryEntity> newFoodVariantCategories = [];
+
+          for (var foodData in data) {
+            final listFoodVariantCategories = foodData.foodVariantCategory;
+
+            if (listFoodVariantCategories!.isNotEmpty) {
+              for (var value in listFoodVariantCategories) {
+                newFoodVariantCategories.add(value);
               }
             }
           }
 
-          List newFoodVariantCategories =
-              groupedFoodVariantCategory.keys.map((key) {
-            final foodVariantCategory = jsonDecode(key);
-            return foodVariantCategory;
-          }).toList();
           foodVariantCategories.assignAll(newFoodVariantCategories);
           update();
         },
@@ -634,5 +631,24 @@ class PosController extends GetxController {
     );
 
     update();
+  }
+
+  void searchFilter(String search) {
+    setCategoryId("all");
+    foods.clear();
+    update();
+    if (search.isEmpty) {
+      foods.addAll(foodsInit);
+    } else {
+      final nameRecherch = search.toLowerCase();
+      foods.addAll(foodsInit.where((item) {
+        final foodName = item.name!.toLowerCase();
+        final categoryName = item.category!.name!.toLowerCase();
+
+        return foodName.startsWith(nameRecherch) ||
+            categoryName.startsWith(nameRecherch);
+      }).toList());
+      update();
+    }
   }
 }

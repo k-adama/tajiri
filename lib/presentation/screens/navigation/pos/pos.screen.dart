@@ -9,7 +9,9 @@ import 'package:tajiri_pos_mobile/app/config/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/categorie_food.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/modals/food_variant.modal.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/pos_search_bar.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/shimmer_product_list.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/shop_product_item.component.dart';
 import 'package:upgrader/upgrader.dart';
@@ -63,7 +65,7 @@ class _PosScreenState extends State<PosScreen> {
         "Stock Availability": food.quantity,
         "Number of variants categories": food.foodVariantCategory?.length,
         "Average of variants by category":
-            food.foodVariantCategory?[0]?.foodVariant?.length
+            food.foodVariantCategory?[0].foodVariant?.length
       });
       AppHelpersCommon.showCustomModalBottomSheet(
         context: context,
@@ -118,7 +120,9 @@ class _PosScreenState extends State<PosScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // categoriesWidget(context),
+                    PosSearchComponent(posController: posController),
+                    if (posController.categories.isNotEmpty)
+                      CategorieFoodComponent(posController: posController),
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.w),

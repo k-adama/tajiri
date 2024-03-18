@@ -66,18 +66,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
               backgroundColor: Style.white,
               child: DrawerPageComponent(),
             ),
-            body: Column(
-              children: [
-                navigationController.selectIndex == 1 && user != null
-                    ? Container() // const PosSearch()
-                    : const SizedBox(),
-                Expanded(
-                  child: ProsteIndexedStack(
-                    index: navigationController.selectIndex,
-                    children: list,
-                  ),
-                ),
-              ],
+            body: ProsteIndexedStack(
+              index: navigationController.selectIndex,
+              children: list,
             ),
             bottomNavigationBar: BottomNavigationBar(
               backgroundColor: Style.white,

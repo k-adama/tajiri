@@ -12,7 +12,7 @@ import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
 class ProductsRepository {
   HttpService server = HttpService();
 
-  Future<ApiResultService<dynamic>> getFoods() async {
+  Future<ApiResultService<List<FoodDataEntity>>> getFoods() async {
     try {
       final client =
           server.client(requireAuth: true, requireRestaurantId: true);
@@ -21,7 +21,9 @@ class ProductsRepository {
       );
 
       return ApiResultService.success(
-        data: response.data,
+        data: (response.data as List)
+            .map((element) => FoodDataEntity.fromJson(element))
+            .toList(),
       );
     } catch (e) {
       return ApiResultService.failure(
