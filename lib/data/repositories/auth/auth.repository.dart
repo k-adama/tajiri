@@ -50,4 +50,26 @@ class AuthRepository{
     }
   }
 
+  Future<ApiResultService<LoginResponseEntity>> demoSend({
+    required String phone,
+    required String name,
+  }) async {
+    try {
+      final client =
+          server.client(requireAuth: false, requireRestaurantId: false);
+      final response = await client.post(
+        '/auth/demo/',
+        data: {"name": name, "phone": phone},
+      );
+      return ApiResultService.success(
+        data: LoginResponseEntity.fromJson(response.data),
+      );
+    } catch (e) {
+      debugPrint('==> login failure: $e');
+      return ApiResultService.failure(
+          error: NetworkExceptionsService.getDioException(e),
+          statusCode: NetworkExceptionsService.getDioStatus(e));
+    }
+  }
+
 }

@@ -60,6 +60,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   blue_thermal_printer: ^1.2.3
+  card_swiper: ^3.0.1
   
 flutter_launcher_icons:
   android: "launcher_icon"
