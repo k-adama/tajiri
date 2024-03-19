@@ -179,4 +179,21 @@ class AppHelpersCommon {
         ),
         onTap: onTap);
   }
+
+  static void showAlertVideoDemoDialog({
+    required BuildContext context,
+    required Widget child,
+  }) {
+    AlertDialog alert = AlertDialog(
+      contentPadding: EdgeInsets.zero,
+      content: child,
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }
