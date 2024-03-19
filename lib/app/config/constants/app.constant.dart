@@ -77,6 +77,8 @@ class AppConstants {
   static const double pinLoadingMax = 0.611111111;
 
   static const Duration timeRefresh = Duration(seconds: 30);
+  static const Duration productCartSnackbarDuration =
+      Duration(days: 6000000000000000);
 
   static bool getStatusOrderInProgressOrDone(
       OrdersDataEntity order, String status) {

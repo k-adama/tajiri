@@ -5,14 +5,13 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tajiri_pos_mobile/app/config/env/environment.env.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/local_storage.service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/auth/auth.binding.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:tajiri_pos_mobile/app/config/mixpanel.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/splash/splash.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/custom_range_slider.widgets.dart';
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/story.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/home/home.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/components/categories.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/components/chart_bar_view.component.dart';
@@ -28,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   late TabController _tabController;
   late RefreshController _storyController;
-  late RefreshController _fakeController;
+  late RefreshController _smartRefreshController;
   DateTime currentDate = DateTime.now();
 
   @override
@@ -36,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen>
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     _storyController = RefreshController();
-    _fakeController = RefreshController();
+    _smartRefreshController = RefreshController();
     // initializeDateFormatting('fr_FR', null);
   }
 
@@ -44,18 +43,18 @@ class _HomeScreenState extends State<HomeScreen>
   void dispose() {
     _tabController.dispose();
     _storyController.dispose();
-    _fakeController.dispose();
+    _smartRefreshController.dispose();
     super.dispose();
   }
 
   void _onLoading() async {
     await _homeController.fetchDataForReports();
-    _fakeController.loadComplete();
+    _smartRefreshController.loadComplete();
   }
 
   void _onRefresh() async {
     await _homeController.fetchDataForReports();
-    _fakeController.refreshCompleted();
+    _smartRefreshController.refreshCompleted();
   }
 
   @override
@@ -68,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen>
           enablePullDown: true,
           enablePullUp: false,
           physics: const BouncingScrollPhysics(),
-          controller: _fakeController,
+          controller: _smartRefreshController,
           header: WaterDropMaterialHeader(
             distance: 160.h,
             backgroundColor: Style.white,

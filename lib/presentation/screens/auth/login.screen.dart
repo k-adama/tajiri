@@ -101,7 +101,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ],
                             ),
-
                             100.verticalSpace,
                             CustomButton(
                               isLoading: authController.isLoading,
@@ -114,7 +113,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 authController.login(context);
                               },
                             ),
-
                             100.verticalSpace,
                           ],
                         ),

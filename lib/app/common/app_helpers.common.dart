@@ -1,27 +1,26 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
-import 'package:tajiri_pos_mobile/app/config/constants/auth.constant.dart';
-import 'package:tajiri_pos_mobile/app/config/constants/user.constant.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/http.service.dart';
+import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/local_storage.service.dart';
 import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
-import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:get/route_manager.dart';
+import 'package:tajiri_pos_mobile/app/config/constants/user.constant.dart';
+import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 
 class AppHelpersCommon {
   AppHelpersCommon._();
 
   static UserEntity? getUserInLocalStorage() {
-    final userEncoding =
-        LocalStorageService.instance.get(UserConstant.keyUser);
+    final userEncoding = LocalStorageService.instance.get(UserConstant.keyUser);
 
     if (userEncoding == null) {
-      // logoutApi();
+      logoutApi();
       return null;
     }
     final user = UserEntity.fromJson(jsonDecode(userEncoding));
@@ -56,11 +55,15 @@ class AppHelpersCommon {
     );
 
     if (isShowSnackBar) {
-      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      removeCurrentSnackBar(context);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      removeCurrentSnackBar(context);
     }
+  }
+
+  static removeCurrentSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
   }
 
   static bool checkIsSvg(String? url) {
@@ -71,12 +74,88 @@ class AppHelpersCommon {
     return url.substring(length - 3, length) == 'svg';
   }
 
+  // MODAL
+
+  static void showCustomModalBottomSheet({
+    required BuildContext context,
+    required Widget modal,
+    required bool isDarkMode,
+    double radius = 16,
+    bool isDrag = true,
+    bool isDismissible = true,
+    double paddingTop = 200,
+  }) {
+    showModalBottomSheet(
+      isDismissible: isDismissible,
+      enableDrag: isDrag,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(radius.r),
+          topRight: Radius.circular(radius.r),
+        ),
+      ),
+      isScrollControlled: true,
+      backgroundColor: Style.transparent,
+      context: context,
+      builder: (context) => Padding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: modal,
+      ),
+    );
+  }
+
+  // CHECH SNACK BAR
+
+  static showCheckTopSnackBarInfoForm(BuildContext context, String text,
+      {VoidCallback? onTap}) {
+    return showTopSnackBar(
+      context,
+      CustomSnackBar.error(
+        message: text,
+      ),
+      onTap: onTap,
+    );
+  }
+
   static showCheckTopSnackBar(BuildContext context, String text) {
     return showTopSnackBar(
       context,
       CustomSnackBar.error(
         message: "$text. Please check your credentials and try again",
       ),
+    );
+  }
+
+  // ALERT DIALOG
+
+  static void showAlertDialog({
+    required BuildContext context,
+    required Widget child,
+    bool canPop = true,
+    double radius = 16,
+  }) {
+    AlertDialog alert = AlertDialog(
+      backgroundColor: Style.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(radius.r),
+        ),
+      ),
+      contentPadding: EdgeInsets.all(20.r),
+      iconPadding: EdgeInsets.zero,
+      content: PopScope(
+        canPop: canPop,
+        child: child,
+      ),
+    );
+
+    showDialog(
+      context: context,
+      barrierDismissible: canPop,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 

@@ -8,6 +8,7 @@ import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/drawer_page.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/home.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/pos.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/keyboard_dismisser.ui.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -20,6 +21,7 @@ class NavigationScreen extends StatefulWidget {
 
 class _NavigationScreenState extends State<NavigationScreen> {
   final navigationController = Get.find<NavigationController>();
+
   late List<IndexedStackChild> list;
   void handleBottomNavBarTap(int index) {
     navigationController.selectIndexFunc(index);
@@ -30,7 +32,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     list = [
       IndexedStackChild(child: const HomeScreen()),
       IndexedStackChild(
-        child: Container(),
+        child: const PosScreen(),
       ),
       IndexedStackChild(
         child: Container(),
@@ -65,18 +67,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
               backgroundColor: Style.white,
               child: DrawerPageComponent(),
             ),
-            body: Column(
-              children: [
-                navigationController.selectIndex == 1 && user != null
-                    ? Container() // const PosSearch()
-                    : const SizedBox(),
-                Expanded(
-                  child: ProsteIndexedStack(
-                    index: navigationController.selectIndex,
-                    children: list,
-                  ),
-                ),
-              ],
+            body: ProsteIndexedStack(
+              index: navigationController.selectIndex,
+              children: list,
             ),
             bottomNavigationBar: BottomNavigationBar(
               backgroundColor: Style.white,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 
 class DrawerPageFooterComponent extends StatelessWidget {
@@ -43,7 +44,7 @@ class DrawerPageFooterComponent extends StatelessWidget {
               ListTile(
                 title: InkWell(
                   onTap: () {
-                    // AppHelpersCommon.logoutApi();
+                    AppHelpersCommon.logoutApi();
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,

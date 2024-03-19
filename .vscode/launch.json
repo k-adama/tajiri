@@ -9,6 +9,16 @@
             "toolArgs": [
                 "--dart-define-from-file=.env/dev.json"
             ]
+        },
+        {
+            "name": "Flutter iphone 15 pro",
+            "program": "lib/main.dart",
+            "deviceId": "C91C360B-FA56-4087-AE7D-732637EC5CBD",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define-from-file=.env/dev.json"
+            ]
         }
     ]
 }

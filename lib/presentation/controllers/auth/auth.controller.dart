@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -68,18 +67,19 @@ class AuthController extends GetxController {
       final response = await _authRepository.getProfileDetails();
       response.when(
         success: (data) async {
-          LocalStorageService.instance.set(UserConstant.keyUser, jsonEncode(data));
+          LocalStorageService.instance
+              .set(UserConstant.keyUser, jsonEncode(data));
           isLoading = false;
           update();
-            var profile = {
-              'Name': '${data?.firstname} ${data?.lastname}',
-              'first_name': '${data?.firstname}',
-              'last_name': '${data?.lastname}',
-              "Id": data?.id,
-              'Phone': data?.phone,
-              'Gender': data?.gender,
-              "Restaurant Name": data?.restaurantUser?[0].restaurant?.name
-            };
+          var profile = {
+            'Name': '${data?.firstname} ${data?.lastname}',
+            'first_name': '${data?.firstname}',
+            'last_name': '${data?.lastname}',
+            "Id": data?.id,
+            'Phone': data?.phone,
+            'Gender': data?.gender,
+            "Restaurant Name": data?.restaurantUser?[0].restaurant?.name
+          };
           /*Mixpanel.instance.identify(data?.id as String);
             profile.forEach((key, value) {
               Mixpanel.instance.getPeople().set(key, value);
@@ -140,7 +140,8 @@ class AuthController extends GetxController {
 
       response.when(
         success: (data) async {
-          LocalStorageService.instance.set(AuthConstant.keyToken,data?.token ?? "");
+          LocalStorageService.instance
+              .set(AuthConstant.keyToken, data?.token ?? "");
           await getUser(context);
         },
         failure: (failure, status) {
@@ -164,7 +165,8 @@ class AuthController extends GetxController {
       if (name.isEmpty || name.length <= 2) {
         isNameNotValid = true;
         update();
-        AppHelpersCommon.showCheckTopSnackBarInfo(context, "Entrez un nom valide ");
+        AppHelpersCommon.showCheckTopSnackBarInfo(
+            context, "Entrez un nom valide ");
         return;
       }
 
@@ -186,7 +188,8 @@ class AuthController extends GetxController {
       //Connect demo account
       response.when(
         success: (data) async {
-          LocalStorageService.instance.set(AuthConstant.keyToken, data?.token ?? "");
+          LocalStorageService.instance
+              .set(AuthConstant.keyToken, data?.token ?? "");
           LocalStorageService.instance.set(AuthConstant.keyIsDemo, "true");
           await getUser(context);
         },

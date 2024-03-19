@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-
 
 class AnimationButtonEffect extends StatefulWidget {
   final bool disabled;
@@ -8,9 +6,7 @@ class AnimationButtonEffect extends StatefulWidget {
   final Widget child;
 
   const AnimationButtonEffect(
-      {super.key,
-      this.disabled = true,
-      required this.child});
+      {super.key, this.disabled = true, required this.child});
 
   @override
   State createState() => _AnimationButtonEffectState();

@@ -18,10 +18,10 @@ class CustomButton extends StatelessWidget {
   final String imagePath;
   final bool isUnderline;
   final Color underLineColor;
-  final haveBorder;
+  final bool haveBorder;
 
   const CustomButton({
-    Key? key,
+    super.key,
     required this.title,
     required this.onPressed,
     this.isLoading = false,
@@ -36,7 +36,7 @@ class CustomButton extends StatelessWidget {
     this.radius = 8,
     this.icon,
     this.borderColor = Style.transparent,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +91,7 @@ class CustomButton extends StatelessWidget {
                     ),
                   ),
                   10.horizontalSpace,
-                  imagePath.isNotEmpty ? SvgPicture.asset(imagePath) : SizedBox()
+                  if (imagePath.isNotEmpty) SvgPicture.asset(imagePath)
                 ],
               ),
       ),

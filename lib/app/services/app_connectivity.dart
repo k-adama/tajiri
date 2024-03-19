@@ -1,7 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 abstract class AppConnectivity {
-
   AppConnectivity._();
 
   static Future<bool> connectivity() async {

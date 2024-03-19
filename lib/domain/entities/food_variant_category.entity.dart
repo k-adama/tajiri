@@ -1,3 +1,5 @@
+import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
+
 class FoodVariantCategoryEntity {
   FoodVariantCategoryEntity({
     String? id,
@@ -5,7 +7,7 @@ class FoodVariantCategoryEntity {
     String? foodId,
     String? createdAt,
     String? updatedAt,
-    List<FoodVariant>? foodVariant,
+    List<FoodVariantEntity>? foodVariant,
   }) {
     _id = id;
     _name = name;
@@ -23,7 +25,7 @@ class FoodVariantCategoryEntity {
     if (json['foodVariant'] != null) {
       _foodVariant = [];
       json['foodVariant'].forEach((v) {
-        _foodVariant?.add(FoodVariant.fromJson(v));
+        _foodVariant?.add(FoodVariantEntity.fromJson(v));
       });
     }
   }
@@ -33,7 +35,7 @@ class FoodVariantCategoryEntity {
   String? _foodId;
   String? _createdAt;
   String? _updatedAt;
-  List<FoodVariant>? _foodVariant;
+  List<FoodVariantEntity>? _foodVariant;
 
   FoodVariantCategoryEntity copyWith({
     String? id,
@@ -41,7 +43,7 @@ class FoodVariantCategoryEntity {
     String? foodId,
     String? createdAt,
     String? updatedAt,
-    List<FoodVariant>? foodVariant,
+    List<FoodVariantEntity>? foodVariant,
   }) =>
       FoodVariantCategoryEntity(
         id: id ?? _id,
@@ -57,7 +59,7 @@ class FoodVariantCategoryEntity {
   String? get foodId => _foodId;
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
-  List<FoodVariant>? get foodVariant => _foodVariant;
+  List<FoodVariantEntity>? get foodVariant => _foodVariant;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -70,91 +72,6 @@ class FoodVariantCategoryEntity {
     if (_foodVariant != null) {
       map['foodVariant'] = _foodVariant?.map((v) => v.toJson()).toList();
     }
-    return map;
-  }
-}
-
-class FoodVariant {
-  FoodVariant({
-    String? id,
-    int? quantity,
-    int? price,
-    String? name,
-    String? FoodVariantCategoryEntityId,
-    bool? managementStock,
-    String? createdAt,
-    String? updatedAt,
-  }) {
-    _id = id;
-    _quantity = quantity;
-    _price = price;
-    _name = name;
-    _FoodVariantCategoryEntityId = FoodVariantCategoryEntityId;
-    _managementStock = managementStock;
-    _createdAt = createdAt;
-    _updatedAt = updatedAt;
-  }
-
-  FoodVariant.fromJson(dynamic json) {
-    _id = json['id'];
-    _quantity = json['quantity'];
-    _price = json['price'];
-    _name = json['name'];
-    _FoodVariantCategoryEntityId = json['FoodVariantCategoryEntityId'];
-    _managementStock = json['managementStock'];
-    _createdAt = json['createdAt'];
-    _updatedAt = json['updatedAt'];
-  }
-
-  String? _id;
-  int? _quantity;
-  int? _price;
-  String? _name;
-  String? _FoodVariantCategoryEntityId;
-  bool? _managementStock;
-  String? _createdAt;
-  String? _updatedAt;
-
-  FoodVariant copyWith({
-    String? id,
-    int? quantity,
-    int? price,
-    String? name,
-    String? FoodVariantCategoryEntityId,
-    bool? managementStock,
-    String? createdAt,
-    String? updatedAt,
-  }) =>
-      FoodVariant(
-        id: id ?? _id,
-        quantity: quantity ?? _quantity,
-        price: price ?? _price,
-        name: name ?? _name,
-        FoodVariantCategoryEntityId:
-            FoodVariantCategoryEntityId ?? _FoodVariantCategoryEntityId,
-        managementStock: managementStock ?? _managementStock,
-        createdAt: createdAt ?? _createdAt,
-        updatedAt: updatedAt ?? _updatedAt,
-      );
-  String? get id => _id;
-  int? get quantity => _quantity;
-  int? get price => _price;
-  String? get name => _name;
-  String? get FoodVariantCategoryEntityId => _FoodVariantCategoryEntityId;
-  bool? get managementStock => _managementStock;
-  String? get createdAt => _createdAt;
-  String? get updatedAt => _updatedAt;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = _id;
-    map['quantity'] = _quantity;
-    map['price'] = _price;
-    map['name'] = _name;
-    map['FoodVariantCategoryEntityId'] = _FoodVariantCategoryEntityId;
-    map['managementStock'] = _managementStock;
-    map['createdAt'] = _createdAt;
-    map['updatedAt'] = _updatedAt;
     return map;
   }
 }
