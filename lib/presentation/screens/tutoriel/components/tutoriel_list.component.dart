@@ -29,11 +29,7 @@ class _TutorielListComponentState extends State<TutorielListComponent> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const TutorielTextComponent(
-            title: "Vidéos tutoriels",
-            description:
-                "Découvrez les fonctionnalités de l'application Tajiri à travers nos vidéos tutoriels.",
-          ),
+          const TutorielTextComponent(),
           10.verticalSpace,
           Obx(() {
             if (tutorielController.tutoriels.isNotEmpty) {
@@ -66,15 +62,14 @@ class _TutorielListComponentState extends State<TutorielListComponent> {
                                   height: (screenSize.height / 2) - 200.h,
                                   imageUrl: tuto.minatureUrl!,
                                 ),
-                                TutorielReadButton(
-                                  bottom: 10,
-                                  right: 30,
-                                  containerWidth: (screenSize.width / 2) - 100,
-                                  containerHeight:
-                                      (screenSize.height / 2) - 360,
-                                  svgAsset: "assets/svgs/gridicons_play.svg",
-                                  buttonText: "Lire",
-                                ),
+                                Positioned(
+                                    bottom: 10.h,
+                                    right: 30.w,
+                                    child: const TutorielReadButton(
+                                      svgAsset:
+                                          "assets/svgs/gridicons_play.svg",
+                                      buttonText: "Lire",
+                                    )),
                               ],
                             )),
                       );

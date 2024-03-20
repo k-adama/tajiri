@@ -3,13 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 
 class TutorielTextComponent extends StatelessWidget {
-  final String title;
-  final String description;
 
   const TutorielTextComponent({
     Key? key,
-    required this.title,
-    required this.description,
   }) : super(key: key);
 
   @override
@@ -18,12 +14,12 @@ class TutorielTextComponent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          title,
+          "Vidéos tutoriels",
           style: Style.interBold(size: 23.sp),
         ),
         5.verticalSpace,
         Text(
-          description,
+          "Découvrez les fonctionnalités de l'application Tajiri à travers nos vidéos tutoriels.",
           style: Style.interNormal(color: Style.dark),
         ),
       ],
