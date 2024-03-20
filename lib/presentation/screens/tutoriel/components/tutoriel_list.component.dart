@@ -4,7 +4,6 @@ import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
-import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/tutoriel/tutoriel.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/tutoriel/components/play_video.component.dart';
