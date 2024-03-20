@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
+import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
+import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/drawer_body_list_row.component.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/widgets/product_in_cart.widget.dart';
 
 class DrawerPageBodyComponent extends StatelessWidget {
   const DrawerPageBodyComponent({super.key});
@@ -89,11 +94,14 @@ class DrawerPageBodyComponent extends StatelessWidget {
             emoji: "assets/svgs/icon_tuto.svg",
           ),
           onTap: () {
-            // AppHelpers.showBottomSnackBar(context, const ProductInCart(),
-            //     const Duration(milliseconds: 500), false);
-            // Mixpanel.instance.track("View Tutoriels",
-            //     properties: {"Date": DateTime.now().toString()});
-            // Get.toNamed(Routes.TUTORIELS);
+            AppHelpersCommon.showBottomSnackBar(
+                context,
+                const ProductInCartWidget(),
+                const Duration(milliseconds: 500),
+                false);
+            Mixpanel.instance.track("View Tutoriels",
+                properties: {"Date": DateTime.now().toString()});
+            Get.toNamed(Routes.TUTORIELS);
           },
         ),
       ],

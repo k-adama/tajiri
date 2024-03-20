@@ -64,6 +64,7 @@ dependencies:
   google_fonts: ^6.2.1
   card_swiper: ^3.0.1
   jiffy: ^5.0.0
+  video_player: ^2.8.3
   
 flutter_launcher_icons:
   android: "launcher_icon"

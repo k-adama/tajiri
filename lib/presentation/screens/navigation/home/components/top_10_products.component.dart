@@ -21,19 +21,19 @@ class _Top10ProductsState extends State<Top10ProductsComponent> {
         height: homeController.top10Foods.isEmpty
             ? 100.h
             : (size.height / 2) - 200.h,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Padding(
           padding: const EdgeInsets.only(left: 14.0, right: 14),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(
-                height: 30.h,
-                child: Text(
-                  "Top 10 des produits",
-                  style: Style.interBold(size: 18.sp, color: Style.titleDark),
-                ),
+              Text(
+                "Top 10 des produits",
+                style: Style.interBold(size: 18.sp, color: Style.titleDark),
               ),
               20.verticalSpace,
               Flexible(
