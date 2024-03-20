@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/home/home.controller.dart';
 
 class Top10ProductsComponent extends StatefulWidget {
-  final HomeController homeController;
-  const Top10ProductsComponent({super.key, required this.homeController});
+  const Top10ProductsComponent({super.key});
 
   @override
   State<Top10ProductsComponent> createState() => _Top10ProductsState();
@@ -16,44 +16,43 @@ class _Top10ProductsState extends State<Top10ProductsComponent> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
-      height: widget.homeController.top10Foods.isEmpty
-          ? 100.h
-          : (size.height / 2) -
-              200.h, //homeController.top10Foods.length == 1 ? homeController.top10Foods.length * 159.0 : homeController.top10Foods.length * 74,
-      width: double.infinity,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 14.0, right: 14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              height: 30.h,
-              child: Text(
+    return GetBuilder<HomeController>(builder: (homeController) {
+      return Container(
+        height: homeController.top10Foods.isEmpty
+            ? 100.h
+            : (size.height / 2) - 200.h,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 14.0, right: 14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
                 "Top 10 des produits",
                 style: Style.interBold(size: 18.sp, color: Style.titleDark),
               ),
-            ),
-            20.verticalSpace,
-            Flexible(
-              child: ListView.builder(
-                //physics: const NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemCount: widget.homeController.top10Foods.length,
-                itemBuilder: (BuildContext context, int index) {
-                  var paymentItem = widget.homeController.top10Foods[index];
+              20.verticalSpace,
+              Flexible(
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: homeController.top10Foods.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var paymentItem = homeController.top10Foods[index];
 
-                  return productCard(paymentItem, index + 1, size);
-                },
+                    return productCard(paymentItem, index + 1, size);
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget productCard(dynamic paymentItem, int index, dynamic size) {
