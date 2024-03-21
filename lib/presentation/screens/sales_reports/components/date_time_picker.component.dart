@@ -68,7 +68,7 @@ class _SalesReportsDateTimePickerComponentState
                     SalesReportHeaderComponent(
                       title:
                           "Générer un rapport de vente sur une période définie.",
-                      style: Style.interBold(size: 14.sp),
+                      style: Style.interNormal(size: 14.sp),
                     ),
                     20.verticalSpace,
                     Padding(

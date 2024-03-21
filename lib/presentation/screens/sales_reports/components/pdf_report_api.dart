@@ -1,17 +1,13 @@
 import 'package:pdf/widgets.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
-import 'package:tajiri_pos_mobile/app/config/constants/user.constant.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
 import 'dart:io';
-
-import 'package:tajiri_pos_mobile/app/services/local_storage.service.dart';
 import 'package:tajiri_pos_mobile/app/services/pdf_api.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_reports_data.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
 
 class PdfReportApiComponent {
-  /*static final dynamic user =
-      LocalStorageService.instance.get(UserConstant.keyUser);*/
-  static final users = AppHelpersCommon.getUserInLocalStorage();
+  static final user = AppHelpersCommon.getUserInLocalStorage();
 
   static Future<File> generate(List<SalesDataEntity> salesData, int total,
       String startDate, String endDate) async {
@@ -20,30 +16,29 @@ class PdfReportApiComponent {
     pdf.addPage(
       MultiPage(
           build: (context) => [
-                buildAppBar(users),
+                buildAppBar(user),
                 SizedBox(height: 29),
-                buildHeader(startDate, endDate, users),
+                buildHeader(startDate, endDate, user),
                 SizedBox(height: 15),
                 buildInvoice(salesData),
                 SizedBox(height: 15),
                 buildTotal(total)
               ]),
     );
-    // TODO : make a function to generate name with date or ...
     return PdfApi.saveDocument(name: 'my_order_report.pdf', pdf: pdf);
   }
 
-  static Widget buildAppBar(user) {
+  static Widget buildAppBar(UserEntity? user) {
     return Container(
       width: double.infinity,
       child: Center(
         child: Column(
           children: [
             Text(
-                "${users?.restaurantUser != null ? users?.restaurantUser![0].restaurant?.name : ""}",
+                "${user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}",
                 style: const TextStyle(fontSize: 14)),
             Text(
-              "${users?.restaurantUser != null ? users?.restaurantUser![0].restaurant?.contactPhone : ""}",
+              "${user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.contactPhone : ""}",
               style: const TextStyle(fontSize: 14),
             )
           ],
@@ -52,7 +47,8 @@ class PdfReportApiComponent {
     );
   }
 
-  static Widget buildHeader(String startDate, String endDate, dynamic user) =>
+  static Widget buildHeader(
+          String startDate, String endDate, UserEntity? user) =>
       Container(
         width: double.infinity,
         child: Center(
@@ -60,8 +56,7 @@ class PdfReportApiComponent {
           children: [
             information("Date de début: ", startDate),
             information("Date de fin: ", endDate),
-            information(
-                "Personne : ", "${users?.firstname} ${users?.lastname}"),
+            information("Personne : ", "${user?.firstname} ${user?.lastname}"),
           ],
         )),
       );

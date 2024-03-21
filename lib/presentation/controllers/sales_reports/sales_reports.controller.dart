@@ -26,20 +26,12 @@ class SalesReportController extends GetxController {
 
   final user = AppHelpersCommon.getUserInLocalStorage();
   final OrdersRepository _ordersRepository = OrdersRepository();
-
-  //OrdersReportsData ordersReports = OrdersReportsData().obs();
-
   RxList<SalesDataEntity> sales = List<SalesDataEntity>.empty().obs;
   final PosController posController = Get.find();
   final total = 0.obs;
   bool isLoadingReport = false;
   String startDate = "";
   String endDate = "";
-
-  /*@override
-  void onInit() {
-    super.onInit();
-  }*/
 
   Future<void> fetchOrdersReports() async {
     String? ownerId =
@@ -174,8 +166,7 @@ class SalesReportController extends GetxController {
     final TextPainter textPainter = TextPainter(
       text: TextSpan(text: text, style: style),
       maxLines: 1,
-      textDirection:
-          ui.TextDirection.ltr, // Use TextDirection.ltr for left-to-right text
+      textDirection: ui.TextDirection.ltr,
     )..layout(minWidth: 0, maxWidth: double.infinity);
     if (text.length <= 2) return textPainter.width + 100;
     if (text.length <= 6) return textPainter.width + 80;
