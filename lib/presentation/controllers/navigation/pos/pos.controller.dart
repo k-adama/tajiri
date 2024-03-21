@@ -16,8 +16,8 @@ import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.d
 import 'package:tajiri_pos_mobile/domain/entities/local_cart_enties/main_item.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/data/repositories/products/products.repository.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull_dialog.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/product_in_cart.widget.dart';
 
 class PosController extends GetxController {
   final ProductsRepository _productsRepository = ProductsRepository();
@@ -31,7 +31,7 @@ class PosController extends GetxController {
   final foodsInit = List<FoodDataEntity>.empty().obs;
   RxList bundlePacks = [].obs;
   final categories = List<CategoryEntity>.empty().obs;
-  RxString categoryId = ''.obs;
+  RxString categoryId = 'all'.obs;
   Rx<dynamic> customerSelected = null.obs;
   int totalCartValue = 0;
 
@@ -49,21 +49,20 @@ class PosController extends GetxController {
   final foodVariantCategories = List<FoodVariantCategoryEntity>.empty().obs;
 
   CustomerEntity currentCustomer = CustomerEntity();
-  CustomerEntity newCustomer = CustomerEntity();
   List<CustomerEntity> customers = List<CustomerEntity>.empty().obs;
   List<CustomerEntity> customerInit = List<CustomerEntity>.empty().obs;
   Rx<CustomerEntity> customer = CustomerEntity().obs;
 
-  RxString customerMessage = "".obs;
-  RxString customerId = ''.obs;
-  String customerFirstname = "";
-  String customerLastname = "";
-  String customerPhone = "";
-  TextEditingController customerEmail = TextEditingController();
+  // RxString customerMessage = "".obs;
+  // RxString customerId = ''.obs;
+  // String customerFirstname = "";
+  // String customerLastname = "";
+  // String customerPhone = "";
+
   TextEditingController note = TextEditingController();
 
   bool isLoadingCreateCustomer = false;
-  Rx<bool> isPaid = false.obs;
+  // Rx<bool> isPaid = false.obs;
   Map<String, dynamic>? waitressOrTableValue;
   List<Map<String, dynamic>> dropdownItems = [];
   bool listingEnable = true;
@@ -203,6 +202,7 @@ class PosController extends GetxController {
     final response = currentOrder.id != null
         ? await _productsRepository.updateOrder(params, currentOrder.id!)
         : await _productsRepository.createOrder(params);
+
     response.when(success: (data) async {
       newOrder = data!;
       update();
@@ -238,14 +238,12 @@ class PosController extends GetxController {
             content: "Consulter l'élément dans l'historique",
             svgPicture: "assets/svgs/enregistrement 1.svg",
             redirect: () {
-              Navigator.pop(context);
-              Navigator.pop(context);
-              Navigator.pop(context);
+              Get.close(3);
             },
           ),
         );
       } else {
-        isPaid.value = true;
+        // isPaid.value = true;
         AppHelpersCommon.showAlertDialog(
           context: context,
           canPop: false,
@@ -256,7 +254,10 @@ class PosController extends GetxController {
             content: "La commande a bien été payée.",
             svgPicture: "assets/svgs/success payment 1.svg",
             redirect: () {
-              // Get.toNamed(Routes.INVOICE_PDF, arguments: newOrder);
+              Get.to(InvoiceScreen(
+                order: newOrder,
+                isPaid: true,
+              ));
             },
           ),
         );
@@ -279,6 +280,7 @@ class PosController extends GetxController {
           };
         }).toList()
       });
+
       AppHelpersCommon.showCheckTopSnackBar(
         context,
         statusCode.toString(),
@@ -289,7 +291,7 @@ class PosController extends GetxController {
   Map<String, dynamic> chooseUseWaitressOrTable(
       String status, String restaurantId, dynamic itemFoods) {
     // Initialiser les paramètres communs
-    Map<String, dynamic> params = {
+    Map<String, dynamic> paramsMap = {
       'subTotal': totalCartValue,
       'grandTotal': totalCartValue,
       'customerType': customer.value.id == null ? 'GUEST' : 'SAVED',
@@ -309,12 +311,12 @@ class PosController extends GetxController {
 
     // Choisir les paramètres en fonction du type de liste
     if (checkListingType(user) == ListingType.waitress) {
-      params['waitressId'] = waitressCurrentId ?? "";
+      paramsMap['waitressId'] = currentOrder.waitressId ?? waitressCurrentId;
     } else if (checkListingType(user) == ListingType.table) {
-      params['tableId'] = tableCurrentId ?? "";
+      paramsMap['tableId'] = currentOrder.tableId ?? tableCurrentId;
     }
 
-    return params;
+    return paramsMap;
   }
 
   Future<void> handleCreateOrder(BuildContext context) async {
@@ -334,6 +336,9 @@ class PosController extends GetxController {
       update();
       await handleSaveOrder(context, 'NEW');
     } catch (error) {
+      isLoadingOrder.value = false;
+      update();
+    } finally {
       isLoadingOrder.value = false;
       update();
     }
@@ -438,17 +443,27 @@ class PosController extends GetxController {
     return "${cartItemList.length} produit";
   }
 
-  Future<void> saveCustomers(BuildContext context) async {
+  Future<void> saveCustomers(
+    BuildContext context,
+    String customerLastname,
+    String customerPhone,
+  ) async {
+    if (customer.value.id == null) {
+      print("CUSTOMER NULL");
+      return;
+    }
     isLoadingCreateCustomer = true;
     update();
+
     final String restaurantId = user!.role!.restaurantId!;
+
     Map<String, dynamic> requestData = {
       'lastname': customerLastname,
       'phone': customerPhone,
       'restaurantId': restaurantId,
     };
 
-    if (customerLastname.isEmpty || customerPhone.isEmpty) {
+    if (customerLastname.trim().isEmpty || customerPhone.trim().isEmpty) {
       isLoadingCreateCustomer = false;
       update();
       return AppHelpersCommon.showCheckTopSnackBarInfoForm(
@@ -458,7 +473,7 @@ class PosController extends GetxController {
     }
     final response = await _productsRepository.createCustomers(requestData);
     response.when(success: (data) {
-      newCustomer = data! as dynamic;
+      final newCustomer = data!;
       isLoadingCreateCustomer = false;
       update();
 
@@ -470,16 +485,14 @@ class PosController extends GetxController {
           isCustomerAdded: true,
           title: "Client ajouté",
           content:
-              "Le client $customerLastname $customerFirstname a été crée et ajouté à votre base de donnée client.",
+              "Le client $customerLastname a été crée et ajouté à votre base de donnée client.",
           svgPicture: "assets/svgs/user 1.svg",
           redirect: () {
-            Navigator.pop(context);
-            Navigator.pop(context);
-            Navigator.pop(context);
+            Get.close(3);
           },
         ),
       );
-      customer.value = data;
+      customer.value = newCustomer;
       fetchCustomers();
       customerInitialState();
     }, failure: (failure, statusCode) {
@@ -495,10 +508,6 @@ class PosController extends GetxController {
   void customerInitialState() {
     isLoading = false;
     currentCustomer = CustomerEntity();
-    customerEmail.clear();
-    customerFirstname = "";
-    customerLastname = "";
-    customerPhone = "";
     //Get.back();
     update();
   }
@@ -567,16 +576,6 @@ class PosController extends GetxController {
     });
     update();
     calculateTotal();
-
-    if (cartItemList.isNotEmpty && !isModifyOrder) {
-      AppHelpersCommon.showBottomSnackBar(
-        context,
-        const ProductInCartWidget(),
-        AppConstants.productCartSnackbarDuration,
-        true,
-      );
-      update();
-    }
   }
 
   Future<void> removeCount(
@@ -620,8 +619,10 @@ class PosController extends GetxController {
     }
   }
 
-  getSortList(List<MainItemEntity>? items) {
-    if (items == null) return;
+  List<MainItemEntity> getSortList(List<MainItemEntity>? items) {
+    if (items == null) {
+      return [];
+    }
     List<MainItemEntity>? sortedItems = items.map((e) => e).toList()
       ..sort((a, b) => b.name!.compareTo(a.name!));
     return sortedItems;
@@ -656,6 +657,27 @@ class PosController extends GetxController {
 
         return foodName.startsWith(nameRecherch) ||
             categoryName.startsWith(nameRecherch);
+      }).toList());
+      update();
+    }
+  }
+
+  void searchClient(search) {
+    customers.clear();
+    update();
+    if (search.isEmpty) {
+      customers.addAll(customerInit);
+      update();
+    } else {
+      final searchCustomers = search.toLowerCase();
+      customers.addAll(customerInit.where((item) {
+        final customerFirstname = item.firstname?.toLowerCase() ?? "";
+        final customerLastname = item.lastname.toString().toLowerCase();
+        final customerPhone = item.phone.toString().toLowerCase();
+
+        return customerFirstname.startsWith(searchCustomers) ||
+            customerLastname.startsWith(searchCustomers) ||
+            customerPhone.startsWith(searchCustomers);
       }).toList());
       update();
     }

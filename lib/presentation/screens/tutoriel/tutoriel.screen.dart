@@ -28,21 +28,6 @@ class _TutorielScreenState extends State<TutorielScreen> {
         leading: BackButton(
           onPressed: () {
             Navigator.of(context).pop();
-            if (posController.cartItemList.isEmpty ||
-                navigationController.selectIndex != 1) {
-              AppHelpersCommon.showBottomSnackBar(
-                  context,
-                  const ProductInCartWidget(),
-                  const Duration(milliseconds: 500),
-                  false);
-            } else {
-              AppHelpersCommon.showBottomSnackBar(
-                context,
-                const ProductInCartWidget(),
-                const Duration(days: 6000000000000000),
-                true,
-              );
-            }
           },
         ),
       ),

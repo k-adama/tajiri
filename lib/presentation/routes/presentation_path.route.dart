@@ -9,6 +9,9 @@ abstract class Routes {
   static const NAVIGATION = _Paths.NAVIGATION;
   static const DEMO_LOGIN = _Paths.DEMO_LOGIN;
   static const TUTORIELS = _Paths.TUTORIELS;
+  static const CART_PAID = _Paths.CART_PAID;
+  static const CART_SAVE = _Paths.CART_SAVE;
+  static const INVOICE = _Paths.INVOICE;
 }
 
 abstract class _Paths {
@@ -21,4 +24,7 @@ abstract class _Paths {
   static const NAVIGATION = "/navigation";
   static const DEMO_LOGIN = "/demo_login";
   static const TUTORIELS = "/tutoriels";
+  static const CART_PAID = "/cart_paid";
+  static const CART_SAVE = "/cart_save";
+  static const INVOICE = "/invoice";
 }

@@ -13,7 +13,7 @@ class SplashView extends StatefulWidget {
 
 class _SplashViewState extends State<SplashView> {
   SplashController splashController = Get.find();
-  /* BluetoothDevice? _device;
+  BluetoothDevice? _device;
   List<BluetoothDevice> _devices = [];
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
   bool _connected = false;
@@ -60,7 +60,6 @@ class _SplashViewState extends State<SplashView> {
       });
     }
   }
-*/
 
   @override
   Widget build(BuildContext context) {

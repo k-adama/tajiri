@@ -4,6 +4,7 @@ import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 
 class ProductInCartWidget extends StatelessWidget {
@@ -18,8 +19,14 @@ class ProductInCartWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(posController.quantityProduct()),
-              Text("${posController.totalCartValue}".splashCurrency())
+              Text(
+                posController.quantityProduct(),
+                style: TextStyle(color: Colors.white),
+              ),
+              Text(
+                "${posController.totalCartValue}".splashCurrency(),
+                style: TextStyle(color: Colors.white),
+              )
             ],
           ),
           CustomButton(
@@ -29,14 +36,13 @@ class ProductInCartWidget extends StatelessWidget {
               background: Style.primaryColor,
               radius: 5,
               onPressed: () {
-                // AppHelpersCommon.showCustomModalBottomSheet(
-                //   context: context,
-                //   // modal: const CartOrderView(),
-                //   modal: const Text("data"),
-                //   isDarkMode: false,
-                //   isDrag: true,
-                //   radius: 12,
-                // );
+                AppHelpersCommon.showCustomModalBottomSheet(
+                  context: context,
+                  modal: const CartScreen(),
+                  isDarkMode: false,
+                  isDrag: true,
+                  radius: 12,
+                );
               }),
         ],
       ),

@@ -20,6 +20,19 @@ ListingType? checkListingType(UserEntity? user) {
       : ListingType.waitress;
 }
 
+getInitialName(String fullName) {
+  List<String> nameParts = fullName.split(" ");
+  String initials = "";
+
+  for (String name in nameParts) {
+    if (name.isNotEmpty) {
+      initials += name[0];
+    }
+  }
+
+  return initials.toUpperCase();
+}
+
 // sales_calculator.dart
 class SalesCalculator {
   static Map<String, Map<String, dynamic>> calculateTotalSalesByDayOfWeek(
