@@ -17,7 +17,6 @@ import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.d
 import 'package:tajiri_pos_mobile/domain/entities/local_cart_enties/main_item.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/repositories/products.repository.dart';
-import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull_dialog.dart';
 
@@ -256,7 +255,6 @@ class PosController extends GetxController {
             content: "La commande a bien été payée.",
             svgPicture: "assets/svgs/success payment 1.svg",
             redirect: () {
-              Get.back();
               Get.to(InvoiceScreen(
                 order: newOrder,
                 isPaid: true,

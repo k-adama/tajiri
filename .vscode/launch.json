@@ -19,6 +19,16 @@
             "toolArgs": [
                 "--dart-define-from-file=.env/dev.json"
             ]
+        },
+        {
+            "name": "infinix",
+            "program": "lib/main.dart",
+            "deviceId": "0985537369003203",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define-from-file=.env/dev.json"
+            ]
         }
     ]
 }

@@ -118,7 +118,7 @@ class InvoiceController extends GetxController {
     bluetooth.printNewLine();
     bluetooth.printCustom("--------------------------------", 10, 10);
     bluetooth.printNewLine();
-    int itemCount = order.orderDetails!.length ?? 0;
+    int itemCount = order.orderDetails?.length ?? 0;
     for (int index = 0; index < itemCount; index++) {
       final orderDetail = order.orderDetails?[index];
       if (orderDetail != null) {
