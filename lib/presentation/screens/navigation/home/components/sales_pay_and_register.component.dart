@@ -262,7 +262,7 @@ class _SalesPayAndRegisterComponentState
                                 ) -
                                 50,
                         top: 2,
-                        child: Container(
+                        child: SizedBox(
                           width: 40.w,
                           height: 12.h,
                           child: Text(

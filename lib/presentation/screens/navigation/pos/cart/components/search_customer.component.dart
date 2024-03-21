@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/search_bar.text_field.dart';
 
-class PosSearchComponent extends StatefulWidget {
-  final PosController posController;
-  const PosSearchComponent({super.key, required this.posController});
+class SearchCustomerComponent extends StatefulWidget {
+  const SearchCustomerComponent({super.key});
 
   @override
-  State<PosSearchComponent> createState() => _PosSearchState();
+  State<SearchCustomerComponent> createState() =>
+      _SearchCustomerComponentState();
 }
 
-class _PosSearchState extends State<PosSearchComponent> {
+class _SearchCustomerComponentState extends State<SearchCustomerComponent> {
+  final TextEditingController search = TextEditingController();
+
   final TextEditingController searchController = TextEditingController();
   bool isSearchFocused = false;
   final FocusNode searchFocusNode = FocusNode();
@@ -34,11 +37,14 @@ class _PosSearchState extends State<PosSearchComponent> {
 
   @override
   Widget build(BuildContext context) {
-    return SearchBarTextField(
-      searchController: searchController,
-      hintText: "Rechercher un plat, une boisson ...",
-      focusNode: searchFocusNode,
-      onSearch: (text) => widget.posController.searchFilter(text),
-    );
+    return GetBuilder<PosController>(builder: (posController) {
+      return SearchBarTextField(
+        searchController: searchController,
+        hintText: "Rechercher un client ...",
+        focusNode: searchFocusNode,
+        onSearch: (text) => posController.searchClient(text),
+        color: null,
+      );
+    });
   }
 }

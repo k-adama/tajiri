@@ -82,8 +82,7 @@ class _HomeScreenState extends State<HomeScreen>
                 children: [
                   Obx(() {
                     return _homeController.storiesGroup.isNotEmpty
-                        ? Container(
-                            color: Style.white,
+                        ? SizedBox(
                             height: (screenSize.height / 2) - 250.h,
                             child: SmartRefresher(
                               controller: _storyController,
@@ -161,15 +160,9 @@ class _HomeScreenState extends State<HomeScreen>
                       ],
                     ),
                   ),
-                  MethodOfPaymentComponent(
-                    homeController: _homeController,
-                  ),
-                  CategoriesComponent(
-                    homeController: _homeController,
-                  ),
-                  Top10ProductsComponent(
-                    homeController: _homeController,
-                  )
+                  const MethodOfPaymentComponent(),
+                  const CategoriesComponent(),
+                  const Top10ProductsComponent()
                 ],
               ),
             ),

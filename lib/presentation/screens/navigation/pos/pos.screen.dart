@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,6 +16,7 @@ import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/pos_search_bar.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/shimmer_product_list.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/shop_product_item.component.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/widgets/product_in_cart.widget.dart';
 import 'package:upgrader/upgrader.dart';
 
 class PosScreen extends StatefulWidget {
@@ -129,121 +132,158 @@ class _PosScreenState extends State<PosScreen> {
         resizeToAvoidBottomInset: false,
         backgroundColor: Style.lighter,
         body: GetBuilder<PosController>(builder: (posController) {
-          return Column(
+          return Stack(
             children: [
-              SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                primary: false,
-                scrollDirection: Axis.vertical,
-                child: Stack(children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      PosSearchComponent(posController: posController),
-                      if (posController.categories.isNotEmpty)
-                        CategorieFoodComponent(posController: posController),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 8.w, vertical: 10.w),
-                        child: Text(
-                          "Tous les articles",
-                          style: Style.interBold(),
-                        ),
-                      ),
-                    ],
-                  )
-                ]),
-              ),
-              Obx(() {
-                return posController.isProductLoading.value
-                    ? const Expanded(child: ShimmerProductListComponent())
-                    : Expanded(
-                        child: posController.foods.isEmpty
-                            ? SvgPicture.asset(
-                                "assets/svgs/empty.svg",
-                                height: 300.h,
-                              )
-                            : AnimationLimiter(
-                                child: SmartRefresher(
-                                  controller: _controller,
-                                  enablePullDown: true,
-                                  enablePullUp: false,
-                                  onLoading: () {
-                                    _onLoading(posController);
-                                  },
-                                  onRefresh: () {
-                                    _onRefresh(posController);
-                                  },
-                                  child: GridView.builder(
-                                    padding: EdgeInsets.only(
-                                        right: 12.w,
-                                        left: 12.w,
-                                        bottom: 96.h,
-                                        top: 24.r),
-                                    shrinkWrap: true,
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                            childAspectRatio: 0.66.r,
-                                            crossAxisCount: 2,
-                                            mainAxisExtent: 280.r),
-                                    itemCount: posController.foods.length,
-                                    itemBuilder: (context, index) {
-                                      //get food
-                                      final food = posController.foods[index];
-                                      // check if food has variants
-                                      final hasVariants =
-                                          food.foodVariantCategory != null &&
-                                              food.foodVariantCategory!
-                                                  .isNotEmpty;
+              Column(
+                children: [
+                  SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    primary: false,
+                    scrollDirection: Axis.vertical,
+                    child: Stack(children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          PosSearchComponent(posController: posController),
+                          if (posController.categories.isNotEmpty)
+                            CategorieFoodComponent(
+                                posController: posController),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8.w, vertical: 10.w),
+                            child: Text(
+                              "Tous les articles",
+                              style: Style.interBold(),
+                            ),
+                          ),
+                        ],
+                      )
+                    ]),
+                  ),
+                  Obx(() {
+                    return posController.isProductLoading.value
+                        ? const Expanded(child: ShimmerProductListComponent())
+                        : Expanded(
+                            child: posController.foods.isEmpty
+                                ? SvgPicture.asset(
+                                    "assets/svgs/empty.svg",
+                                    height: 300.h,
+                                  )
+                                : AnimationLimiter(
+                                    child: SmartRefresher(
+                                      controller: _controller,
+                                      enablePullDown: true,
+                                      enablePullUp: false,
+                                      onLoading: () {
+                                        _onLoading(posController);
+                                      },
+                                      onRefresh: () {
+                                        _onRefresh(posController);
+                                      },
+                                      child: GridView.builder(
+                                        padding: EdgeInsets.only(
+                                            right: 12.w,
+                                            left: 12.w,
+                                            bottom: 96.h,
+                                            top: 24.r),
+                                        shrinkWrap: true,
+                                        gridDelegate:
+                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                                childAspectRatio: 0.66.r,
+                                                crossAxisCount: 2,
+                                                mainAxisExtent: 280.r),
+                                        itemCount: posController.foods.length,
+                                        itemBuilder: (context, index) {
+                                          //get food
+                                          final food =
+                                              posController.foods[index];
+                                          // check if food has variants
+                                          final hasVariants =
+                                              food.foodVariantCategory !=
+                                                      null &&
+                                                  food.foodVariantCategory!
+                                                      .isNotEmpty;
 
-                                      // check if food is in cart
-                                      final foodIsInCart = posController
-                                          .cartItemList
-                                          .map((item) => item.id)
-                                          .contains(food.id);
+                                          // check if food is in cart
+                                          final foodIsInCart = posController
+                                              .cartItemList
+                                              .map((item) => item.id)
+                                              .contains(food.id);
 
-                                      return AnimationConfiguration
-                                          .staggeredGrid(
-                                        columnCount: posController.foods.length,
-                                        position: index,
-                                        duration:
-                                            const Duration(milliseconds: 375),
-                                        child: ScaleAnimation(
-                                          scale: 0.5,
-                                          child: FadeInAnimation(
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                if (!foodIsInCart) {
-                                                  addCart(food, posController);
-                                                } else {
-                                                  addCount(food, hasVariants,
-                                                      posController);
-                                                }
-                                              },
-                                              child: ShopProductItemComponent(
-                                                product: food,
-                                                count: posController
-                                                    .getQuantity(index),
-                                                isAdd: foodIsInCart,
-                                                addCount: () => addCount(food,
-                                                    hasVariants, posController),
-                                                removeCount: () => removeCount(
-                                                    food,
-                                                    hasVariants,
-                                                    posController),
-                                                addCart: () => addCart(
-                                                    food, posController),
+                                          return AnimationConfiguration
+                                              .staggeredGrid(
+                                            columnCount:
+                                                posController.foods.length,
+                                            position: index,
+                                            duration: const Duration(
+                                                milliseconds: 375),
+                                            child: ScaleAnimation(
+                                              scale: 0.5,
+                                              child: FadeInAnimation(
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    if (!foodIsInCart) {
+                                                      addCart(
+                                                          food, posController);
+                                                    } else {
+                                                      addCount(
+                                                          food,
+                                                          hasVariants,
+                                                          posController);
+                                                    }
+                                                  },
+                                                  child:
+                                                      ShopProductItemComponent(
+                                                    product: food,
+                                                    count: posController
+                                                        .getQuantity(index),
+                                                    isAdd: foodIsInCart,
+                                                    addCount: () => addCount(
+                                                        food,
+                                                        hasVariants,
+                                                        posController),
+                                                    removeCount: () =>
+                                                        removeCount(
+                                                            food,
+                                                            hasVariants,
+                                                            posController),
+                                                    addCart: () => addCart(
+                                                        food, posController),
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ),
-                                      );
-                                    },
+                                          );
+                                        },
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                      );
-              })
+                          );
+                  })
+                ],
+              ),
+              if (posController.cartItemList.isNotEmpty)
+                Positioned(
+                  bottom: 22,
+                  right: 15,
+                  left: 15,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    decoration: BoxDecoration(
+                        color: Style.secondaryColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 0.5,
+                            blurRadius: 4,
+                            offset: const Offset(2.0, 2.0),
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(5)),
+                    child: const ProductInCartWidget(),
+                  ),
+                )
             ],
           );
         }),
