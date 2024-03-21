@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/keyboard_dismisser.ui.dart';
 
@@ -16,7 +17,7 @@ class OrderPaymentsMethodesModalComponent extends StatefulWidget {
 }
 
 class _OrderPaymentsMethodesModalComponentState extends State<OrderPaymentsMethodesModalComponent> {
-  //final PosController posController = Get.put(PosController());
+  final NavigationController navigationController = Get.put(NavigationController());
   final OrdersController orderController = Get.find();
 
   @override
@@ -98,8 +99,7 @@ class _OrderPaymentsMethodesModalComponentState extends State<OrderPaymentsMetho
                          return InkWell(
                            key: Key(settleOrder['id']),
                            onTap: () async {
-                             /*posController.paymentMethodId.value =
-                             settleOrder['id'];*/
+                            navigationController.posController.paymentMethodId.value = settleOrder['id'];
                              Navigator.pop(context);
                              await orderController.updateOrder(
                                  context, settleOrder['id']);
@@ -110,10 +110,10 @@ class _OrderPaymentsMethodesModalComponentState extends State<OrderPaymentsMetho
                                width: double.infinity,
                                height: 70,
                                decoration: BoxDecoration(
-                                 color: Style.lighter /*posController.paymentMethodId.value !=
+                                 color: navigationController.posController.paymentMethodId.value !=
                                      settleOrder['id']
                                      ? Style.white.withOpacity(0.9)
-                                     : Style.lighter,*/
+                                     : Style.lighter,
                                ),
                                child: Padding(
                                  padding: const EdgeInsets.symmetric(
