@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'dart:async';
-
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
@@ -18,8 +14,8 @@ import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/local_cart_enties/main_item.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
-import 'package:tajiri_pos_mobile/domain/repositories/products.repository.dart';
+import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
+import 'package:tajiri_pos_mobile/data/repositories/products/products.repository.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull_dialog.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/product_in_cart.widget.dart';
 
@@ -44,8 +40,8 @@ class PosController extends GetxController {
   RxString settleOrderId = "ON_PLACE".obs;
   RxString orderNotes = "".obs;
   RxString paymentMethodId = "d8b8d45d-da79-478f-9d5f-693b33d654e6".obs;
-  OrdersDataEntity newOrder = OrdersDataEntity();
-  OrdersDataEntity currentOrder = OrdersDataEntity();
+  OrderEntity newOrder = OrderEntity();
+  OrderEntity currentOrder = OrderEntity();
   Rx<bool> isLoadingOrder = false.obs;
   RxString emptySearchMessage = "".obs;
   RxList<String> searchResults = <String>[].obs;
@@ -98,7 +94,7 @@ class PosController extends GetxController {
     super.onReady();
   }
 
-  setCurrentOrder(OrdersDataEntity order) {
+  setCurrentOrder(OrderEntity order) {
     currentOrder = order;
     update();
   }
@@ -348,7 +344,7 @@ class PosController extends GetxController {
     isLoadingOrder.value = false;
     settleOrderId.value = "ON_PLACE";
     note.clear();
-    currentOrder = OrdersDataEntity();
+    currentOrder = OrderEntity();
     update();
   }
 

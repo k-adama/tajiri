@@ -1,5 +1,5 @@
-class OrdersReportsDataEntity {
-  OrdersReportsDataEntity({
+class OrdersReportsEntity {
+  OrdersReportsEntity({
     List<SalesDataEntity>? sales,
     int? total,
   }) {
@@ -7,7 +7,7 @@ class OrdersReportsDataEntity {
     _total = total;
   }
 
-  OrdersReportsDataEntity.fromJson(dynamic json) {
+  OrdersReportsEntity.fromJson(dynamic json) {
     _total = json['total'];
     if (json['sales'] != null) {
       _sales = [];
@@ -17,11 +17,11 @@ class OrdersReportsDataEntity {
     }
   }
 
-  OrdersReportsDataEntity copyWith({
+  OrdersReportsEntity copyWith({
     List<SalesDataEntity>? SalesDataEntity,
     int? total,
   }) =>
-      OrdersReportsDataEntity(sales: sales ?? _sales, total: total ?? _total);
+      OrdersReportsEntity(sales: sales ?? _sales, total: total ?? _total);
 
   List<SalesDataEntity>? _sales;
   int? _total;

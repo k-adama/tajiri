@@ -7,7 +7,7 @@ import 'package:tajiri_pos_mobile/domain/entities/customer.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 
 class ProductsRepository {
   HttpService server = HttpService();
@@ -237,7 +237,7 @@ class ProductsRepository {
     }
   }
 
-  Future<ApiResultService<OrdersDataEntity>> createOrder(dynamic data) async {
+  Future<ApiResultService<OrderEntity>> createOrder(dynamic data) async {
     try {
       final client =
           server.client(requireAuth: true, requireRestaurantId: false);
@@ -246,7 +246,7 @@ class ProductsRepository {
         data: data,
       );
       return ApiResultService.success(
-        data: OrdersDataEntity.fromJson(response.data),
+        data: OrderEntity.fromJson(response.data),
       );
     } catch (e) {
       return ApiResultService.failure(
@@ -255,7 +255,7 @@ class ProductsRepository {
     }
   }
 
-  Future<ApiResultService<OrdersDataEntity>> updateOrder(
+  Future<ApiResultService<OrderEntity>> updateOrder(
       dynamic data, String id) async {
     try {
       final client =
@@ -265,7 +265,7 @@ class ProductsRepository {
         data: data,
       );
       return ApiResultService.success(
-        data: OrdersDataEntity.fromJson(response.data),
+        data: OrderEntity.fromJson(response.data),
       );
     } catch (e) {
       return ApiResultService.failure(

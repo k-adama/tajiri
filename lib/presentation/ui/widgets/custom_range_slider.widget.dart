@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 
-class CustomRoundRangeSliderThumbShape extends RangeSliderThumbShape {
-  const CustomRoundRangeSliderThumbShape({
+class CustomRoundRangeSliderThumbShapeWidget extends RangeSliderThumbShape {
+  const CustomRoundRangeSliderThumbShapeWidget({
     this.enabledThumbRadius = 24.0,
     this.disabledThumbRadius,
     this.elevation = 2.0,

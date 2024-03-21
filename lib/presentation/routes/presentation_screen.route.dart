@@ -43,6 +43,6 @@ class PresentationScreenRoute {
     GetPage(
         name: _Paths.LOGIN, page: () => LoginScreen(), binding: AuthBinding()),
     GetPage(
-        name: _Paths.DEMO_LOGIN, page: () => DemoLoginView(), binding: AuthBinding())
+        name: _Paths.DEMO_LOGIN, page: () => DemoLoginView(), binding: AuthBinding()),
   ];
 }
