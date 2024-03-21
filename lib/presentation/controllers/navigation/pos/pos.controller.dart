@@ -17,6 +17,8 @@ import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.d
 import 'package:tajiri_pos_mobile/domain/entities/local_cart_enties/main_item.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/repositories/products.repository.dart';
+import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull_dialog.dart';
 
 class PosController extends GetxController {
@@ -62,7 +64,7 @@ class PosController extends GetxController {
   TextEditingController note = TextEditingController();
 
   bool isLoadingCreateCustomer = false;
-  Rx<bool> isPaid = false.obs;
+  // Rx<bool> isPaid = false.obs;
   Map<String, dynamic>? waitressOrTableValue;
   List<Map<String, dynamic>> dropdownItems = [];
   bool listingEnable = true;
@@ -243,7 +245,7 @@ class PosController extends GetxController {
           ),
         );
       } else {
-        isPaid.value = true;
+        // isPaid.value = true;
         AppHelpersCommon.showAlertDialog(
           context: context,
           canPop: false,
@@ -255,7 +257,10 @@ class PosController extends GetxController {
             svgPicture: "assets/svgs/success payment 1.svg",
             redirect: () {
               Get.back();
-              // Get.toNamed(Routes.INVOICE_PDF, arguments: newOrder);
+              Get.to(InvoiceScreen(
+                order: newOrder,
+                isPaid: true,
+              ));
             },
           ),
         );
