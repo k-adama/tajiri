@@ -1,5 +1,6 @@
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/auth/auth.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/tutoriel/tutoriel.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/demo_login_view.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/login.screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -11,6 +12,7 @@ import 'package:tajiri_pos_mobile/presentation/screens/demo/demo.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/first/first.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/navigation.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/splash/splash.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/tutoriel/tutoriel.screen.dart';
 
 part 'presentation_path.route.dart';
 
@@ -44,5 +46,10 @@ class PresentationScreenRoute {
         name: _Paths.LOGIN, page: () => LoginScreen(), binding: AuthBinding()),
     GetPage(
         name: _Paths.DEMO_LOGIN, page: () => DemoLoginView(), binding: AuthBinding()),
+    GetPage(
+      name: _Paths.TUTORIELS,
+      page: () => const TutorielScreen(),
+      binding: TutorielsBinding(),
+    ),    
   ];
 }

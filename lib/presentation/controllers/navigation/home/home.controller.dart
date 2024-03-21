@@ -545,29 +545,6 @@ class HomeController extends GetxController {
         date1.day == date2.day;
   }
 
-  double calculateContainerHeight(int length) {
-    switch (length) {
-      case 1:
-        return length * 110.0;
-      case 2:
-        return length * 70.0;
-      case 3:
-        return length * 70.0;
-      case 4:
-        return length * 55.0;
-      case 5:
-        return length * 55.0;
-      case 6:
-        return length * 50.0;
-      case 7:
-        return length * 50.0;
-      case 8:
-        return length * 70.0;
-      default:
-        return length * 110.0;
-    }
-  }
-
   int checkPercentValue(double value) {
     if (value > 0) {
       return 2;

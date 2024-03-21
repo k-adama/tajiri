@@ -190,4 +190,22 @@ class AppHelpersCommon {
     if (text.length <= 6) return textPainter.width + 22;
     return textPainter.width + 80;
   }
+
+  static void showAlertVideoDemoDialog({
+    required BuildContext context,
+    required Widget child,
+  }) {
+    AlertDialog alert = AlertDialog(
+      contentPadding: EdgeInsets.zero,
+      content: child,
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  
 }

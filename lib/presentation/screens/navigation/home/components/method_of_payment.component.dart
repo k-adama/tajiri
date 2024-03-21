@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
-import 'package:tajiri_pos_mobile/app/config/constants/tr_keys.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/domain/entities/payment_method_data.entity.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/navigation/home/home.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/components/means_payment_card.component.dart';
 
 class MethodOfPaymentComponent extends StatefulWidget {
-  final HomeController homeController;
-  const MethodOfPaymentComponent({super.key, required this.homeController});
+  const MethodOfPaymentComponent({super.key});
 
   @override
   State<MethodOfPaymentComponent> createState() =>
@@ -57,10 +52,12 @@ class _MethodOfPaymentComponentState extends State<MethodOfPaymentComponent> {
                     ),
                     itemCount: PAIEMENTS.length,
                     itemBuilder: (context, index) {
-                      var paymentItem = PAIEMENTS[
+                      var meansOfpayment = PAIEMENTS[
                           index]; // Replace `paymentList` with the actual list of payment items
 
-                      return paymentContainer(paymentItem, index);
+                      return MeansPaymentCardComponent(
+                        meansOfpayment: meansOfpayment,
+                      );
                     },
                   ),
                 )
@@ -68,67 +65,5 @@ class _MethodOfPaymentComponentState extends State<MethodOfPaymentComponent> {
             ),
           ),
         ));
-  }
-
-  Widget paymentContainer(Map<String, dynamic> paymentItem, int index) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Style.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(5),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          children: [
-            Image.asset(
-              paymentItem['icon'],
-              height: 30.h,
-            ),
-            SizedBox(
-              width: 12.w,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  paymentItem['name'],
-                  style: Style.interNormal(size: 8.sp, color: Style.darker),
-                ),
-                Obx(
-                  () {
-                    final dynamic payment =
-                        widget.homeController.paymentsMethodAmount.firstWhere(
-                      (itemPy) => itemPy.id == PAIEMENTS[index]['id'],
-                      orElse: () => PaymentMethodDataEntity(
-                        id: PAIEMENTS[index]['id'],
-                        total: 0,
-                        name: PAIEMENTS[index]['name'],
-                      ),
-                    );
-
-                    final total = payment.total ?? 0;
-                    return RichText(
-                      text: TextSpan(
-                        text: "$total".notCurrency(),
-                        style: Style.interBold(
-                            size: 10.sp, color: Style.secondaryColor),
-                        children: const <TextSpan>[
-                          TextSpan(
-                              text: TrKeysConstant.splashFcfa,
-                              style: TextStyle(color: Style.dark)),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-            const Spacer(),
-          ],
-        ),
-      ),
-    );
   }
 }
