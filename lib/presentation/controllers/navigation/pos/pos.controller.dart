@@ -637,6 +637,11 @@ class PosController extends GetxController {
     update();
   }
 
+  void deleteCart() async {
+    cartItemList.clear();
+    update();
+  }
+
   void searchFilter(String search) {
     setCategoryId("all");
     foods.clear();

@@ -6,7 +6,10 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_payments_method_modal.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
@@ -17,6 +20,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
   OrderSaveOrPaidButtonComponent({super.key, required this.order, required this.isPaid});
 
   final OrdersController orderController = Get.find();
+  final NavigationController navigationController = Get.put(NavigationController());
   @override
   Widget build(BuildContext context) {
     return order.status == AppConstants.orderNew ||
@@ -37,57 +41,57 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                       haveBorder: false,
                       radius: 5,
                       onPressed: () {
-                        /*posController.deleteCart();
-                        posController.orderNotes.value =
-                            widget.order.orderNotes!;
+                        navigationController.posController.deleteCart();
+                        navigationController.posController.orderNotes.value =
+                            order.orderNotes!;
                         for (var i = 0;
-                            i < widget.order.orderDetails!.length;
+                            i < order.orderDetails!.length;
                             i++) {
-                          FoodData food =
-                              widget.order.orderDetails![i].food != null
-                                  ? widget.order.orderDetails![i].food
-                                  : widget.order.orderDetails![i].bundle;
+                          FoodDataEntity food =
+                              order.orderDetails![i].food != null
+                                  ? order.orderDetails![i].food
+                                  : order.orderDetails![i].bundle;
 
                           if (food.price !=
-                                  widget.order.orderDetails![i].price &&
+                                  order.orderDetails![i].price &&
                               food.foodVariantCategory != null &&
                               food.foodVariantCategory!.isNotEmpty) {
-                            final FoodVariant? foodVariant = food
+                            final FoodVariantEntity? foodVariant = food
                                 .foodVariantCategory![0].foodVariant!
                                 .firstWhere((element) =>
                                     element.price! ==
-                                    widget.order.orderDetails![i].price);
-                            posController.addCart(
+                                    order.orderDetails![i].price);
+                            navigationController.posController.addCart(
                                 context,
                                 food,
                                 foodVariant,
-                                widget.order.orderDetails![i].quantity,
-                                widget.order.orderDetails![i].price,
+                                order.orderDetails![i].quantity,
+                                order.orderDetails![i].price,
                                 true);
                             continue;
                           }
 
-                          posController.addCart(
+                          navigationController.posController.addCart(
                               context,
                               food,
                               null,
-                              widget.order.orderDetails![i].quantity,
-                              widget.order.orderDetails![i].price,
+                              order.orderDetails![i].quantity,
+                              order.orderDetails![i].price,
                               true);
                         }
-                        posController.setCurrentOrder(widget.order);
-                        if (widget.order.customer != null) {
-                          posController.customer.value = widget.order.customer!;
+                        navigationController.posController.setCurrentOrder(order);
+                        if (order.customer != null) {
+                          navigationController.posController.customer.value = order.customer!;
                         }
 
-                        posController.orderNotes.value =
-                            widget.order.orderNotes!;
-                        posController.note.text = widget.order.orderNotes!;
+                        navigationController.posController.orderNotes.value =
+                            order.orderNotes!;
+                        navigationController.posController.note.text = order.orderNotes!;
 
-                        AppHelpers.showCustomModalBottomSheet(
+                        /*AppHelpersCommon.showCustomModalBottomSheet(
                           context: context,
                           modal: CartOrderView(
-                            mainController: widget.mainController,
+                            mainController: mainController,
                           ),
                           isDarkMode: false,
                           isDrag: true,
@@ -161,7 +165,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                 borderColor: Style.secondaryColor,
                 imagePath: "assets/svgs/ion_receipt-sharpinvoice.svg",
                 onPressed: () {
-                  //Get.toNamed(Routes.INVOICE_PDF, arguments: widget.order);
+                  //Get.toNamed(Routes.INVOICE_PDF, arguments: order);
                 },
               )
             ],
@@ -175,7 +179,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
             radius: 5,
             haveBorder: false,
             onPressed: () {
-              //Get.toNamed(Routes.INVOICE_PDF, arguments: widget.order);
+              //Get.toNamed(Routes.INVOICE_PDF, arguments: order);
             },
           );
   }
