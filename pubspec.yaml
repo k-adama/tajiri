@@ -69,8 +69,6 @@ dependencies:
   pdf: ^3.10.8
   share_plus: ^7.1.0
   path_provider: ^2.1.2
-  share_plus: ^8.0.2
-  pdf: ^3.10.8
   
 flutter_launcher_icons:
   android: "launcher_icon"
