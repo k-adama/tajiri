@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
-import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/tr_keys.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
@@ -13,7 +12,6 @@ import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/compo
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/components/methods_payment.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/components/type_command.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/product_in_cart.widget.dart';
 
 class CartPaidScreen extends StatefulWidget {
   const CartPaidScreen({super.key});
@@ -46,12 +44,6 @@ class _CartPaidScreenState extends State<CartPaidScreen> {
         leading: BackButton(
           onPressed: () {
             Navigator.of(context).pop();
-            AppHelpersCommon.showBottomSnackBar(
-              context,
-              const ProductInCartWidget(),
-              AppConstants.productCartSnackbarDuration,
-              true,
-            );
           },
         ),
       ),
@@ -96,126 +88,114 @@ class _CartPaidScreenState extends State<CartPaidScreen> {
               ),
             ),
             10.verticalSpace,
-            Expanded(
-              flex: 5,
-              child: Container(
-                color: Style.lightBlue,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Méthode de paiment".toUpperCase(),
-                              style: TextStyle(
-                                color: Style.dark,
-                                fontSize: 12.sp,
-                              ),
-                            ),
-                            const MethodsPaymentComponent(),
-                            const Divider(),
-                          ],
+            Container(
+              color: Style.lightBlue,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Méthode de paiment".toUpperCase(),
+                          style: TextStyle(
+                            color: Style.dark,
+                            fontSize: 12.sp,
+                          ),
                         ),
-                      ),
-                      10.verticalSpace,
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Type de commande".toUpperCase(),
-                              style: TextStyle(
-                                color: Style.dark,
-                                fontSize: 12.sp,
-                              ),
-                            ),
-                            const TypeCommandComponent(),
-                            10.verticalSpace,
-                            const Divider(),
-                          ],
+                        const MethodsPaymentComponent(),
+                        const Divider(),
+                      ],
+                    ),
+                    10.verticalSpace,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Type de commande".toUpperCase(),
+                          style: TextStyle(
+                            color: Style.dark,
+                            fontSize: 12.sp,
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              height: 60.h,
-                              width: double.infinity,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "TOTAL",
-                                    style: TextStyle(
-                                      color: Style.dark,
-                                      fontSize: 12.sp,
+                        const TypeCommandComponent(),
+                        10.verticalSpace,
+                        const Divider(),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          height: 60.h,
+                          width: double.infinity,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "TOTAL",
+                                style: TextStyle(
+                                  color: Style.dark,
+                                  fontSize: 12.sp,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 250.w,
+                                height: 30.h,
+                                child: Stack(
+                                  children: [
+                                    Text(
+                                      "${posController.totalCartValue}"
+                                          .notCurrency(),
+                                      style: Style.interBold(
+                                        size: 20.sp,
+                                        color: Style.black,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 250.w,
-                                    height: 30.h,
-                                    child: Stack(
-                                      children: [
-                                        Text(
-                                          "${posController.totalCartValue}"
-                                              .notCurrency(),
-                                          style: Style.interBold(
-                                            size: 20.sp,
-                                            color: Style.black,
-                                          ),
+                                    Positioned(
+                                      left: cartController.getTextWidth(
+                                        posController.totalCartValue.toString(),
+                                        Style.interNormal(
+                                          size: 20,
+                                          color: Style.darker,
                                         ),
-                                        Positioned(
-                                          left: cartController.getTextWidth(
-                                            posController.totalCartValue
-                                                .toString(),
-                                            Style.interNormal(
-                                              size: 20,
-                                              color: Style.darker,
-                                            ),
-                                          ),
-                                          bottom: 2,
-                                          child: SizedBox(
-                                            width: 40.w,
-                                            height: 14.sp,
-                                            child: Text(
-                                              TrKeysConstant.splashFcfa,
-                                              style: Style.interNormal(
-                                                  size: 8, color: Style.darker),
-                                            ),
-                                          ),
+                                      ),
+                                      bottom: 2,
+                                      child: SizedBox(
+                                        width: 40.w,
+                                        height: 14.sp,
+                                        child: Text(
+                                          TrKeysConstant.splashFcfa,
+                                          style: Style.interNormal(
+                                              size: 8, color: Style.darker),
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ), // Adjust spacing as needed
-                            CustomButton(
-                              isLoading: posController.isLoadingOrder.value,
-                              background: Style.primaryColor,
-                              title: "Payer",
-                              radius: 3,
-                              textColor: Style.secondaryColor,
-                              isLoadingColor: Style.secondaryColor,
-                              onPressed: () async {
-                                await posController.handleCreateOrder(context);
-                              },
-                            ),
-                            24.verticalSpace,
-                          ],
+                            ],
+                          ),
+                        ), // Adjust spacing as needed
+                        CustomButton(
+                          isLoading: posController.isLoadingOrder.value,
+                          background: Style.primaryColor,
+                          title: "Payer",
+                          radius: 3,
+                          textColor: Style.secondaryColor,
+                          isLoadingColor: Style.secondaryColor,
+                          onPressed: () async {
+                            await posController.handleCreateOrder(context);
+                          },
                         ),
-                      )
-                    ],
-                  ),
+                        24.verticalSpace,
+                      ],
+                    )
+                  ],
                 ),
               ),
             )

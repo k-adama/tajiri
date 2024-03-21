@@ -19,8 +19,14 @@ class ProductInCartWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(posController.quantityProduct()),
-              Text("${posController.totalCartValue}".splashCurrency())
+              Text(
+                posController.quantityProduct(),
+                style: TextStyle(color: Colors.white),
+              ),
+              Text(
+                "${posController.totalCartValue}".splashCurrency(),
+                style: TextStyle(color: Colors.white),
+              )
             ],
           ),
           CustomButton(

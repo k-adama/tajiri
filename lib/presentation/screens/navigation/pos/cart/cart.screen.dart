@@ -18,10 +18,8 @@ import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/product_in_cart.widget.dart';
 
 class CartScreen extends StatefulWidget {
-  final NavigationController? navigationController;
   const CartScreen({
     super.key,
-    this.navigationController,
   });
 
   @override
@@ -161,17 +159,6 @@ class _CartScreen extends State<CartScreen> {
                                 onTap: () {
                                   if (posController.currentOrder.id != null) {
                                     Get.close(2);
-                                    if (widget.navigationController != null) {
-                                      widget.navigationController
-                                          ?.selectIndexFunc(1);
-                                      AppHelpersCommon.showBottomSnackBar(
-                                        context,
-                                        const ProductInCartWidget(),
-                                        AppConstants
-                                            .productCartSnackbarDuration,
-                                        true,
-                                      );
-                                    }
                                   }
                                 },
                               )
@@ -239,11 +226,6 @@ class _CartScreen extends State<CartScreen> {
                     haveBorder: false,
                     radius: 5,
                     onPressed: () {
-                      AppHelpersCommon.showBottomSnackBar(
-                          context,
-                          const ProductInCartWidget(),
-                          const Duration(milliseconds: 500),
-                          false);
                       final arguments =
                           checkListingType(user) == ListingType.waitress
                               ? {"waitressId": posController.waitressCurrentId}
@@ -268,11 +250,6 @@ class _CartScreen extends State<CartScreen> {
                     radius: 5,
                     haveBorder: false,
                     onPressed: () {
-                      AppHelpersCommon.showBottomSnackBar(
-                          context,
-                          const ProductInCartWidget(),
-                          const Duration(milliseconds: 500),
-                          false);
                       final arguments =
                           checkListingType(user) == ListingType.waitress
                               ? {"waitressId": posController.waitressCurrentId}

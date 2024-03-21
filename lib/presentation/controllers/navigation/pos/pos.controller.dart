@@ -18,7 +18,6 @@ import 'package:tajiri_pos_mobile/domain/entities/local_cart_enties/main_item.en
 import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/repositories/products.repository.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull_dialog.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/product_in_cart.widget.dart';
 
 class PosController extends GetxController {
   final ProductsRepository _productsRepository = ProductsRepository();
@@ -32,7 +31,7 @@ class PosController extends GetxController {
   final foodsInit = List<FoodDataEntity>.empty().obs;
   RxList bundlePacks = [].obs;
   final categories = List<CategoryEntity>.empty().obs;
-  RxString categoryId = ''.obs;
+  RxString categoryId = 'all'.obs;
   Rx<dynamic> customerSelected = null.obs;
   int totalCartValue = 0;
 
@@ -575,16 +574,6 @@ class PosController extends GetxController {
     });
     update();
     calculateTotal();
-
-    if (cartItemList.isNotEmpty && !isModifyOrder) {
-      AppHelpersCommon.showBottomSnackBar(
-        context,
-        const ProductInCartWidget(),
-        AppConstants.productCartSnackbarDuration,
-        true,
-      );
-      update();
-    }
   }
 
   Future<void> removeCount(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
-import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/tr_keys.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
@@ -13,7 +12,6 @@ import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/compo
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/components/note_field.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/components/type_command.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/product_in_cart.widget.dart';
 
 class CartSaveScreen extends StatefulWidget {
   const CartSaveScreen({super.key});
@@ -41,12 +39,6 @@ class _CartSaveScreenState extends State<CartSaveScreen> {
         leading: BackButton(
           onPressed: () {
             Navigator.of(context).pop();
-            AppHelpersCommon.showBottomSnackBar(
-              context,
-              const ProductInCartWidget(),
-              AppConstants.productCartSnackbarDuration,
-              true,
-            );
           },
         ),
       ),
