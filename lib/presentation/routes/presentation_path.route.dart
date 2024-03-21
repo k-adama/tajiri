@@ -9,6 +9,9 @@ abstract class Routes {
   static const NAVIGATION = _Paths.NAVIGATION;
   static const DEMO_LOGIN = _Paths.DEMO_LOGIN;
   static const TUTORIELS = _Paths.TUTORIELS;
+  static const SALES_REPORT = _Paths.SALES_REPORT;
+  static const SALES_REPORT_DATE_TIME_PICKER =
+      _Paths.SALES_REPORT_DATE_TIME_PICKER;
 }
 
 abstract class _Paths {
@@ -21,4 +24,6 @@ abstract class _Paths {
   static const NAVIGATION = "/navigation";
   static const DEMO_LOGIN = "/demo_login";
   static const TUTORIELS = "/tutoriels";
+  static const SALES_REPORT = "/sales_report";
+  static const SALES_REPORT_DATE_TIME_PICKER = "/sales_report_date_time_picker";
 }

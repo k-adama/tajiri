@@ -1,5 +1,6 @@
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/auth/auth.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/sales_reports/sales_reports.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/tutoriel/tutoriel.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/demo_login_view.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/login.screen.dart';
@@ -11,6 +12,8 @@ import 'package:tajiri_pos_mobile/presentation/controllers/splash/splash.binding
 import 'package:tajiri_pos_mobile/presentation/screens/demo/demo.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/first/first.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/navigation.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/date_time_picker.component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/sales_reports.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/splash/splash.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/tutoriel/tutoriel.screen.dart';
 
@@ -52,6 +55,16 @@ class PresentationScreenRoute {
       name: _Paths.TUTORIELS,
       page: () => const TutorielScreen(),
       binding: TutorielsBinding(),
+    ),
+    GetPage(
+      name: _Paths.SALES_REPORT_DATE_TIME_PICKER,
+      page: () => const SalesReportsDateTimePickerComponent(),
+      binding: SalesReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.SALES_REPORT,
+      page: () => const SalesReportsScreen(),
+      binding: SalesReportBinding(),
     ),
   ];
 }
