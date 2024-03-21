@@ -7,12 +7,9 @@ import 'dart:ui' as ui;
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
-import 'package:tajiri_pos_mobile/app/config/constants/user.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.dart';
-import 'package:tajiri_pos_mobile/app/services/local_storage.service.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_reports_data.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/sales_reports.entity.dart';
 import 'package:tajiri_pos_mobile/domain/repositories/orders.repository.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
@@ -27,7 +24,6 @@ class SalesReportController extends GetxController {
   TextEditingController pickEndTime =
       TextEditingController(text: DateFormat('HH:mm').format(DateTime.now()));
 
-  //final user = LocalStorageService.instance.get(UserConstant.keyUser);
   final user = AppHelpersCommon.getUserInLocalStorage();
   final OrdersRepository _ordersRepository = OrdersRepository();
 
@@ -36,19 +32,18 @@ class SalesReportController extends GetxController {
   RxList<SalesDataEntity> sales = List<SalesDataEntity>.empty().obs;
   final PosController posController = Get.find();
   final total = 0.obs;
-  bool isLoadingReport = false; // Rx<bool>
+  bool isLoadingReport = false;
   String startDate = "";
   String endDate = "";
 
-  @override
+  /*@override
   void onInit() {
     super.onInit();
-  }
+  }*/
 
   Future<void> fetchOrdersReports() async {
     String? ownerId =
         user?.role?.permissions![0].dashboardUnique == true ? user?.id : null;
-    //print(ownerId);
     startDate = "${pickStartDate.text} ${pickStartTime.text}";
     endDate = "${pickEndDate.text} ${pickEndTime.text}";
     final connected = await AppConnectivity.connectivity();

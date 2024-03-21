@@ -32,20 +32,9 @@ class SalesReportsShareOrBackButton extends StatelessWidget {
                       background: Style.primaryColor,
                       radius: 3,
                       onPressed: onTapShare,
-                      /* () async {
-                        /*final pdfFile = await PdfReportApi.generate(
-                                    salesReportController.sales,
-                                    salesReportController.total.value,
-                                    salesReportController.startDate,
-                                    salesReportController.endDate);
-                                PdfApi.shareFile(pdfFile);*/
-                      },*/
                     ),
                     InkWell(
                         onTap: onTapBack,
-                        /* () {
-                          Get.back();
-                        },*/
                         child: SizedBox(
                           width: double.infinity,
                           height: 30,

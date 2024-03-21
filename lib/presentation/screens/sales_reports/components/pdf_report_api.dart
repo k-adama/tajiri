@@ -11,7 +11,7 @@ import 'package:tajiri_pos_mobile/domain/entities/orders_reports_data.entity.dar
 class PdfReportApiComponent {
   /*static final dynamic user =
       LocalStorageService.instance.get(UserConstant.keyUser);*/
-  static final user = AppHelpersCommon.getUserInLocalStorage();
+  static final users = AppHelpersCommon.getUserInLocalStorage();
 
   static Future<File> generate(List<SalesDataEntity> salesData, int total,
       String startDate, String endDate) async {
@@ -20,9 +20,9 @@ class PdfReportApiComponent {
     pdf.addPage(
       MultiPage(
           build: (context) => [
-                buildAppBar(user),
+                buildAppBar(users),
                 SizedBox(height: 29),
-                buildHeader(startDate, endDate, user),
+                buildHeader(startDate, endDate, users),
                 SizedBox(height: 15),
                 buildInvoice(salesData),
                 SizedBox(height: 15),
@@ -34,17 +34,16 @@ class PdfReportApiComponent {
   }
 
   static Widget buildAppBar(user) {
-    final user = AppHelpersCommon.getUserInLocalStorage();
     return Container(
       width: double.infinity,
       child: Center(
         child: Column(
           children: [
             Text(
-                "${user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}",
+                "${users?.restaurantUser != null ? users?.restaurantUser![0].restaurant?.name : ""}",
                 style: const TextStyle(fontSize: 14)),
             Text(
-              "${user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.contactPhone : ""}",
+              "${users?.restaurantUser != null ? users?.restaurantUser![0].restaurant?.contactPhone : ""}",
               style: const TextStyle(fontSize: 14),
             )
           ],
@@ -62,7 +61,7 @@ class PdfReportApiComponent {
             information("Date de début: ", startDate),
             information("Date de fin: ", endDate),
             information(
-                "Personne : ", "${user['firstname']} ${user['lastname']}"),
+                "Personne : ", "${users?.firstname} ${users?.lastname}"),
           ],
         )),
       );

@@ -172,7 +172,6 @@ class _SalesReportsDateTimePickerComponentState
                         radius: 3,
                         isLoading: salesReportController.isLoadingReport,
                         onPressed: () async {
-                          // Get.toNamed(Routes.SALES_REPORT);
                           salesReportController.fetchOrdersReports();
                         },
                       ),
