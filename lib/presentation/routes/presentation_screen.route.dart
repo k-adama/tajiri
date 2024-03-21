@@ -1,5 +1,6 @@
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/auth/auth.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/tutoriel/tutoriel.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/demo_login_view.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/login.screen.dart';
@@ -10,7 +11,10 @@ import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation
 import 'package:tajiri_pos_mobile/presentation/controllers/splash/splash.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/demo/demo.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/first/first.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/navigation.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_paid.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_save.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/splash/splash.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/tutoriel/tutoriel.screen.dart';
 
@@ -43,7 +47,9 @@ class PresentationScreenRoute {
       binding: NavigationBiding(),
     ),
     GetPage(
-        name: _Paths.LOGIN, page: () => LoginScreen(), binding: AuthBinding()),
+        name: _Paths.LOGIN,
+        page: () => const LoginScreen(),
+        binding: AuthBinding()),
     GetPage(
         name: _Paths.DEMO_LOGIN,
         page: () => DemoLoginView(),
@@ -52,6 +58,19 @@ class PresentationScreenRoute {
       name: _Paths.TUTORIELS,
       page: () => const TutorielScreen(),
       binding: TutorielsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CART_PAID,
+      page: () => const CartPaidScreen(),
+    ),
+    GetPage(
+      name: _Paths.CART_SAVE,
+      page: () => const CartSaveScreen(),
+    ),
+    GetPage(
+      name: _Paths.INVOICE,
+      page: () => const InvoiceScreen(),
+      binding: InvoiceBiding(),
     ),
   ];
 }

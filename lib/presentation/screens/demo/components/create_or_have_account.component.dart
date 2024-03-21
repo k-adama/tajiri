@@ -10,7 +10,11 @@ class CreateOrHaveAccountComponent extends StatelessWidget {
   final String title;
   final String path;
   final Color style;
-  CreateOrHaveAccountComponent({super.key, required this.title, required this.path, required this.style});
+  const CreateOrHaveAccountComponent(
+      {super.key,
+      required this.title,
+      required this.path,
+      required this.style});
 
   @override
   Widget build(BuildContext context) {
