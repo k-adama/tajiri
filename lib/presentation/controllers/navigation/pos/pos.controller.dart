@@ -17,6 +17,7 @@ import 'package:tajiri_pos_mobile/domain/entities/local_cart_enties/main_item.en
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/data/repositories/products/products.repository.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull_dialog.dart';
 
 class PosController extends GetxController {
@@ -681,5 +682,44 @@ class PosController extends GetxController {
       }).toList());
       update();
     }
+  }
+
+  void fullCartAndUpdateOrder(BuildContext context, OrderEntity order) {
+    deleteCart();
+    orderNotes.value = order.orderNotes!;
+    for (var i = 0; i < order.orderDetails!.length; i++) {
+      FoodDataEntity food = order.orderDetails![i].food != null
+          ? order.orderDetails![i].food
+          : order.orderDetails![i].bundle;
+
+      if (food.price != order.orderDetails![i].price &&
+          food.foodVariantCategory != null &&
+          food.foodVariantCategory!.isNotEmpty) {
+        final FoodVariantEntity? foodVariant =
+            food.foodVariantCategory![0].foodVariant!.firstWhere(
+                (element) => element.price! == order.orderDetails![i].price);
+        addCart(context, food, foodVariant, order.orderDetails![i].quantity,
+            order.orderDetails![i].price, true);
+        continue;
+      }
+
+      addCart(context, food, null, order.orderDetails![i].quantity,
+          order.orderDetails![i].price, true);
+    }
+    setCurrentOrder(order);
+    if (order.customer != null) {
+      customer.value = order.customer!;
+    }
+
+    orderNotes.value = order.orderNotes!;
+    note.text = order.orderNotes!;
+
+    AppHelpersCommon.showCustomModalBottomSheet(
+      context: context,
+      modal: CartScreen(),
+      isDarkMode: false,
+      isDrag: true,
+      radius: 12,
+    );
   }
 }

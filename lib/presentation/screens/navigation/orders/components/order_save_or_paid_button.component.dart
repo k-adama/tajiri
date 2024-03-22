@@ -42,60 +42,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                       haveBorder: false,
                       radius: 5,
                       onPressed: () {
-                        navigationController.posController.deleteCart();
-                        navigationController.posController.orderNotes.value =
-                            order.orderNotes!;
-                        for (var i = 0;
-                            i < order.orderDetails!.length;
-                            i++) {
-                          FoodDataEntity food =
-                              order.orderDetails![i].food != null
-                                  ? order.orderDetails![i].food
-                                  : order.orderDetails![i].bundle;
-
-                          if (food.price !=
-                                  order.orderDetails![i].price &&
-                              food.foodVariantCategory != null &&
-                              food.foodVariantCategory!.isNotEmpty) {
-                            final FoodVariantEntity? foodVariant = food
-                                .foodVariantCategory![0].foodVariant!
-                                .firstWhere((element) =>
-                                    element.price! ==
-                                    order.orderDetails![i].price);
-                            navigationController.posController.addCart(
-                                context,
-                                food,
-                                foodVariant,
-                                order.orderDetails![i].quantity,
-                                order.orderDetails![i].price,
-                                true);
-                            continue;
-                          }
-
-                          navigationController.posController.addCart(
-                              context,
-                              food,
-                              null,
-                              order.orderDetails![i].quantity,
-                              order.orderDetails![i].price,
-                              true);
-                        }
-                        navigationController.posController.setCurrentOrder(order);
-                        if (order.customer != null) {
-                          navigationController.posController.customer.value = order.customer!;
-                        }
-
-                        navigationController.posController.orderNotes.value =
-                            order.orderNotes!;
-                        navigationController.posController.note.text = order.orderNotes!;
-
-                        AppHelpersCommon.showCustomModalBottomSheet(
-                          context: context,
-                          modal: CartScreen(),
-                          isDarkMode: false,
-                          isDrag: true,
-                          radius: 12,
-                        );
+                        navigationController.posController.fullCartAndUpdateOrder(context, order);
                       },
                     ),
                   ),
