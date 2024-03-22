@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 
-import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/position_table.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/table/components/custom_chair.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/table/components/vertical_chair.component.dart';

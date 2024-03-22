@@ -5,13 +5,13 @@ import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
 import 'package:tajiri_pos_mobile/app/services/api_pdf.service.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
 
 class ApiPdfInvoiceService {
   static final user = AppHelpersCommon.getUserInLocalStorage();
 
-  static Future<File> generate(OrdersDataEntity ordersData) async {
+  static Future<File> generate(OrderEntity ordersData) async {
     final pdf = Document();
 
     pdf.addPage(
@@ -46,7 +46,7 @@ class ApiPdfInvoiceService {
         ),
       );
 
-  static Widget buildHeader(OrdersDataEntity ordersData) => Container(
+  static Widget buildHeader(OrderEntity ordersData) => Container(
         width: double.infinity,
         child: Column(
           children: [
@@ -108,7 +108,7 @@ class ApiPdfInvoiceService {
         ),
       );
 
-  static Widget buildInvoice(OrdersDataEntity ordersData) {
+  static Widget buildInvoice(OrderEntity ordersData) {
     final headers = [
       'PRODUIT',
       'QUANTITÉ',
@@ -144,7 +144,7 @@ class ApiPdfInvoiceService {
     }
   }
 
-  static Widget subTotalAndReduction(OrdersDataEntity ordersData) {
+  static Widget subTotalAndReduction(OrderEntity ordersData) {
     return Padding(
       padding: const EdgeInsets.only(top: 15.0),
       child: Container(
@@ -169,7 +169,7 @@ class ApiPdfInvoiceService {
     );
   }
 
-  static Widget buildTotal(OrdersDataEntity ordersData) {
+  static Widget buildTotal(OrderEntity ordersData) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
       child: SizedBox(

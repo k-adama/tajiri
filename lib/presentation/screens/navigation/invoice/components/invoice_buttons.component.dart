@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 
 class InvoiceButtonsComponent extends StatefulWidget {
-  final OrdersDataEntity ordersData;
+  final OrderEntity ordersData;
   final VoidCallback printButtonTap;
   final VoidCallback shareButtonTap;
   final VoidCallback returnToOrderButtonTap;

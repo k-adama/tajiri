@@ -7,6 +7,7 @@ import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/domain/entities/local_cart_enties/main_item.entity.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/cart/cart.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
@@ -28,12 +29,12 @@ class _CartScreen extends State<CartScreen> {
   Timer? timer;
   final PosController posController = Get.find();
   final user = AppHelpersCommon.getUserInLocalStorage();
-  late List<MainItemEntity> cartItemListSort;
   final controller = Get.put(CartController());
+  final NavigationController navigationController =
+      Get.put(NavigationController());
 
   @override
   void initState() {
-    cartItemListSort = posController.getSortList(posController.cartItemList);
     super.initState();
   }
 
@@ -154,7 +155,10 @@ class _CartScreen extends State<CartScreen> {
                               AddProductButtonComponent(
                                 onTap: () {
                                   if (posController.currentOrder.id != null) {
-                                    Get.close(2);
+                                    Get.close(1);
+                                    if (navigationController != null) {
+                                      navigationController.selectIndexFunc(1);
+                                    }
                                   }
                                 },
                               )
@@ -170,6 +174,10 @@ class _CartScreen extends State<CartScreen> {
                             shrinkWrap: true,
                             itemCount: posController.cartItemList.length,
                             itemBuilder: (context, index) {
+                              List<MainItemEntity> cartItemListSort =
+                                  posController
+                                      .getSortList(posController.cartItemList);
+
                               final cartItem = cartItemListSort[index];
                               return CartOrderItemComponent(
                                 add: () => addCount(cartItem),
@@ -250,7 +258,6 @@ class _CartScreen extends State<CartScreen> {
                           checkListingType(user) == ListingType.waitress
                               ? {"waitressId": posController.waitressCurrentId}
                               : {"tableId": posController.tableCurrentId};
-
                       Get.toNamed(
                         Routes.CART_PAID,
                         arguments: arguments,

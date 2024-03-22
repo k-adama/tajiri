@@ -12,13 +12,13 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/user.constant.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
+import 'dart:ui' as ui;
 
 class AppHelpersCommon {
   AppHelpersCommon._();
 
   static UserEntity? getUserInLocalStorage() {
     final userEncoding = LocalStorageService.instance.get(UserConstant.keyUser);
-
     if (userEncoding == null) {
       logoutApi();
       return null;
@@ -180,6 +180,17 @@ class AppHelpersCommon {
         onTap: onTap);
   }
 
+  static double getTextWidth(String text, TextStyle style) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: 1,
+      textDirection:
+      ui.TextDirection.ltr, // Use TextDirection.ltr for left-to-right text
+    )..layout(minWidth: 0, maxWidth: double.infinity);
+    if (text.length <= 6) return textPainter.width + 22;
+    return textPainter.width + 80;
+  }
+
   static void showAlertVideoDemoDialog({
     required BuildContext context,
     required Widget child,
@@ -196,4 +207,5 @@ class AppHelpersCommon {
       },
     );
   }
+  
 }

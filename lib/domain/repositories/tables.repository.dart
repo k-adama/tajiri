@@ -1,7 +1,7 @@
 import 'package:tajiri_pos_mobile/app/services/api_result.service.dart';
 import 'package:tajiri_pos_mobile/app/services/http.service.dart';
 import 'package:tajiri_pos_mobile/app/services/network_exceptions.service.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 
 class TablesRepository {
   HttpService server = HttpService();

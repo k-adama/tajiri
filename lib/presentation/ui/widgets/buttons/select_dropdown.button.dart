@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 
 class SelectDropDownButton extends StatelessWidget {
   final Color containerColor;

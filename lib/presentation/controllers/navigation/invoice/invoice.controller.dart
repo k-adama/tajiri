@@ -9,8 +9,8 @@ import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/api_pdf.service.dart';
 import 'package:tajiri_pos_mobile/app/services/api_pdf_invoice.service.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
-import 'dart:ui' as ui;
+
+import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 
 class InvoiceController extends GetxController {
   final user = AppHelpersCommon.getUserInLocalStorage();
@@ -59,18 +59,7 @@ class InvoiceController extends GetxController {
     }
   }
 
-  double getTextWidth(String text, TextStyle style) {
-    final TextPainter textPainter = TextPainter(
-      text: TextSpan(text: text, style: style),
-      maxLines: 1,
-      textDirection:
-          ui.TextDirection.ltr, // Use TextDirection.ltr for left-to-right text
-    )..layout(minWidth: 0, maxWidth: double.infinity);
-    if (text.length <= 6) return textPainter.width + 22;
-    return textPainter.width + 80;
-  }
-
-  String paymentMethodName(OrdersDataEntity order) {
+  String paymentMethodName(OrderEntity order) {
     if (order.paymentMethod == null) {
       final payment = PAIEMENTS.firstWhere(
         (item) => item['id'] == order.paymentMethodId,
@@ -81,7 +70,7 @@ class InvoiceController extends GetxController {
     return order.paymentMethod?.name ?? "";
   }
 
-  void printFactureByBluetooth(OrdersDataEntity order) async {
+  void printFactureByBluetooth(OrderEntity order) async {
     ByteData bytesAsset = await rootBundle.load("assets/images/logo_taj.png");
     Uint8List imageBytesFromAsset = bytesAsset.buffer
         .asUint8List(bytesAsset.offsetInBytes, bytesAsset.lengthInBytes);
@@ -174,7 +163,7 @@ class InvoiceController extends GetxController {
         });
   }
 
-  void shareFacture(OrdersDataEntity order) async {
+  void shareFacture(OrderEntity order) async {
     Mixpanel.instance.track("Share Ticket to customer", properties: {
       "Order Status": order.status,
       "Customer type": order.customerType,

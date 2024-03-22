@@ -181,17 +181,19 @@ class _CartPaidScreenState extends State<CartPaidScreen> {
                             ],
                           ),
                         ), // Adjust spacing as needed
-                        CustomButton(
-                          isLoading: posController.isLoadingOrder.value,
-                          background: Style.primaryColor,
-                          title: "Payer",
-                          radius: 3,
-                          textColor: Style.secondaryColor,
-                          isLoadingColor: Style.secondaryColor,
-                          onPressed: () async {
-                            await posController.handleCreateOrder(context);
-                          },
-                        ),
+                        Obx(() {
+                          return CustomButton(
+                            isLoading: posController.isLoadingOrder.value,
+                            background: Style.primaryColor,
+                            title: "Payer",
+                            radius: 3,
+                            textColor: Style.secondaryColor,
+                            isLoadingColor: Style.secondaryColor,
+                            onPressed: () async {
+                              await posController.handleCreateOrder(context);
+                            },
+                          );
+                        }),
                         24.verticalSpace,
                       ],
                     )

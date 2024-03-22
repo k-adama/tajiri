@@ -1,5 +1,6 @@
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/auth/auth.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/sales_reports/sales_reports.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/table/table.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/tutoriel/tutoriel.binding.dart';
@@ -14,6 +15,8 @@ import 'package:tajiri_pos_mobile/presentation/screens/demo/demo.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/first/first.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/navigation.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/date_time_picker.component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/sales_reports.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_paid.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_save.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/splash/splash.screen.dart';
@@ -63,12 +66,22 @@ class PresentationScreenRoute {
       binding: TutorielsBinding(),
     ),
     GetPage(
-      name: _Paths.CART_PAID,
-      page: () => const CartPaidScreen(),
+      name: _Paths.SALES_REPORT_DATE_TIME_PICKER,
+      page: () => const SalesReportsDateTimePickerComponent(),
+      binding: SalesReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.SALES_REPORT,
+      page: () => const SalesReportsScreen(),
+      binding: SalesReportBinding(),
     ),
     GetPage(
       name: _Paths.CART_SAVE,
       page: () => const CartSaveScreen(),
+    ),
+    GetPage(
+      name: _Paths.CART_PAID,
+      page: () => const CartPaidScreen(),
     ),
     GetPage(
       name: _Paths.INVOICE,
