@@ -24,11 +24,6 @@ class DrawerPageBodyComponent extends StatelessWidget {
             emoji: "assets/svgs/rapport de vente.svg",
           ),
           onTap: () {
-            AppHelpersCommon.showBottomSnackBar(
-                context,
-                const ProductInCartWidget(),
-                const Duration(milliseconds: 500),
-                false);
             Mixpanel.instance.track("View Sales report",
                 properties: {"Date": DateTime.now().toString()});
             Get.toNamed(Routes.SALES_REPORT_DATE_TIME_PICKER);
