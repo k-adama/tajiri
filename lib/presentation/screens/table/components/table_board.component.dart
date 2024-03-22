@@ -34,120 +34,87 @@ class _TablesBoardComponentState extends State<TablesBoardComponent> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TableController>(
-        builder: (tablesController) => Column(
-              /* mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start, */
-              children: [
-                if (tablesController.tableListData.isNotEmpty ||
-                    !tablesController.isLoadingTable)
-                  Expanded(
-                    child: SmartRefresher(
-                        controller: _controller,
-                        enablePullDown: true,
-                        enablePullUp: false,
-                        onRefresh: () {
-                          _onRefresh(tablesController);
-                        },
-                        onLoading: () {
-                          _onLoading(tablesController);
-                        },
-                        child: ListView(
-                          children: [
-                            Wrap(
-                              children: [
-                                for (int i = 0;
-                                    i < tablesController.tableListData.length;
-                                    i++)
-                                  Padding(
-                                      padding: REdgeInsets.only(
-                                          right: 12, bottom: 12, top: 16),
-                                      child: Draggable<int>(
-                                        data: i,
-                                        feedback: CustomTableComponent(
-                                          tableModel: TableModel(
-                                              name: tablesController
-                                                  .tableListData[i].name,
-                                              persons: tablesController
-                                                  .tableListData[i].persons,
-                                              restaurantId: tablesController
-                                                  .tableListData[i]
-                                                  .restaurantId,
-                                              id: tablesController
-                                                  .tableListData[i].id,
-                                              description: tablesController
-                                                  .tableListData[i].description,
-                                              imageUrl: tablesController
-                                                  .tableListData[i].imageUrl),
-                                          type: "available",
-                                        ),
-                                        childWhenDragging:
-                                            const SizedBox.shrink(),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            final tableModel = tablesController
-                                                .tableListData[i];
-                                            final String tableId =
-                                                tableModel.id.toString();
-                                            final String tableName =
-                                                tableModel.name.toString();
-                                            final String tableDescription =
-                                                tableModel.description
-                                                    .toString();
-                                            final String persons =
-                                                tableModel.persons.toString();
-                                            Get.toNamed(
-                                              Routes.EDIT_TABLE,
-                                              arguments: {
-                                                'name': tableName,
-                                                'description': tableDescription,
-                                                'persons': persons,
-                                                'id': tableId,
-                                              },
-                                            );
+      builder: (tablesController) => Column(
+        children: [
+          if (tablesController.tableListData.isNotEmpty ||
+              !tablesController.isLoadingTable)
+            Expanded(
+              child: SmartRefresher(
+                  controller: _controller,
+                  enablePullDown: true,
+                  enablePullUp: false,
+                  onRefresh: () {
+                    _onRefresh(tablesController);
+                  },
+                  onLoading: () {
+                    _onLoading(tablesController);
+                  },
+                  child: ListView(
+                    children: [
+                      Wrap(
+                        children: [
+                          for (int i = 0;
+                              i < tablesController.tableListData.length;
+                              i++)
+                            _buildDraggableTable(tablesController, i),
+                        ],
+                      ),
+                      if (tablesController.isLoadingTable)
+                        const Center(
+                          child: CircularProgressIndicator(
+                              color: Style.brandColor),
+                        ),
+                    ],
+                  )),
+            ),
+          if (tablesController.tableListData.isNotEmpty &&
+              tablesController.isLoadingTable)
+            const Expanded(
+              child: Center(
+                child: CircularProgressIndicator(color: Style.brandColor),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 
-                                            /*_copyToClipboard(
-                                                "https://www.app-qrcode.tajiri.io/?restaurantId=${restaurantId}&tableId=${tableId}");*/
-                                          },
-                                          child: CustomTableComponent(
-                                            tableModel: TableModel(
-                                                name: tablesController
-                                                    .tableListData[i].name,
-                                                persons: tablesController
-                                                    .tableListData[i].persons,
-                                                restaurantId: tablesController
-                                                    .tableListData[i]
-                                                    .restaurantId,
-                                                id: tablesController
-                                                    .tableListData[i].id,
-                                                description: tablesController
-                                                    .tableListData[i]
-                                                    .description,
-                                                imageUrl: tablesController
-                                                    .tableListData[i].imageUrl),
-                                            type: "available",
-                                          ),
-                                        ),
-                                      ))
-                              ],
-                            ),
-                            if (tablesController.isLoadingTable)
-                              const Center(
-                                child: CircularProgressIndicator(
-                                    color: Style.brandColor),
-                              ),
-                          ],
-                        )),
-                  ),
-                if (tablesController.tableListData.isNotEmpty &&
-                    tablesController.isLoadingTable)
-                  const Expanded(
-                    child: Center(
-                      child: CircularProgressIndicator(color: Style.brandColor),
-                    ),
-                  ),
-              ],
-            ));
+  Widget _buildDraggableTable(TableController tablesController, int index) {
+    final tableModel = tablesController.tableListData[index];
+    return Padding(
+      padding: REdgeInsets.only(right: 12, bottom: 12, top: 16),
+      child: Draggable<int>(
+        data: index,
+        feedback: CustomTableComponent(
+          tableModel: tableModel,
+          type: "available",
+        ),
+        childWhenDragging: const SizedBox.shrink(),
+        child: GestureDetector(
+          onTap: () => _navigateToEditTable(tableModel),
+          child: CustomTableComponent(
+            tableModel: tableModel,
+            type: "available",
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _navigateToEditTable(TableModel tableModel) {
+    final String tableId = tableModel.id.toString();
+    final String tableName = tableModel.name.toString();
+    final String tableDescription = tableModel.description.toString();
+    final String persons = tableModel.persons.toString();
+    Get.toNamed(
+      Routes.EDIT_TABLE,
+      arguments: {
+        'name': tableName,
+        'description': tableDescription,
+        'persons': persons,
+        'id': tableId,
+      },
+    );
   }
 
   void _copyToClipboard(String text) {

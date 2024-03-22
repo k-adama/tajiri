@@ -54,6 +54,11 @@ class TableController extends GetxController {
     }
   }
 
+  changeSelectTable(TableModel? newValue) {
+    selectedTable.value = newValue!;
+    update();
+  }
+
   Future<void> saveTable(BuildContext context) async {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
