@@ -176,7 +176,6 @@ class ProductsController extends GetxController {
   }
 
   getAvailableMessage() {
-    print(" in getAvailableMessage()");
     if (isAvailable) {
       final data = {
         "image": "assets/svgs/product-2.svg",
