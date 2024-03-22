@@ -1,32 +1,34 @@
-class OrdersReportsDataEntity {
-  OrdersReportsDataEntity({
-    List<SalesDataEntity>? sales,
+/*class OrdersReportsData {
+  OrdersReportsData({
+    List<SalesReportsEntity>? sales,
     int? total,
-  }) {
+   }){
     _sales = sales;
     _total = total;
   }
 
-  OrdersReportsDataEntity.fromJson(dynamic json) {
+  OrdersReportsData.fromJson(dynamic json) {
     _total = json['total'];
-    if (json['sales'] != null) {
+    if(json['sales'] != null) {
       _sales = [];
       json['sales'].forEach((v) {
-        _sales?.add(SalesDataEntity.fromJson(v));
+        _sales?.add(SalesReportsEntity.fromJson(v));
       });
     }
   }
 
-  OrdersReportsDataEntity copyWith({
-    List<SalesDataEntity>? SalesDataEntity,
+  OrdersReportsData copyWith ({
+    List<SalesReportsEntity>? SalesReportsEntity,
     int? total,
-  }) =>
-      OrdersReportsDataEntity(sales: sales ?? _sales, total: total ?? _total);
+  }) => OrdersReportsData(
+    sales: sales ?? _sales,
+    total: total ?? _total
+  );
 
-  List<SalesDataEntity>? _sales;
+  List<SalesReportsEntity>? _sales;
   int? _total;
 
-  List<SalesDataEntity>? get sales => _sales;
+  List<SalesReportsEntity>? get sales=> _sales;
   int? get total => _total;
 
   Map<String, dynamic> toJson() {
@@ -37,10 +39,10 @@ class OrdersReportsDataEntity {
     }
     return map;
   }
-}
+}*/
 
-class SalesDataEntity {
-  SalesDataEntity({
+/*class SalesReportsEntity {
+  SalesReportsEntity({
     String? id,
     String? productName,
     int? productQtyStart,
@@ -58,7 +60,7 @@ class SalesDataEntity {
     _productQtyFinal = productQtyFinal;
   }
 
-  SalesDataEntity.fromJson(dynamic json) {
+  SalesReportsEntity.fromJson(dynamic json) {
     _id = json['id'];
     _productName = json['productName'];
     _productQtyStart = json['productQtyStart'];
@@ -76,7 +78,7 @@ class SalesDataEntity {
   int? _productQtySales;
   int? _productQtyFinal;
 
-  SalesDataEntity copyWith({
+  SalesReportsEntity copyWith({
     String? id,
     String? productName,
     int? productQtyStart,
@@ -85,7 +87,7 @@ class SalesDataEntity {
     int? productQtySales,
     int? productQtyFinal,
   }) =>
-      SalesDataEntity(
+      SalesReportsEntity(
         id: _id ?? id,
         productName: _productName ?? productName,
         productQtyStart: _productQtyStart ?? productQtyStart,
@@ -114,4 +116,4 @@ class SalesDataEntity {
     map['productQtyFinal'] = _productQtyFinal;
     return map;
   }
-}
+}*/

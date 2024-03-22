@@ -9,13 +9,13 @@ import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/domain/entities/categorie_amount.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_reports_data.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/payment_method_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/story.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/story_group.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/top_10_food.entity.dart';
-import 'package:tajiri_pos_mobile/domain/repositories/orders.repository.dart';
+import 'package:tajiri_pos_mobile/data/repositories/orders/orders.repository.dart';
 
 class HomeController extends GetxController {
   final user = AppHelpersCommon.getUserInLocalStorage();
@@ -52,9 +52,9 @@ class HomeController extends GetxController {
   RxList<StoryGroupEntity> storiesGroup = List<StoryGroupEntity>.empty().obs;
   String? storyGroup;
 
-  List<OrdersReportsDataEntity> ordersReports =
-      List<OrdersReportsDataEntity>.empty().obs;
-  RxList<OrdersDataEntity> orders = List<OrdersDataEntity>.empty().obs;
+  List<OrdersReportsEntity> ordersReports =
+      List<OrdersReportsEntity>.empty().obs;
+  RxList<OrderEntity> orders = List<OrderEntity>.empty().obs;
 
   @override
   void onInit() {
@@ -189,7 +189,7 @@ class HomeController extends GetxController {
 
       final json = data as List<dynamic>;
       final ordersData =
-          json.map((item) => OrdersDataEntity.fromJson(item)).toList();
+          json.map((item) => OrderEntity.fromJson(item)).toList();
       orders.assignAll(ordersData);
       isFetching.value = false;
       update();

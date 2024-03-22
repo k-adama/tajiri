@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 
 class AppConstants {
   AppConstants._();
@@ -81,7 +81,7 @@ class AppConstants {
       Duration(days: 6000000000000000);
 
   static bool getStatusOrderInProgressOrDone(
-      OrdersDataEntity order, String status) {
+      OrderEntity order, String status) {
     bool checking = false;
     switch (status) {
       case "IN_PROGRESS":
@@ -97,7 +97,7 @@ class AppConstants {
     return checking;
   }
 
-  static String getStatusInFrench(OrdersDataEntity order) {
+  static String getStatusInFrench(OrderEntity order) {
     String status = "";
     switch (order.status) {
       case orderCooking:

@@ -5,14 +5,14 @@ import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/tr_keys.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_details.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/invoice_buttons.component.dart';
 
 class InvoiceScreen extends StatefulWidget {
-  final OrdersDataEntity? order;
+  final OrderEntity? order;
   final bool? isPaid;
   const InvoiceScreen({super.key, this.order, this.isPaid});
 
@@ -25,7 +25,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final OrdersDataEntity arguments = Get.arguments ?? widget.order;
+    final OrderEntity arguments = Get.arguments ?? widget.order;
 
     final user = controller.user;
     return Scaffold(
