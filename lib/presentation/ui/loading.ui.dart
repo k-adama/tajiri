@@ -3,19 +3,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 
-class LoadingUI extends StatelessWidget {
+class LoadingUi extends StatelessWidget {
   final Color bgColor;
-  const LoadingUI({super.key, this.bgColor = Style.textGrey});
+  const LoadingUi({Key? key,  this.bgColor = Style.textGrey}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return  Center(
       child: Platform.isAndroid
-          ? const CircularProgressIndicator()
-          : CupertinoActivityIndicator(
-              color: bgColor,
-              radius: 12,
-            ),
+          ?  const CircularProgressIndicator()
+          :  CupertinoActivityIndicator(
+        color: bgColor,
+        radius: 12,
+      ),
     );
   }
 }

@@ -150,7 +150,7 @@ class _StoryPageState extends State<StoryElementComponent>
             );
           },
           progressIndicatorBuilder: (context, url, progress) {
-            return const LoadingUI();
+            return const LoadingUi();
           },
           errorWidget: (context, url, error) {
             return Stack(

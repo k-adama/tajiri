@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
 import 'dart:async';
-
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
@@ -15,9 +14,10 @@ import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/local_cart_enties/main_item.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
-import 'package:tajiri_pos_mobile/domain/repositories/products.repository.dart';
+import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
+import 'package:tajiri_pos_mobile/data/repositories/products/products.repository.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull_dialog.dart';
 
 class PosController extends GetxController {
@@ -41,8 +41,8 @@ class PosController extends GetxController {
   RxString settleOrderId = "ON_PLACE".obs;
   RxString orderNotes = "".obs;
   RxString paymentMethodId = "d8b8d45d-da79-478f-9d5f-693b33d654e6".obs;
-  OrdersDataEntity newOrder = OrdersDataEntity();
-  OrdersDataEntity currentOrder = OrdersDataEntity();
+  OrderEntity newOrder = OrderEntity();
+  OrderEntity currentOrder = OrderEntity();
   Rx<bool> isLoadingOrder = false.obs;
   RxString emptySearchMessage = "".obs;
   RxList<String> searchResults = <String>[].obs;
@@ -94,7 +94,7 @@ class PosController extends GetxController {
     super.onReady();
   }
 
-  setCurrentOrder(OrdersDataEntity order) {
+  setCurrentOrder(OrderEntity order) {
     currentOrder = order;
     update();
   }
@@ -350,7 +350,7 @@ class PosController extends GetxController {
     isLoadingOrder.value = false;
     settleOrderId.value = "ON_PLACE";
     note.clear();
-    currentOrder = OrdersDataEntity();
+    currentOrder = OrderEntity();
     update();
   }
 
@@ -639,6 +639,11 @@ class PosController extends GetxController {
     update();
   }
 
+  void deleteCart() async {
+    cartItemList.clear();
+    update();
+  }
+
   void searchFilter(String search) {
     setCategoryId("all");
     foods.clear();
@@ -677,5 +682,44 @@ class PosController extends GetxController {
       }).toList());
       update();
     }
+  }
+
+  void fullCartAndUpdateOrder(BuildContext context, OrderEntity order) {
+    deleteCart();
+    orderNotes.value = order.orderNotes!;
+    for (var i = 0; i < order.orderDetails!.length; i++) {
+      FoodDataEntity food = order.orderDetails![i].food != null
+          ? order.orderDetails![i].food
+          : order.orderDetails![i].bundle;
+
+      if (food.price != order.orderDetails![i].price &&
+          food.foodVariantCategory != null &&
+          food.foodVariantCategory!.isNotEmpty) {
+        final FoodVariantEntity? foodVariant =
+            food.foodVariantCategory![0].foodVariant!.firstWhere(
+                (element) => element.price! == order.orderDetails![i].price);
+        addCart(context, food, foodVariant, order.orderDetails![i].quantity,
+            order.orderDetails![i].price, true);
+        continue;
+      }
+
+      addCart(context, food, null, order.orderDetails![i].quantity,
+          order.orderDetails![i].price, true);
+    }
+    setCurrentOrder(order);
+    if (order.customer != null) {
+      customer.value = order.customer!;
+    }
+
+    orderNotes.value = order.orderNotes!;
+    note.text = order.orderNotes!;
+
+    AppHelpersCommon.showCustomModalBottomSheet(
+      context: context,
+      modal: CartScreen(),
+      isDarkMode: false,
+      isDrag: true,
+      radius: 12,
+    );
   }
 }

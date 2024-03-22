@@ -13,7 +13,7 @@ import 'package:upgrader/upgrader.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/splash/splash.binding.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/custom_range_slider.widgets.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/widgets/custom_range_slider.widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -82,7 +82,7 @@ void main() async {
                     useMaterial3: false,
                     sliderTheme: SliderThemeData(
                       overlayShape: SliderComponentShape.noOverlay,
-                      rangeThumbShape: CustomRoundRangeSliderThumbShape(
+                      rangeThumbShape: CustomRoundRangeSliderThumbShapeWidget(
                         enabledThumbRadius: 12.r,
                       ),
                     ),

@@ -54,9 +54,7 @@ class PresentationScreenRoute {
         page: () => const LoginScreen(),
         binding: AuthBinding()),
     GetPage(
-        name: _Paths.DEMO_LOGIN,
-        page: () => DemoLoginView(),
-        binding: AuthBinding()),
+        name: _Paths.DEMO_LOGIN, page: () => DemoLoginView(), binding: AuthBinding()),
     GetPage(
       name: _Paths.TUTORIELS,
       page: () => const TutorielScreen(),
@@ -80,6 +78,6 @@ class PresentationScreenRoute {
       name: _Paths.INVOICE,
       page: () => const InvoiceScreen(),
       binding: InvoiceBiding(),
-    ),
+    ),    
   ];
 }
