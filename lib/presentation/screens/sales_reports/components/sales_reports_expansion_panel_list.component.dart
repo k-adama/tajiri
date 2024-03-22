@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_reports_data.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
 
 class Item {
   Item({

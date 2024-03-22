@@ -3,7 +3,7 @@ import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
 import 'dart:io';
 import 'package:tajiri_pos_mobile/app/services/pdf_api.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_reports_data.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
 
 class PdfReportApiComponent {

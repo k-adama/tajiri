@@ -9,8 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_reports_data.entity.dart';
-import 'package:tajiri_pos_mobile/domain/repositories/orders.repository.dart';
+import 'package:tajiri_pos_mobile/data/repositories/orders/orders.repository.dart';
+import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 
