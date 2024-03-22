@@ -5,17 +5,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
-import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/domain/entities/local_cart_enties/main_item.entity.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/cart/cart.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/components/add_product_button.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/components/cart_order_item.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/product_in_cart.widget.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({

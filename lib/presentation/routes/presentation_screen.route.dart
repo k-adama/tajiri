@@ -1,6 +1,7 @@
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/auth/auth.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/table/table.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/tutoriel/tutoriel.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/demo_login_view.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/login.screen.dart';
@@ -16,6 +17,8 @@ import 'package:tajiri_pos_mobile/presentation/screens/navigation/navigation.scr
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_paid.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_save.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/splash/splash.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/table/edit_table.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/table/table.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/tutoriel/tutoriel.screen.dart';
 
 part 'presentation_path.route.dart';
@@ -71,6 +74,15 @@ class PresentationScreenRoute {
       name: _Paths.INVOICE,
       page: () => const InvoiceScreen(),
       binding: InvoiceBiding(),
+    ),
+    GetPage(
+      name: _Paths.TABLE,
+      page: () => const TableScreen(),
+      binding: TableBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_TABLE,
+      page: () => const EditTableScreen(),
     ),
   ];
 }

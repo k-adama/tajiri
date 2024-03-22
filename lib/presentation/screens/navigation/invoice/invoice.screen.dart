@@ -86,7 +86,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Center(
                                     child: Text(
-                                      "N°${arguments.orderNumber.toString() ?? ""}",
+                                      "N°${arguments.orderNumber.toString()}",
                                       style: Style.interBold(
                                           color: Style.secondaryColor),
                                     ),

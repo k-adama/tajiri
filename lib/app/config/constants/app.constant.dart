@@ -132,6 +132,8 @@ class AppConstants {
 
 enum ShopStatus { notRequested, newShop, edited, approved, rejected }
 
+enum ChairPosition { top, bottom, left, right }
+
 enum UploadType {
   extras,
   brands,
@@ -171,8 +173,6 @@ enum LookProductStockStatus { outOfStock, alreadyAdded, notAdded }
 enum SingingCharacter { Oui, Non }
 
 enum TableOrWaitress { WAITRESS, TABLE }
-
-enum ChairPosition { top, bottom, left, right }
 
 List<Map<String, dynamic>> SWIPERDATA = [
   {
