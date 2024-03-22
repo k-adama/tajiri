@@ -17,7 +17,6 @@ import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoic
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/navigation.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/date_time_picker.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/sales_reports.screen.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_paid.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_save.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_food_component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/product.screen.dart';

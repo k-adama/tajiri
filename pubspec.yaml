@@ -74,7 +74,6 @@ dependencies:
   pdf: ^3.10.8
   animated_toggle_switch: ^0.8.2
   flutter_rounded_date_picker: ^3.0.4
-  pdf: ^3.10.8
   
 flutter_launcher_icons:
   android: "launcher_icon"
