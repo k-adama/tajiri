@@ -146,8 +146,7 @@ class _CartScreen extends State<CartScreen> {
                                         ? const SelectTableComponent() //const SelectWaitress()
                                         : checkListingType(user) ==
                                                 ListingType.table
-                                            ? const Text(
-                                                "Select Table") //const SelectTable()
+                                            ? const SelectTableComponent() //const SelectTable()
                                             : const SizedBox(),
                               ],
                             ),

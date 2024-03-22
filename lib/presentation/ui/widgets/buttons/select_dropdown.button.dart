@@ -3,34 +3,33 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
 
-class SelectTableWidget extends StatefulWidget {
+class SelectDropDownButton extends StatelessWidget {
   final Color containerColor;
   final TableModel? value;
+  final String hinText;
   final List<TableModel> tableListData;
   final void Function(TableModel?)? onChanged;
-  const SelectTableWidget(
-      {super.key,
-      required this.containerColor,
-      this.value,
-      required this.tableListData,
-      required this.onChanged});
 
-  @override
-  State<SelectTableWidget> createState() => _SelectTableWidgetState();
-}
+  const SelectDropDownButton({
+    super.key,
+    required this.containerColor,
+    this.value,
+    required this.tableListData,
+    required this.onChanged,
+    required this.hinText,
+  });
 
-class _SelectTableWidgetState extends State<SelectTableWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 40,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(20)),
-        color: widget.containerColor,
+        color: containerColor,
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<TableModel>(
-          value: widget.value,
+          value: value,
           borderRadius: BorderRadius.circular(24),
           icon: const Padding(
             padding: EdgeInsets.only(right: 8.0),
@@ -39,8 +38,8 @@ class _SelectTableWidgetState extends State<SelectTableWidget> {
               color: Style.black,
             ),
           ),
-          items: widget.tableListData.map((TableModel item) {
-            int index = widget.tableListData.indexOf(item);
+          items: tableListData.map((TableModel item) {
+            int index = tableListData.indexOf(item);
             return DropdownMenuItem<TableModel>(
               value: item,
               child: Container(
@@ -51,7 +50,7 @@ class _SelectTableWidgetState extends State<SelectTableWidget> {
                 ),
                 child: Row(
                   children: [
-                    10.horizontalSpace,
+                    10.horizontalSpace, // Assuming you have a horizontalSpace widget
                     4.horizontalSpace,
                     Text('${item.name}'),
                   ],
@@ -61,9 +60,9 @@ class _SelectTableWidgetState extends State<SelectTableWidget> {
           }).toList(),
           hint: Container(
             margin: const EdgeInsets.symmetric(horizontal: 11),
-            child: const Text("Toutes les tables"),
+            child: Text(hinText),
           ),
-          onChanged: widget.onChanged,
+          onChanged: onChanged,
         ),
       ),
     );
