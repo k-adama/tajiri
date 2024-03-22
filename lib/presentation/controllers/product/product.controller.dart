@@ -1,19 +1,14 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/instance_manager.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
-import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/categorie_entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/repositories/products.repository.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull_dialog.dart';
@@ -22,8 +17,8 @@ class ProductsController extends GetxController {
   final ProductsRepository _productsRepository = ProductsRepository();
   final KIT_ID = "1c755978-ae56-47c6-b8e6-a5e3b03577ce";
   bool isProductLoading = false;
-  final foods = List<FoodDataEntity>.empty().obs;
-  final foodsInit = List<FoodDataEntity>.empty().obs;
+  List<FoodDataEntity> foods = List<FoodDataEntity>.empty().obs;
+  List<FoodDataEntity> foodsInit = List<FoodDataEntity>.empty().obs;
   RxList bundlePacks = [].obs;
   final categories = List<CategoryEntity>.empty().obs;
   RxString categoryId = 'all'.obs;
@@ -129,11 +124,10 @@ class ProductsController extends GetxController {
         "costBuy": costBuy == 0 ? 0 : costBuy,
         "isFeatured": true,
         "quantity": quantity == 0 ? foodData.quantity : quantity,
-        "isAvailable":
-            isAvailable, //isAvailable ? foodData.isAvailable :isAvailable
+        "isAvailable": isAvailable,
         "categoryId": pickCategoryId.value == ""
             ? foodData.categoryId
-            : pickCategoryId.value, // pickCategory
+            : pickCategoryId.value,
         "imageUrl": imageUrl.value == "" ? foodData.imageUrl : imageUrl.value,
       };
       final response = await _productsRepository.updateFood(data, foodData.id!);
@@ -181,6 +175,25 @@ class ProductsController extends GetxController {
     }
   }
 
+  getAvailableMessage() {
+    print(" in getAvailableMessage()");
+    if (isAvailable) {
+      final data = {
+        "image": "assets/svgs/product-2.svg",
+        "title": "Le produit disponible !",
+        "content": "Ce produit est à nouveau disponible dans votre stock."
+      };
+      return data;
+    } else {
+      final data = {
+        "image": "assets/svgs/product-1.svg",
+        "title": "Le produit indisponible",
+        "content": "Ce produit ne sera plus affiché dans votre stock."
+      };
+      return data;
+    }
+  }
+
   Future<void> updateFoodVariant(
       BuildContext context, FoodVariantEntity foodVariant) async {
     final connected = await AppConnectivity.connectivity();
@@ -192,8 +205,7 @@ class ProductsController extends GetxController {
         "price": price == 0 ? foodVariant.price : price,
         "quantity": quantity == 0 ? foodVariant.quantity : quantity,
         "managementStock": true,
-        "foodVariantCategoryId":
-            foodVariant.foodVariantCategoryId, // pickCategory
+        "foodVariantCategoryId": foodVariant.foodVariantCategoryId,
       };
       final response =
           await _productsRepository.updateFoodVariant(data, foodVariant.id!);
@@ -227,25 +239,6 @@ class ProductsController extends GetxController {
           update();
         },
       );
-    }
-  }
-
-  getAvailableMessage() {
-    print(" in getAvailableMessage()");
-    if (isAvailable) {
-      final data = {
-        "image": "assets/svgs/product-2.svg",
-        "title": "Le produit disponible !",
-        "content": "Ce produit est à nouveau disponible dans votre stock."
-      };
-      return data;
-    } else {
-      final data = {
-        "image": "assets/svgs/product-1.svg",
-        "title": "Le produit indisponible",
-        "content": "Ce produit ne sera plus affiché dans votre stock."
-      };
-      return data;
     }
   }
 

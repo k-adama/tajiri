@@ -22,7 +22,6 @@ class EditVariantComponent extends StatefulWidget {
 }
 
 class _EditVariantComponentState extends State<EditVariantComponent> {
-  final PosController posController = Get.put(PosController());
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ProductsController>(

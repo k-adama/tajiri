@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/instance_manager.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_added_list.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/product_categories_list.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/title.component.dart';
@@ -36,7 +40,7 @@ class _ProductScreenState extends State<ProductScreen>
               const TitleComponent(),
               const ProductCategorieListComponent(),
               10.verticalSpace,
-              const FoodAddedListComponent(),
+              FoodAddedListComponent(),
             ],
           ),
         ),

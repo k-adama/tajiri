@@ -484,7 +484,7 @@ class PosController extends GetxController {
         context: context,
         canPop: false,
         child: SuccessfullDialog(
-          isRedirect: false,
+            isRedirect: false,
           haveButton: false,
           isCustomerAdded: true,
           title: "Client ajouté",
