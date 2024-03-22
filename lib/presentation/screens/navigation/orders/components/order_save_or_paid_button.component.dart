@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -11,7 +10,9 @@ import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_payments_method_modal.component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 
 class OrderSaveOrPaidButtonComponent extends StatelessWidget {
@@ -88,15 +89,13 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                             order.orderNotes!;
                         navigationController.posController.note.text = order.orderNotes!;
 
-                        /*AppHelpersCommon.showCustomModalBottomSheet(
+                        AppHelpersCommon.showCustomModalBottomSheet(
                           context: context,
-                          modal: CartOrderView(
-                            mainController: mainController,
-                          ),
+                          modal: CartScreen(),
                           isDarkMode: false,
                           isDrag: true,
                           radius: 12,
-                        );*/
+                        );
                       },
                     ),
                   ),
@@ -165,7 +164,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                 borderColor: Style.secondaryColor,
                 imagePath: "assets/svgs/ion_receipt-sharpinvoice.svg",
                 onPressed: () {
-                  //Get.toNamed(Routes.INVOICE_PDF, arguments: order);
+                  Get.toNamed(Routes.INVOICE, arguments: order);
                 },
               )
             ],
@@ -179,7 +178,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
             radius: 5,
             haveBorder: false,
             onPressed: () {
-              //Get.toNamed(Routes.INVOICE_PDF, arguments: order);
+              Get.toNamed(Routes.INVOICE, arguments: order);
             },
           );
   }
