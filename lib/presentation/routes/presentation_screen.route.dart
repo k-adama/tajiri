@@ -1,6 +1,7 @@
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/auth/auth.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/product/product.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/tutoriel/tutoriel.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/demo_login_view.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/login.screen.dart';
@@ -15,6 +16,8 @@ import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoic
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/navigation.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_paid.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_save.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_food_component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/product/product.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/splash/splash.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/tutoriel/tutoriel.screen.dart';
 
@@ -71,6 +74,16 @@ class PresentationScreenRoute {
       name: _Paths.INVOICE,
       page: () => const InvoiceScreen(),
       binding: InvoiceBiding(),
+    ),
+    GetPage(
+      name: _Paths.PRODUCTS,
+      page: () => const ProductScreen(),
+      binding: ProductsBinding(),
+    ),
+     GetPage(
+      name: _Paths.EDIT_FOOD_AND_VARIANT,
+      page: () => EditFoodAndVariantComponent(),
+      binding: ProductsBinding(),
     ),
   ];
 }

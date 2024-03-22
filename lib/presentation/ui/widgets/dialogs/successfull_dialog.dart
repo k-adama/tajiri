@@ -8,13 +8,14 @@ import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.
 class SuccessfullDialog extends StatelessWidget {
   final String? title, content, buttonText, svgPicture, closeButton;
   final Function()? onPressed, closePressed, redirect;
-  final bool haveButton, isCustomerAdded;
+  final bool haveButton, isRedirect, isCustomerAdded;
 
   const SuccessfullDialog({
     super.key,
     this.title,
     this.content,
     this.redirect,
+    required this.isRedirect,
     this.buttonText,
     this.svgPicture,
     required this.haveButton,

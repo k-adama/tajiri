@@ -233,6 +233,7 @@ class PosController extends GetxController {
           context: context,
           canPop: false,
           child: SuccessfullDialog(
+            isRedirect: false,
             haveButton: false,
             isCustomerAdded: false,
             title: "Enregistrement effectué",
@@ -249,6 +250,7 @@ class PosController extends GetxController {
           context: context,
           canPop: false,
           child: SuccessfullDialog(
+            isRedirect: false,
             isCustomerAdded: false,
             haveButton: false,
             title: "Paiement effectué",
@@ -482,6 +484,7 @@ class PosController extends GetxController {
         context: context,
         canPop: false,
         child: SuccessfullDialog(
+          isRedirect: false,
           haveButton: false,
           isCustomerAdded: true,
           title: "Client ajouté",
