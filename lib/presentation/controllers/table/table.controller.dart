@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
-import 'package:tajiri_pos_mobile/domain/repositories/tables.repository.dart';
+import 'package:tajiri_pos_mobile/domain/entities/table.entiy.dart';
+import 'package:tajiri_pos_mobile/data/repositories/tables/tables.repository.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull_dialog.dart';
 
 class TableController extends GetxController {
   final TablesRepository _tablesRepository = TablesRepository();
-  RxList<TableModel> tableListData = List<TableModel>.empty().obs;
+  RxList<TableEntity> tableListData = List<TableEntity>.empty().obs;
   bool isLoadingTable = false;
   bool isLoadingEdetingTable = false;
   bool isLoadingDeleteTable = false;
@@ -18,8 +18,8 @@ class TableController extends GetxController {
   String tableDescription = "";
   String tableNumberOfPlace = "";
   String? tableId;
-  TableModel newTable = TableModel();
-  Rx<TableModel?> selectedTable = Rx<TableModel?>(null);
+  TableEntity newTable = TableEntity();
+  Rx<TableEntity?> selectedTable = Rx<TableEntity?>(null);
   // OrdersController ordersController = Get.find();
 
   @override
@@ -54,7 +54,7 @@ class TableController extends GetxController {
     }
   }
 
-  changeSelectTable(TableModel? newValue) {
+  changeSelectTable(TableEntity? newValue) {
     selectedTable.value = newValue!;
     update();
   }

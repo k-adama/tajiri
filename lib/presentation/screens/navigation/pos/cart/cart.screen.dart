@@ -12,6 +12,7 @@ import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/cart/c
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/select_table.component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/select_waitress.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/components/add_product_button.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/components/cart_order_item.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
@@ -144,7 +145,7 @@ class _CartScreen extends State<CartScreen> {
                                     ? const SizedBox()
                                     : checkListingType(user) ==
                                             ListingType.waitress
-                                        ? const SelectTableComponent() //const SelectWaitress()
+                                        ? const SelectWaitressComponent() //const SelectWaitress()
                                         : checkListingType(user) ==
                                                 ListingType.table
                                             ? const SelectTableComponent() //const SelectTable()

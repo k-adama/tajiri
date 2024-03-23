@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/table.entiy.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/table/table.controller.dart';
@@ -23,11 +23,30 @@ class _SelectTableComponentState extends State<SelectTableComponent> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return SelectDropDownButton(
+      return SelectDropDownButton<TableEntity>(
         value: tableController.selectedTable.value,
         containerColor: posController.containerColor,
-        tableListData: tableController.tableListData.value,
-        onChanged: (TableModel? newValue) {
+        items: tableController.tableListData.value.map((TableEntity item) {
+          int index = tableController.tableListData.value.indexOf(item);
+          return DropdownMenuItem<TableEntity>(
+            value: item,
+            child: Container(
+              height: 40,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                color: Style.colors[index % Style.colors.length],
+              ),
+              child: Row(
+                children: [
+                  const SizedBox(width: 10),
+                  const SizedBox(width: 4),
+                  Text(item.name ?? ""),
+                ],
+              ),
+            ),
+          );
+        }).toList(),
+        onChanged: (TableEntity? newValue) {
           Mixpanel.instance.track("Change Table", properties: {
             "Old Value": posController.tableCurrentId,
             "New Value": newValue?.id

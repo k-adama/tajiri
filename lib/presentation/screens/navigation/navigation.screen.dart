@@ -9,6 +9,7 @@ import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/drawer_page.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/select_table.component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/select_waitress.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/home.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/order.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/pos.screen.dart';
@@ -55,7 +56,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
     if (hasUser) {
       if (isWaitress && isIndexValid) {
-        return const SelectTableComponent(); // const SelectWaitress();
+        return const SelectWaitressComponent(); // const SelectWaitress();
       } else if (isTable && isIndexValid) {
         return const SelectTableComponent();
       } else {
