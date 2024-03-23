@@ -3,6 +3,7 @@ import 'package:tajiri_pos_mobile/presentation/controllers/auth/auth.binding.dar
 import 'package:tajiri_pos_mobile/presentation/controllers/sales_reports/sales_reports.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/table/table.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/product/product.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/tutoriel/tutoriel.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/demo_login_view.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/login.screen.dart';
@@ -15,10 +16,12 @@ import 'package:tajiri_pos_mobile/presentation/screens/demo/demo.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/first/first.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/navigation.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_paid.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/date_time_picker.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/sales_reports.screen.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_paid.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_save.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_food_component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/product/product.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/splash/splash.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/table/edit_table.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/table/table.screen.dart';
@@ -96,6 +99,16 @@ class PresentationScreenRoute {
     GetPage(
       name: _Paths.EDIT_TABLE,
       page: () => const EditTableScreen(),
+    ),
+    GetPage(
+      name: _Paths.PRODUCTS,
+      page: () => const ProductScreen(),
+      binding: ProductsBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_FOOD_AND_VARIANT,
+      page: () => const EditFoodAndVariantComponent(),
+      binding: ProductsBinding(),
     ),
   ];
 }
