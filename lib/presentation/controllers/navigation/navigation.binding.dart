@@ -11,7 +11,7 @@ class NavigationBiding extends Bindings {
     Get.lazyPut(() => NavigationController());
     Get.lazyPut(() => HomeController());
     Get.lazyPut(() => PosController());
-    Get.lazyPut(() => TableController());
+    Get.lazyPut(() => TableController(), fenix: true);
     Get.lazyPut(() => OrdersController());
   }
 }
