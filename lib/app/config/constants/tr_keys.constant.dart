@@ -11,4 +11,10 @@ class TrKeysConstant {
   static const String phoneOrEmailLabelText = "Numéro de téléphone";
   static const String phoneOrEmailDescriptionText = "Entrer votre contact";
   static const String splashFcfa = ' / FCFA';
+  static const String ApproModeTitle = 'Mode approvisionnement activé';
+  static const String ApproModeDescription = 'Mode approvisionnement activé';
+  static const String SaveAppro = 'Enregistrer';
+  static const String ApproMode = "Activer l'approvisionnement";
+  static const String SavApproModeTitle = 'Ajoutez les nouvelles entrées puis enregistrez pour mettre à jour le stock.';
+  static const String SaveApproModeDescription = "Activiez l'approvisonnement et mettez à jour vos stocks.";
 }

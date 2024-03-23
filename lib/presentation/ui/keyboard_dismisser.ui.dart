@@ -43,8 +43,8 @@ enum GestureType {
   onScaleEnd,
 }
 
-class KeyboardDismisserUI extends StatelessWidget {
-  const KeyboardDismisserUI({
+class KeyboardDismisserUi extends StatelessWidget {
+  const KeyboardDismisserUi({
     Key? key,
     this.child,
     this.behavior,

@@ -48,7 +48,7 @@ class _OrderPaymentsMethodesModalComponentState extends State<OrderPaymentsMetho
                   )),
               width: double.infinity,
               height: screenSize.height - 150.h,
-              child: KeyboardDismisserUI(
+              child: KeyboardDismisserUi(
                   child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(

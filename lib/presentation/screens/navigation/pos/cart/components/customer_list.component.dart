@@ -48,7 +48,7 @@ class _CustomerListComponentState extends State<CustomerListComponent> {
                         topRight: Radius.circular(12.r),
                       )),
                   width: double.infinity,
-                  child: KeyboardDismisserUI(
+                  child: KeyboardDismisserUi(
                       child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(

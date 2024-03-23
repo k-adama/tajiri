@@ -47,7 +47,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     final user = AppHelpersCommon.getUserInLocalStorage();
     return GetBuilder<NavigationController>(
       builder: (navigationController) => UpgradeAlert(
-        child: KeyboardDismisserUI(
+        child: KeyboardDismisserUi(
           child: Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: PreferredSize(
