@@ -15,6 +15,8 @@ abstract class Routes {
   static const CART_PAID = _Paths.CART_PAID;
   static const CART_SAVE = _Paths.CART_SAVE;
   static const INVOICE = _Paths.INVOICE;
+  static const TABLE = _Paths.TABLE;
+  static const EDIT_TABLE = _Paths.EDIT_TABLE;
   static const PRODUCTS = _Paths.PRODUCTS;
   static const EDIT_FOOD_AND_VARIANT = _Paths.EDIT_FOOD_AND_VARIANT;
   static const ADD_FOOD_VARIANT_CATEGORY = _Paths.ADD_FOOD_VARIANT_CATEGORY;
@@ -35,6 +37,8 @@ abstract class _Paths {
   static const CART_PAID = "/cart_paid";
   static const CART_SAVE = "/cart_save";
   static const INVOICE = "/invoice";
+  static const TABLE = "/table";
+  static const EDIT_TABLE = "/edit_table";
   static const PRODUCTS = "/products";
   static const EDIT_FOOD_AND_VARIANT = "/edit_food_and_variant";
   static const ADD_FOOD_VARIANT_CATEGORY = "/add_food_variant_category";

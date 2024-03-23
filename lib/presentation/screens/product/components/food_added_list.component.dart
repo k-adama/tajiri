@@ -7,8 +7,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/shimmer_product_list.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_list.component.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/widgets/shimmer_product_list.widget.dart';
 
 class FoodAddedListComponent extends StatefulWidget {
   const FoodAddedListComponent({super.key});
@@ -45,7 +45,7 @@ class _FoodAddedListComponentState extends State<FoodAddedListComponent> {
         children: [
           Obx(
             () => productsController.foods.isEmpty
-                ? const ShimmerProductListComponent()
+                ? const ShimmerProductListWidget()
                 : AnimationLimiter(
                     child: Expanded(
                       child: SmartRefresher(

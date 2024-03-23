@@ -1,33 +1,33 @@
+import 'dart:developer';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_payments_method_modal.component.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 
 class OrderSaveOrPaidButtonComponent extends StatelessWidget {
   final OrderEntity order;
   final bool isPaid;
-  OrderSaveOrPaidButtonComponent({super.key, required this.order, required this.isPaid});
+  OrderSaveOrPaidButtonComponent(
+      {super.key, required this.order, required this.isPaid});
 
   final OrdersController orderController = Get.find();
-  final NavigationController navigationController = Get.put(NavigationController());
+  final NavigationController navigationController =
+      Get.put(NavigationController());
   @override
   Widget build(BuildContext context) {
     return order.status == AppConstants.orderNew ||
             order.status == AppConstants.orderCooking ||
             order.status == AppConstants.orderAccepted ||
-        order.status == AppConstants.orderReady
+            order.status == AppConstants.orderReady
         ? Column(
             children: [
               Row(
@@ -42,7 +42,8 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                       haveBorder: false,
                       radius: 5,
                       onPressed: () {
-                        navigationController.posController.fullCartAndUpdateOrder(context, order);
+                        navigationController.posController
+                            .fullCartAndUpdateOrder(context, order);
                       },
                     ),
                   ),
@@ -54,11 +55,10 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                             background: Style.primaryColor,
                             radius: 5,
                             title: "Payer",
-                      textColor: Style.white,
-                      isLoadingColor: Style.secondaryColor,
+                            textColor: Style.white,
+                            isLoadingColor: Style.secondaryColor,
                             onPressed: () {
-                              orderController.currentOrderId.value =
-                                  order.id!;
+                              orderController.currentOrderId.value = order.id!;
 
                               orderController.currentOrderNo.value =
                                   order.orderNumber!.toString();
@@ -67,7 +67,8 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                                       MediaQuery.of(context).padding.top +
                                           100.h,
                                   context: context,
-                                  modal: const OrderPaymentsMethodesModalComponent(),
+                                  modal:
+                                      const OrderPaymentsMethodesModalComponent(),
                                   isDarkMode: false,
                                   isDrag: true,
                                   radius: 12);
@@ -82,8 +83,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                             isLoadingColor: Style.secondaryColor,
                             textColor: Style.secondaryColor,
                             onPressed: () {
-                              orderController.currentOrderId.value =
-                                  order.id!;
+                              orderController.currentOrderId.value = order.id!;
                               orderController.currentOrderNo.value =
                                   order.orderNumber!.toString();
                               AppHelpersCommon.showCustomModalBottomSheet(
@@ -91,7 +91,8 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                                       MediaQuery.of(context).padding.top +
                                           100.h,
                                   context: context,
-                                  modal: const OrderPaymentsMethodesModalComponent(),
+                                  modal:
+                                      const OrderPaymentsMethodesModalComponent(),
                                   isDarkMode: false,
                                   isDrag: true,
                                   radius: 12);
@@ -119,12 +120,15 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
         : CustomButton(
             isLoading: orderController.isAddAndRemoveLoading,
             background: Style.primaryColor,
-            title: order.status == AppConstants.orderCancelled ? "Voir la facture" : "Voir le reçu de paiement",
+            title: order.status == AppConstants.orderCancelled
+                ? "Voir la facture"
+                : "Voir le reçu de paiement",
             textColor: Style.secondaryColor,
             isLoadingColor: Style.secondaryColor,
             radius: 5,
             haveBorder: false,
             onPressed: () {
+              log(order.toJson().toString());
               Get.toNamed(Routes.INVOICE, arguments: order);
             },
           );

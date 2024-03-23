@@ -9,7 +9,6 @@ import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/api_pdf.service.dart';
 import 'package:tajiri_pos_mobile/app/services/api_pdf_invoice.service.dart';
-import 'dart:ui' as ui;
 
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 
@@ -58,17 +57,6 @@ class InvoiceController extends GetxController {
     if (isConnected == true) {
       connected.value = true;
     }
-  }
-
-  double getTextWidth(String text, TextStyle style) {
-    final TextPainter textPainter = TextPainter(
-      text: TextSpan(text: text, style: style),
-      maxLines: 1,
-      textDirection:
-          ui.TextDirection.ltr, // Use TextDirection.ltr for left-to-right text
-    )..layout(minWidth: 0, maxWidth: double.infinity);
-    if (text.length <= 6) return textPainter.width + 22;
-    return textPainter.width + 80;
   }
 
   String paymentMethodName(OrderEntity order) {

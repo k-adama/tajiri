@@ -6,7 +6,10 @@ class Style {
   static const List<Color> colors = [
     Style.menuFlottant,
     Style.primaryColor,
-    Style.green,
+    Style.purpleSelect,
+    Style.greenSelect,
+    Style.pinkSelect,
+    Style.redSelect,
     Style.yellowLigther,
   ];
 
@@ -34,6 +37,11 @@ class Style {
   static const Color ligthSecondary = Color(0xFFE6ECF6);
   static const Color lightSecondaryHover = Color(0xFFDAE3F2);
   static const Color lightSecondarActive = Color(0xFFB2C5E4);
+
+  static const Color purpleSelect = Color(0xFF9381FF);
+  static const Color greenSelect = Color(0xFF00C49A);
+  static const Color pinkSelect = Color(0xFFFF69E7);
+  static const Color redSelect = Color(0xFFFF6969);
 
   /// OLD COLOR
   static const Color bottomNavigationBarColor = Color(0xFF191919);
@@ -170,8 +178,8 @@ class Style {
           {double size = 16,
           Color color = Style.black,
           TextDecoration textDecoration = TextDecoration.none,
-            bool isUnderLine = false,
-            Color underLineColor = Style.secondaryColor,
+          bool isUnderLine = false,
+          Color underLineColor = Style.secondaryColor,
           double letterSpacing = 0}) =>
       TextStyle(
           fontFamily: 'Cereal',
@@ -181,7 +189,7 @@ class Style {
           letterSpacing: letterSpacing.sp,
           decorationColor: isUnderLine ? underLineColor : Style.white,
           decoration:
-          isUnderLine ? TextDecoration.underline : TextDecoration.none);
+              isUnderLine ? TextDecoration.underline : TextDecoration.none);
 
   static interRegular(
           {double size = 16,

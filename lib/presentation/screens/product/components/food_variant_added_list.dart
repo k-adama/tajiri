@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/shimmer_product_list.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_variant_list.component.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/widgets/shimmer_product_list.widget.dart';
 
 class FoodVariantAddedList extends StatefulWidget {
   List<FoodVariantCategoryEntity> foodVariantCategory;
@@ -42,7 +42,7 @@ class _FoodVariantAddedListState extends State<FoodVariantAddedList> {
         children: [
           20.verticalSpace,
           widget.foodVariantCategory.isEmpty //posController.foods.isEmpty
-              ? const ShimmerProductListComponent()
+              ? const ShimmerProductListWidget()
               : Expanded(
                   child: AnimationLimiter(
                   child: SmartRefresher(

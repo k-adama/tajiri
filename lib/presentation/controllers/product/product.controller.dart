@@ -143,7 +143,6 @@ class ProductsController extends GetxController {
             context: context,
             canPop: false,
             child: SuccessfullDialog(
-              isRedirect: true,
               haveButton: false,
               isCustomerAdded: true,
               title: isPrice
@@ -218,7 +217,6 @@ class ProductsController extends GetxController {
             context: context,
             canPop: false,
             child: SuccessfullDialog(
-              isRedirect: true,
               haveButton: false,
               isCustomerAdded: true,
               title: "Le prix a été modifié avec succès!",
