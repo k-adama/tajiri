@@ -10,14 +10,14 @@ class EditProductPriceButtonComponent extends StatelessWidget {
   final Color borderColor;
   final Function()? onPressed;
   const EditProductPriceButtonComponent({
-    Key? key,
+    super.key,
     this.isLoading = false,
     this.background = Style.primaryColor,
     required this.title,
     this.textColor = Style.white,
     required this.onPressed,
     this.borderColor = Style.transparent,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

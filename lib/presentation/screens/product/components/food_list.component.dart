@@ -12,13 +12,13 @@ class FoodListComponent extends StatelessWidget {
   final String foodPrice;
 
   const FoodListComponent({
-    Key? key,
+    super.key,
     required this.url,
     required this.foodName,
     required this.foodQuantity,
     required this.foodCategorieName,
     required this.foodPrice,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +72,7 @@ class FoodListComponent extends StatelessWidget {
                               style: Style.interNormal(
                                   color: Style.light, size: 13.sp),
                             ),
-                            productInformation(
-                                foodPrice.currencyLong(), 12.sp),
+                            productInformation(foodPrice.currencyLong(), 12.sp),
                           ],
                         )
                       ],

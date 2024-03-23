@@ -10,11 +10,11 @@ class CategoryTabBarItemComponent extends StatelessWidget {
   final Function() onTap;
 
   const CategoryTabBarItemComponent({
-    Key? key,
+    super.key,
     this.title,
     required this.isActive,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

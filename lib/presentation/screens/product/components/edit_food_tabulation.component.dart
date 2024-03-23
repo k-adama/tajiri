@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/custom_switch_button.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/custom_network_image.ui.dart';
@@ -23,19 +20,17 @@ class EditFoodTabulationComponent extends StatefulWidget {
 }
 
 class _EditFoodState extends State<EditFoodTabulationComponent> {
-  final PosController posController = Get.put(PosController());
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ProductsController>(
-      builder: (_productsController) => SingleChildScrollView(
+      builder: (productsController) => SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomNetworkImageUI(
-                url: "${widget.foodData.imageUrl!}",
+                url: widget.foodData.imageUrl!,
                 width: 80.w,
                 height: 80.h,
                 radius: 10.r,
@@ -112,7 +107,7 @@ class _EditFoodState extends State<EditFoodTabulationComponent> {
         padding: EdgeInsets.only(bottom: 40.h),
         child: Container(
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               border: Border(bottom: BorderSide(color: Style.light, width: 1))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -122,7 +117,7 @@ class _EditFoodState extends State<EditFoodTabulationComponent> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "${title}",
+                    title,
                     style: Style.interBold(
                       size: 14.sp,
                       color: Style.black,
@@ -130,14 +125,14 @@ class _EditFoodState extends State<EditFoodTabulationComponent> {
                   ),
                   isPrice
                       ? Text(
-                          "${price}".currencyLong(),
+                          price.currencyLong(),
                           style: Style.interNormal(
                             size: 12.sp,
                             color: Style.dark,
                           ),
                         )
                       : Text(
-                          "${name}",
+                          name,
                           style: Style.interNormal(
                             size: 12.sp,
                             color: Style.dark,

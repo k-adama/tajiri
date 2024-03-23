@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/product/product.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_food_variant_modal.dart';
 
 class FoodVariantListComponent extends StatefulWidget {
@@ -16,11 +13,11 @@ class FoodVariantListComponent extends StatefulWidget {
   FoodVariantListComponent({super.key, required this.foodVariantCategory});
 
   @override
-  State<FoodVariantListComponent> createState() => _FoodVariantListComponentState();
+  State<FoodVariantListComponent> createState() =>
+      _FoodVariantListComponentState();
 }
 
 class _FoodVariantListComponentState extends State<FoodVariantListComponent> {
-  final ProductsController _productsController = Get.put(ProductsController());
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -74,7 +71,7 @@ class _FoodVariantListComponentState extends State<FoodVariantListComponent> {
                         ),
                       ],
                     ),
-                    Container(
+                    SizedBox(
                       width: 30.w,
                       height: 30.h,
                       child: SvgPicture.asset("assets/svgs/Create.svg"),

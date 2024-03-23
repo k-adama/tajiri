@@ -14,7 +14,7 @@ import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_v
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/product_price_modal.component.dart';
 
 class EditFoodAndVariantComponent extends StatefulWidget {
-  EditFoodAndVariantComponent({super.key});
+  const EditFoodAndVariantComponent({super.key});
 
   @override
   State<EditFoodAndVariantComponent> createState() =>

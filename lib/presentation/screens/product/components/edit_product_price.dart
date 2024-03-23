@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_product_price_button.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
@@ -20,11 +18,10 @@ class EditProductPriceComponent extends StatefulWidget {
 }
 
 class _EditProductPriceState extends State<EditProductPriceComponent> {
-  final PosController posController = Get.put(PosController());
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ProductsController>(
-        builder: (_productsController) => Column(
+        builder: (productsController) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 24.verticalSpace,
@@ -70,11 +67,11 @@ class _EditProductPriceState extends State<EditProductPriceComponent> {
                   ),
                   borderRaduis: BorderRadius.circular(15),
                   isCenterText: false,
-                  onChanged: _productsController.setPrice,
+                  onChanged: productsController.setPrice,
                 ),
                 20.verticalSpace,
                 EditProductPriceButtonComponent(
-                  isLoading: _productsController.isProductLoading,
+                  isLoading: productsController.isProductLoading,
                   background: Style.primaryColor,
                   title: 'Valider la modification',
                   textColor: Style.secondaryColor,
@@ -84,7 +81,7 @@ class _EditProductPriceState extends State<EditProductPriceComponent> {
                       "ProductName": widget.foodData.name,
                       "Date": DateTime.now().toString(),
                     });
-                    _productsController.updateFood(
+                    productsController.updateFood(
                         context, widget.foodData, true);
                   },
                 ),

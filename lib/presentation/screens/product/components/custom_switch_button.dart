@@ -8,7 +8,7 @@ import 'package:tajiri_pos_mobile/presentation/controllers/product/product.contr
 
 class CustomSwitchButtonComponent extends StatefulWidget {
   final FoodDataEntity foodData;
-  CustomSwitchButtonComponent({super.key, required this.foodData});
+  const CustomSwitchButtonComponent({super.key, required this.foodData});
 
   @override
   State<CustomSwitchButtonComponent> createState() =>

@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/components/tab_view.component.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_food_tabulation.component.dart';
 
 class EditFoodTabulation extends StatefulWidget {
   final Widget editFoodComponent;

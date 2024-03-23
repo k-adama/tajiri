@@ -17,7 +17,6 @@ class TitleComponent extends StatelessWidget {
             "Mes produits",
             style: Style.interBold(color: Style.darker, size: 25.sp),
           ),
-          Container(),
         ],
       ),
     );

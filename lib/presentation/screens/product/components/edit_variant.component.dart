@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:get/instance_manager.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
@@ -25,7 +23,7 @@ class _EditVariantComponentState extends State<EditVariantComponent> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ProductsController>(
-        builder: (_productsController) => Column(
+        builder: (productsController) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 24.verticalSpace,
@@ -71,11 +69,11 @@ class _EditVariantComponentState extends State<EditVariantComponent> {
                   ),
                   borderRaduis: BorderRadius.circular(15),
                   isCenterText: false,
-                  onChanged: _productsController.setPrice,
+                  onChanged: productsController.setPrice,
                 ),
                 20.verticalSpace,
                 CustomButton(
-                  isLoading: _productsController.isProductLoading,
+                  isLoading: productsController.isProductLoading,
                   background: Style.primaryColor,
                   title: 'Valider la modification',
                   textColor: Style.secondaryColor,
@@ -86,7 +84,7 @@ class _EditVariantComponentState extends State<EditVariantComponent> {
                       "ProductName": widget.foodVariant.name,
                       "Date": DateTime.now().toString(),
                     });
-                    _productsController.updateFoodVariant(
+                    productsController.updateFoodVariant(
                         context, widget.foodVariant);
                   },
                 ),
