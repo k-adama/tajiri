@@ -2,10 +2,11 @@ import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/auth/auth.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/sales_reports/sales_reports.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/stock/stock.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/table/table.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/tutoriel/tutoriel.binding.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/auth/demo_login_view.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/auth/demo_login.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/login.screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/demo/demo.binding.dart';
@@ -23,6 +24,7 @@ import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_food_component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/product.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/splash/splash.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/stock/stock.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/table/edit_table.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/table/table.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/tutoriel/tutoriel.screen.dart';
@@ -92,10 +94,10 @@ class PresentationScreenRoute {
       binding: InvoiceBiding(),
     ),
     GetPage(
-      name: _Paths.TABLE,
-      page: () => const TableScreen(),
-      binding: TableBinding(),
-    ),
+      name: _Paths.STOCK,
+      page: () => const StockScreen(),
+      binding: StockBinding(),
+    ),   
     GetPage(
       name: _Paths.EDIT_TABLE,
       page: () => const EditTableScreen(),
@@ -110,5 +112,11 @@ class PresentationScreenRoute {
       page: () => const EditFoodAndVariantComponent(),
       binding: ProductsBinding(),
     ),
+    GetPage(
+      name: _Paths.TABLE,
+      page: () => const TableScreen(),
+      binding: TableBinding(),
+    ),
+ 
   ];
 }

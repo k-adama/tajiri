@@ -35,7 +35,7 @@ class _FoodVariantModalState extends State<FoodVariantModal> {
               children: [
                 Stack(
                   children: [
-                    CustomNetworkImageUI(
+                    CustomNetworkImageUi(
                       url: widget.food.imageUrl!,
                       height: 300.h,
                       width: double.infinity,

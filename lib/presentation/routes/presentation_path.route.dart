@@ -15,6 +15,7 @@ abstract class Routes {
   static const CART_PAID = _Paths.CART_PAID;
   static const CART_SAVE = _Paths.CART_SAVE;
   static const INVOICE = _Paths.INVOICE;
+  static const STOCK = _Paths.STOCK;
   static const TABLE = _Paths.TABLE;
   static const EDIT_TABLE = _Paths.EDIT_TABLE;
   static const PRODUCTS = _Paths.PRODUCTS;
@@ -37,6 +38,7 @@ abstract class _Paths {
   static const CART_PAID = "/cart_paid";
   static const CART_SAVE = "/cart_save";
   static const INVOICE = "/invoice";
+  static const STOCK = '/stock';
   static const TABLE = "/table";
   static const EDIT_TABLE = "/edit_table";
   static const PRODUCTS = "/products";

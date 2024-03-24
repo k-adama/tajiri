@@ -28,7 +28,7 @@ class ShopAvatarComponent extends StatelessWidget {
       padding: EdgeInsets.all(padding.r),
       decoration: BoxDecoration(
           color: bgColor, borderRadius: BorderRadius.circular(radius)),
-      child: CustomNetworkImageUI(
+      child: CustomNetworkImageUi(
         url: shopImage,
         height: size.r,
         width: size.r,
