@@ -48,11 +48,9 @@ class DrawerPageBodyComponent extends StatelessWidget {
             emoji: "assets/svgs/Calque 1.svg",
           ),
           onTap: () {
-            // AppHelpers.showBottomSnackBar(context, const ProductInCart(),
-            //     const Duration(milliseconds: 500), false);
-            // Mixpanel.instance.track("View Products",
-            //     properties: {"Date": DateTime.now().toString()});
-            // Get.toNamed(Routes.PRODUCTS);
+            Mixpanel.instance.track("View Products",
+                properties: {"Date": DateTime.now().toString()});
+            Get.toNamed(Routes.PRODUCTS);
           },
         ),
         if (checkListingType(user) == ListingType.waitress)
@@ -69,20 +67,18 @@ class DrawerPageBodyComponent extends StatelessWidget {
               // Get.toNamed(Routes.WAITRESS);
             },
           ),
-        if (checkListingType(user) == ListingType.table)
-          ListTile(
-            title: const DrawerBodyListRowComponent(
-              name: "Gestion des tables",
-              emoji: "assets/svgs/waitress-gestion.svg",
-            ),
-            onTap: () {
-              // AppHelpers.showBottomSnackBar(context, const ProductInCart(),
-              //     const Duration(milliseconds: 500), false);
-              // Mixpanel.instance.track("View Tables",
-              //     properties: {"Date": DateTime.now().toString()});
-              // Get.toNamed(Routes.TABLE);
-            },
+        // if (checkListingType(user) == ListingType.table)
+        ListTile(
+          title: const DrawerBodyListRowComponent(
+            name: "Gestion des tables",
+            emoji: "assets/svgs/waitress-gestion.svg",
           ),
+          onTap: () {
+            Mixpanel.instance.track("View Tables",
+                properties: {"Date": DateTime.now().toString()});
+            Get.toNamed(Routes.TABLE);
+          },
+        ),
         ListTile(
           title: const DrawerBodyListRowComponent(
             name: "Tutoriels",

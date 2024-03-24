@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 
-class ShimmerProductListComponent extends StatelessWidget {
-  const ShimmerProductListComponent({super.key});
+class ShimmerProductListWidget extends StatelessWidget {
+  const ShimmerProductListWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

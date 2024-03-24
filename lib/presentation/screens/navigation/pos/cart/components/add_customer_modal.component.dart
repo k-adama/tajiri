@@ -51,7 +51,8 @@ class _AddCustomerModalComponentState extends State<AddCustomerModalComponent> {
                 width: double.infinity,
                 child: KeyboardDismisserUi(
                     child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   child: Column(
                     children: [
                       8.verticalSpace,

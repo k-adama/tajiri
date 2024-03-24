@@ -6,7 +6,7 @@ import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/tr_keys.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/app/services/pdf_api.dart';
+import 'package:tajiri_pos_mobile/app/services/api_pdf.service.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/sales_reports/sales_reports.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/dat_picker_information.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/pdf_report_api.dart';
@@ -98,7 +98,7 @@ class _SalesReportsScreenState extends State<SalesReportsScreen> {
                     salesReportController.total.value,
                     salesReportController.startDate,
                     salesReportController.endDate);
-                PdfApi.shareFile(pdfFile);
+                ApiPdfService.shareFile(pdfFile);
               },
               onTapBack: () {
                 Get.back();

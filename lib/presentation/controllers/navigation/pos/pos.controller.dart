@@ -164,6 +164,8 @@ class PosController extends GetxController {
           update();
         },
         failure: (failure, status) {
+          isProductLoading.value = false;
+          update();
           /*  AppHelpersCommon.showCheckTopSnackBar(
               context,
               status.toString(),
@@ -286,6 +288,7 @@ class PosController extends GetxController {
         context,
         statusCode.toString(),
       );
+      isLoadingOrder.value = false;
     });
   }
 
@@ -688,15 +691,14 @@ class PosController extends GetxController {
     deleteCart();
     orderNotes.value = order.orderNotes!;
     for (var i = 0; i < order.orderDetails!.length; i++) {
-      FoodDataEntity food = order.orderDetails![i].food != null
-          ? order.orderDetails![i].food
-          : order.orderDetails![i].bundle;
+      FoodDataEntity food =
+          order.orderDetails![i].food ?? order.orderDetails![i].bundle;
 
       if (food.price != order.orderDetails![i].price &&
           food.foodVariantCategory != null &&
           food.foodVariantCategory!.isNotEmpty) {
-        final FoodVariantEntity? foodVariant =
-            food.foodVariantCategory![0].foodVariant!.firstWhere(
+        final foodVariant = food.foodVariantCategory![0].foodVariant!
+            .firstWhere(
                 (element) => element.price! == order.orderDetails![i].price);
         addCart(context, food, foodVariant, order.orderDetails![i].quantity,
             order.orderDetails![i].price, true);
@@ -716,7 +718,7 @@ class PosController extends GetxController {
 
     AppHelpersCommon.showCustomModalBottomSheet(
       context: context,
-      modal: CartScreen(),
+      modal: const CartScreen(),
       isDarkMode: false,
       isDrag: true,
       radius: 12,

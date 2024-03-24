@@ -14,7 +14,7 @@ import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.co
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/categorie_food.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/modals/food_variant.modal.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/pos_search_bar.component.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/shimmer_product_list.component.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/widgets/shimmer_product_list.widget.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/shop_product_item.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/product_in_cart.widget.dart';
 import 'package:upgrader/upgrader.dart';
@@ -162,7 +162,7 @@ class _PosScreenState extends State<PosScreen> {
                   ),
                   Obx(() {
                     return posController.isProductLoading.value
-                        ? const Expanded(child: ShimmerProductListComponent())
+                        ? const Expanded(child: ShimmerProductListWidget())
                         : Expanded(
                             child: posController.foods.isEmpty
                                 ? SvgPicture.asset(

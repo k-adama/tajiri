@@ -14,7 +14,7 @@ import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.
 
 class FoodVariantComponent extends StatefulWidget {
   final List<FoodVariantEntity>? foodVariant;
-  final FoodDataEntity food;
+  final FoodDataEntity? food;
   const FoodVariantComponent({
     super.key,
     required this.foodVariant,
@@ -89,9 +89,9 @@ class _FoodVariantComponentState extends State<FoodVariantComponent> {
                             ],
                           ),
                           Text(
-                            widget.food.quantity != 0
-                                ? widget.food.quantity != 0
-                                    ? '${widget.food.quantity ?? widget.food.type}  en stock'
+                            widget.food!.quantity != 0
+                                ? widget.food!.quantity != 0
+                                    ? '${widget.food!.quantity ?? widget.food!.type}  en stock'
                                     : 'Rupture'
                                 : 'Rupture',
                             style: Style.interNormal(
@@ -128,7 +128,7 @@ class _FoodVariantComponentState extends State<FoodVariantComponent> {
                                     onTap: () {
                                       posController.removeCount(
                                         context: context,
-                                        foodId: widget.food.id.toString(),
+                                        foodId: widget.food!.id.toString(),
                                         foodVariantId: foodVariant.id,
                                       );
                                     },
@@ -149,7 +149,7 @@ class _FoodVariantComponentState extends State<FoodVariantComponent> {
                                   UpdateCountProductButton(
                                     iconData: Icons.add,
                                     onTap: () {
-                                      addCount(widget.food, foodVariant);
+                                      addCount(widget.food!, foodVariant);
                                     },
                                   ),
                                 ],
@@ -161,7 +161,7 @@ class _FoodVariantComponentState extends State<FoodVariantComponent> {
                               radius: 3,
                               textColor: Style.secondaryColor,
                               onPressed: () {
-                                addCart(widget.food, foodVariant);
+                                addCart(widget.food!, foodVariant);
                               },
                             );
                     }),

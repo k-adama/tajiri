@@ -103,8 +103,8 @@ class ShopProductItemComponent extends StatelessWidget {
                   product?.quantity != 0
                       ? product?.quantity != 0
                           ? '${product?.quantity ?? product?.type}  en stock'
-                          : 'indisponible'
-                      : 'indisponible',
+                          : 'rupture'
+                      : 'rupture',
                   style: Style.interNormal(
                     size: 12.sp,
                     color: product?.quantity == 0 ? Style.dark : Style.dark,
@@ -121,8 +121,7 @@ class ShopProductItemComponent extends StatelessWidget {
                     )
                   : CustomButton(
                       background: Style.primaryColor,
-                      title:
-                          product?.quantity == 0 ? 'indisponible' : 'Ajouter',
+                      title: product?.quantity == 0 ? 'Rupture' : 'Ajouter',
                       radius: 3,
                       textColor: product?.quantity == 0
                           ? Style.dark
