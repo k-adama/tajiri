@@ -6,7 +6,7 @@ import 'package:tajiri_pos_mobile/presentation/controllers/stock/stock.binding.d
 import 'package:tajiri_pos_mobile/presentation/controllers/table/table.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/tutoriel/tutoriel.binding.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/auth/demo_login_view.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/auth/demo_login.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/login.screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/demo/demo.binding.dart';

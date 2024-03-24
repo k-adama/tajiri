@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/demo/components/swiper.component.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/demo/components/try_demo_or_not_component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/demo/components/try_demo_or_not.component.dart';
 class DemoAppScreen extends StatefulWidget {
   const DemoAppScreen({super.key});
 
