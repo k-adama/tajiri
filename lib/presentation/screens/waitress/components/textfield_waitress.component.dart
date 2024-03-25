@@ -8,7 +8,7 @@ class TextFieldWaitressComponent extends StatelessWidget {
   final String? optionalLabel;
   final String? hint;
   final String? initialValue;
-  final TextEditingController controller;
+  final TextEditingController? controller;
 
   const TextFieldWaitressComponent({
     super.key,
@@ -16,7 +16,7 @@ class TextFieldWaitressComponent extends StatelessWidget {
     this.optionalLabel,
     this.hint,
     this.initialValue,
-    required this.controller,
+    this.controller,
   });
 
   @override

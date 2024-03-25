@@ -20,6 +20,17 @@ ListingType? checkListingType(UserEntity? user) {
       : ListingType.waitress;
 }
 
+String userOrWaitressName(OrderEntity orderItem, UserEntity? user) {
+  final currentUserName = "${user?.firstname ?? ""} ${user?.lastname ?? ""}";
+  if (checkListingType(user) == ListingType.waitress) {
+    return orderItem.waitressId != null
+        ? orderItem.waitress?.name ?? currentUserName
+        : currentUserName;
+  } else {
+    return currentUserName;
+  }
+}
+
 getInitialName(String fullName) {
   List<String> nameParts = fullName.split(" ");
   String initials = "";
@@ -211,15 +222,13 @@ class ChartUtils {
     return const Text("error", style: style);
   }
 
-  static int getMaxItemChart(
-      List<OrderEntity> orders, String viewSelected) {
+  static int getMaxItemChart(List<OrderEntity> orders, String viewSelected) {
     final List<Map<String, dynamic>> ordersForChart =
         getReportChart(orders, viewSelected);
     return ordersForChart.length - 1;
   }
 
-  static double getMaxYChart(
-      List<OrderEntity> orders, String viewSelected) {
+  static double getMaxYChart(List<OrderEntity> orders, String viewSelected) {
     final List<Map<String, dynamic>> ordersForChart =
         getReportChart(orders, viewSelected);
     double maxY = ordersForChart
@@ -229,8 +238,7 @@ class ChartUtils {
     return maxY + 10.0;
   }
 
-  static double getMinYChart(
-      List<OrderEntity> orders, String viewSelected) {
+  static double getMinYChart(List<OrderEntity> orders, String viewSelected) {
     final List<Map<String, dynamic>> ordersForChart =
         getReportChart(orders, viewSelected);
     double minY = ordersForChart

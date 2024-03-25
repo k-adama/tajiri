@@ -2,6 +2,7 @@ import 'package:pdf/widgets.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
+import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
 import 'package:tajiri_pos_mobile/app/services/api_pdf.service.dart';
@@ -27,7 +28,6 @@ class ApiPdfInvoiceService {
                 buildTotal(ordersData)
               ]),
     );
-    // TODO : make a function to generate name with date or ...
     return ApiPdfService.saveDocument(name: 'facture.pdf', pdf: pdf);
   }
 
@@ -84,7 +84,7 @@ class ApiPdfInvoiceService {
                       children: [
                         information(
                           "Serveur:",
-                          "${user?.firstname ?? ""} ${user?.lastname ?? ""}",
+                          userOrWaitressName(ordersData, user),
                         ),
                         SizedBox(
                           width: 15,

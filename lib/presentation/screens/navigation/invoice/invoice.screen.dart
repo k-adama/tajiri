@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_details.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/detail_content.component.dart';
@@ -39,6 +41,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     final OrderEntity arguments = Get.arguments ?? widget.order;
 
     final user = controller.user;
+
     return PopScope(
       canPop: widget.isPaid == true ? false : true,
       onPopInvoked: widget.isPaid == true
@@ -115,8 +118,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                 children: [
                                   InformationInvoiceComponent(
                                     title: "Serveur:",
-                                    body:
-                                        "${user?.firstname ?? ""} ${user?.lastname ?? ""}",
+                                    body: userOrWaitressName(arguments, user),
                                   ),
                                   const Padding(
                                     padding:

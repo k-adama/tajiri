@@ -62,7 +62,8 @@ class WaitressController extends GetxController {
     }
   }
 
-  Future<void> handleCreateWaitress(BuildContext context) async {
+  Future<void> handleCreateWaitress(
+      BuildContext context, String? gender, String waitressName) async {
     isLoadingCreateWaitress = true;
     update();
     final user = AppHelpersCommon.getUserInLocalStorage();
@@ -72,12 +73,12 @@ class WaitressController extends GetxController {
       return;
     }
     Map<String, dynamic> requestData = {
-      "name": waitressName.text.toString(),
+      "name": waitressName,
       "restaurantId": restaurantId,
-      "gender": selectedGender,
+      "gender": gender,
     };
 
-    if (waitressName.text.isEmpty) {
+    if (waitressName.isEmpty) {
       isLoadingCreateWaitress = false;
       update();
       return AppHelpersCommon.showCheckTopSnackBarInfoForm(
@@ -85,7 +86,7 @@ class WaitressController extends GetxController {
         "Veuillez saisir le nom",
       );
     }
-    if (selectedGender == null) {
+    if (gender == null) {
       isLoadingCreateWaitress = false;
       update();
       return AppHelpersCommon.showCheckTopSnackBarInfoForm(
@@ -107,7 +108,7 @@ class WaitressController extends GetxController {
             haveButton: false,
             isCustomerAdded: false,
             title: "Serveur créé",
-            content: "Le serveur ${waitressName.text} a bien été ajouté",
+            content: "Le serveur $waitressName a bien été ajouté",
             svgPicture: "assets/svgs/waitress-sucess.svg",
             redirect: () {
               Get.close(2);
