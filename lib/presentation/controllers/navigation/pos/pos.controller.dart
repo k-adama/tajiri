@@ -184,7 +184,17 @@ class PosController extends GetxController {
   }
 
   Future<void> handleSaveOrder(BuildContext context, String status) async {
-    final String restaurantId = user!.role!.restaurantId!;
+    final restaurantId = user?.role?.restaurantId;
+
+    if (restaurantId == null) {
+      isLoadingOrder.value = false;
+      update();
+      return AppHelpersCommon.showCheckTopSnackBarInfoForm(
+        context,
+        "Aucun restaurant connecté",
+      );
+    }
+
     final itemFoods = cartItemList.map((item) {
       return {
         'foodId': item.id,
@@ -452,20 +462,19 @@ class PosController extends GetxController {
     String customerLastname,
     String customerPhone,
   ) async {
-    if (customer.value.id == null) {
-      print("CUSTOMER NULL");
-      return;
-    }
     isLoadingCreateCustomer = true;
     update();
 
-    final String restaurantId = user!.role!.restaurantId!;
+    final restaurantId = user?.role?.restaurantId!;
 
-    Map<String, dynamic> requestData = {
-      'lastname': customerLastname,
-      'phone': customerPhone,
-      'restaurantId': restaurantId,
-    };
+    if (restaurantId == null) {
+      isLoadingCreateCustomer = false;
+      update();
+      return AppHelpersCommon.showCheckTopSnackBarInfoForm(
+        context,
+        "Aucun restaurant connecté",
+      );
+    }
 
     if (customerLastname.trim().isEmpty || customerPhone.trim().isEmpty) {
       isLoadingCreateCustomer = false;
@@ -475,6 +484,11 @@ class PosController extends GetxController {
         "Veuillez remplir les champs obligatoires",
       );
     }
+    Map<String, dynamic> requestData = {
+      'lastname': customerLastname,
+      'phone': customerPhone,
+      'restaurantId': restaurantId,
+    };
     final response = await _productsRepository.createCustomers(requestData);
     response.when(success: (data) {
       final newCustomer = data!;
@@ -687,7 +701,7 @@ class PosController extends GetxController {
     }
   }
 
-  void fullCartAndUpdateOrder(BuildContext context, OrderEntity order) {
+  void fullCartAndUpdateOrder(BuildContext context, OrderEntity order) async {
     deleteCart();
     orderNotes.value = order.orderNotes!;
     for (var i = 0; i < order.orderDetails!.length; i++) {
