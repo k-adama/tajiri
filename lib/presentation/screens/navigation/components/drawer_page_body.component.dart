@@ -5,7 +5,6 @@ import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/drawer_body_list_row.component.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/product_in_cart.widget.dart';
 
 class DrawerPageBodyComponent extends StatelessWidget {
   const DrawerPageBodyComponent({super.key});
@@ -60,25 +59,23 @@ class DrawerPageBodyComponent extends StatelessWidget {
               emoji: "assets/svgs/waitress-gestion.svg",
             ),
             onTap: () {
-              // AppHelpers.showBottomSnackBar(context, const ProductInCart(),
-              //     const Duration(milliseconds: 500), false);
-              // Mixpanel.instance.track("View Waitress",
-              //     properties: {"Date": DateTime.now().toString()});
-              // Get.toNamed(Routes.WAITRESS);
+              Mixpanel.instance.track("View Waitress",
+                  properties: {"Date": DateTime.now().toString()});
+              Get.toNamed(Routes.WAITRESS);
             },
           ),
-        // if (checkListingType(user) == ListingType.table)
-        ListTile(
-          title: const DrawerBodyListRowComponent(
-            name: "Gestion des tables",
-            emoji: "assets/svgs/waitress-gestion.svg",
+        if (checkListingType(user) == ListingType.table)
+          ListTile(
+            title: const DrawerBodyListRowComponent(
+              name: "Gestion des tables",
+              emoji: "assets/svgs/waitress-gestion.svg",
+            ),
+            onTap: () {
+              Mixpanel.instance.track("View Tables",
+                  properties: {"Date": DateTime.now().toString()});
+              Get.toNamed(Routes.TABLE);
+            },
           ),
-          onTap: () {
-            Mixpanel.instance.track("View Tables",
-                properties: {"Date": DateTime.now().toString()});
-            Get.toNamed(Routes.TABLE);
-          },
-        ),
         ListTile(
           title: const DrawerBodyListRowComponent(
             name: "Tutoriels",

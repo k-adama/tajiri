@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 
-class SelectDropDownButton extends StatelessWidget {
+class SelectDropDownButton<T> extends StatelessWidget {
   final Color containerColor;
-  final TableModel? value;
+  final T? value;
   final String hinText;
-  final List<TableModel> tableListData;
-  final void Function(TableModel?)? onChanged;
+  final void Function(T?)? onChanged;
+  final List<DropdownMenuItem<T>>? items;
 
   const SelectDropDownButton({
     super.key,
     required this.containerColor,
     this.value,
-    required this.tableListData,
     required this.onChanged,
     required this.hinText,
+    this.items,
   });
 
   @override
@@ -28,7 +26,7 @@ class SelectDropDownButton extends StatelessWidget {
         color: containerColor,
       ),
       child: DropdownButtonHideUnderline(
-        child: DropdownButton<TableModel>(
+        child: DropdownButton<T>(
           value: value,
           borderRadius: BorderRadius.circular(24),
           icon: const Padding(
@@ -38,26 +36,7 @@ class SelectDropDownButton extends StatelessWidget {
               color: Style.black,
             ),
           ),
-          items: tableListData.map((TableModel item) {
-            int index = tableListData.indexOf(item);
-            return DropdownMenuItem<TableModel>(
-              value: item,
-              child: Container(
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  color: Style.colors[index % Style.colors.length],
-                ),
-                child: Row(
-                  children: [
-                    10.horizontalSpace, // Assuming you have a horizontalSpace widget
-                    4.horizontalSpace,
-                    Text('${item.name}'),
-                  ],
-                ),
-              ),
-            );
-          }).toList(),
+          items: items,
           hint: Container(
             margin: const EdgeInsets.symmetric(horizontal: 11),
             child: Text(hinText),

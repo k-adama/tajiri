@@ -27,7 +27,8 @@ class OrdersController extends GetxController {
   List<OrderEntity> ordersInit = List<OrderEntity>.empty().obs;
   List<OrderEntity> ordersPending = List<OrderEntity>.empty().obs;
   List<OrderEntity> ordersPaid = List<OrderEntity>.empty().obs;
-  List<OrdersReportsEntity> ordersReports = List<OrdersReportsEntity>.empty().obs;
+  List<OrdersReportsEntity> ordersReports =
+      List<OrdersReportsEntity>.empty().obs;
   Rx<bool> isLoadingOrder = false.obs;
   RxString currentOrderId = "".obs;
   RxString currentOrderNo = "".obs;
@@ -87,7 +88,9 @@ class OrdersController extends GetxController {
     String startDate =
         DateFormat("yyyy-MM-dd").format(startRangeDate ?? sevenDaysAgo);
     String endDate = DateFormat("yyyy-MM-dd").format(endRangeDate ?? today);
-    String? ownerId = (user?.role?.permissions![0].dashboardUnique ?? false) ? user?.id : null;
+    String? ownerId = (user?.role?.permissions![0].dashboardUnique ?? false)
+        ? user?.id
+        : null;
     final connected = await AppConnectivity.connectivity();
 
     if (connected) {

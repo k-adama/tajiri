@@ -6,7 +6,7 @@ import 'package:get/route_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/table.entiy.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/table/table.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/table/components/custom_table.component.dart';
@@ -101,7 +101,7 @@ class _TablesBoardComponentState extends State<TablesBoardComponent> {
     );
   }
 
-  void _navigateToEditTable(TableModel tableModel) {
+  void _navigateToEditTable(TableEntity tableModel) {
     final String tableId = tableModel.id.toString();
     final String tableName = tableModel.name.toString();
     final String tableDescription = tableModel.description.toString();

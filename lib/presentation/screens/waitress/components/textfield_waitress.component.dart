@@ -3,24 +3,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
 
-class CustomTextField extends StatelessWidget {
+class TextFieldWaitressComponent extends StatelessWidget {
   final String label;
   final String? optionalLabel;
   final String? hint;
-  final String? value;
-  final TextEditingController? controller;
-  final Function(String text)? onChange;
-  final TextInputType keyboardType;
+  final String? initialValue;
+  final TextEditingController controller;
 
-  const CustomTextField({
+  const TextFieldWaitressComponent({
     super.key,
     required this.label,
     this.optionalLabel,
     this.hint,
-    this.value,
-    this.onChange,
-    required this.keyboardType,
-    this.controller,
+    this.initialValue,
+    required this.controller,
   });
 
   @override
@@ -28,12 +24,12 @@ class CustomTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 24),
+        SizedBox(height: 24.h),
         Text(
           "$label ${optionalLabel != null ? '($optionalLabel)' : ''}",
           style: Style.interBold(size: 16.sp),
         ),
-        const SizedBox(height: 4),
+        4.verticalSpace,
         OutlinedBorderTextFormField(
           textController: controller,
           labelText: hint,
@@ -48,9 +44,6 @@ class CustomTextField extends StatelessWidget {
           isInterNormal: false,
           borderRaduis: BorderRadius.circular(10),
           isCenterText: false,
-          onChanged: onChange,
-          inputType: keyboardType,
-          initialText: value,
         ),
       ],
     );

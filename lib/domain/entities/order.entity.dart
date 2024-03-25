@@ -1,6 +1,8 @@
 import 'package:tajiri_pos_mobile/domain/entities/customer.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_details.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/payment_method.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/table.entiy.dart';
+import 'package:tajiri_pos_mobile/domain/entities/waitress.entity.dart';
 
 class OrderEntity {
   OrderEntity({
@@ -29,8 +31,8 @@ class OrderEntity {
     PaymentMethodEntity? paymentMethod,
     CustomerEntity? customer,
     List<OrderDetailsEntity>? orderDetails,
-    TableModel? table,
-    WaitressModel? waitress,
+    TableEntity? table,
+    WaitressEntity? waitress,
   }) {
     _id = id;
     _orderNumber = orderNumber;
@@ -83,9 +85,9 @@ class OrderEntity {
     _createdAt = json['createdAt'];
     _updatedAt = json['updatedAt'];
     _tax = json['tax'];
-    _table = json['table'] != null ? TableModel.fromJson(json['table']) : null;
+    _table = json['table'] != null ? TableEntity.fromJson(json['table']) : null;
     _waitress = json['waitress'] != null
-        ? WaitressModel.fromJson(json['waitress'])
+        ? WaitressEntity.fromJson(json['waitress'])
         : null;
     _paymentMethod = json['paymentMethod'] != null
         ? PaymentMethodEntity.fromJson(json['paymentMethod'])
@@ -124,8 +126,8 @@ class OrderEntity {
   String? _createdAt;
   String? _updatedAt;
   int? _tax;
-  TableModel? _table;
-  WaitressModel? _waitress;
+  TableEntity? _table;
+  WaitressEntity? _waitress;
   PaymentMethodEntity? _paymentMethod;
   CustomerEntity? _customer;
   List<OrderDetailsEntity>? _orderDetails;
@@ -155,7 +157,7 @@ class OrderEntity {
     String? waitressId,
     PaymentMethodEntity? paymentMethod,
     CustomerEntity? customer,
-    WaitressModel? waitress,
+    WaitressEntity? waitress,
     List<OrderDetailsEntity>? orderDetails,
   }) =>
       OrderEntity(
@@ -203,8 +205,8 @@ class OrderEntity {
   String? get orderNotes => _orderNotes;
   String? get tableId => _tableId;
   String? get waitressId => _waitressId;
-  TableModel? get table => _table;
-  WaitressModel? get waitress => _waitress;
+  TableEntity? get table => _table;
+  WaitressEntity? get waitress => _waitress;
   int? get discountAmount => _discountAmount;
   int? get tax => _tax;
   String? get deliveryDate => _deliveryDate;
@@ -254,168 +256,6 @@ class OrderEntity {
     if (_orderDetails != null) {
       map['orderDetails'] = _orderDetails?.map((v) => v.toJson()).toList();
     }
-    return map;
-  }
-}
-
-class WaitressModel {
-  WaitressModel({
-    String? id,
-    String? name,
-    String? restaurantId,
-    String? gender,
-    String? createdAt,
-    String? updatedAt,
-  }) {
-    _id = id;
-    _name = name;
-    _restaurantId = restaurantId;
-    _gender = gender;
-    _createdAt = createdAt;
-    _updatedAt = updatedAt;
-  }
-
-  WaitressModel.fromJson(dynamic json) {
-    _id = json['id'];
-    _name = json['name'];
-    _restaurantId = json['restaurantId'];
-    _gender = json['gender'];
-    _createdAt = json['createdAt'];
-    _updatedAt = json['updatedAt'];
-  }
-
-  String? _id;
-  String? _name;
-  String? _restaurantId;
-  String? _gender;
-  String? _createdAt;
-  String? _updatedAt;
-
-  WaitressModel copyWith(
-          {String? id,
-          String? name,
-          String? restaurantId,
-          String? gender,
-          String? createdAt,
-          String? updatedAt}) =>
-      WaitressModel(
-        id: id ?? _id,
-        name: name ?? _name,
-        restaurantId: restaurantId ?? _restaurantId,
-        gender: gender ?? _gender,
-        createdAt: createdAt ?? _createdAt,
-        updatedAt: updatedAt ?? _updatedAt,
-      );
-
-  String? get id => _id;
-  String? get name => _name;
-  String? get restaurantId => _restaurantId;
-  String? get gender => _gender;
-  String? get createdAt => _createdAt;
-  String? get updatedAt => _updatedAt;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = _id;
-    map['name'] = _name;
-    map['restaurantId'] = _restaurantId;
-    map['gender'] = _gender;
-    map['createdAt'] = _createdAt;
-    map['updatedAt'] = _updatedAt;
-
-    return map;
-  }
-}
-
-class TableModel {
-  TableModel({
-    String? id,
-    String? name,
-    String? description,
-    int? persons,
-    String? imageUrl,
-    String? restaurantId,
-    String? createdAt,
-    String? updatedAt,
-    bool? status,
-  }) {
-    _id = id;
-    _name = name;
-    _description = description;
-    _imageUrl = imageUrl;
-    _persons = persons;
-    _restaurantId = restaurantId;
-    _createdAt = createdAt;
-    _updatedAt = updatedAt;
-    _status = status;
-  }
-
-  TableModel.fromJson(dynamic json) {
-    _id = json['id'];
-    _name = json['name'];
-    _description = json['description'];
-    _imageUrl = json['imageUrl'];
-    _persons = json['persons'];
-    _restaurantId = json['restaurantId'];
-    _status = json['status'];
-    _createdAt = json['createdAt'];
-    _updatedAt = json['updatedAt'];
-  }
-
-  String? _id;
-  String? _name;
-  String? _description;
-  String? _imageUrl;
-  int? _persons;
-  String? _restaurantId;
-  String? _createdAt;
-  String? _updatedAt;
-  bool? _status;
-
-  TableModel copyWith(
-          {String? id,
-          String? name,
-          String? description,
-          String? imageUrl,
-          int? persons,
-          String? restaurantId,
-          String? createdAt,
-          String? updatedAt,
-          bool? status}) =>
-      TableModel(
-        id: id ?? _id,
-        name: name ?? _name,
-        description: description ?? _description,
-        imageUrl: imageUrl ?? _imageUrl,
-        persons: persons ?? _persons,
-        restaurantId: restaurantId ?? _restaurantId,
-        createdAt: createdAt ?? _createdAt,
-        updatedAt: updatedAt ?? _updatedAt,
-        status: status ?? _status,
-      );
-
-  String? get id => _id;
-  String? get name => _name;
-  String? get description => _description;
-  String? get imageUrl => _imageUrl;
-  String? get restaurantId => _restaurantId;
-  String? get createdAt => _createdAt;
-  String? get updatedAt => _updatedAt;
-  int? get persons => _persons;
-  bool? get status => _status;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = _id;
-    map['name'] = _name;
-    map['description'] = _description;
-    map['imageUrl'] = _imageUrl;
-    map['persons'] = _persons;
-    map['status'] = _status;
-    map['restaurantId'] = _restaurantId;
-    map['createdAt'] = _createdAt;
-    map['updatedAt'] = _updatedAt;
-
     return map;
   }
 }

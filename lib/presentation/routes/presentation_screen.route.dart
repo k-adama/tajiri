@@ -6,6 +6,7 @@ import 'package:tajiri_pos_mobile/presentation/controllers/stock/stock.binding.d
 import 'package:tajiri_pos_mobile/presentation/controllers/table/table.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/tutoriel/tutoriel.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/waitress/waitress.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/demo_login.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/login.screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -28,6 +29,8 @@ import 'package:tajiri_pos_mobile/presentation/screens/stock/stock.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/table/edit_table.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/table/table.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/tutoriel/tutoriel.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/waitress/edit_waitress.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/waitress/waitress.screen.dart';
 
 part 'presentation_path.route.dart';
 
@@ -97,10 +100,24 @@ class PresentationScreenRoute {
       name: _Paths.STOCK,
       page: () => const StockScreen(),
       binding: StockBinding(),
-    ),   
+    ),
+    GetPage(
+      name: _Paths.TABLE,
+      page: () => const TableScreen(),
+      binding: TableBinding(),
+    ),
     GetPage(
       name: _Paths.EDIT_TABLE,
       page: () => const EditTableScreen(),
+    ),
+    GetPage(
+      name: _Paths.WAITRESS,
+      page: () => const WaitressScreen(),
+      binding: WaitressBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_WAITRESS,
+      page: () => const EditWaitressScreen(),
     ),
     GetPage(
       name: _Paths.PRODUCTS,
@@ -112,11 +129,5 @@ class PresentationScreenRoute {
       page: () => const EditFoodAndVariantComponent(),
       binding: ProductsBinding(),
     ),
-    GetPage(
-      name: _Paths.TABLE,
-      page: () => const TableScreen(),
-      binding: TableBinding(),
-    ),
- 
   ];
 }
