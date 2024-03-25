@@ -6,11 +6,12 @@ import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_food_variant_modal.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/product/components/modals/edit_food_variant.modal.dart';
 
 class FoodVariantListComponent extends StatefulWidget {
-  FoodVariantCategoryEntity foodVariantCategory;
-  FoodVariantListComponent({super.key, required this.foodVariantCategory});
+  final FoodVariantCategoryEntity foodVariantCategory;
+  const FoodVariantListComponent(
+      {super.key, required this.foodVariantCategory});
 
   @override
   State<FoodVariantListComponent> createState() =>

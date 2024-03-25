@@ -7,7 +7,7 @@ import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
-import 'package:tajiri_pos_mobile/app/services/app_connectivity.dart';
+import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
 import 'package:tajiri_pos_mobile/domain/entities/categorie_entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/customer.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
@@ -18,7 +18,7 @@ import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/data/repositories/products/products.repository.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart.screen.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull_dialog.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
 
 class PosController extends GetxController {
   final ProductsRepository _productsRepository = ProductsRepository();
@@ -49,7 +49,6 @@ class PosController extends GetxController {
 
   final foodVariantCategories = List<FoodVariantCategoryEntity>.empty().obs;
 
-  CustomerEntity currentCustomer = CustomerEntity();
   List<CustomerEntity> customers = List<CustomerEntity>.empty().obs;
   List<CustomerEntity> customerInit = List<CustomerEntity>.empty().obs;
   Rx<CustomerEntity> customer = CustomerEntity().obs;
@@ -100,7 +99,7 @@ class PosController extends GetxController {
   }
 
   Future<void> fetchFoods() async {
-    final connected = await AppConnectivity.connectivity();
+    final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isProductLoading.value = true;
       final response = await _productsRepository.getFoods();
@@ -432,7 +431,7 @@ class PosController extends GetxController {
   }
 
   Future<void> fetchCustomers() async {
-    final connected = await AppConnectivity.connectivity();
+    final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isCustomnersLoading = true;
       update();
@@ -465,7 +464,7 @@ class PosController extends GetxController {
     isLoadingCreateCustomer = true;
     update();
 
-    final restaurantId = user?.role?.restaurantId!;
+    final restaurantId = user?.role?.restaurantId;
 
     if (restaurantId == null) {
       isLoadingCreateCustomer = false;
@@ -525,7 +524,6 @@ class PosController extends GetxController {
 
   void customerInitialState() {
     isLoading = false;
-    currentCustomer = CustomerEntity();
     //Get.back();
     update();
   }

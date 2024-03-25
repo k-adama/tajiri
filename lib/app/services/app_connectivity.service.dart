@@ -1,7 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-abstract class AppConnectivity {
-  AppConnectivity._();
+abstract class AppConnectivityService {
+  AppConnectivityService._();
 
   static Future<bool> connectivity() async {
     var connectivityResult = await (Connectivity().checkConnectivity());

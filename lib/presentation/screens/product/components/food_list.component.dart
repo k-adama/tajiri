@@ -87,14 +87,14 @@ class FoodListComponent extends StatelessWidget {
               )
             ],
           ),
-          Divider()
+          const Divider()
         ],
       ),
     );
   }
 
   Widget productInformation(String title, double size) {
-    return Container(
+    return SizedBox(
       width: 80.w,
       child: Text(
         title,

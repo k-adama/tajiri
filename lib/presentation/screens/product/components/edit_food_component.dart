@@ -10,7 +10,7 @@ import 'package:tajiri_pos_mobile/presentation/controllers/product/product.contr
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_food_tabulation.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_product_price_button.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_tabulation.component.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_variant_added_list.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_variant_added_list.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/product_price_modal.component.dart';
 
 class EditFoodAndVariantComponent extends StatefulWidget {

@@ -7,12 +7,11 @@ class OutlineBorderedPickDateAndTimeComponent extends StatelessWidget {
   final VoidCallback? onTap;
   final IconData? iconData;
   const OutlineBorderedPickDateAndTimeComponent(
-      {Key? key,
+      {super.key,
       required this.labelText,
       this.dateTimeController,
       this.onTap,
-      this.iconData})
-      : super(key: key);
+      this.iconData});
 
   @override
   Widget build(BuildContext context) {

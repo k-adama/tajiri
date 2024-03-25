@@ -9,8 +9,8 @@ import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
 
 class EditVariantComponent extends StatefulWidget {
-  FoodVariantEntity foodVariant;
-  EditVariantComponent({
+  final FoodVariantEntity foodVariant;
+  const EditVariantComponent({
     super.key,
     required this.foodVariant,
   });
@@ -54,7 +54,7 @@ class _EditVariantComponentState extends State<EditVariantComponent> {
                   suffixIcon: Container(
                     width: 80.w,
                     height: 65.h,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Style.secondaryColor,
                       borderRadius: BorderRadius.only(
                           topRight: Radius.circular(15),

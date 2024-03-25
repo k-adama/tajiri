@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
-import 'package:tajiri_pos_mobile/app/services/app_connectivity.dart';
+import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
 import 'package:tajiri_pos_mobile/domain/entities/table.entiy.dart';
 import 'package:tajiri_pos_mobile/data/repositories/tables/tables.repository.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull_dialog.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
 
 class TableController extends GetxController {
   final TablesRepository _tablesRepository = TablesRepository();
@@ -35,7 +35,7 @@ class TableController extends GetxController {
 
   Future<void> fetchTables() async {
     clearSelectTable();
-    final connected = await AppConnectivity.connectivity();
+    final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isLoadingTable = true;
       update();
@@ -61,7 +61,7 @@ class TableController extends GetxController {
 
   Future<void> saveTable(BuildContext context, String tableName,
       String tableDescription, String tableNumberOfPlace) async {
-    final connected = await AppConnectivity.connectivity();
+    final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isLoadingTable = true;
       update();
@@ -128,7 +128,7 @@ class TableController extends GetxController {
   }
 
   Future<void> updateTableName(BuildContext context, String tableId) async {
-    final connected = await AppConnectivity.connectivity();
+    final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isLoadingEdetingTable = true;
       update();
@@ -191,7 +191,7 @@ class TableController extends GetxController {
   }
 
   Future<void> deleteTableName(BuildContext context, String tableId) async {
-    final connected = await AppConnectivity.connectivity();
+    final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isLoadingDeleteTable = true;
       update();

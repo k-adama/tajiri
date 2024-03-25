@@ -4,14 +4,14 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/instance_manager.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
-import 'package:tajiri_pos_mobile/app/services/app_connectivity.dart';
+import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
 import 'package:tajiri_pos_mobile/data/repositories/products/products.repository.dart';
 import 'package:tajiri_pos_mobile/domain/entities/categorie_entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull_dialog.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
 
 class ProductsController extends GetxController {
   final ProductsRepository _productsRepository = ProductsRepository();
@@ -44,7 +44,7 @@ class ProductsController extends GetxController {
   }
 
   Future<void> fetchFoods() async {
-    final connected = await AppConnectivity.connectivity();
+    final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isProductLoading = true;
       final response = await _productsRepository.getFoods();
@@ -113,7 +113,7 @@ class ProductsController extends GetxController {
 
   Future<void> updateFood(
       BuildContext context, FoodDataEntity foodData, bool isPrice) async {
-    final connected = await AppConnectivity.connectivity();
+    final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isProductLoading = true;
       update();
@@ -194,7 +194,7 @@ class ProductsController extends GetxController {
 
   Future<void> updateFoodVariant(
       BuildContext context, FoodVariantEntity foodVariant) async {
-    final connected = await AppConnectivity.connectivity();
+    final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isProductLoading = true;
       update();

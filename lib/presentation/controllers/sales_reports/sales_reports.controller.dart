@@ -8,7 +8,7 @@ import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/app/services/app_connectivity.dart';
+import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
 import 'package:tajiri_pos_mobile/data/repositories/orders/orders.repository.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
@@ -38,7 +38,7 @@ class SalesReportController extends GetxController {
         user?.role?.permissions![0].dashboardUnique == true ? user?.id : null;
     startDate = "${pickStartDate.text} ${pickStartTime.text}";
     endDate = "${pickEndDate.text} ${pickEndTime.text}";
-    final connected = await AppConnectivity.connectivity();
+    final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isLoadingReport = true;
       update();

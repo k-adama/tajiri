@@ -11,7 +11,8 @@ class StockModalBodyComponent extends StatefulWidget {
   StockModalBodyComponent({super.key, required this.food});
 
   @override
-  State<StockModalBodyComponent> createState() => _StockModalBodyComponentState();
+  State<StockModalBodyComponent> createState() =>
+      _StockModalBodyComponentState();
 }
 
 class _StockModalBodyComponentState extends State<StockModalBodyComponent> {
@@ -35,7 +36,7 @@ class _StockModalBodyComponentState extends State<StockModalBodyComponent> {
     int addValue = quantity + ajustementStock;
     return Column(
       children: [
-        Container(
+        SizedBox(
           width: double.infinity,
           height: 120,
           child: Column(
@@ -48,17 +49,18 @@ class _StockModalBodyComponentState extends State<StockModalBodyComponent> {
               ),
               Text(
                 widget.food?.name ?? "",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ],
           ),
         ),
-        Container(
+        SizedBox(
           width: double.infinity,
           height: 130,
           child: Column(
             children: [
-              Text(
+              const Text(
                 "Faire un ajustement",
                 style: TextStyle(fontSize: 20),
               ),
@@ -80,7 +82,7 @@ class _StockModalBodyComponentState extends State<StockModalBodyComponent> {
                               color: Style.secondaryColor,
                               style: BorderStyle.solid,
                               width: 1)),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           "-",
                           style: TextStyle(
@@ -141,7 +143,7 @@ class _StockModalBodyComponentState extends State<StockModalBodyComponent> {
                             style: BorderStyle.solid,
                             width: 1,
                           )),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           "+",
                           style: TextStyle(
@@ -159,7 +161,7 @@ class _StockModalBodyComponentState extends State<StockModalBodyComponent> {
         ),
         Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Container(
+          child: SizedBox(
             width: double.infinity,
             height: 52,
             child: Column(

@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/effects/bouncing_button.effect.dart';
 
-class PopButton extends StatelessWidget {
+class PopButtonComponent extends StatelessWidget {
   final String heroTag;
 
-  const PopButton({Key? key, required this.heroTag}) : super(key: key);
+  const PopButtonComponent({super.key, required this.heroTag});
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,4 @@
-import 'package:tajiri_pos_mobile/app/services/app_validators.dart';
+import 'package:tajiri_pos_mobile/app/services/app_validators.service.dart';
 
 class LoginEntity {
   final String? email;
@@ -11,7 +11,7 @@ class LoginEntity {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    AppValidators.isValidEmail(email ?? "")
+    AppValidatorsService.isValidEmail(email ?? "")
         ? (map['email'] = email)
         : (map['phone'] = email);
     map['password'] = password;

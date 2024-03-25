@@ -6,10 +6,10 @@ class SalesPricesComponent extends StatelessWidget {
   final String total;
   final Widget component;
   const SalesPricesComponent({
-    Key? key,
+    super.key,
     required this.total,
     required this.component,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
