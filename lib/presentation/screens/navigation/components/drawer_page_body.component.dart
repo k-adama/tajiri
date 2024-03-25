@@ -66,18 +66,18 @@ class DrawerPageBodyComponent extends StatelessWidget {
               Get.toNamed(Routes.WAITRESS);
             },
           ),
-        // if (checkListingType(user) == ListingType.table)
-        ListTile(
-          title: const DrawerBodyListRowComponent(
-            name: "Gestion des tables",
-            emoji: "assets/svgs/waitress-gestion.svg",
+        if (checkListingType(user) == ListingType.table)
+          ListTile(
+            title: const DrawerBodyListRowComponent(
+              name: "Gestion des tables",
+              emoji: "assets/svgs/waitress-gestion.svg",
+            ),
+            onTap: () {
+              Mixpanel.instance.track("View Tables",
+                  properties: {"Date": DateTime.now().toString()});
+              Get.toNamed(Routes.TABLE);
+            },
           ),
-          onTap: () {
-            Mixpanel.instance.track("View Tables",
-                properties: {"Date": DateTime.now().toString()});
-            Get.toNamed(Routes.TABLE);
-          },
-        ),
         ListTile(
           title: const DrawerBodyListRowComponent(
             name: "Tutoriels",

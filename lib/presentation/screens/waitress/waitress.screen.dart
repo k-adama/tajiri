@@ -20,14 +20,13 @@ class WaitressScreen extends StatefulWidget {
 }
 
 class _WaitressScreenState extends State<WaitressScreen> {
-  final WaitressController waitressController = Get.find();
   final RefreshController _controller = RefreshController();
-  void _onRefresh() async {
+  void _onRefresh(WaitressController waitressController) async {
     waitressController.fetchWaitress();
     _controller.refreshCompleted();
   }
 
-  void _onLoading() async {
+  void _onLoading(WaitressController waitressController) async {
     waitressController.fetchWaitress();
     _controller.loadComplete();
   }
@@ -47,31 +46,35 @@ class _WaitressScreenState extends State<WaitressScreen> {
         ),
       ),
       body: GetBuilder<WaitressController>(
-        builder: (_waitressController) => Padding(
+        builder: (waitressController) => Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Liste des serveurs",
-                    style: Style.interBold(size: 25),
-                  )),
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Liste des serveurs",
+                  style: Style.interBold(size: 25),
+                ),
+              ),
               Expanded(
-                child: _waitressController.isLoadingCreateWaitress
+                child: waitressController.isLoadingCreateWaitress
                     ? const ShimmerProductListWidget()
                     : SmartRefresher(
                         controller: _controller,
                         enablePullDown: true,
                         enablePullUp: false,
-                        onRefresh: _onRefresh,
-                        onLoading: _onLoading,
+                        onRefresh: () {
+                          _onRefresh(waitressController);
+                        },
+                        onLoading: () {
+                          _onLoading(waitressController);
+                        },
                         child: ListView.builder(
-                          itemCount: _waitressController.waitress.length,
+                          itemCount: waitressController.waitress.length,
                           itemBuilder: (context, index) {
-                            final waitress =
-                                _waitressController.waitress[index];
+                            final waitress = waitressController.waitress[index];
                             return Container(
                               padding: const EdgeInsets.all(6.0),
                               margin: const EdgeInsets.symmetric(
@@ -132,7 +135,7 @@ class _WaitressScreenState extends State<WaitressScreen> {
                                               'gender': waitress.gender,
                                             });
                                       } else if (value == 'delete') {
-                                        _waitressController.deleteWaitressName(
+                                        waitressController.deleteWaitressName(
                                             context, waitress.id!);
                                       }
                                     },
