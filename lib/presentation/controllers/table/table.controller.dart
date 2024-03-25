@@ -59,7 +59,8 @@ class TableController extends GetxController {
     update();
   }
 
-  Future<void> saveTable(BuildContext context) async {
+  Future<void> saveTable(BuildContext context, String tableName,
+      String tableDescription, String tableNumberOfPlace) async {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
       isLoadingTable = true;
@@ -71,7 +72,18 @@ class TableController extends GetxController {
         return;
       }
 
+      final persons = int.tryParse(tableNumberOfPlace);
+
       if (tableName.isEmpty || tableNumberOfPlace.isEmpty) {
+        isLoadingTable = false;
+        update();
+        return AppHelpersCommon.showCheckTopSnackBarInfoForm(
+          context,
+          "Veuillez remplir tous les champs obligatoires",
+        );
+      }
+
+      if (persons == null) {
         isLoadingTable = false;
         update();
         return AppHelpersCommon.showCheckTopSnackBarInfoForm(
@@ -82,7 +94,7 @@ class TableController extends GetxController {
       Map<String, dynamic> requestData = {
         'name': tableName,
         'description': tableDescription,
-        'persons': int.parse(tableNumberOfPlace),
+        'persons': persons,
         "status": true,
         "restaurantId": restaurantId,
       };
@@ -120,43 +132,61 @@ class TableController extends GetxController {
     if (connected) {
       isLoadingEdetingTable = true;
       update();
-      Map<String, dynamic> updateData = {
-        'name': tableName,
-        'description': tableDescription,
-        'persons': int.parse(tableNumberOfPlace),
-      };
+      try {
+        final persons = int.tryParse(tableNumberOfPlace);
 
-      final response = await _tablesRepository.updateTable(updateData, tableId);
+        if (persons == null) {
+          isLoadingEdetingTable = false;
+          update();
+          return AppHelpersCommon.showCheckTopSnackBarInfoForm(
+            context,
+            "Veuillez remplir tous les champs obligatoires",
+          );
+        }
 
-      response.when(success: (data) {
-        tableId = "";
-        AppHelpersCommon.showAlertDialog(
-          context: context,
-          canPop: false,
-          child: SuccessfullDialog(
-            haveButton: false,
-            isCustomerAdded: false,
-            title: "Table modifiée",
-            content: "La $tableName a bien été modifiée",
-            svgPicture: "assets/svgs/table 1.svg",
-            redirect: () {
-              Get.close(2);
-            },
-          ),
-        );
-        fetchTables();
-        tableInitialState();
+        Map<String, dynamic> updateData = {
+          'name': tableName,
+          'description': tableDescription,
+          'persons': persons,
+        };
+
+        final response =
+            await _tablesRepository.updateTable(updateData, tableId);
+
+        response.when(success: (data) {
+          tableId = "";
+          AppHelpersCommon.showAlertDialog(
+            context: context,
+            canPop: false,
+            child: SuccessfullDialog(
+              haveButton: false,
+              isCustomerAdded: false,
+              title: "Table modifiée",
+              content: "La $tableName a bien été modifiée",
+              svgPicture: "assets/svgs/table 1.svg",
+              redirect: () {
+                Get.close(2);
+              },
+            ),
+          );
+          fetchTables();
+          tableInitialState();
+          isLoadingEdetingTable = false;
+          update();
+        }, failure: (failure, status) {
+          AppHelpersCommon.showCheckTopSnackBar(
+            context,
+            status.toString(),
+          );
+          isLoadingEdetingTable = false;
+          tableId = "";
+          update();
+        });
+      } catch (e) {
+        print(e);
         isLoadingEdetingTable = false;
         update();
-      }, failure: (failure, status) {
-        AppHelpersCommon.showCheckTopSnackBar(
-          context,
-          status.toString(),
-        );
-        isLoadingEdetingTable = false;
-        tableId = "";
-        update();
-      });
+      }
     }
   }
 

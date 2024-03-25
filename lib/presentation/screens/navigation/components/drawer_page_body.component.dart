@@ -35,9 +35,9 @@ class DrawerPageBodyComponent extends StatelessWidget {
                   emoji: "assets/svgs/stock.svg",
                 ),
                 onTap: () {
-                   Mixpanel.instance.track("View Stocks",
+                  Mixpanel.instance.track("View Stocks",
                       properties: {"Date": DateTime.now().toString()});
-                   Get.toNamed(Routes.STOCK);
+                  Get.toNamed(Routes.STOCK);
                 },
               )
             : Container(),

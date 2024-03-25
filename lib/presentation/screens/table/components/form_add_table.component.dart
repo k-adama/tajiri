@@ -14,6 +14,10 @@ class FormAddTableComponent extends StatefulWidget {
 }
 
 class _FormAddTableComponentState extends State<FormAddTableComponent> {
+  TextEditingController tableNameController = TextEditingController();
+  TextEditingController tableDescriptionController = TextEditingController();
+  TextEditingController tableNumberOfPlaceController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TableController>(
@@ -27,27 +31,21 @@ class _FormAddTableComponentState extends State<FormAddTableComponent> {
             label: 'Nom',
             optionalLabel: null,
             hint: 'Nom de la table',
-            onChange: (text) {
-              tableController.setTableName(text);
-            },
+            controller: tableNameController,
             keyboardType: TextInputType.text,
           ),
           CustomTextField(
             label: 'Description',
             optionalLabel: null,
             hint: 'Description',
-            onChange: (text) {
-              tableController.setTableDescription(text);
-            },
+            controller: tableDescriptionController,
             keyboardType: TextInputType.multiline,
           ),
           CustomTextField(
             label: 'Nombre de siège',
             optionalLabel: null,
             hint: 'Nombre de place',
-            onChange: (text) {
-              tableController.setTableNumberPlace(text);
-            },
+            controller: tableNumberOfPlaceController,
             keyboardType: TextInputType.number,
           ),
           24.verticalSpace,
@@ -62,7 +60,16 @@ class _FormAddTableComponentState extends State<FormAddTableComponent> {
               isLoadingColor: Style.secondaryColor,
               radius: 5,
               onPressed: () {
-                tableController.saveTable(context);
+                final tableName = tableNameController.text;
+                final tableDescription = tableDescriptionController.text;
+                final tableNumberOfPlace = tableNumberOfPlaceController.text;
+
+                tableController.saveTable(
+                  context,
+                  tableName,
+                  tableDescription,
+                  tableNumberOfPlace,
+                );
               },
             ),
           ),

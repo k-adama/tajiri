@@ -58,7 +58,7 @@ class _InvoiceButtonsComponentState extends State<InvoiceButtonsComponent> {
                 CustomButton(
                   title: widget.ordersData.status == "PAID"
                       ? 'Partager le reçu'
-                      : 'Imprimer la facture',
+                      : 'Partager la facture',
                   textColor: Style.secondaryColor,
                   isLoadingColor: Style.secondaryColor,
                   weight: 20,

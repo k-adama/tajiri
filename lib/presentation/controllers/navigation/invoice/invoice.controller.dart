@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
+import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/api_pdf.service.dart';
@@ -97,7 +98,7 @@ class InvoiceController extends GetxController {
         "",
         30);
     bluetooth.printLeftRight(
-        "Serveur: ${user?.firstname ?? ""} ${user?.lastname ?? ""}", "", 30);
+        "Serveur:  ${userOrWaitressName(order, user)}", "", 30);
     bluetooth.printLeftRight("N.#: ${order.orderNumber}", "", 30);
     bluetooth.printNewLine();
     order.status == "PAID"
