@@ -76,7 +76,7 @@ class AppHelpersCommon {
 
   // MODAL
 
-  static void showCustomModalBottomSheet({
+  static Future<dynamic> showCustomModalBottomSheet({
     required BuildContext context,
     required Widget modal,
     required bool isDarkMode,
@@ -85,7 +85,7 @@ class AppHelpersCommon {
     bool isDismissible = true,
     double paddingTop = 200,
   }) {
-    showModalBottomSheet(
+    return showModalBottomSheet(
       isDismissible: isDismissible,
       enableDrag: isDrag,
       shape: RoundedRectangleBorder(
@@ -185,7 +185,7 @@ class AppHelpersCommon {
       text: TextSpan(text: text, style: style),
       maxLines: 1,
       textDirection:
-      ui.TextDirection.ltr, // Use TextDirection.ltr for left-to-right text
+          ui.TextDirection.ltr, // Use TextDirection.ltr for left-to-right text
     )..layout(minWidth: 0, maxWidth: double.infinity);
     if (text.length <= 6) return textPainter.width + 22;
     return textPainter.width + 80;
@@ -207,5 +207,4 @@ class AppHelpersCommon {
       },
     );
   }
-  
 }
