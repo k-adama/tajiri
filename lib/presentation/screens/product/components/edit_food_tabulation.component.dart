@@ -29,7 +29,7 @@ class _EditFoodState extends State<EditFoodTabulationComponent> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomNetworkImageUI(
+              CustomNetworkImageUi(
                 url: widget.foodData.imageUrl!,
                 width: 80.w,
                 height: 80.h,

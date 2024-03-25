@@ -51,7 +51,7 @@ class ShopProductItemComponent extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  CustomNetworkImageUI(
+                  CustomNetworkImageUi(
                     url: product?.imageUrl ?? "",
                     height: 120.h,
                     width: double.infinity,

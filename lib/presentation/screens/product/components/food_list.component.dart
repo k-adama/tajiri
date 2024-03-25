@@ -36,7 +36,7 @@ class FoodListComponent extends StatelessWidget {
                     SizedBox(
                       width: 50.w,
                       height: 50.h,
-                      child: CustomNetworkImageUI(
+                      child: CustomNetworkImageUi(
                         url: url,
                         height: 120.h,
                         width: double.infinity,

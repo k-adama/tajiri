@@ -44,7 +44,7 @@ class CartOrderItemComponent extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  CustomNetworkImageUI(
+                  CustomNetworkImageUi(
                       url: cartItem?.image ?? "",
                       height: 64.h,
                       width: 64.h,

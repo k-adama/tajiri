@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 
-class CustomNetworkImageUI extends StatelessWidget {
+class CustomNetworkImageUi extends StatelessWidget {
   final String url;
   final double height;
   final double width;
@@ -14,7 +14,7 @@ class CustomNetworkImageUI extends StatelessWidget {
   final bool isRaduisTopLef;
   final bool mustSaturation;
 
-  const CustomNetworkImageUI({
+  const CustomNetworkImageUi({
     super.key,
     required this.url,
     required this.height,

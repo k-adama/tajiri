@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/auth.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/user.constant.dart';
 
@@ -42,6 +43,9 @@ class LocalStorageService {
   void delete(String key) {
     _preferences?.remove(key);
   }
+
+  bool getAppThemeMode() =>
+      _preferences?.getBool(AppConstants.keyAppThemeMode) ?? false;
 
   void logout(){
     delete(AuthConstant.keyToken);
