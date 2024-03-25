@@ -9,7 +9,7 @@ import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
 import 'package:tajiri_pos_mobile/app/services/api_pdf.service.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/sales_reports/sales_reports.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/dat_picker_information.component.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/pdf_report_api.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/pdf_report.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/price_card.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/sales_reports_expansion_panel_list.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/share_or_back_button.component.dart';
@@ -44,7 +44,7 @@ class _SalesReportsScreenState extends State<SalesReportsScreen> {
           children: [
             Expanded(
                 flex: 5,
-                child: Container(
+                child: SizedBox(
                     width: double.infinity,
                     child: ListView(
                       children: [
@@ -93,7 +93,7 @@ class _SalesReportsScreenState extends State<SalesReportsScreen> {
                     ))),
             SalesReportsShareOrBackButton(
               onTapShare: () async {
-                final pdfFile = await PdfReportApiComponent.generate(
+                final pdfFile = await PdfReportComponent.generate(
                     salesReportController.sales,
                     salesReportController.total.value,
                     salesReportController.startDate,

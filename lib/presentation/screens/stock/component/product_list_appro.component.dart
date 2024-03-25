@@ -13,18 +13,18 @@ class ProductListApproComponent extends StatefulWidget {
   ProductListApproComponent({super.key, required this.foods});
 
   @override
-  State<ProductListApproComponent> createState() => _ProductListApproComponentState();
+  State<ProductListApproComponent> createState() =>
+      _ProductListApproComponentState();
 }
 
 class _ProductListApproComponentState extends State<ProductListApproComponent> {
-  final RefreshController _controller = RefreshController();
   final bool isDarkMode = LocalStorageService.instance.getAppThemeMode();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Style.white,
       ),
       child: Column(

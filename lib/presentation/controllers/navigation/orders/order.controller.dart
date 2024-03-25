@@ -10,7 +10,7 @@ import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
-import 'package:tajiri_pos_mobile/app/services/app_connectivity.dart';
+import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
@@ -91,7 +91,7 @@ class OrdersController extends GetxController {
     String? ownerId = (user?.role?.permissions![0].dashboardUnique ?? false)
         ? user?.id
         : null;
-    final connected = await AppConnectivity.connectivity();
+    final connected = await AppConnectivityService.connectivity();
 
     if (connected) {
       isProductLoading = true;
@@ -115,7 +115,7 @@ class OrdersController extends GetxController {
 
   Future<void> fetchOrdersReports(
       String startDate, String endDate, String ownerId) async {
-    final connected = await AppConnectivity.connectivity();
+    final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isProductLoading = true;
       update();

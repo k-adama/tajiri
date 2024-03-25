@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
-import 'package:tajiri_pos_mobile/app/services/app_connectivity.dart';
+import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
 import 'package:tajiri_pos_mobile/data/repositories/waitress/waitress.repository.dart';
 import 'package:tajiri_pos_mobile/domain/entities/waitress.entity.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull_dialog.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
 
 class WaitressController extends GetxController {
   final WaitressRepository _waitressRepository = WaitressRepository();
@@ -40,7 +40,7 @@ class WaitressController extends GetxController {
 
   Future<void> fetchWaitress() async {
     clearSelectWaitress();
-    final connected = await AppConnectivity.connectivity();
+    final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isLoadingCreateWaitress = true;
       update();

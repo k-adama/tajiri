@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
 
-class PdfReportApiComponent {
+class PdfReportComponent {
   static final user = AppHelpersCommon.getUserInLocalStorage();
 
   static Future<File> generate(List<SalesDataEntity> salesData, int total,

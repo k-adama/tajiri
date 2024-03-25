@@ -7,8 +7,8 @@ import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/auth.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/user.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
-import 'package:tajiri_pos_mobile/app/services/app_connectivity.dart';
-import 'package:tajiri_pos_mobile/app/services/app_validators.dart';
+import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
+import 'package:tajiri_pos_mobile/app/services/app_validators.service.dart';
 import 'package:tajiri_pos_mobile/app/services/local_storage.service.dart';
 import 'package:tajiri_pos_mobile/data/repositories/auth/auth.repository.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
@@ -57,11 +57,11 @@ class AuthController extends GetxController {
   }
 
   checkEmail() {
-    return AppValidators.isValidEmail(email);
+    return AppValidatorsService.isValidEmail(email);
   }
 
   Future<void> getUser(BuildContext context) async {
-    final connected = await AppConnectivity.connectivity();
+    final connected = await AppConnectivityService.connectivity();
 
     if (connected) {
       final response = await _authRepository.getProfileDetails();
@@ -80,26 +80,23 @@ class AuthController extends GetxController {
             'Gender': data?.gender,
             "Restaurant Name": data?.restaurantUser?[0].restaurant?.name
           };
-          /*Mixpanel.instance.identify(data?.id as String);
-            profile.forEach((key, value) {
-              Mixpanel.instance.getPeople().set(key, value);
-            });
+          Mixpanel.instance.identify(data?.id as String);
+          profile.forEach((key, value) {
+            Mixpanel.instance.getPeople().set(key, value);
+          });
 
-            Mixpanel.instance.getGroup("Restaurant ID",
-                data?.restaurantUser?[0].restaurant?.id as String ?? "");
-            Mixpanel.instance.setGroup("Restaurant Name",
-                data?.restaurantUser?[0].restaurant?.name as String ?? "");
+          Mixpanel.instance.getGroup(
+              "Restaurant ID", data?.restaurantUser?[0].restaurant?.id ?? "");
+          Mixpanel.instance.setGroup("Restaurant Name",
+              data?.restaurantUser?[0].restaurant?.name ?? "");
 
-            Mixpanel.instance.track('Login',
-                properties: {"Method used": "Phone", "Status": "Succes"});
+          Mixpanel.instance.track('Login',
+              properties: {"Method used": "Phone", "Status": "Succes"});
 
-            OneSignal.shared.setSMSNumber(smsNumber: "+225${data?.phone ?? ""}");
-            OneSignal.shared.sendTags({
-              "Restaurant":
-              data?.restaurantUser?[0].restaurant?.name as String ?? ""
-            });
-            OneSignal.shared.setExternalUserId(data?.id as String ?? "");
-          }*/
+          OneSignal.shared.setSMSNumber(smsNumber: "+225${data?.phone ?? ""}");
+          OneSignal.shared.sendTags(
+              {"Restaurant": data?.restaurantUser?[0].restaurant?.name ?? ""});
+          OneSignal.shared.setExternalUserId(data?.id ?? "");
           Get.offAllNamed(Routes.NAVIGATION);
         },
         failure: (failure, status) {
@@ -116,17 +113,17 @@ class AuthController extends GetxController {
   }
 
   Future<void> login(BuildContext context) async {
-    final connected = await AppConnectivity.connectivity();
+    final connected = await AppConnectivityService.connectivity();
     if (connected) {
       if (checkEmail()) {
-        if (!AppValidators.isValidEmail(email)) {
+        if (!AppValidatorsService.isValidEmail(email)) {
           isEmailNotValid = true;
           update();
           return;
         }
       }
 
-      if (!AppValidators.isValidPassword(password)) {
+      if (!AppValidatorsService.isValidPassword(password)) {
         isPasswordNotValid = true;
         update();
         return;
@@ -160,7 +157,7 @@ class AuthController extends GetxController {
   }
 
   Future<void> demoAuth(BuildContext context) async {
-    final connected = await AppConnectivity.connectivity();
+    final connected = await AppConnectivityService.connectivity();
     if (connected) {
       if (name.isEmpty || name.length <= 2) {
         isNameNotValid = true;

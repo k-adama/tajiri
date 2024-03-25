@@ -6,10 +6,10 @@ class TutorielImageComponent extends StatelessWidget {
   final String imageUrl;
 
   const TutorielImageComponent({
-    Key? key,
+    super.key,
     required this.height,
     required this.imageUrl,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

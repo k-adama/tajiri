@@ -5,8 +5,8 @@ import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_variant.component.dart';
 
 class EditFoodVariantModal extends StatefulWidget {
-  FoodVariantEntity foodVariant;
-  EditFoodVariantModal({super.key, required this.foodVariant});
+  final FoodVariantEntity foodVariant;
+  const EditFoodVariantModal({super.key, required this.foodVariant});
 
   @override
   State<EditFoodVariantModal> createState() => _EditFoodVariantModalState();

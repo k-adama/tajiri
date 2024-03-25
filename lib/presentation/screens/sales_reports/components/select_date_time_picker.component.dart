@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/outline_bordered_pick_date.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/outline_bordered_pick_date.component.dart';
 
 class SelectDateTimePickerComponent extends StatelessWidget {
   final EdgeInsetsGeometry padding;
@@ -8,13 +8,13 @@ class SelectDateTimePickerComponent extends StatelessWidget {
   final TextEditingController dateTimeController;
   final VoidCallback onTap;
   const SelectDateTimePickerComponent({
-    Key? key,
+    super.key,
     required this.padding,
     required this.labelText,
     required this.iconData,
     required this.dateTimeController,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

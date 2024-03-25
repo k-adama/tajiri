@@ -9,8 +9,8 @@ import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_v
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/shimmer_product_list.widget.dart';
 
 class FoodVariantAddedList extends StatefulWidget {
-  List<FoodVariantCategoryEntity> foodVariantCategory;
-  FoodVariantAddedList({super.key, required this.foodVariantCategory});
+  final List<FoodVariantCategoryEntity> foodVariantCategory;
+  const FoodVariantAddedList({super.key, required this.foodVariantCategory});
 
   @override
   State<FoodVariantAddedList> createState() => _FoodVariantAddedListState();

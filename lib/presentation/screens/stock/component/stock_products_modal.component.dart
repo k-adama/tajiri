@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/user.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/local_storage.service.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
@@ -18,17 +17,18 @@ import 'package:tajiri_pos_mobile/presentation/screens/stock/component/make_ajus
 import 'package:tajiri_pos_mobile/presentation/screens/stock/component/see_history_or_save_button.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/stock/component/see_stock_history.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/custom_network_image.ui.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 
 class StockProductModalComponent extends StatefulWidget {
   FoodDataEntity food;
   StockProductModalComponent({super.key, required this.food});
 
   @override
-  State<StockProductModalComponent> createState() => _StockProductModalComponentState();
+  State<StockProductModalComponent> createState() =>
+      _StockProductModalComponentState();
 }
 
-class _StockProductModalComponentState extends State<StockProductModalComponent> {
+class _StockProductModalComponentState
+    extends State<StockProductModalComponent> {
   final StockController stockController = Get.find();
   late dynamic userEncoding;
   late UserEntity user;
@@ -102,7 +102,7 @@ class _StockProductModalComponentState extends State<StockProductModalComponent>
             height: size.height - 150.h,
             child: seeHistory
                 ? SingleChildScrollView(
-                  child: Column(
+                    child: Column(
                       children: [
                         Padding(
                           padding: EdgeInsets.only(top: 16.r, bottom: 10.r),
@@ -111,7 +111,8 @@ class _StockProductModalComponentState extends State<StockProductModalComponent>
                             child: Padding(
                               padding: EdgeInsets.only(left: 16.r, right: 16.r),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "Historique",
@@ -143,7 +144,7 @@ class _StockProductModalComponentState extends State<StockProductModalComponent>
                                 stockController.getSortList(widget.food?.Stock))
                       ],
                     ),
-                )
+                  )
                 : ListView(
                     shrinkWrap: true,
                     children: [
@@ -192,9 +193,19 @@ class _StockProductModalComponentState extends State<StockProductModalComponent>
                         ],
                       ),
                       24.verticalSpace,
-                      MakeAjustmentComponent(food: widget.food, increment: increment, decrement: decrement, addValue: addValue, ajustementStock: ajustementStock),
+                      MakeAjustmentComponent(
+                          food: widget.food,
+                          increment: increment,
+                          decrement: decrement,
+                          addValue: addValue,
+                          ajustementStock: ajustementStock),
                       LastStockAddedComponent(food: widget.food, size: size),
-                      SeeStockOrSaveButtonComponent(food: widget.food, seeHistory: seeHistory, addValue: addValue, haveSeeHistory: haveSeeHistory,)
+                      SeeStockOrSaveButtonComponent(
+                        food: widget.food,
+                        seeHistory: seeHistory,
+                        addValue: addValue,
+                        haveSeeHistory: haveSeeHistory,
+                      )
                     ],
                   ),
           ),
