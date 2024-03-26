@@ -23,6 +23,8 @@ class ProductsController extends GetxController {
   RxList bundlePacks = [].obs;
   final categories = List<CategoryEntity>.empty().obs;
   RxString categoryId = 'all'.obs;
+  // RxString categoryNameSelect = ''.obs;
+
   int price = 0;
   String name = "";
   String description = "";
@@ -44,7 +46,7 @@ class ProductsController extends GetxController {
     super.onReady();
   }
 
-  Future<void> fetchFoods() async {
+  Future<void> fetchFoods({bool refreshCategorieId = false}) async {
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isProductLoading = true;
@@ -64,6 +66,10 @@ class ProductsController extends GetxController {
               data.where((element) => element.isAvailable == true).toList());
 
           bundlePacks.assignAll(responseBundlePacks.data);
+
+          if (refreshCategorieId) {
+            setCategoryId("all");
+          }
 
           isProductLoading = false;
           update();
@@ -165,7 +171,7 @@ class ProductsController extends GetxController {
                 } else {
                   Get.close(2);
                 }
-                fetchFoods();
+                fetchFoods(refreshCategorieId: true);
               },
             ),
           );
@@ -229,7 +235,7 @@ class ProductsController extends GetxController {
               svgPicture: "assets/svgs/icon_price_tag.svg",
               redirect: () {
                 Get.close(3);
-                fetchFoods();
+                fetchFoods(refreshCategorieId: true);
               },
             ),
           );
@@ -256,8 +262,14 @@ class ProductsController extends GetxController {
     update();
   }
 
+  // void setCategoryNameSelect(String name) {
+  //   categoryNameSelect.value = name;
+  //   update();
+  // }
+
   void handleFilter(String categoryId, String categoryName) {
     setCategoryId(categoryId);
+    // setCategoryNameSelect(categoryName);
 
     if (categoryId == 'all') {
       foods.assignAll(foodsInit);

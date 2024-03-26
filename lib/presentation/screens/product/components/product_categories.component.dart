@@ -36,16 +36,17 @@ class _ProductCategoriesComponentState
                           scrollDirection: Axis.horizontal,
                           itemCount: productsController.categories.length,
                           itemBuilder: (context, index) {
+                            final selectedCategorie =
+                                productsController.categories[index];
                             return CategoryTabBarItemComponent(
-                              isActive:
-                                  productsController.categories[index].id ==
-                                      productsController.categoryId.value,
+                              isActive: selectedCategorie.id ==
+                                  productsController.categoryId.value,
                               onTap: () {
                                 productsController.handleFilter(
-                                    productsController.categories[index].id!,
-                                    productsController.categories[index].name!);
+                                    selectedCategorie.id!,
+                                    selectedCategorie.name!);
                               },
-                              title: productsController.categories[index].name,
+                              title: selectedCategorie.name,
                             );
                           }),
                     )

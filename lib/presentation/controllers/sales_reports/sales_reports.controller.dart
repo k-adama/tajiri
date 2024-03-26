@@ -146,6 +146,21 @@ class SalesReportController extends GetxController {
     }
   }
 
+  TextEditingController getTextEditingControllerFormatted(
+      TextEditingController controller) {
+    return TextEditingController(
+      text: convertTofrenchDate(controller.text),
+    );
+  }
+
+  String getStartDateInFrench() {
+    return "${convertTofrenchDate(pickStartDate.text)} ${pickStartTime.text}";
+  }
+
+  String getEndDateInFrench() {
+    return "${convertTofrenchDate(pickEndDate.text)} ${pickEndTime.text}";
+  }
+
   pickTimeFormatted(TimeOfDay? timeOfDay) {
     if (timeOfDay != null) {
       DateTime now = DateTime.now();

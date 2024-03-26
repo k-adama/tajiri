@@ -7,10 +7,9 @@ import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.d
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_variant_list.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/shimmer/food_variant_card.shimmer.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/shimmer_product_list.widget.dart';
 
 class FoodVariantAddedList extends StatefulWidget {
-  final List<FoodVariantCategoryEntity> foodVariantCategory;
+  final List<FoodVariantCategoryEntity>? foodVariantCategory;
   const FoodVariantAddedList({super.key, required this.foodVariantCategory});
 
   @override
@@ -42,12 +41,14 @@ class _FoodVariantAddedListState extends State<FoodVariantAddedList> {
       body: Column(
         children: [
           20.verticalSpace,
-          widget.foodVariantCategory.isEmpty //posController.foods.isEmpty
+          widget.foodVariantCategory == null ||
+                  widget.foodVariantCategory!
+                      .isEmpty //posController.foods.isEmpty
               ?
               // const ShimmerProductListWidget()
               Expanded(
                   child: ListView.builder(
-                    itemCount: widget.foodVariantCategory.length,
+                    itemCount: 0,
                     itemBuilder: (context, i) {
                       return const FoodVariantCardShimmer();
                     },
@@ -66,10 +67,10 @@ class _FoodVariantAddedListState extends State<FoodVariantAddedList> {
                       children: [
                         ListView.builder(
                             shrinkWrap: true,
-                            itemCount: widget.foodVariantCategory.length,
+                            itemCount: widget.foodVariantCategory!.length,
                             itemBuilder: (BuildContext context, int index) {
                               FoodVariantCategoryEntity foodVariantCategory =
-                                  widget.foodVariantCategory[index];
+                                  widget.foodVariantCategory![index];
                               return FoodVariantListComponent(
                                   foodVariantCategory: foodVariantCategory);
                             }),

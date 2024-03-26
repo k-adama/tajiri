@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom_secondary.button.dart';
 
 class SalesReportsShareOrBackButton extends StatelessWidget {
   final VoidCallback onTapShare;
@@ -33,21 +33,10 @@ class SalesReportsShareOrBackButton extends StatelessWidget {
                       radius: 3,
                       onPressed: onTapShare,
                     ),
-                    InkWell(
-                        onTap: onTapBack,
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: 30,
-                          child: Center(
-                            child: Text(
-                              "Retour à la génération du rapport",
-                              style: Style.interBold(
-                                  size: 16,
-                                  isUnderLine: true,
-                                  color: Style.secondaryColor),
-                            ),
-                          ),
-                        ))
+                    CustomSecondaryButton(
+                        title: 'Retour à la génération du rapport',
+                        titleColor: Style.secondaryColor,
+                        onPressed: onTapBack),
                   ],
                 ),
               ),

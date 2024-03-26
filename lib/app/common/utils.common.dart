@@ -14,6 +14,15 @@ enum ListingType {
 final customFormatForView = DateFormat('dd-MM-yyyy');
 final customFormatForRequest = DateFormat('yyyy-MM-dd');
 
+String convertTofrenchDate(String originalDate) {
+  // Parse la date d'entrée
+  DateTime parsedDate = customFormatForRequest.parse(originalDate);
+  // Formate la date dans le format de sortie
+  String formattedDate = customFormatForView.format(parsedDate);
+
+  return formattedDate;
+}
+
 ListingType? checkListingType(UserEntity? user) {
   if (user?.restaurantUser?[0].restaurant?.listingEnable != true) {
     return null;

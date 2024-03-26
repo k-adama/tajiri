@@ -57,8 +57,9 @@ class _SalesReportsScreenState extends State<SalesReportsScreen> {
                               "${salesReportController.user!.lastname ?? ""} ${salesReportController.user!.firstname ?? ""}",
                         ),
                         SalesReportsDatePickerInformationComponent(
-                          startDate: salesReportController.startDate,
-                          endDate: salesReportController.endDate,
+                          startDate:
+                              salesReportController.getStartDateInFrench(),
+                          endDate: salesReportController.getEndDateInFrench(),
                         ),
                         SalesPricesComponent(
                           total: "${salesReportController.total.value ?? 0}"

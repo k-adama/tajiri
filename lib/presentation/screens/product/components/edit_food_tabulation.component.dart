@@ -50,7 +50,7 @@ class _EditFoodState extends State<EditFoodTabulationComponent> {
               containerTextField(
                   "Nom ", "", "${widget.foodData.name}", false, false),
               containerTextField("Description du produit ", "",
-                  widget.foodData.description!, false, false),
+                  widget.foodData.description.toString(), false, false),
               containerTextField(
                   "Prix", widget.foodData.price.toString(), "", true, true),
               containerTextField(

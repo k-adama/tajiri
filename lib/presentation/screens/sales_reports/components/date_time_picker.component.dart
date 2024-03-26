@@ -66,8 +66,9 @@ class _SalesReportsDateTimePickerComponentState
                                   padding: const EdgeInsets.all(10),
                                   labelText: "Date de début",
                                   iconData: Icons.calendar_today,
-                                  dateTimeController:
-                                      salesReportController.pickStartDate,
+                                  dateTimeController: salesReportController
+                                      .getTextEditingControllerFormatted(
+                                          salesReportController.pickStartDate),
                                   onTap: () async {
                                     DateTime? pickedDate =
                                         await salesReportController
@@ -76,6 +77,7 @@ class _SalesReportsDateTimePickerComponentState
                                         .pickDateFormatted(pickedDate);
                                     salesReportController.pickStartDate.text =
                                         formattedDate;
+                                    setState(() {});
                                   },
                                 ),
                                 SelectDateTimePickerComponent(
@@ -111,8 +113,9 @@ class _SalesReportsDateTimePickerComponentState
                                   padding: const EdgeInsets.all(10),
                                   labelText: "Date de fin",
                                   iconData: Icons.calendar_today,
-                                  dateTimeController:
-                                      salesReportController.pickEndDate,
+                                  dateTimeController: salesReportController
+                                      .getTextEditingControllerFormatted(
+                                          salesReportController.pickEndDate),
                                   onTap: () async {
                                     DateTime? pickedDate =
                                         await salesReportController
@@ -121,6 +124,7 @@ class _SalesReportsDateTimePickerComponentState
                                         .pickDateFormatted(pickedDate);
                                     salesReportController.pickEndDate.text =
                                         formattedDate;
+                                    setState(() {});
                                   },
                                 ),
                                 SelectDateTimePickerComponent(
