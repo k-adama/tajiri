@@ -35,47 +35,58 @@ class SuccessfullDialog extends StatelessWidget {
     return Container(
       width: 355.w,
       height: isRedirect ? 240.h : 311.h,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-      ),
+      decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10))),
       child: SingleChildScrollView(
         child: Column(
           children: [
             30.verticalSpace,
-            SizedBox(
-              height: isCustomerAdded || isRedirect ? 90.h : 68.h,
-              width: isCustomerAdded || isRedirect ? 90.w : 68.w,
-              child: Center(
-                child: isCustomerAdded || isRedirect
-                    ? SvgPicture.asset(svgPicture!)
-                    : Text(
+            !isCustomerAdded
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: SizedBox(
+                      width: 250,
+                      height: 50,
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        title ?? '',
+                        style: GoogleFonts.inter(
+                            fontSize: 15.sp,
+                            color: Style.secondaryColor,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  )
+                : SizedBox(
+                    height: isRedirect ? 90.h : 68.h,
+                    width: isRedirect ? 90.w : 68.w,
+                    child: Center(
+                      child: SvgPicture.asset(svgPicture!),
+                    ),
+                  ),
+            isCustomerAdded
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: SizedBox(
+                      width: 250,
+                      height: 50,
+                      child: Text(
                         title ?? '',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.inter(
-                          fontSize: 15.sp,
-                          color: Style.secondaryColor,
-                          fontWeight: FontWeight.w600,
-                        ),
+                            fontSize: 15.sp,
+                            color: Style.secondaryColor,
+                            fontWeight: FontWeight.w600),
                       ),
-              ),
-            ),
-            if (!isCustomerAdded)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: SizedBox(
-                  width: 250,
-                  height: 50,
-                  child: Text(
-                    title ?? '',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.inter(
-                      fontSize: 15.sp,
-                      color: Style.secondaryColor,
-                      fontWeight: FontWeight.w600,
+                    ),
+                  )
+                : SizedBox(
+                    height: isRedirect ? 90.h : 68.h,
+                    width: isRedirect ? 90.w : 68.w,
+                    child: Center(
+                      child: SvgPicture.asset(svgPicture!),
                     ),
                   ),
-                ),
-              ),
             6.verticalSpace,
             SizedBox(
               width: 250,
@@ -84,10 +95,9 @@ class SuccessfullDialog extends StatelessWidget {
                 content ?? '',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.inter(
-                  fontSize: 12.sp,
-                  color: Style.dark,
-                  fontWeight: FontWeight.w500,
-                ),
+                    fontSize: 12.sp,
+                    color: Style.dark,
+                    fontWeight: FontWeight.w500),
               ),
             ),
             50.verticalSpace,
@@ -96,6 +106,7 @@ class SuccessfullDialog extends StatelessWidget {
                 title: buttonText ?? "",
                 borderColor: Style.primaryColor,
                 textColor: Style.secondaryColor,
+                isLoadingColor: Style.secondaryColor,
                 radius: 5,
                 onPressed: onPressed ?? () => Navigator.pop(context),
               ),
@@ -103,11 +114,12 @@ class SuccessfullDialog extends StatelessWidget {
               CustomButton(
                 title: closeButton ?? "",
                 textColor: Style.dark,
+                isLoadingColor: Style.dark,
                 background: Style.transparent,
                 borderColor: Style.dark,
                 radius: 5,
                 onPressed: closePressed ?? () => Navigator.pop(context),
-              ),
+              )
           ],
         ),
       ),

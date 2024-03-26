@@ -7,6 +7,7 @@ import 'dart:ui' as ui;
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
+import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
 import 'package:tajiri_pos_mobile/data/repositories/orders/orders.repository.dart';
@@ -16,9 +17,9 @@ import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.
 
 class SalesReportController extends GetxController {
   TextEditingController pickStartDate = TextEditingController(
-      text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+      text: customFormatForRequest.format(DateTime.now()));
   TextEditingController pickEndDate = TextEditingController(
-      text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+      text: customFormatForRequest.format(DateTime.now()));
   TextEditingController pickStartTime =
       TextEditingController(text: DateFormat('HH:mm').format(DateTime.now()));
   TextEditingController pickEndTime =
@@ -136,7 +137,7 @@ class SalesReportController extends GetxController {
   pickDateFormatted(DateTime? pickedDate) {
     if (pickedDate != null) {
       debugPrint('$pickedDate');
-      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+      String formattedDate = customFormatForRequest.format(pickedDate);
       debugPrint(formattedDate);
 
       return formattedDate;

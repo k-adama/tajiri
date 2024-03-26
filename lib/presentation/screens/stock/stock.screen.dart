@@ -12,6 +12,7 @@ import 'package:tajiri_pos_mobile/presentation/screens/stock/component/product_l
 import 'package:tajiri_pos_mobile/presentation/screens/stock/component/stock_card_title.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/stock/component/stock_search_bar.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/keyboard_dismisser.ui.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/shimmer/product_appro.shimmer.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/shimmer_product_list.ui.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 
@@ -35,7 +36,7 @@ class _StockScreenState extends State<StockScreen> {
     await stockController.fetchFoods();
     _controller.loadComplete();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return KeyboardDismisserUi(
@@ -47,7 +48,8 @@ class _StockScreenState extends State<StockScreen> {
               elevation: 0,
               title: Text(
                 "Inventaire",
-                style: Style.interNormal(size: 16.sp, color: Style.secondaryColor),
+                style:
+                    Style.interNormal(size: 16.sp, color: Style.secondaryColor),
               ),
               iconTheme: const IconThemeData(color: Style.secondaryColor),
               backgroundColor: Style.white,
@@ -82,13 +84,16 @@ class _StockScreenState extends State<StockScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          StockCardTitleComponent(title: TrKeysConstant.ApproModeTitle,
-                              description: TrKeysConstant.ApproModeDescription, isTitle:true),
+                          StockCardTitleComponent(
+                              title: TrKeysConstant.ApproModeTitle,
+                              description: TrKeysConstant.ApproModeDescription,
+                              isTitle: true),
                           10.verticalSpace,
                           StockCardTitleComponent(
-                              title:  TrKeysConstant.SavApproModeTitle,
-                              description:  TrKeysConstant.SaveApproModeDescription,
-                              isTitle:  false),
+                              title: TrKeysConstant.SavApproModeTitle,
+                              description:
+                                  TrKeysConstant.SaveApproModeDescription,
+                              isTitle: false),
                           8.verticalSpace,
                           CustomButton(
                               title: stockController.checkboxstatus
@@ -143,11 +148,19 @@ class _StockScreenState extends State<StockScreen> {
                                                 quantity, foodUpdate),
                                       ),
                                     ),
-                                  ))
+                                  ),
+                      )
                     : Expanded(
                         flex: 8,
                         child: _stockController.isProductLoading
-                            ? const ShimmerProductListUi()
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: 10,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return const ProductApproShimmer();
+                                },
+                              )
                             : _stockController.foods.isEmpty
                                 ? SvgPicture.asset(
                                     "assets/svgs/empty.svg",
@@ -155,13 +168,15 @@ class _StockScreenState extends State<StockScreen> {
                                   )
                                 : AnimationLimiter(
                                     child: SmartRefresher(
-                                        controller: _controller,
-                                        enablePullDown: true,
-                                        enablePullUp: true,
-                                        onLoading: _onLoading,
-                                        onRefresh: _onRefresh,
-                                        child: ProductListApproComponent(
-                                            foods: _stockController.foods))),
+                                      controller: _controller,
+                                      enablePullDown: true,
+                                      enablePullUp: true,
+                                      onLoading: _onLoading,
+                                      onRefresh: _onRefresh,
+                                      child: ProductListApproComponent(
+                                          foods: _stockController.foods),
+                                    ),
+                                  ),
                       ),
               ],
             ),

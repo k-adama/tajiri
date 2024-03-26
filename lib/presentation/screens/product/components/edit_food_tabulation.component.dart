@@ -102,47 +102,39 @@ class _EditFoodState extends State<EditFoodTabulationComponent> {
   Widget containerTextField(
       String title, String price, String name, bool isModal, bool isPrice) {
     return InkWell(
-      onTap: () {},
+      // onTap: () {},
       child: Padding(
         padding: EdgeInsets.only(bottom: 40.h),
-        child: Container(
-          width: double.infinity,
-          decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: Style.light, width: 1))),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: Style.interNormal(
+                size: 12.sp,
+                color: Style.dark,
+              ),
+            ),
+            10.verticalSpace,
+            isPrice
+                ? Text(
+                    price.currencyLong(),
+                    style: Style.interBold(
+                      size: 14.sp,
+                      color: Style.black,
+                    ),
+                  )
+                : Text(
+                    name,
                     style: Style.interBold(
                       size: 14.sp,
                       color: Style.black,
                     ),
                   ),
-                  isPrice
-                      ? Text(
-                          price.currencyLong(),
-                          style: Style.interNormal(
-                            size: 12.sp,
-                            color: Style.dark,
-                          ),
-                        )
-                      : Text(
-                          name,
-                          style: Style.interNormal(
-                            size: 12.sp,
-                            color: Style.dark,
-                          ),
-                        ),
-                ],
-              ),
-              Container()
-            ],
-          ),
+            const Divider(
+              color: Style.light,
+            ),
+          ],
         ),
       ),
     );

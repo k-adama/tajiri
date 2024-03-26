@@ -8,7 +8,7 @@ import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_list.component.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/shimmer_product_list.widget.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/shimmer/food_list_card.shimmer.dart';
 
 class FoodAddedListComponent extends StatefulWidget {
   const FoodAddedListComponent({super.key});
@@ -45,7 +45,14 @@ class _FoodAddedListComponentState extends State<FoodAddedListComponent> {
         children: [
           Obx(
             () => productsController.foods.isEmpty
-                ? const ShimmerProductListWidget()
+                ? Expanded(
+                    child: ListView.builder(
+                      itemCount: 10,
+                      itemBuilder: (BuildContext context, int index) {
+                        return const FoodListCardShimmer();
+                      },
+                    ),
+                  )
                 : AnimationLimiter(
                     child: Expanded(
                       child: SmartRefresher(
@@ -60,18 +67,16 @@ class _FoodAddedListComponentState extends State<FoodAddedListComponent> {
                           itemBuilder: (BuildContext context, int index) {
                             FoodDataEntity food =
                                 productsController.foods[index];
-                            return InkWell(
+                            return FoodListComponent(
                               onTap: () {
                                 Get.toNamed(Routes.EDIT_FOOD_AND_VARIANT,
                                     arguments: food);
                               },
-                              child: FoodListComponent(
-                                url: "${food.imageUrl}",
-                                foodName: "${food.name}",
-                                foodQuantity: "${food.quantity}",
-                                foodCategorieName: "${food.category?.name}",
-                                foodPrice: "${food.price ?? 0}",
-                              ),
+                              url: "${food.imageUrl}",
+                              foodName: "${food.name}",
+                              foodQuantity: "${food.quantity}",
+                              foodCategorieName: "${food.category?.name}",
+                              foodPrice: "${food.price ?? 0}",
                             );
                           },
                         ),

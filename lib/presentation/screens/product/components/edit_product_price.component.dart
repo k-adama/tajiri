@@ -35,7 +35,9 @@ class _EditProductPriceState extends State<EditProductPriceComponent> {
                 ),
                 24.verticalSpace,
                 OutlinedBorderTextFormField(
+                  isModal: true,
                   labelText: "combien coûtera le produit ?",
+                  hint: "combien coûtera le produit ?",
                   onTap: () {},
                   label: "Prix",
                   labelColor: Style.dark,
@@ -55,8 +57,8 @@ class _EditProductPriceState extends State<EditProductPriceComponent> {
                     decoration: const BoxDecoration(
                       color: Style.secondaryColor,
                       borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(15),
-                          bottomRight: Radius.circular(15)),
+                          topRight: Radius.circular(8),
+                          bottomRight: Radius.circular(8)),
                     ),
                     child: Center(
                       child: Text(
@@ -65,7 +67,7 @@ class _EditProductPriceState extends State<EditProductPriceComponent> {
                       ),
                     ),
                   ),
-                  borderRaduis: BorderRadius.circular(15),
+                  borderRaduis: BorderRadius.circular(8),
                   isCenterText: false,
                   onChanged: productsController.setPrice,
                 ),

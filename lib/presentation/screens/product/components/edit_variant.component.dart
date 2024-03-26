@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
@@ -37,7 +38,9 @@ class _EditVariantComponentState extends State<EditVariantComponent> {
                 ),
                 24.verticalSpace,
                 OutlinedBorderTextFormField(
-                  labelText: "combien coûter le variant ?",
+                  isModal: true,
+                  labelText: "combien coûtera le variant ?",
+                  hint: "combien coûtera le variant ?",
                   onTap: () {},
                   label: "Prix",
                   labelColor: Style.dark,
@@ -57,8 +60,8 @@ class _EditVariantComponentState extends State<EditVariantComponent> {
                     decoration: const BoxDecoration(
                       color: Style.secondaryColor,
                       borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(15),
-                          bottomRight: Radius.circular(15)),
+                          topRight: Radius.circular(8),
+                          bottomRight: Radius.circular(8)),
                     ),
                     child: Center(
                       child: Text(
@@ -67,7 +70,7 @@ class _EditVariantComponentState extends State<EditVariantComponent> {
                       ),
                     ),
                   ),
-                  borderRaduis: BorderRadius.circular(15),
+                  borderRaduis: BorderRadius.circular(8),
                   isCenterText: false,
                   onChanged: productsController.setPrice,
                 ),
