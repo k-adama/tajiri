@@ -99,7 +99,6 @@ class _WaitressScreenState extends State<WaitressScreen> {
                         )),
               ),
               Container(
-                height: 55.h,
                 margin: const EdgeInsets.only(bottom: 30),
                 child: CustomButton(
                   background: Style.primaryColor,
