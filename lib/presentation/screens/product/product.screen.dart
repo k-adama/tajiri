@@ -32,6 +32,7 @@ class _ProductScreenState extends State<ProductScreen>
         child: Padding(
           padding: EdgeInsets.only(top: 22.h),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const TitleComponent(),
               const ProductCategorieListComponent(),

@@ -48,10 +48,9 @@ class _FoodVariantListComponentState extends State<FoodVariantListComponent> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(18.0),
+                padding: const EdgeInsets.all(18),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,6 +62,7 @@ class _FoodVariantListComponentState extends State<FoodVariantListComponent> {
                             color: Style.black,
                           ),
                         ),
+                        2.verticalSpace,
                         Text(
                           "${foodVariant.price}".currencyLong(),
                           style: Style.interNormal(
@@ -72,9 +72,9 @@ class _FoodVariantListComponentState extends State<FoodVariantListComponent> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      width: 30.w,
-                      height: 30.h,
+                    Container(
+                      width: 24.w,
+                      height: 24.h,
                       child: SvgPicture.asset("assets/svgs/Create.svg"),
                     )
                   ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/instance_manager.dart';
@@ -22,6 +23,8 @@ class ProductsController extends GetxController {
   RxList bundlePacks = [].obs;
   final categories = List<CategoryEntity>.empty().obs;
   RxString categoryId = 'all'.obs;
+  // RxString categoryNameSelect = ''.obs;
+
   int price = 0;
   String name = "";
   String description = "";
@@ -43,10 +46,11 @@ class ProductsController extends GetxController {
     super.onReady();
   }
 
-  Future<void> fetchFoods() async {
+  Future<void> fetchFoods({bool refreshCategorieId = false}) async {
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isProductLoading = true;
+      update();
       final response = await _productsRepository.getFoods();
       final responseBundlePacks = await _productsRepository.getBundlePacks();
 
@@ -63,7 +67,12 @@ class ProductsController extends GetxController {
 
           bundlePacks.assignAll(responseBundlePacks.data);
 
+          if (refreshCategorieId) {
+            setCategoryId("all");
+          }
+
           isProductLoading = false;
+          update();
 
           final newCategories = data
               .where((e) {
@@ -106,7 +115,10 @@ class ProductsController extends GetxController {
           foodVariantCategories.assignAll(newFoodVariantCategories);
           update();
         },
-        failure: (failure, status) {},
+        failure: (failure, status) {
+          isProductLoading = false;
+          update();
+        },
       );
     }
   }
@@ -139,6 +151,7 @@ class ProductsController extends GetxController {
           imageCompress.value = "";
           _posController.fetchFoods();
           isProductLoading = false;
+          update();
           AppHelpersCommon.showAlertDialog(
             context: context,
             canPop: false,
@@ -148,19 +161,17 @@ class ProductsController extends GetxController {
               title: isPrice
                   ? "Le prix a été modifié avec succès!"
                   : getAvailableMessage()['title'],
-              content: isPrice ? "succès!" : getAvailableMessage()['content'],
+              content: isPrice ? "" : getAvailableMessage()['content'],
               svgPicture: isPrice
                   ? "assets/svgs/icon_price_tag.svg"
                   : getAvailableMessage()['image'],
               redirect: () {
                 if (isPrice) {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.pop(context);
+                  Get.close(3);
                 } else {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
+                  Get.close(2);
                 }
+                fetchFoods(refreshCategorieId: true);
               },
             ),
           );
@@ -223,9 +234,8 @@ class ProductsController extends GetxController {
               content: "",
               svgPicture: "assets/svgs/icon_price_tag.svg",
               redirect: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pop(context);
+                Get.close(3);
+                fetchFoods(refreshCategorieId: true);
               },
             ),
           );
@@ -252,8 +262,14 @@ class ProductsController extends GetxController {
     update();
   }
 
+  // void setCategoryNameSelect(String name) {
+  //   categoryNameSelect.value = name;
+  //   update();
+  // }
+
   void handleFilter(String categoryId, String categoryName) {
     setCategoryId(categoryId);
+    // setCategoryNameSelect(categoryName);
 
     if (categoryId == 'all') {
       foods.assignAll(foodsInit);

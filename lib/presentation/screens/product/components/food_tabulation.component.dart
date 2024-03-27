@@ -57,17 +57,16 @@ class _EditFoodTabulationComponentState extends State<EditFoodTabulation>
           children: [
             Container(
               height: 40.h,
-              decoration: BoxDecoration(
-                color: Style.transparent,
-                borderRadius: BorderRadius.circular(5),
-              ),
+              alignment: Alignment.topLeft,
               child: TabBar(
+                tabAlignment: TabAlignment.start,
+                isScrollable: true,
                 controller: _tabController,
                 indicatorSize: null,
                 dividerHeight: 0,
                 indicatorColor: Style.secondaryColor,
                 labelColor: Style.secondaryColor,
-                labelPadding: EdgeInsets.only(right: 70.w),
+                // labelPadding: EdgeInsets.only(right: 70.w),
                 padding: EdgeInsets.only(left: 10.w),
                 indicator: null,
                 onTap: (index) async {
@@ -79,24 +78,18 @@ class _EditFoodTabulationComponentState extends State<EditFoodTabulation>
                 ),
                 labelStyle: Style.interNormal(
                   size: 14.sp,
-                ),
+                ).copyWith(fontWeight: FontWeight.w700),
                 tabs: List.generate(
                   2,
                   (index) => Tab(
-                    child: Container(
-                      child: Row(
-                        children: [
-                          Text(
-                            editFoodTab[index].text!,
-                            style: Style.interNormal(
-                              size: 11.sp,
-                              color: _tabController.index == index
-                                  ? Style.dark
-                                  : Style.dark,
-                            ),
-                          ),
-                        ],
-                      ),
+                    child: Text(
+                      editFoodTab[index].text!,
+                      // style: Style.interNormal(
+                      //   size: 14.sp,
+                      //   color: _tabController.index == index
+                      //       ? Style.dark
+                      //       : Style.dark,
+                      // ),
                     ),
                   ),
                 ),

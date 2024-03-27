@@ -2,18 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/instance_manager.dart';
-import 'package:get/route_manager.dart';
-import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/sales_reports/sales_reports.controller.dart';
-import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/sales_reports_header.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/select_date_time_picker.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/title_widget.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/product_in_cart.widget.dart';
 
 class SalesReportsDateTimePickerComponent extends StatefulWidget {
   const SalesReportsDateTimePickerComponent({super.key});
@@ -70,8 +66,9 @@ class _SalesReportsDateTimePickerComponentState
                                   padding: const EdgeInsets.all(10),
                                   labelText: "Date de début",
                                   iconData: Icons.calendar_today,
-                                  dateTimeController:
-                                      salesReportController.pickStartDate,
+                                  dateTimeController: salesReportController
+                                      .getTextEditingControllerFormatted(
+                                          salesReportController.pickStartDate),
                                   onTap: () async {
                                     DateTime? pickedDate =
                                         await salesReportController
@@ -80,6 +77,7 @@ class _SalesReportsDateTimePickerComponentState
                                         .pickDateFormatted(pickedDate);
                                     salesReportController.pickStartDate.text =
                                         formattedDate;
+                                    setState(() {});
                                   },
                                 ),
                                 SelectDateTimePickerComponent(
@@ -115,8 +113,9 @@ class _SalesReportsDateTimePickerComponentState
                                   padding: const EdgeInsets.all(10),
                                   labelText: "Date de fin",
                                   iconData: Icons.calendar_today,
-                                  dateTimeController:
-                                      salesReportController.pickEndDate,
+                                  dateTimeController: salesReportController
+                                      .getTextEditingControllerFormatted(
+                                          salesReportController.pickEndDate),
                                   onTap: () async {
                                     DateTime? pickedDate =
                                         await salesReportController
@@ -125,6 +124,7 @@ class _SalesReportsDateTimePickerComponentState
                                         .pickDateFormatted(pickedDate);
                                     salesReportController.pickEndDate.text =
                                         formattedDate;
+                                    setState(() {});
                                   },
                                 ),
                                 SelectDateTimePickerComponent(

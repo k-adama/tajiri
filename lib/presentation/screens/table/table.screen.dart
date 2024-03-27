@@ -6,8 +6,8 @@ import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/table/table.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/table/components/add_table_modal.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/table/components/table_board.component.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/shimmer/table_card_shimmer.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/shimmer_product_list.widget.dart';
 
 class TableScreen extends StatefulWidget {
   const TableScreen({super.key});
@@ -46,7 +46,21 @@ class _TableScreenState extends State<TableScreen> {
               ),
               Expanded(
                 child: tableController.isLoadingTable
-                    ? const ShimmerProductListWidget()
+                    ? GridView.builder(
+                        padding: EdgeInsets.only(
+                            right: 12.w, left: 12.w, bottom: 96.h, top: 24.r),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          childAspectRatio: 0.66.r,
+                          crossAxisCount: 2,
+                        ),
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return const TableCardShimmer();
+                        },
+                      )
+                    // const ShimmerProductListWidget()
                     : const TablesBoardComponent(),
               ),
               Container(

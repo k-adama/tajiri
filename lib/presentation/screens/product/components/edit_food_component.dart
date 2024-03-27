@@ -105,7 +105,7 @@ class _EditFoodAndVariantComponentState
                   foodData: foodData!,
                 ),
                 foodVariantAddedListComponent: FoodVariantAddedList(
-                  foodVariantCategory: foodData!.foodVariantCategory!,
+                  foodVariantCategory: foodData?.foodVariantCategory,
                 ),
               ),
             ],

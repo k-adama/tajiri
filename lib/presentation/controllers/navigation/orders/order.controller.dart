@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
@@ -17,6 +16,7 @@ import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
 import 'package:tajiri_pos_mobile/data/repositories/orders/orders.repository.dart';
 import 'dart:ui' as ui;
 import 'package:audioplayers/audioplayers.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 
 class OrdersController extends GetxController {
   final OrdersRepository _ordersRepository = OrdersRepository();
@@ -39,6 +39,8 @@ class OrdersController extends GetxController {
   DateTime dateTime = DateTime.now();
   final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
   bool monuted = false;
+
+  final posController = Get.find<PosController>();
 
   @override
   void onInit() {
@@ -103,8 +105,16 @@ class OrdersController extends GetxController {
           final json = data as List<dynamic>;
           final orderData =
               json.map((item) => OrderEntity.fromJson(item)).toList();
-          orders.assignAll(orderData);
+
           ordersInit.assignAll(orderData);
+          if (checkListingType(user) == ListingType.waitress) {
+            filterByWaitress(posController.waitressCurrentId);
+          } else if (checkListingType(user) == ListingType.table) {
+            filterByTable(posController.tableCurrentId);
+          } else {
+            orders.assignAll(orderData);
+          }
+
           isProductLoading = false;
           update();
         },
@@ -188,7 +198,7 @@ class OrdersController extends GetxController {
     response.when(success: (data) {
       Mixpanel.instance.track("Order PAID", properties: {
         'user': '${user?.lastname ?? ""} ${user?.firstname ?? ""}',
-        'restaurant': user!.restaurantUser![0]?.restaurant?.name ?? "",
+        'restaurant': user!.restaurantUser![0].restaurant?.name ?? "",
         'orderNo': currentOrderNo.value
       });
 
@@ -286,8 +296,7 @@ class OrdersController extends GetxController {
       final nameRecherch = search.toLowerCase();
       orders.addAll(ordersInit.where((item) {
         final String orderNotes = item.orderNotes?.toLowerCase() ?? "";
-        final String orderNumber =
-            item.orderNumber.toString().toLowerCase() ?? "";
+        final String orderNumber = item.orderNumber.toString().toLowerCase();
 
         return orderNotes.startsWith(nameRecherch) ||
             orderNumber.startsWith(nameRecherch);

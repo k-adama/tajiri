@@ -161,7 +161,7 @@ class Style {
           letterSpacing: letterSpacing.sp,
           decoration: decoration);
 
-  static interNoSemi(
+  static TextStyle interNoSemi(
           {double size = 18,
           Color color = Style.black,
           TextDecoration decoration = TextDecoration.none,
@@ -177,6 +177,7 @@ class Style {
   static interNormal(
           {double size = 16,
           Color color = Style.black,
+          FontWeight fontWeight = FontWeight.w400,
           TextDecoration textDecoration = TextDecoration.none,
           bool isUnderLine = false,
           Color underLineColor = Style.secondaryColor,
@@ -184,7 +185,7 @@ class Style {
       TextStyle(
           fontFamily: 'Cereal',
           fontSize: size.sp,
-          fontWeight: FontWeight.w400,
+          fontWeight: fontWeight,
           color: color,
           letterSpacing: letterSpacing.sp,
           decorationColor: isUnderLine ? underLineColor : Style.white,

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom_secondary.button.dart';
 
 class InvoiceButtonsComponent extends StatefulWidget {
   final OrderEntity ordersData;
@@ -40,49 +41,64 @@ class _InvoiceButtonsComponentState extends State<InvoiceButtonsComponent> {
             vertical: 1),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomButton(
-                  title: widget.ordersData.status == "PAID"
-                      ? 'Imprimer le reçu'
-                      : 'Imprimer la facture',
-                  textColor: Style.secondaryColor,
-                  isLoadingColor: Style.secondaryColor,
-                  weight: 20,
-                  background: Style.primaryColor,
-                  radius: 5,
-                  isUnderline: false,
-                  onPressed: widget.printButtonTap,
-                ),
-                CustomButton(
-                  title: widget.ordersData.status == "PAID"
-                      ? 'Partager le reçu'
-                      : 'Partager la facture',
-                  textColor: Style.secondaryColor,
-                  isLoadingColor: Style.secondaryColor,
-                  weight: 20,
-                  background: Style.white,
-                  radius: 5,
-                  haveBorder: true,
-                  isUnderline: false,
-                  borderColor: Style.secondaryColor,
-                  onPressed: widget.shareButtonTap,
-                ),
-              ],
-            ),
-            5.verticalSpace,
             CustomButton(
-              title: "Retour à la prise de commande",
+              title: widget.ordersData.status == "PAID"
+                  ? 'Imprimer le reçu'
+                  : 'Imprimer la facture',
               textColor: Style.secondaryColor,
               isLoadingColor: Style.secondaryColor,
               weight: 20,
-              background: Style.white,
+              background: Style.primaryColor,
               radius: 5,
-              haveBorder: false,
-              isUnderline: true,
-              onPressed: widget.returnToOrderButtonTap,
+              onPressed: widget.printButtonTap,
             ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     CustomButton(
+            //       title: widget.ordersData.status == "PAID"
+            //           ? 'Imprimer le reçu'
+            //           : 'Imprimer la facture',
+            //       textColor: Style.secondaryColor,
+            //       isLoadingColor: Style.secondaryColor,
+            //       weight: 20,
+            //       background: Style.primaryColor,
+            //       radius: 5,
+            //       onPressed: widget.printButtonTap,
+            //     ),
+            //     CustomButton(
+            //       title: widget.ordersData.status == "PAID"
+            //           ? 'Partager le reçu'
+            //           : 'Partager la facture',
+            //       textColor: Style.secondaryColor,
+            //       isLoadingColor: Style.secondaryColor,
+            //       weight: 20,
+            //       background: Style.white,
+            //       radius: 5,
+            //       haveBorder: true,
+            //       isUnderline: false,
+            //       borderColor: Style.secondaryColor,
+            //       onPressed: widget.shareButtonTap,
+            //     ),
+            //   ],
+            // ),
+            10.verticalSpace,
+            CustomSecondaryButton(
+              title: "Retour à la prise de commande",
+              titleColor: Style.secondaryColor,
+              onPressed: widget.returnToOrderButtonTap,
+            )
+            // CustomButton(
+            //   title: "Retour à la prise de commande",
+            //   textColor: Style.secondaryColor,
+            //   isLoadingColor: Style.secondaryColor,
+            //   weight: 20,
+            //   background: Style.white,
+            //   radius: 5,
+            //   haveBorder: false,
+            //   isUnderline: true,
+            //   onPressed: widget.returnToOrderButtonTap,
+            // ),
           ],
         ),
       ),

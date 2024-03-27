@@ -9,12 +9,16 @@ class StockCardTitleComponent extends StatelessWidget {
   final String title;
   final String description;
   final bool isTitle;
-  StockCardTitleComponent({super.key, required this.title, required this.description, required this.isTitle});
+  StockCardTitleComponent(
+      {super.key,
+      required this.title,
+      required this.description,
+      required this.isTitle});
 
   final StockController stockController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 250.w,
       child: Text(
         stockController.checkboxstatus

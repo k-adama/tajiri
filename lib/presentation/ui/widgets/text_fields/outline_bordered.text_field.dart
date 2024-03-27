@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 
@@ -193,6 +194,7 @@ class OutlinedBorderTextFormField extends StatelessWidget {
   final bool isFillColor;
   final int? multiLines;
   final BorderRadius? borderRaduis;
+  final bool isModal;
 
   const OutlinedBorderTextFormField({
     Key? key,
@@ -227,6 +229,7 @@ class OutlinedBorderTextFormField extends StatelessWidget {
     this.isMultiLines = false,
     this.borderRaduis,
     this.haveBorder = true,
+    this.isModal = false,
   }) : super(key: key);
 
   @override
@@ -236,97 +239,104 @@ class OutlinedBorderTextFormField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (label != null && label!.isNotEmpty)
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label!,
-              style: Style.interNormal(
-                  size: 14.sp,
-                  color: Style.dark
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label!,
+                style: Style.interNormal(
+                  size: 15.sp,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
-          ],
-        ),
-        TextFormField(
-          onTap: onTap,
-          onChanged: onChanged,
-          obscureText: !(obscure ?? true),
-          obscuringCharacter: '*',
-          controller: textController,
-          validator: validation,
-          style: Style.interNormal(
-            size: 15.sp,
-            color: Style.black,
+              10.verticalSpace,
+            ],
           ),
-          cursorWidth: 1,
-          cursorColor: Style.dark,
-          keyboardType: inputType,
-          initialValue: initialText,
-          textAlign: isCenterText == true ? TextAlign.center : TextAlign.start,
-          textAlignVertical: isCenterText == true
-              ? TextAlignVertical.center
-              : TextAlignVertical.bottom,
-          readOnly: readOnly,
-          textCapitalization:
-              textCapitalization ?? TextCapitalization.sentences,
-          textInputAction: textInputAction,
-          maxLines: isMultiLines == false ? 1 : multiLines,
-          decoration: InputDecoration(
-            border: UnderlineInputBorder(),
-            labelText: labelText,
-            labelStyle: isLabelTextBold ? Style.interBold() : Style.interNormal(),
-            suffixIconConstraints:
-                BoxConstraints(maxHeight: suffixIconConstraintsHeight.h, maxWidth: suffixIconConstraintsWidth.h),
-            suffixIcon: suffixIcon,
-            suffixIconColor: Style.dark,
-            hintText: hint,
-            hintStyle: isInterNormal == true
-                ? Style.interNormal(
-                    size: 13,
-                    color: hintColor ?? Style.hintColor,
-                  )
-                : Style.interNormal(
-                    size: 17,
-                  ),
-            /*contentPadding: REdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            floatingLabelBehavior: FloatingLabelBehavior.always,*/
-            fillColor: fillColor,
-            filled: isFillColor ? true : false,
-            enabledBorder: haveBorder == true
-                ? UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: differBorderColor ?? Style.black,
+        SizedBox(
+          height: isModal ? 50.h : null,
+          child: TextFormField(
+            onTap: onTap,
+            onChanged: onChanged,
+            obscureText: !(obscure ?? true),
+            obscuringCharacter: '*',
+            controller: textController,
+            validator: validation,
+            style: Style.interNormal(
+              size: 15.sp,
+              color: Style.black,
+            ),
+            cursorWidth: 1,
+            cursorColor: Style.dark,
+            keyboardType: inputType,
+            initialValue: initialText,
+            textAlign:
+                isCenterText == true ? TextAlign.center : TextAlign.start,
+            textAlignVertical: isCenterText == true
+                ? TextAlignVertical.center
+                : TextAlignVertical.bottom,
+            readOnly: readOnly,
+            textCapitalization:
+                textCapitalization ?? TextCapitalization.sentences,
+            textInputAction: textInputAction,
+            maxLines: isMultiLines == false ? 1 : multiLines,
+            decoration: InputDecoration(
+              border: UnderlineInputBorder(),
+              labelText: isModal ? null : labelText,
+              labelStyle:
+                  isLabelTextBold ? Style.interBold() : Style.interNormal(),
+              suffixIconConstraints: BoxConstraints(
+                  maxHeight: suffixIconConstraintsHeight.h,
+                  maxWidth: suffixIconConstraintsWidth.h),
+              suffixIcon: suffixIcon,
+              suffixIconColor: Style.dark,
+              hintText: hint,
+              hintStyle: isInterNormal == true
+                  ? Style.interNormal(
+                      size: 13,
+                      color: hintColor ?? Style.hintColor,
+                    )
+                  : Style.interNormal(
+                      size: 17,
                     ),
-                    borderRadius: borderRaduis!,
-                  )
-                : InputBorder.none,
-            errorBorder: haveBorder == true
-                ? UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: differBorderColor ?? Style.black,
-                    ),
-                    borderRadius: borderRaduis!,
-                  )
-                : InputBorder.none,
-            focusedErrorBorder: UnderlineInputBorder(),
-            disabledBorder: haveBorder == true
-                ? UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: differBorderColor ?? Style.black,
-                    ),
-                    borderRadius: borderRaduis!,
-                  )
-                : InputBorder.none,
-            focusedBorder: haveBorder == true
-                ? UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: differBorderColor ?? Style.black,
-                    ),
-                    borderRadius: borderRaduis!,
-                  )
-                : InputBorder.none,
+              /*contentPadding: REdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              floatingLabelBehavior: FloatingLabelBehavior.always,*/
+              fillColor: fillColor,
+              filled: isFillColor ? true : false,
+              enabledBorder: haveBorder == true
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: differBorderColor ?? Style.black,
+                      ),
+                      borderRadius: borderRaduis!,
+                    )
+                  : InputBorder.none,
+              errorBorder: haveBorder == true
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: differBorderColor ?? Style.black,
+                      ),
+                      borderRadius: borderRaduis!,
+                    )
+                  : InputBorder.none,
+              focusedErrorBorder: UnderlineInputBorder(),
+              disabledBorder: haveBorder == true
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: differBorderColor ?? Style.black,
+                      ),
+                      borderRadius: borderRaduis!,
+                    )
+                  : InputBorder.none,
+              focusedBorder: haveBorder == true
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: differBorderColor ?? Style.black,
+                      ),
+                      borderRadius: borderRaduis!,
+                    )
+                  : InputBorder.none,
+            ),
           ),
         ),
       ],

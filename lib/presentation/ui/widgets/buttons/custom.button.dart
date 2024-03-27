@@ -14,6 +14,7 @@ class CustomButton extends StatelessWidget {
   final Color textColor;
   final Color? isLoadingColor;
   final double weight;
+  final double? height;
   final double radius;
   final String imagePath;
   final bool isUnderline;
@@ -25,6 +26,7 @@ class CustomButton extends StatelessWidget {
     required this.title,
     required this.onPressed,
     this.isLoading = false,
+    this.height = 40,
     this.imagePath = "",
     this.haveBorder = false,
     this.isUnderline = false,
@@ -43,6 +45,7 @@ class CustomButton extends StatelessWidget {
     return AnimationButtonEffect(
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
+          minimumSize: Size(0, height!),
           side: BorderSide(
               color: borderColor, //Style.primaryColor,
               width: haveBorder ? 2.r : 1.r),
@@ -51,7 +54,6 @@ class CustomButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius.r),
           ),
-          //minimumSize: Size(weight, 50.h),
           backgroundColor: background,
         ),
         onPressed: onPressed,
@@ -72,14 +74,13 @@ class CustomButton extends StatelessWidget {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  icon == null
-                      ? const SizedBox()
-                      : Row(
-                          children: [
-                            icon!,
-                            10.horizontalSpace,
-                          ],
-                        ),
+                  if (icon != null)
+                    Row(
+                      children: [
+                        icon!,
+                        10.horizontalSpace,
+                      ],
+                    ),
                   Text(
                     title,
                     style: Style.interNormal(
@@ -88,9 +89,9 @@ class CustomButton extends StatelessWidget {
                       underLineColor: underLineColor,
                       isUnderLine: isUnderline,
                       letterSpacing: -14 * 0.01,
-                    ),
+                    ).copyWith(fontWeight: FontWeight.w500),
                   ),
-                  10.horizontalSpace,
+                  if (imagePath.isNotEmpty) 10.horizontalSpace,
                   if (imagePath.isNotEmpty) SvgPicture.asset(imagePath)
                 ],
               ),

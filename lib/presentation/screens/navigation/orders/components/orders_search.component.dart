@@ -37,7 +37,7 @@ class _OrdersSearchComponentState extends State<OrdersSearchComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: SizedBox(
         height: 55.0,
         child: Row(
@@ -56,25 +56,26 @@ class _OrdersSearchComponentState extends State<OrdersSearchComponent> {
                   focusNode: searchFocusNode,
                   decoration: InputDecoration(
                     hintText:
-                    isSearchFocused || recherch.text.isNotEmpty ? "" : "",
+                        isSearchFocused || recherch.text.isNotEmpty ? "" : "",
                     prefixIcon: isSearchFocused || recherch.text.isNotEmpty
                         ? null
                         : Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.search, color: Style.titleDark, size: 30,),
-                          const SizedBox(width: 10.0),
-                          Text("Rechercher une commande ...",
-                              style: Style.interNormal(
-                                  color: Style.dark,
-                                  size: 14
-                              )
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.search,
+                                  color: Style.titleDark,
+                                  size: 30,
+                                ),
+                                const SizedBox(width: 10.0),
+                                Text("Rechercher une commande ...",
+                                    style: Style.interNormal(
+                                        color: Style.dark, size: 14)),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
                     border: InputBorder.none,
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.r),

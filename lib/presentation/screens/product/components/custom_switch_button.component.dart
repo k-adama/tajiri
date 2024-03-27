@@ -27,38 +27,44 @@ class _CustomSwitchButtonState extends State<CustomSwitchButtonComponent> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ProductsController>(
-        builder: (productsController) => AnimatedToggleSwitch<bool>.dual(
-              current: productsController.isAvailable,
-              first: false,
-              second: true,
-              spacing: 4.0,
-              style: ToggleStyle(
-                borderColor: Style.transparent,
-                backgroundColor: productsController.isAvailable
-                    ? Style.secondaryColor
-                    : Style.lighter,
+        builder: (productsController) => SizedBox(
+              height: 40,
+              width: 90,
+              child: AnimatedToggleSwitch<bool>.dual(
+                current: productsController.isAvailable,
+                first: false,
+                second: true,
+                spacing: 4.0,
+                style: ToggleStyle(
+                  borderColor: Style.transparent,
+                  backgroundColor: productsController.isAvailable
+                      ? Style.secondaryColor
+                      : Style.lighter,
+                ),
+                borderWidth: 4.0,
+                //height: 50.h,
+                onChanged: (b) {
+                  setState(() => productsController.setIsvalaible(b));
+                  productsController.updateFood(
+                      context, widget.foodData, false);
+                },
+
+                styleBuilder: (b) => ToggleStyle(
+                    indicatorColor: b ? Style.lightBlue : Style.dark),
+                textBuilder: (value) => value
+                    ? Center(
+                        child: Text(
+                          'oui',
+                          style: Style.interBold(
+                              color: Style.lightBlue, size: 14.sp),
+                        ),
+                      )
+                    : Center(
+                        child: Text(
+                        'non',
+                        style: Style.interBold(color: Style.dark, size: 13.sp),
+                      )),
               ),
-              borderWidth: 4.0,
-              //height: 50.h,
-              onChanged: (b) {
-                setState(() => productsController.setIsvalaible(b));
-                productsController.updateFood(context, widget.foodData, false);
-              },
-              styleBuilder: (b) =>
-                  ToggleStyle(indicatorColor: b ? Style.lightBlue : Style.dark),
-              textBuilder: (value) => value
-                  ? Center(
-                      child: Text(
-                        'oui',
-                        style: Style.interBold(
-                            color: Style.lightBlue, size: 15.sp),
-                      ),
-                    )
-                  : Center(
-                      child: Text(
-                      'non',
-                      style: Style.interBold(color: Style.dark, size: 15.sp),
-                    )),
             ));
   }
 }
