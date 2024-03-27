@@ -26,7 +26,7 @@ class CustomButton extends StatelessWidget {
     required this.title,
     required this.onPressed,
     this.isLoading = false,
-    this.height,
+    this.height = 40,
     this.imagePath = "",
     this.haveBorder = false,
     this.isUnderline = false,
@@ -43,60 +43,58 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimationButtonEffect(
-      child: SizedBox(
-        height: height,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            side: BorderSide(
-                color: borderColor, //Style.primaryColor,
-                width: haveBorder ? 2.r : 1.r),
-            elevation: 0,
-            shadowColor: Style.transparent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(radius.r),
-            ),
-            backgroundColor: background,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size(0, height!),
+          side: BorderSide(
+              color: borderColor, //Style.primaryColor,
+              width: haveBorder ? 2.r : 1.r),
+          elevation: 0,
+          shadowColor: Style.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(radius.r),
           ),
-          onPressed: onPressed,
-          child: isLoading
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 20.r,
-                      height: 20.r,
-                      child: CircularProgressIndicator(
-                        color: isLoadingColor,
-                        strokeWidth: 2.r,
-                      ),
-                    ),
-                  ],
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (icon != null)
-                      Row(
-                        children: [
-                          icon!,
-                          10.horizontalSpace,
-                        ],
-                      ),
-                    Text(
-                      title,
-                      style: Style.interNormal(
-                        size: 15,
-                        color: textColor,
-                        underLineColor: underLineColor,
-                        isUnderLine: isUnderline,
-                        letterSpacing: -14 * 0.01,
-                      ).copyWith(fontWeight: FontWeight.w500),
-                    ),
-                    if (imagePath.isNotEmpty) 10.horizontalSpace,
-                    if (imagePath.isNotEmpty) SvgPicture.asset(imagePath)
-                  ],
-                ),
+          backgroundColor: background,
         ),
+        onPressed: onPressed,
+        child: isLoading
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 20.r,
+                    height: 20.r,
+                    child: CircularProgressIndicator(
+                      color: isLoadingColor,
+                      strokeWidth: 2.r,
+                    ),
+                  ),
+                ],
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (icon != null)
+                    Row(
+                      children: [
+                        icon!,
+                        10.horizontalSpace,
+                      ],
+                    ),
+                  Text(
+                    title,
+                    style: Style.interNormal(
+                      size: 15,
+                      color: textColor,
+                      underLineColor: underLineColor,
+                      isUnderLine: isUnderline,
+                      letterSpacing: -14 * 0.01,
+                    ).copyWith(fontWeight: FontWeight.w500),
+                  ),
+                  if (imagePath.isNotEmpty) 10.horizontalSpace,
+                  if (imagePath.isNotEmpty) SvgPicture.asset(imagePath)
+                ],
+              ),
       ),
     );
   }

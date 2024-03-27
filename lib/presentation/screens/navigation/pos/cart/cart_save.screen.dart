@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
@@ -44,150 +45,155 @@ class _CartSaveScreenState extends State<CartSaveScreen> {
       ),
       backgroundColor: Style.lightBlue,
       body: GetBuilder<PosController>(
-        builder: (posController) => SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                color: Style.white,
-                width: double.infinity,
-                height: 150.h,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Enregistrement",
-                        style: Style.interBold(size: 29.sp),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          AppHelpersCommon.showCustomModalBottomSheet(
-                            context: context,
-                            modal: const CustomerListComponent(),
-                            isDarkMode: false,
-                            isDrag: true,
-                            radius: 12,
-                          );
-                        },
-                        child: Obx(() {
-                          return CustomerInfoCardComponent(
-                            customer: posController.customer.value,
-                            width: (size.width - 50) * 0.60,
-                          );
-                        }),
-                      )
-                    ],
-                  ),
+        builder: (posController) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              color: Style.white,
+              width: double.infinity,
+              height: 150.h,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Enregistrement",
+                      style: Style.interBold(size: 29.sp),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        AppHelpersCommon.showCustomModalBottomSheet(
+                          context: context,
+                          modal: const CustomerListComponent(),
+                          isDarkMode: false,
+                          isDrag: true,
+                          radius: 12,
+                        );
+                      },
+                      child: Obx(() {
+                        return CustomerInfoCardComponent(
+                          customer: posController.customer.value,
+                          width: (size.width - 50) * 0.60,
+                        );
+                      }),
+                    )
+                  ],
                 ),
               ),
-              10.verticalSpace,
-              Container(
+            ),
+            10.verticalSpace,
+            Expanded(
+              child: Container(
                 color: Style.lightBlue,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Type de commande".toUpperCase(),
-                        style: TextStyle(
-                          color: Style.dark,
-                          fontSize: 12.sp,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Type de commande".toUpperCase(),
+                          style: TextStyle(
+                            color: Style.dark,
+                            fontSize: 12.sp,
+                          ),
                         ),
-                      ),
-                      const TypeCommandComponent(),
-                      20.verticalSpace,
-                      const Divider(),
-                      20.verticalSpace,
-                      Text(
-                        "ENTRER UNE NOTE",
-                        style: Style.interNormal(
-                          color: Style.dark,
-                          size: 12.sp,
-                        ),
-                      ),
-                      3.verticalSpace,
-                      NoteFieldComponent(
-                        onChanged: (value) {
-                          posController.orderNotes.value = value;
-                        },
-                        controller: posController.note,
-                      ),
-                      20.verticalSpace,
-                      SizedBox(
-                        height: 60.h,
-                        width: double.infinity,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "TOTAL",
-                              style: TextStyle(
-                                color: Style.dark,
-                                fontSize: 12.sp,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 250.w,
-                              height: 30.h,
-                              child: Stack(
-                                children: [
-                                  Text(
-                                    "${posController.totalCartValue}"
-                                        .notCurrency(),
-                                    style: Style.interBold(
-                                      size: 20.sp,
-                                      color: Style.black,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    left: cartController.getTextWidth(
-                                      posController.totalCartValue.toString(),
-                                      Style.interNormal(
-                                        size: 20.sp,
-                                        color: Style.darker,
-                                      ),
-                                    ),
-                                    bottom: 2,
-                                    child: SizedBox(
-                                      width: 40.w,
-                                      height: 14.h,
-                                      child: Text(
-                                        TrKeysConstant.splashFcfa,
-                                        style: Style.interNormal(
-                                            size: 8.sp, color: Style.darker),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      30.verticalSpace,
-                      CustomButton(
-                        isLoading: posController.isLoadingOrder.value,
-                        background: Style.primaryColor,
-                        title: "Enregistrer",
-                        radius: 3,
-                        textColor: Style.secondaryColor,
-                        isLoadingColor: Style.secondaryColor,
-                        onPressed: () async {
-                          await posController
-                              .handleCreateOrderInProgres(context);
-                        },
-                      ),
-                      24.verticalSpace,
-                    ],
+                        const TypeCommandComponent(),
+                        20.verticalSpace,
+                        const Divider(),
+                        20.verticalSpace,
+                        // Text(
+                        //   "ENTRER UNE NOTE",
+                        //   style: Style.interNormal(
+                        //     color: Style.dark,
+                        //     size: 12.sp,
+                        //   ),
+                        // ),
+                        // 3.verticalSpace,
+                        // NoteFieldComponent(
+                        //   onChanged: (value) {
+                        //     posController.orderNotes.value = value;
+                        //   },
+                        //   controller: posController.note,
+                        // ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+            20.verticalSpace,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                height: 60.h,
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "TOTAL",
+                      style: TextStyle(
+                        color: Style.dark,
+                        fontSize: 12.sp,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 250.w,
+                      height: 30.h,
+                      child: Stack(
+                        children: [
+                          Text(
+                            "${posController.totalCartValue}".notCurrency(),
+                            style: Style.interBold(
+                              size: 20.sp,
+                              color: Style.black,
+                            ),
+                          ),
+                          Positioned(
+                            left: cartController.getTextWidth(
+                              posController.totalCartValue.toString(),
+                              Style.interNormal(
+                                size: 20.sp,
+                                color: Style.darker,
+                              ),
+                            ),
+                            bottom: 2,
+                            child: SizedBox(
+                              width: 40.w,
+                              height: 14.h,
+                              child: Text(
+                                TrKeysConstant.splashFcfa,
+                                style: Style.interNormal(
+                                    size: 8.sp, color: Style.darker),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CustomButton(
+                isLoading: posController.isLoadingOrder.value,
+                background: Style.primaryColor,
+                title: "Enregistrer",
+                radius: 3,
+                textColor: Style.secondaryColor,
+                isLoadingColor: Style.secondaryColor,
+                onPressed: () async {
+                  await posController.handleCreateOrderInProgres(context);
+                },
+              ),
+            ),
+            24.verticalSpace,
+          ],
         ),
       ),
     );

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/stock/component/product_appro_card.component.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/shimmer_product_list.ui.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/shimmer/product_list.shimmer.dart';
 
 class ProductListApproSaveComponent extends StatefulWidget {
   List<Map<String, dynamic>> foods;
@@ -33,7 +33,7 @@ class _ProductListApproSaveComponentState
           6.verticalSpace,
           Expanded(
             child: widget.foods.isEmpty
-                ? const ShimmerProductListUi()
+                ? const ProductListShimmer()
                 : Container(
                     width: double.infinity,
                     decoration: const BoxDecoration(

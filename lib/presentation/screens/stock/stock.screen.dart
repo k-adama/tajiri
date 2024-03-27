@@ -13,7 +13,7 @@ import 'package:tajiri_pos_mobile/presentation/screens/stock/component/stock_car
 import 'package:tajiri_pos_mobile/presentation/screens/stock/component/stock_search_bar.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/keyboard_dismisser.ui.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/shimmer/product_appro.shimmer.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/shimmer_product_list.ui.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/shimmer/product_list.shimmer.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 
 class StockScreen extends StatefulWidget {
@@ -127,7 +127,14 @@ class _StockScreenState extends State<StockScreen> {
                     ? Expanded(
                         flex: 8,
                         child: _stockController.isProductLoading
-                            ? const ShimmerProductListUi()
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: 10,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return const ProductApproShimmer();
+                                },
+                              )
                             : _stockController.foodsInventory.isEmpty
                                 ? SvgPicture.asset(
                                     "assets/svgs/empty.svg",
