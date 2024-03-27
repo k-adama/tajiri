@@ -12,7 +12,8 @@ class SeeStockHistoryComponent extends StatefulWidget {
       {super.key, required this.seeHistory, required this.stockList});
 
   @override
-  State<SeeStockHistoryComponent> createState() => _SeeStockHistoryComponentState();
+  State<SeeStockHistoryComponent> createState() =>
+      _SeeStockHistoryComponentState();
 }
 
 class _SeeStockHistoryComponentState extends State<SeeStockHistoryComponent> {
@@ -20,7 +21,7 @@ class _SeeStockHistoryComponentState extends State<SeeStockHistoryComponent> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Container(
+    return SizedBox(
       height: 500,
       child: ListView.builder(
         shrinkWrap: true,
@@ -31,7 +32,7 @@ class _SeeStockHistoryComponentState extends State<SeeStockHistoryComponent> {
             padding: EdgeInsets.only(left: 16.r, right: 16.r),
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   height: 100,
                   width: double.infinity,
                   child: Row(

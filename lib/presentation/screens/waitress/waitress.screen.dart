@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -12,7 +11,6 @@ import 'package:tajiri_pos_mobile/presentation/screens/waitress/components/add_w
 import 'package:tajiri_pos_mobile/presentation/screens/waitress/components/waitress_card.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/shimmer/waitress_card.shimmer.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/widgets/shimmer_product_list.widget.dart';
 
 class WaitressScreen extends StatefulWidget {
   const WaitressScreen({super.key});
