@@ -60,10 +60,8 @@ class ProductsController extends GetxController {
             return;
           }
 
-          foods.assignAll(
-              data.where((element) => element.isAvailable == true).toList());
-          foodsInit.assignAll(
-              data.where((element) => element.isAvailable == true).toList());
+          foods.assignAll(data.toList());
+          foodsInit.assignAll(data.toList());
 
           bundlePacks.assignAll(responseBundlePacks.data);
 

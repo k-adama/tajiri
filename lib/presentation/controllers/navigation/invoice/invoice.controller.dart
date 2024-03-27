@@ -76,6 +76,8 @@ class InvoiceController extends GetxController {
     Uint8List imageBytesFromAsset = bytesAsset.buffer
         .asUint8List(bytesAsset.offsetInBytes, bytesAsset.lengthInBytes);
 
+    Mixpanel.instance.track('Print Invoice');
+
     bluetooth.printNewLine();
     bluetooth.printNewLine();
     bluetooth.printCustom(
