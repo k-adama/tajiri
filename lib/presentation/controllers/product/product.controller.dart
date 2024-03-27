@@ -161,7 +161,7 @@ class ProductsController extends GetxController {
               title: isPrice
                   ? "Le prix a été modifié avec succès!"
                   : getAvailableMessage()['title'],
-              content: isPrice ? "succès!" : getAvailableMessage()['content'],
+              content: isPrice ? "" : getAvailableMessage()['content'],
               svgPicture: isPrice
                   ? "assets/svgs/icon_price_tag.svg"
                   : getAvailableMessage()['image'],
