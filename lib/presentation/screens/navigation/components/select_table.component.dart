@@ -38,9 +38,15 @@ class _SelectTableComponentState extends State<SelectTableComponent> {
               ),
               child: Row(
                 children: [
-                  const SizedBox(width: 10),
-                  const SizedBox(width: 4),
-                  Text(item.name ?? ""),
+                  const SizedBox(width: 14),
+                  SizedBox(
+                    width: 100,
+                    child: Text(
+                      item.name ?? "",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                  ),
                 ],
               ),
             ),

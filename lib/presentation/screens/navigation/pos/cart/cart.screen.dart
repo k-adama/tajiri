@@ -99,58 +99,62 @@ class _CartScreen extends State<CartScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    14.verticalSpace,
-                                    Text(
-                                      "TOTAL",
-                                      style: Style.interNormal(
-                                        size: 14,
-                                        color: Style.light,
+                            Expanded(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      14.verticalSpace,
+                                      Text(
+                                        "TOTAL",
+                                        style: Style.interNormal(
+                                          size: 14,
+                                          color: Style.light,
+                                        ),
                                       ),
-                                    ),
-                                    RichText(
-                                      text: TextSpan(
-                                        style:
-                                            DefaultTextStyle.of(context).style,
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                            text:
-                                                '${posController.totalCartValue}',
-                                            style: Style.interBold(
-                                              size: 22,
-                                              color: Style.black,
+                                      RichText(
+                                        text: TextSpan(
+                                          style: DefaultTextStyle.of(context)
+                                              .style,
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text:
+                                                  '${posController.totalCartValue}',
+                                              style: Style.interBold(
+                                                size: 22,
+                                                color: Style.black,
+                                              ),
                                             ),
-                                          ),
-                                          TextSpan(
-                                            text: "/FCFA",
-                                            style: Style.interNormal(
-                                              size: 8,
-                                              color: Style.light,
+                                            TextSpan(
+                                              text: "/FCFA",
+                                              style: Style.interNormal(
+                                                size: 8,
+                                                color: Style.light,
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                posController.currentOrder.id != null
-                                    ? const SizedBox()
-                                    : 80.horizontalSpace,
-                                posController.currentOrder.id != null
-                                    ? const SizedBox()
-                                    : checkListingType(user) ==
-                                            ListingType.waitress
-                                        ? const SelectWaitressComponent() //const SelectWaitress()
-                                        : checkListingType(user) ==
-                                                ListingType.table
-                                            ? const SelectTableComponent() //const SelectTable()
-                                            : const SizedBox(),
-                              ],
+                                    ],
+                                  ),
+                                  posController.currentOrder.id != null
+                                      ? const SizedBox()
+                                      : 80.horizontalSpace,
+                                  posController.currentOrder.id != null
+                                      ? const SizedBox()
+                                      : checkListingType(user) ==
+                                              ListingType.waitress
+                                          ? const SelectWaitressComponent()
+                                          : checkListingType(user) ==
+                                                  ListingType.table
+                                              ? const SelectTableComponent() //const SelectTable()
+                                              : const SizedBox(),
+                                ],
+                              ),
                             ),
                             if (posController.currentOrder.id != null)
                               AddProductButtonComponent(
