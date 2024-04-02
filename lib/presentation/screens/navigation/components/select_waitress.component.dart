@@ -46,7 +46,14 @@ class _SelectWaitressComponentState extends State<SelectWaitressComponent> {
                       ? SvgPicture.asset('assets/svgs/noto_man.svg')
                       : SvgPicture.asset('assets/svgs/noto_woman.svg'),
                   8.horizontalSpace,
-                  Text('${item.name}'),
+                  SizedBox(
+                    width: 100,
+                    child: Text(
+                      '${item.name}',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ],
               ),
             ),
