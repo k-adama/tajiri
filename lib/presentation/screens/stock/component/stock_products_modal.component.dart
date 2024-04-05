@@ -194,11 +194,19 @@ class _StockProductModalComponentState
                       ),
                       24.verticalSpace,
                       MakeAjustmentComponent(
-                          food: widget.food,
-                          increment: increment,
-                          decrement: decrement,
-                          addValue: addValue,
-                          ajustementStock: ajustementStock),
+                        food: widget.food,
+                        increment: increment,
+                        decrement: decrement,
+                        addValue: addValue,
+                        ajustementStock: ajustementStock,
+                        onChanged: (change) {
+                          debugPrint(change);
+                          setState(() {
+                            addValue = int.parse(change);
+                            ajustementStock = 0;
+                          });
+                        },
+                      ),
                       LastStockAddedComponent(food: widget.food, size: size),
                       SeeStockOrSaveButtonComponent(
                         food: widget.food,

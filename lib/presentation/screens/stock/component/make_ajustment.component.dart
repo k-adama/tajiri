@@ -9,15 +9,17 @@ class MakeAjustmentComponent extends StatefulWidget {
   final FoodDataEntity food;
   final VoidCallback decrement;
   final VoidCallback increment;
-  int addValue;
-  int ajustementStock;
-  MakeAjustmentComponent(
+  final void Function(String)? onChanged;
+  final int addValue;
+  final int ajustementStock;
+  const MakeAjustmentComponent(
       {super.key,
       required this.food,
       required this.increment,
       required this.decrement,
       required this.addValue,
-      required this.ajustementStock});
+      required this.ajustementStock,
+      required this.onChanged});
 
   @override
   State<MakeAjustmentComponent> createState() => _MakeAjustmentComponentState();
@@ -101,14 +103,7 @@ class _MakeAjustmentComponentState extends State<MakeAjustmentComponent> {
                       hint: widget.addValue.toString(),
                       isFillColor: false,
                       hintColor: Style.black,
-                      onChanged: (change) {
-                        debugPrint(change);
-
-                        setState(() {
-                          widget.addValue = int.parse(change);
-                          widget.ajustementStock = 0;
-                        });
-                      },
+                      onChanged: widget.onChanged,
                       haveBorder: false,
                       descriptionText: "",
                       isCenterText: true,
