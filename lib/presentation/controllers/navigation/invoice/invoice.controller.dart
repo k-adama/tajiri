@@ -17,6 +17,7 @@ class InvoiceController extends GetxController {
   final user = AppHelpersCommon.getUserInLocalStorage();
 
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
+
   final devices = Rx<List<BluetoothDevice>>([]);
   List<BluetoothDevice> selectedPrinter = [];
   BluetoothDevice? device;
@@ -135,6 +136,133 @@ class InvoiceController extends GetxController {
     bluetooth.drawerPin5();
   }
 
+  void printNewModelFactureByBluetooth(OrderEntity order) async {
+    var dateFormat = DateFormat("dd/MM/yyyy HH:mm", 'fr_FR');
+
+    ByteData bytesAsset = await rootBundle.load("assets/images/logo_taj.png");
+    Uint8List imageBytesFromAsset = bytesAsset.buffer
+        .asUint8List(bytesAsset.offsetInBytes, bytesAsset.lengthInBytes);
+
+    Mixpanel.instance.track('Print Invoice');
+    final sizeMedium = Size.medium.val;
+    print("========$sizeMedium");
+
+    bluetooth.printNewLine();
+
+    bluetooth.printNewLine();
+    final restoName =
+        "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
+    bluetooth.printCustom(
+      restoName,
+      Size.boldLarge.val,
+      Align.center.val,
+    );
+
+    bluetooth.printCustom(
+      dateFormat.format(
+          DateTime.tryParse(order.createdAt.toString())?.toLocal() ??
+              DateTime.now()),
+      sizeMedium,
+      Align.center.val,
+    );
+    bluetooth.printNewLine();
+    bluetooth.printCustom(
+      "Client: ${order.customer?.firstname?.toString() ?? "Client"} ${order.customer?.lastname?.toString() ?? "invite"}",
+      sizeMedium,
+      Align.center.val,
+    );
+    bluetooth.printCustom(
+      "Serveur:  ${userOrWaitressName(order, user)}",
+      sizeMedium,
+      Align.center.val,
+    );
+    bluetooth.printNewLine();
+    bluetooth.printCustom(
+      "N.#: ${order.orderNumber}",
+      sizeMedium,
+      Align.center.val,
+    );
+    bluetooth.printNewLine();
+    order.status == "PAID"
+        ? bluetooth.printCustom(
+            "MOYEN DE PAIMENT: ${order.paymentMethod?.name ?? ""}",
+            sizeMedium,
+            Align.center.val,
+          )
+        : bluetooth.printCustom(
+            "STATUT: Non paye",
+            sizeMedium,
+            Align.center.val,
+          );
+    bluetooth.printNewLine();
+    bluetooth.printCustom("--------------------------------", 10, 10);
+    bluetooth.printNewLine();
+
+    int itemCount = order.orderDetails?.length ?? 0;
+    for (int index = 0; index < itemCount; index++) {
+      final orderDetail = order.orderDetails?[index];
+      if (orderDetail != null) {
+        final foodName = orderDetail.food?.name ?? orderDetail.bundle?['name'];
+        final quantity = orderDetail.quantity ?? 0;
+        final price = orderDetail.price ?? 0;
+        final calculatePrice = quantity * price;
+        generateLine(decouperChaine("$quantity $foodName", longueurMax: 13),
+            "$calculatePrice F", sizeMedium);
+      }
+    }
+    bluetooth.printNewLine();
+    bluetooth.printCustom("--------------------------------", sizeMedium, 10);
+    bluetooth.printNewLine();
+    bluetooth.printLeftRight(
+      "TOTAL TTC",
+      "${order.grandTotal ?? 0} FCFA",
+      Size.boldLarge.val,
+    );
+    bluetooth.printNewLine();
+    bluetooth.printNewLine();
+    bluetooth.printCustom(
+      "Merci d'etre passe",
+      sizeMedium,
+      Align.center.val,
+    );
+    bluetooth.printCustom("A bientot !", sizeMedium, Align.center.val);
+    bluetooth.printNewLine();
+    bluetooth.printImageBytes(imageBytesFromAsset);
+    bluetooth.paperCut();
+    bluetooth.drawerPin5();
+  }
+
+  List<String> decouperChaine(String chaine, {int longueurMax = 13}) {
+    List<String> morceaux = [];
+    int index = 0;
+
+    while (index < chaine.length) {
+      if (index + longueurMax >= chaine.length) {
+        // Si la fin de la chaîne est atteinte, ajoute le reste de la chaîne
+        morceaux.add(chaine.substring(index));
+      } else {
+        // Sinon, ajoute une sous-chaîne de longueur maximale 13
+        morceaux.add(chaine.substring(index, index + longueurMax));
+      }
+      // Met à jour l'index pour le prochain morceau
+      index += longueurMax;
+    }
+
+    return morceaux;
+  }
+
+  generateLine(List<String> elements, String amount, int sizeMedium) {
+    for (var i = 0; i < elements.length; i++) {
+      if (i == 0) {
+        bluetooth.printLeftRight("${elements[i]}", "$amount", sizeMedium);
+      } else {
+        bluetooth.printLeftRight("${elements[i]}", "", sizeMedium);
+      }
+    }
+
+    bluetooth.printNewLine();
+  }
+
   void notConnectedPrint(BuildContext context) {
     showDialog(
         context: context,
@@ -178,5 +306,53 @@ class InvoiceController extends GetxController {
     final pdfFile = await ApiPdfInvoiceService.generate(order);
 
     ApiPdfService.shareFile(pdfFile);
+  }
+}
+
+enum Size {
+  medium, //normal size text
+  bold, //only bold text
+  boldMedium, //bold with medium
+  boldLarge, //bold with large
+  extraLarge //extra large
+}
+
+enum Align {
+  left, //ESC_ALIGN_LEFT
+  center, //ESC_ALIGN_CENTER
+  right, //ESC_ALIGN_RIGHT
+}
+
+extension PrintSize on Size {
+  int get val {
+    switch (this) {
+      case Size.medium:
+        return 0;
+      case Size.bold:
+        return 1;
+      case Size.boldMedium:
+        return 2;
+      case Size.boldLarge:
+        return 3;
+      case Size.extraLarge:
+        return 4;
+      default:
+        return 0;
+    }
+  }
+}
+
+extension PrintAlign on Align {
+  int get val {
+    switch (this) {
+      case Align.left:
+        return 0;
+      case Align.center:
+        return 1;
+      case Align.right:
+        return 2;
+      default:
+        return 0;
+    }
   }
 }
