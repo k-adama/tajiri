@@ -206,7 +206,7 @@ class InvoiceController extends GetxController {
         final quantity = orderDetail.quantity ?? 0;
         final price = orderDetail.price ?? 0;
         final calculatePrice = quantity * price;
-        generateLine(decouperChaine("$quantity $foodName", longueurMax: 13),
+        generateLine(truncatedString("$quantity $foodName", longueurMax: 10),
             "$calculatePrice F", sizeMedium);
       }
     }
@@ -232,7 +232,7 @@ class InvoiceController extends GetxController {
     bluetooth.drawerPin5();
   }
 
-  List<String> decouperChaine(String chaine, {int longueurMax = 13}) {
+  List<String> truncatedString(String chaine, {int longueurMax = 13}) {
     List<String> morceaux = [];
     int index = 0;
 

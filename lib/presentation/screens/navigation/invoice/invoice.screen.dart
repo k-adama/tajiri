@@ -247,9 +247,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       ordersData: arguments,
                       printButtonTap: () {
                         if (controller.connected.value == true) {
-                          // final r = controller.decouperChaine(
-                          //     "Hello comment tu vas ? je pense aller bien et toi");
-                          // print(r);
+                          //   controller.printFactureByBluetooth(arguments);
                           controller.printNewModelFactureByBluetooth(arguments);
                         } else {
                           controller.notConnectedPrint(context);
