@@ -93,10 +93,17 @@ class AuthController extends GetxController {
           Mixpanel.instance.track('Login',
               properties: {"Method used": "Phone", "Status": "Succes"});
 
-          OneSignal.shared.setSMSNumber(smsNumber: "+225${data?.phone ?? ""}");
-          OneSignal.shared.sendTags(
+          OneSignal.User.addSms("+225${data?.phone ?? ""}");
+          OneSignal.User.addTags(
               {"Restaurant": data?.restaurantUser?[0].restaurant?.name ?? ""});
-          OneSignal.shared.setExternalUserId(data?.id ?? "");
+          OneSignal.login(data?.id ?? "");
+
+          //  TODO : OLD ONESIGNAL VERSION
+          // OneSignal.shared.setSMSNumber(smsNumber: "+225${data?.phone ?? ""}");
+          // OneSignal.shared.sendTags(
+          //     {"Restaurant": data?.restaurantUser?[0].restaurant?.name ?? ""});
+          // OneSignal.shared.setExternalUserId(data?.id ?? "");
+
           Get.offAllNamed(Routes.NAVIGATION);
         },
         failure: (failure, status) {
