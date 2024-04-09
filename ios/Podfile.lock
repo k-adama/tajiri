@@ -23,25 +23,56 @@ PODS:
   - mixpanel_flutter (2.2.0):
     - Flutter
     - Mixpanel-swift (= 4.2.0)
-  - onesignal_flutter (3.5.2):
+  - onesignal_flutter (5.1.3):
     - Flutter
-    - OneSignalXCFramework (= 3.12.7)
-  - OneSignalXCFramework (3.12.7):
-    - OneSignalXCFramework/OneSignalCore (= 3.12.7)
-    - OneSignalXCFramework/OneSignalExtension (= 3.12.7)
-    - OneSignalXCFramework/OneSignalOutcomes (= 3.12.7)
-  - OneSignalXCFramework/OneSignalCore (3.12.7)
-  - OneSignalXCFramework/OneSignalExtension (3.12.7):
+    - OneSignalXCFramework (= 5.1.3)
+  - OneSignalXCFramework (5.1.3):
+    - OneSignalXCFramework/OneSignalComplete (= 5.1.3)
+  - OneSignalXCFramework/OneSignal (5.1.3):
+    - OneSignalXCFramework/OneSignalCore
+    - OneSignalXCFramework/OneSignalExtension
+    - OneSignalXCFramework/OneSignalNotifications
+    - OneSignalXCFramework/OneSignalOSCore
+    - OneSignalXCFramework/OneSignalOutcomes
+    - OneSignalXCFramework/OneSignalUser
+  - OneSignalXCFramework/OneSignalComplete (5.1.3):
+    - OneSignalXCFramework/OneSignal
+    - OneSignalXCFramework/OneSignalInAppMessages
+    - OneSignalXCFramework/OneSignalLocation
+  - OneSignalXCFramework/OneSignalCore (5.1.3)
+  - OneSignalXCFramework/OneSignalExtension (5.1.3):
     - OneSignalXCFramework/OneSignalCore
     - OneSignalXCFramework/OneSignalOutcomes
-  - OneSignalXCFramework/OneSignalOutcomes (3.12.7):
+  - OneSignalXCFramework/OneSignalInAppMessages (5.1.3):
     - OneSignalXCFramework/OneSignalCore
+    - OneSignalXCFramework/OneSignalNotifications
+    - OneSignalXCFramework/OneSignalOSCore
+    - OneSignalXCFramework/OneSignalOutcomes
+    - OneSignalXCFramework/OneSignalUser
+  - OneSignalXCFramework/OneSignalLocation (5.1.3):
+    - OneSignalXCFramework/OneSignalCore
+    - OneSignalXCFramework/OneSignalNotifications
+    - OneSignalXCFramework/OneSignalOSCore
+    - OneSignalXCFramework/OneSignalUser
+  - OneSignalXCFramework/OneSignalNotifications (5.1.3):
+    - OneSignalXCFramework/OneSignalCore
+    - OneSignalXCFramework/OneSignalExtension
+    - OneSignalXCFramework/OneSignalOutcomes
+  - OneSignalXCFramework/OneSignalOSCore (5.1.3):
+    - OneSignalXCFramework/OneSignalCore
+  - OneSignalXCFramework/OneSignalOutcomes (5.1.3):
+    - OneSignalXCFramework/OneSignalCore
+  - OneSignalXCFramework/OneSignalUser (5.1.3):
+    - OneSignalXCFramework/OneSignalCore
+    - OneSignalXCFramework/OneSignalNotifications
+    - OneSignalXCFramework/OneSignalOSCore
+    - OneSignalXCFramework/OneSignalOutcomes
   - package_info_plus (0.4.5):
     - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - ReachabilitySwift (5.0.0)
+  - ReachabilitySwift (5.2.1)
   - share_plus (0.0.1):
     - Flutter
   - shared_preferences_foundation (0.0.1):
@@ -68,6 +99,7 @@ DEPENDENCIES:
   - flutter_vibrate (from `.symlinks/plugins/flutter_vibrate/ios`)
   - mixpanel_flutter (from `.symlinks/plugins/mixpanel_flutter/ios`)
   - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
+  - OneSignalXCFramework (< 6.0, >= 5.0.0)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
@@ -132,17 +164,17 @@ SPEC CHECKSUMS:
   flutter_vibrate: 9f4c2ab57008965f78969472367c329dd77eb801
   Mixpanel-swift: e5dd85295923e6a875acf17ccbab8d2ecb10ea65
   mixpanel_flutter: ed1e5eaea382cbbaf655d20e23478211727ee011
-  onesignal_flutter: 86b451a4f1d81cdc7a6f131d7b5bc2e44ae15227
-  OneSignalXCFramework: 0fca311799488cb50419c0b96594aa8df4300115
+  onesignal_flutter: b2e0779721deaffb67ba8abaa5417da139318090
+  OneSignalXCFramework: 613f696d70d7e544b9f99e7a21c8b49fa47d7942
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
-  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
+  ReachabilitySwift: 5ae15e16814b5f9ef568963fb2c87aeb49158c66
   share_plus: c3fef564749587fc939ef86ffb283ceac0baf9f5
   shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
   sqflite: 673a0e54cc04b7d6dba8d24fb8095b31c3a99eec
   url_launcher_ios: 6116280ddcfe98ab8820085d8d76ae7449447586
   video_player_avfoundation: 02011213dab73ae3687df27ce441fbbcc82b5579
 
-PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
+PODFILE CHECKSUM: 0c8c10c19cb729ca1ce1824fc830fa8381642a9d
 
 COCOAPODS: 1.15.2

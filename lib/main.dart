@@ -23,12 +23,17 @@ void main() async {
     anonKey: Environment.supabaseToken,
   );
 
-  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-  OneSignal.shared.setAppId(Environment.onesignalToken);
-// The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
-  OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
-    print("Accepted permission: $accepted");
-  });
+  //Remove this method to stop OneSignal Debugging
+  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+  OneSignal.initialize(Environment.onesignalToken);
+  OneSignal.Notifications.requestPermission(true);
+
+  // TODO: OLD ONESIGNAL VERSION
+  // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+  // OneSignal.shared.setAppId(Environment.onesignalToken);
+  // OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+  //   print("Accepted permission: $accepted");
+  // });
 
   await Mixpanel.init(Environment.mixpanelToken, trackAutomaticEvents: true);
 
