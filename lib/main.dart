@@ -28,6 +28,13 @@ void main() async {
   OneSignal.initialize(Environment.onesignalToken);
   OneSignal.Notifications.requestPermission(true);
 
+  // TODO: OLD ONESIGNAL VERSION
+  // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+  // OneSignal.shared.setAppId(Environment.onesignalToken);
+  // OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+  //   print("Accepted permission: $accepted");
+  // });
+
   await Mixpanel.init(Environment.mixpanelToken, trackAutomaticEvents: true);
 
   await Upgrader.clearSavedSettings();

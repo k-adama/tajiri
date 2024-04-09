@@ -96,8 +96,14 @@ class AuthController extends GetxController {
           OneSignal.User.addSms("+225${data?.phone ?? ""}");
           OneSignal.User.addTags(
               {"Restaurant": data?.restaurantUser?[0].restaurant?.name ?? ""});
+          OneSignal.login(data?.id ?? "");
 
+          //  TODO : OLD ONESIGNAL VERSION
+          // OneSignal.shared.setSMSNumber(smsNumber: "+225${data?.phone ?? ""}");
+          // OneSignal.shared.sendTags(
+          //     {"Restaurant": data?.restaurantUser?[0].restaurant?.name ?? ""});
           // OneSignal.shared.setExternalUserId(data?.id ?? "");
+
           Get.offAllNamed(Routes.NAVIGATION);
         },
         failure: (failure, status) {
