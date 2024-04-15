@@ -28,8 +28,16 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Permission bluettoth -->
+	<key>NSBluetoothAlwaysUsageDescription</key>
+    <string>Bluetooth access to connect 58mm or 80mm thermal printers</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Bluetooth access to connect 58mm or 80mm thermal printers</string>
+	<!-- end permission bluetooth -->
 	<key>UIBackgroundModes</key>
 	<array>
+	    <string>bluetooth-central</string>
+		<string>bluetooth-peripheral</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
