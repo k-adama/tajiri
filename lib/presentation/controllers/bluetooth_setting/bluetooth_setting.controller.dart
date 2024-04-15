@@ -76,15 +76,17 @@ class BluetoothSettingController extends GetxController {
   }
 
   Future<void> disconnect() async {
-    final bool status = await PrintBluetoothThermal.disconnect;
-    connected.value = false;
-    macConnected.value = null;
-    print("status disconnect $status");
-    // AppHelpersCommon.showBottomSnackBar(
-    //     Get.context!,
-    //     const Text("Déconnection effectué avec succès"),
-    //     const Duration(seconds: 3),
-    //     true);
+    if (connected.value == true) {
+      final bool status = await PrintBluetoothThermal.disconnect;
+      connected.value = false;
+      macConnected.value = null;
+      print("status disconnect $status");
+      // AppHelpersCommon.showBottomSnackBar(
+      //     Get.context!,
+      //     const Text("Déconnection effectué avec succès"),
+      //     const Duration(seconds: 3),
+      //     true);
+    }
   }
 
   Future<void> initPlatformState() async {
