@@ -129,6 +129,7 @@ class BluetoothSettingController extends GetxController {
   Future<List<int>> demoReceipt(
       PaperSize paper, CapabilityProfile profile, OrderEntity order) async {
     final Generator ticket = Generator(paper, profile);
+    final leftToPay = order.status == "PAID" ? "0 F" : "${order.grandTotal} F";
 
     List<int> bytes = [];
     bytes += ticket.reset();
@@ -164,7 +165,7 @@ class BluetoothSettingController extends GetxController {
       getColumns("TOTAL FACTURE", "${order.grandTotal ?? 0} F", false),
     );
     bytes += ticket.row(
-      getColumns("RESTE A PAYER", "${0} F", true),
+      getColumns("RESTE A PAYER", leftToPay, true),
     );
     bytes += ticket.emptyLines(1);
     bytes += ticket.hr(linesAfter: 1);
@@ -218,13 +219,16 @@ class BluetoothSettingController extends GetxController {
             DateTime.now());
     final restoName =
         "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
-    final client = order.customer?.firstname?.toString() ??
-        "Client${order.customer?.lastname! ?? "invité"}";
+    final restoPhone =
+        "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.contactPhone : user?.phone ?? ""}";
+    final client = order.customer?.firstname?.toString() ?? "Client invité";
 
-    print(client);
     final payementMethod = order.status == "PAID"
         ? "Via ${order.paymentMethod?.name ?? ""}"
         : "Non payé";
+
+    print("payementMethod  $payementMethod  ${order.orderNumber}");
+
     List<int> bytes = [];
 
     Uint8List encodedTitle =
@@ -232,7 +236,7 @@ class BluetoothSettingController extends GetxController {
 
     Uint8List encodedDate = await CharsetConverter.encode(encodeCharset, date);
     Uint8List encodedPhone =
-        await CharsetConverter.encode(encodeCharset, "+225 0787610716");
+        await CharsetConverter.encode(encodeCharset, restoPhone);
 
     bytes += ticket.textEncoded(
       encodedTitle,
@@ -250,7 +254,7 @@ class BluetoothSettingController extends GetxController {
         styles: const PosStyles(align: PosAlign.center, bold: false));
     bytes += ticket.emptyLines(1);
     bytes += ticket.row(
-      getColumns("N°: ${order.orderNumber}", "$payementMethod", true),
+      getColumns("N°: ${order.orderNumber}", payementMethod, true),
     );
 
     bytes += ticket.row(
