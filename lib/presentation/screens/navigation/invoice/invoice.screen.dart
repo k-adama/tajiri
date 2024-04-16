@@ -30,6 +30,7 @@ class InvoiceScreen extends StatefulWidget {
 
 class _InvoiceScreenState extends State<InvoiceScreen> {
   final controller = Get.put(InvoiceController());
+  late final OrderEntity arguments;
 
   backInvoiceScreen() {
     if (widget.isPaid == true) {
@@ -40,9 +41,16 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final OrderEntity arguments = Get.arguments ?? widget.order;
+  void initState() {
+    arguments = Get.arguments ?? widget.order;
+    if (mounted) {
+      setState(() {});
+    }
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     final user = controller.user;
 
     return PopScope(

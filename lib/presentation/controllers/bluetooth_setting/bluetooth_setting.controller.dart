@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:charset_converter/charset_converter.dart';
@@ -27,6 +28,7 @@ class BluetoothSettingController extends GetxController {
   void onInit() {
     print("=============INIT BLUE CONTROLLER");
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await _requestPermissions();
       await Get.find<BluetoothSettingController>().getBluetoothDevices();
       disconnect();
     });
@@ -35,7 +37,30 @@ class BluetoothSettingController extends GetxController {
     super.onInit();
   }
 
+  Future<void> _requestPermissions() async {
+    // Liste des permissions à demander
+    List<Permission> permissions = [
+      Permission.bluetooth,
+      Permission.bluetoothConnect,
+      Permission.bluetoothScan,
+      Permission.location,
+      // Ajoutez d'autres permissions ici si nécessaire
+    ];
+
+    // Demander chaque permission successivement
+    for (Permission permission in permissions) {
+      if (!await permission.status.isGranted) {
+        await permission.request();
+      }
+    }
+  }
+
   Future<void> getBluetoothDevices() async {
+    try {
+      await _requestPermissions();
+    } catch (e) {
+      print(e);
+    }
     progress.value = true;
     msjprogress = "En attente...";
     items.value = [];

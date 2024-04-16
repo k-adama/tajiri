@@ -80,6 +80,7 @@ dependencies:
   animated_toggle_switch: ^0.8.2
   flutter_rounded_date_picker: ^3.0.4
   shimmer: ^3.0.0
+  permission_handler: ^11.3.1
   
 flutter_launcher_icons:
   android: "launcher_icon"
