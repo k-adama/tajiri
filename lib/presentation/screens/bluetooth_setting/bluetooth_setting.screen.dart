@@ -1,11 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/bluetooth_setting/bluetooth_setting.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/bluetooth_setting/component/bluetooth_button.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/bluetooth_setting/component/bluetooth_device_item.component.dart';
@@ -82,26 +78,29 @@ class _BluetoothSettingScreenState extends State<BluetoothSettingScreen> {
                             ],
                           ),
                           16.verticalSpace,
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Style.white,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Column(
-                              children:
-                                  bluetoothController.items.value.map((e) {
-                                return BluetoothDeviceItemComponent(
-                                  isConnected: e.macAdress ==
-                                      bluetoothController.macConnected.value,
-                                  name: e.name,
-                                  onTap: () {
-                                    bluetoothController.connect(
-                                        e.macAdress, e.name);
-                                  },
-                                );
-                              }).toList(),
-                            ),
-                          ),
+                          bluetoothController.progress.value
+                              ? const CircularProgressIndicator.adaptive()
+                              : Container(
+                                  decoration: BoxDecoration(
+                                    color: Style.white,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Column(
+                                    children: bluetoothController.items.value
+                                        .map((e) {
+                                      return BluetoothDeviceItemComponent(
+                                        isConnected: e.macAdress ==
+                                            bluetoothController
+                                                .macConnected.value,
+                                        name: e.name,
+                                        onTap: () {
+                                          bluetoothController.connect(
+                                              e.macAdress, e.name);
+                                        },
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
                         ],
                       ),
                     ),

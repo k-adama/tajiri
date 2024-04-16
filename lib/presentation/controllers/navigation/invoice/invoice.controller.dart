@@ -1,65 +1,58 @@
-import 'package:blue_thermal_printer/blue_thermal_printer.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
-import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/api_pdf.service.dart';
 import 'package:tajiri_pos_mobile/app/services/api_pdf_invoice.service.dart';
-
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 
 class InvoiceController extends GetxController {
   final user = AppHelpersCommon.getUserInLocalStorage();
 
-  BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
+  // BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
 
-  final devices = Rx<List<BluetoothDevice>>([]);
-  List<BluetoothDevice> selectedPrinter = [];
-  BluetoothDevice? device;
-  final connected = false.obs;
+  // final devices = Rx<List<BluetoothDevice>>([]);
+  // List<BluetoothDevice> selectedPrinter = [];
+  // BluetoothDevice? device;
+  // final connected = false.obs;
 
-  @override
-  void onInit() {
-    initPlatformState();
+  // @override
+  // void onInit() {
+  //   initPlatformState();
 
-    super.onInit();
-  }
+  //   super.onInit();
+  // }
 
-  Future<void> initPlatformState() async {
-    print("============INIT bluetooth==========");
-    bool? isConnected = await bluetooth.isConnected;
-    List<BluetoothDevice> _devices = [];
+  // Future<void> initPlatformState() async {
+  //   print("============INIT bluetooth==========");
+  //   bool? isConnected = await bluetooth.isConnected;
+  //   List<BluetoothDevice> _devices = [];
 
-    try {
-      _devices = await bluetooth.getBondedDevices();
-    } on PlatformException {
-      print("===PlatformException===");
-    }
+  //   try {
+  //     _devices = await bluetooth.getBondedDevices();
+  //   } on PlatformException {
+  //     print("===PlatformException===");
+  //   }
 
-    bluetooth.onStateChanged().listen((state) {
-      switch (state) {
-        case BlueThermalPrinter.CONNECTED:
-          connected.value = true;
-          break;
-        case BlueThermalPrinter.DISCONNECTED:
-          connected.value = false;
-          break;
-        default:
-          break;
-      }
-    });
+  //   bluetooth.onStateChanged().listen((state) {
+  //     switch (state) {
+  //       case BlueThermalPrinter.CONNECTED:
+  //         connected.value = true;
+  //         break;
+  //       case BlueThermalPrinter.DISCONNECTED:
+  //         connected.value = false;
+  //         break;
+  //       default:
+  //         break;
+  //     }
+  //   });
 
-    devices.value = _devices;
+  //   devices.value = _devices;
 
-    if (isConnected == true) {
-      connected.value = true;
-    }
-  }
+  //   if (isConnected == true) {
+  //     connected.value = true;
+  //   }
+  // }
 
   String paymentMethodName(OrderEntity order) {
     if (order.paymentMethod == null) {
@@ -72,227 +65,163 @@ class InvoiceController extends GetxController {
     return order.paymentMethod?.name ?? "";
   }
 
-  void printFactureByBluetooth(OrderEntity order) async {
-    ByteData bytesAsset = await rootBundle.load("assets/images/logo_taj.png");
-    Uint8List imageBytesFromAsset = bytesAsset.buffer
-        .asUint8List(bytesAsset.offsetInBytes, bytesAsset.lengthInBytes);
+  // void printNewModelFactureByBluetooth(OrderEntity order) async {
+  //   var dateFormat = DateFormat("dd/MM/yyyy HH:mm", 'fr_FR');
 
-    Mixpanel.instance.track('Print Invoice');
+  //   ByteData bytesAsset = await rootBundle.load("assets/images/logo_taj.png");
+  //   Uint8List imageBytesFromAsset = bytesAsset.buffer
+  //       .asUint8List(bytesAsset.offsetInBytes, bytesAsset.lengthInBytes);
 
-    bluetooth.printNewLine();
-    bluetooth.printNewLine();
-    bluetooth.printCustom(
-        "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}",
-        10,
-        30);
+  //   Mixpanel.instance.track('Print Invoice');
+  //   final sizeMedium = Size.medium.val;
+  //   print("========$sizeMedium");
 
-    bluetooth.printNewLine();
-    bluetooth.printNewLine();
-    var dateFormat = DateFormat("dd/MM/yyyy HH:mm", 'fr_FR');
-    bluetooth.printLeftRight(
-        dateFormat.format(
-            DateTime.tryParse(order.createdAt.toString())?.toLocal() ??
-                DateTime.now()),
-        "",
-        30);
-    bluetooth.printNewLine();
-    bluetooth.printLeftRight(
-        "Client: ${order.customer?.firstname?.toString() ?? "Client"} ${order.customer?.lastname?.toString() ?? "invite"}",
-        "",
-        30);
-    bluetooth.printLeftRight(
-        "Serveur:  ${userOrWaitressName(order, user)}", "", 30);
-    bluetooth.printLeftRight("N.#: ${order.orderNumber}", "", 30);
-    bluetooth.printNewLine();
-    order.status == "PAID"
-        ? bluetooth.printLeftRight(
-            "MOYEN DE PAIMENT: ${order.paymentMethod?.name ?? ""}", "", 30)
-        : bluetooth.printLeftRight("STATUT: Non paye", "", 30);
-    bluetooth.printNewLine();
-    bluetooth.printCustom("--------------------------------", 10, 10);
-    bluetooth.printNewLine();
-    int itemCount = order.orderDetails?.length ?? 0;
-    for (int index = 0; index < itemCount; index++) {
-      final orderDetail = order.orderDetails?[index];
-      if (orderDetail != null) {
-        final foodName = orderDetail.food?.name ?? orderDetail.bundle?['name'];
-        final quantity = orderDetail.quantity ?? 0;
-        final price = orderDetail.price ?? 0;
-        final calculatePrice = quantity * price;
-        bluetooth.printCustom("$quantity $foodName $calculatePrice F", 6, 0);
-        bluetooth.printNewLine();
-      }
-    }
-    bluetooth.printNewLine();
-    bluetooth.printCustom("--------------------------------", 10, 10);
-    bluetooth.printNewLine();
-    bluetooth.printLeftRight("Total", "${order.grandTotal ?? 0} F", 15);
-    bluetooth.printNewLine();
-    bluetooth.printNewLine();
-    bluetooth.printCustom("Merci d'etre passe", 10, 20);
-    bluetooth.printNewLine();
-    bluetooth.printImageBytes(imageBytesFromAsset);
-    bluetooth.paperCut();
-    bluetooth.drawerPin5();
-  }
+  //   bluetooth.printNewLine();
 
-  void printNewModelFactureByBluetooth(OrderEntity order) async {
-    var dateFormat = DateFormat("dd/MM/yyyy HH:mm", 'fr_FR');
+  //   bluetooth.printNewLine();
+  //   final restoName =
+  //       "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
+  //   bluetooth.printCustom(
+  //     restoName,
+  //     Size.boldLarge.val,
+  //     Align.center.val,
+  //   );
 
-    ByteData bytesAsset = await rootBundle.load("assets/images/logo_taj.png");
-    Uint8List imageBytesFromAsset = bytesAsset.buffer
-        .asUint8List(bytesAsset.offsetInBytes, bytesAsset.lengthInBytes);
+  //   bluetooth.printCustom(
+  //     dateFormat.format(
+  //         DateTime.tryParse(order.createdAt.toString())?.toLocal() ??
+  //             DateTime.now()),
+  //     sizeMedium,
+  //     Align.center.val,
+  //   );
+  //   bluetooth.printNewLine();
+  //   bluetooth.printCustom(
+  //     "Client: ${order.customer?.firstname?.toString() ?? "Client"} ${order.customer?.lastname?.toString() ?? "invite"}",
+  //     sizeMedium,
+  //     Align.center.val,
+  //   );
+  //   bluetooth.printCustom(
+  //     "Serveur:  ${userOrWaitressName(order, user)}",
+  //     sizeMedium,
+  //     Align.center.val,
+  //   );
+  //   bluetooth.printNewLine();
+  //   bluetooth.printCustom(
+  //     "N.#: ${order.orderNumber}",
+  //     sizeMedium,
+  //     Align.center.val,
+  //   );
+  //   bluetooth.printNewLine();
+  //   order.status == "PAID"
+  //       ? bluetooth.printCustom(
+  //           "MOYEN DE PAIMENT: ${order.paymentMethod?.name ?? ""}",
+  //           sizeMedium,
+  //           Align.center.val,
+  //         )
+  //       : bluetooth.printCustom(
+  //           "STATUT: Non paye",
+  //           sizeMedium,
+  //           Align.center.val,
+  //         );
+  //   bluetooth.printNewLine();
+  //   bluetooth.printCustom("--------------------------------", 10, 10);
+  //   bluetooth.printNewLine();
 
-    Mixpanel.instance.track('Print Invoice');
-    final sizeMedium = Size.medium.val;
-    print("========$sizeMedium");
+  //   int itemCount = order.orderDetails?.length ?? 0;
+  //   for (int index = 0; index < itemCount; index++) {
+  //     final orderDetail = order.orderDetails?[index];
+  //     if (orderDetail != null) {
+  //       final foodName = orderDetail.food?.name ?? orderDetail.bundle?['name'];
+  //       final quantity = orderDetail.quantity ?? 0;
+  //       final price = orderDetail.price ?? 0;
+  //       final calculatePrice = quantity * price;
+  //       generateLine(truncatedString("$quantity $foodName", longueurMax: 10),
+  //           "$calculatePrice F", sizeMedium);
+  //     }
+  //   }
+  //   bluetooth.printNewLine();
+  //   bluetooth.printCustom("--------------------------------", sizeMedium, 10);
+  //   bluetooth.printNewLine();
+  //   bluetooth.printLeftRight(
+  //     "TOTAL TTC",
+  //     "${order.grandTotal ?? 0} FCFA",
+  //     Size.boldLarge.val,
+  //   );
+  //   bluetooth.printNewLine();
+  //   bluetooth.printNewLine();
+  //   bluetooth.printCustom(
+  //     "Merci d'etre passe",
+  //     sizeMedium,
+  //     Align.center.val,
+  //   );
+  //   bluetooth.printCustom("A bientot !", sizeMedium, Align.center.val);
+  //   bluetooth.printNewLine();
+  //   bluetooth.printImageBytes(imageBytesFromAsset);
+  //   bluetooth.paperCut();
+  //   bluetooth.drawerPin5();
+  // }
 
-    bluetooth.printNewLine();
+  // List<String> truncatedString(String chaine, {int longueurMax = 13}) {
+  //   List<String> morceaux = [];
+  //   int index = 0;
 
-    bluetooth.printNewLine();
-    final restoName =
-        "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
-    bluetooth.printCustom(
-      restoName,
-      Size.boldLarge.val,
-      Align.center.val,
-    );
+  //   while (index < chaine.length) {
+  //     if (index + longueurMax >= chaine.length) {
+  //       // Si la fin de la chaîne est atteinte, ajoute le reste de la chaîne
+  //       morceaux.add(chaine.substring(index));
+  //     } else {
+  //       // Sinon, ajoute une sous-chaîne de longueur maximale 13
+  //       morceaux.add(chaine.substring(index, index + longueurMax));
+  //     }
+  //     // Met à jour l'index pour le prochain morceau
+  //     index += longueurMax;
+  //   }
 
-    bluetooth.printCustom(
-      dateFormat.format(
-          DateTime.tryParse(order.createdAt.toString())?.toLocal() ??
-              DateTime.now()),
-      sizeMedium,
-      Align.center.val,
-    );
-    bluetooth.printNewLine();
-    bluetooth.printCustom(
-      "Client: ${order.customer?.firstname?.toString() ?? "Client"} ${order.customer?.lastname?.toString() ?? "invite"}",
-      sizeMedium,
-      Align.center.val,
-    );
-    bluetooth.printCustom(
-      "Serveur:  ${userOrWaitressName(order, user)}",
-      sizeMedium,
-      Align.center.val,
-    );
-    bluetooth.printNewLine();
-    bluetooth.printCustom(
-      "N.#: ${order.orderNumber}",
-      sizeMedium,
-      Align.center.val,
-    );
-    bluetooth.printNewLine();
-    order.status == "PAID"
-        ? bluetooth.printCustom(
-            "MOYEN DE PAIMENT: ${order.paymentMethod?.name ?? ""}",
-            sizeMedium,
-            Align.center.val,
-          )
-        : bluetooth.printCustom(
-            "STATUT: Non paye",
-            sizeMedium,
-            Align.center.val,
-          );
-    bluetooth.printNewLine();
-    bluetooth.printCustom("--------------------------------", 10, 10);
-    bluetooth.printNewLine();
+  //   return morceaux;
+  // }
 
-    int itemCount = order.orderDetails?.length ?? 0;
-    for (int index = 0; index < itemCount; index++) {
-      final orderDetail = order.orderDetails?[index];
-      if (orderDetail != null) {
-        final foodName = orderDetail.food?.name ?? orderDetail.bundle?['name'];
-        final quantity = orderDetail.quantity ?? 0;
-        final price = orderDetail.price ?? 0;
-        final calculatePrice = quantity * price;
-        generateLine(truncatedString("$quantity $foodName", longueurMax: 10),
-            "$calculatePrice F", sizeMedium);
-      }
-    }
-    bluetooth.printNewLine();
-    bluetooth.printCustom("--------------------------------", sizeMedium, 10);
-    bluetooth.printNewLine();
-    bluetooth.printLeftRight(
-      "TOTAL TTC",
-      "${order.grandTotal ?? 0} FCFA",
-      Size.boldLarge.val,
-    );
-    bluetooth.printNewLine();
-    bluetooth.printNewLine();
-    bluetooth.printCustom(
-      "Merci d'etre passe",
-      sizeMedium,
-      Align.center.val,
-    );
-    bluetooth.printCustom("A bientot !", sizeMedium, Align.center.val);
-    bluetooth.printNewLine();
-    bluetooth.printImageBytes(imageBytesFromAsset);
-    bluetooth.paperCut();
-    bluetooth.drawerPin5();
-  }
+  // generateLine(List<String> elements, String amount, int sizeMedium) {
+  //   for (var i = 0; i < elements.length; i++) {
+  //     if (i == 0) {
+  //       bluetooth.printLeftRight("${elements[i]}", "$amount", sizeMedium);
+  //     } else {
+  //       bluetooth.printLeftRight("${elements[i]}", "", sizeMedium);
+  //     }
+  //   }
 
-  List<String> truncatedString(String chaine, {int longueurMax = 13}) {
-    List<String> morceaux = [];
-    int index = 0;
+  //   bluetooth.printNewLine();
+  // }
 
-    while (index < chaine.length) {
-      if (index + longueurMax >= chaine.length) {
-        // Si la fin de la chaîne est atteinte, ajoute le reste de la chaîne
-        morceaux.add(chaine.substring(index));
-      } else {
-        // Sinon, ajoute une sous-chaîne de longueur maximale 13
-        morceaux.add(chaine.substring(index, index + longueurMax));
-      }
-      // Met à jour l'index pour le prochain morceau
-      index += longueurMax;
-    }
-
-    return morceaux;
-  }
-
-  generateLine(List<String> elements, String amount, int sizeMedium) {
-    for (var i = 0; i < elements.length; i++) {
-      if (i == 0) {
-        bluetooth.printLeftRight("${elements[i]}", "$amount", sizeMedium);
-      } else {
-        bluetooth.printLeftRight("${elements[i]}", "", sizeMedium);
-      }
-    }
-
-    bluetooth.printNewLine();
-  }
-
-  void notConnectedPrint(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return LayoutBuilder(builder: (context, constraints) {
-            return SimpleDialog(
-              title: SizedBox(
-                  height: constraints.maxHeight * 0.7,
-                  width: 300.r,
-                  child: ListView.builder(
-                    itemCount: devices.value.length,
-                    itemBuilder: (c, i) {
-                      return ListTile(
-                        leading: const Icon(Icons.print),
-                        title: Text(devices.value[i].name ?? "Pas de nom"),
-                        subtitle:
-                            Text(devices.value[i].address ?? "Pas d'adresse"),
-                        onTap: () async {
-                          selectedPrinter.add(devices.value[i]);
-                          bluetooth.connect(devices.value[i]);
-                          connected.value = true;
-                          Navigator.pop(context);
-                        },
-                      );
-                    },
-                  )),
-            );
-          });
-        });
-  }
+  // void notConnectedPrint(BuildContext context) {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return LayoutBuilder(builder: (context, constraints) {
+  //           return SimpleDialog(
+  //             title: SizedBox(
+  //                 height: constraints.maxHeight * 0.7,
+  //                 width: 300.r,
+  //                 child: ListView.builder(
+  //                   itemCount: devices.value.length,
+  //                   itemBuilder: (c, i) {
+  //                     return ListTile(
+  //                       leading: const Icon(Icons.print),
+  //                       title: Text(devices.value[i].name ?? "Pas de nom"),
+  //                       subtitle:
+  //                           Text(devices.value[i].address ?? "Pas d'adresse"),
+  //                       onTap: () async {
+  //                         selectedPrinter.add(devices.value[i]);
+  //                         bluetooth.connect(devices.value[i]);
+  //                         connected.value = true;
+  //                         Navigator.pop(context);
+  //                       },
+  //                     );
+  //                   },
+  //                 )),
+  //           );
+  //         });
+  //       });
+  // }
 
   void shareFacture(OrderEntity order) async {
     Mixpanel.instance.track("Share Ticket to customer", properties: {

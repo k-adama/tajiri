@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart';
+import 'package:intl/intl.dart';
 import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:charset_converter/charset_converter.dart';
@@ -13,6 +14,8 @@ class BluetoothSettingController extends GetxController {
   final connected = false.obs;
   final progress = false.obs;
   final user = AppHelpersCommon.getUserInLocalStorage();
+
+  final encodeCharset = "CP437";
 
   String msj = '';
   String msjprogress = "";
@@ -76,17 +79,17 @@ class BluetoothSettingController extends GetxController {
   }
 
   Future<void> disconnect() async {
-    if (connected.value == true) {
-      final bool status = await PrintBluetoothThermal.disconnect;
-      connected.value = false;
-      macConnected.value = null;
-      print("status disconnect $status");
-      // AppHelpersCommon.showBottomSnackBar(
-      //     Get.context!,
-      //     const Text("Déconnection effectué avec succès"),
-      //     const Duration(seconds: 3),
-      //     true);
-    }
+    // if (connected.value == true) {
+    final bool status = await PrintBluetoothThermal.disconnect;
+    connected.value = false;
+    macConnected.value = null;
+    print("status disconnect $status");
+    // AppHelpersCommon.showBottomSnackBar(
+    //     Get.context!,
+    //     const Text("Déconnection effectué avec succès"),
+    //     const Duration(seconds: 3),
+    //     true);
+    // }
   }
 
   Future<void> initPlatformState() async {
@@ -161,15 +164,15 @@ class BluetoothSettingController extends GetxController {
       getColumns("TOTAL FACTURE", "${order.grandTotal ?? 0} F", false),
     );
     bytes += ticket.row(
-      getColumns("RESTE A PAYER", "${order.grandTotal ?? 0} F", true),
+      getColumns("RESTE A PAYER", "${0} F", true),
     );
     bytes += ticket.emptyLines(1);
     bytes += ticket.hr(linesAfter: 1);
 
     final encodedRenerciment =
-        await CharsetConverter.encode("CP437", 'Merci de votre visite');
+        await CharsetConverter.encode(encodeCharset, 'Merci de votre visite');
     final encodedEndRenerciment =
-        await CharsetConverter.encode("CP437", 'A très bientôt.');
+        await CharsetConverter.encode(encodeCharset, 'A très bientôt.');
 
     bytes += ticket.textEncoded(encodedRenerciment,
         styles: const PosStyles(align: PosAlign.center));
@@ -184,7 +187,7 @@ class BluetoothSettingController extends GetxController {
 
     bytes += ticket.image(image!);
 
-    ticket.feed(1);
+    ticket.feed(2);
     ticket.cut();
     return bytes;
   }
@@ -195,12 +198,12 @@ class BluetoothSettingController extends GetxController {
     List<int> bytes = [];
     bytes += ticket.reset();
 
-    final encoded =
-        await CharsetConverter.encode("CP437", "Bienvenue chez Tajiri");
+    final encoded = await CharsetConverter.encode(
+        encodeCharset, "Bienvenue chez Tajiri , à très bientôt");
 
     bytes += ticket.textEncoded(encoded);
 
-    ticket.feed(1);
+    ticket.feed(2);
     ticket.cut();
     return bytes;
   }
@@ -209,50 +212,54 @@ class BluetoothSettingController extends GetxController {
 
   Future<List<int>> getTitleReceipt(Generator ticket, OrderEntity order) async {
     print("-----getTitleReceipt--------");
+    var dateFormat = DateFormat("dd/MM/yyyy HH:mm", 'fr_FR');
+    final date = dateFormat.format(
+        DateTime.tryParse(order.createdAt.toString())?.toLocal() ??
+            DateTime.now());
     final restoName =
         "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
-    final client =
-        "${order.customer?.firstname?.toString() ?? "Client"} ${order.customer?.lastname?.toString() ?? "invité"}";
+    final client = order.customer?.firstname?.toString() ??
+        "Client${order.customer?.lastname! ?? "invité"}";
+
+    print(client);
     final payementMethod = order.status == "PAID"
-        ? "M. de paiement : ${order.paymentMethod?.name ?? ""}"
-        : "Status: Non payé";
+        ? "Via ${order.paymentMethod?.name ?? ""}"
+        : "Non payé";
     List<int> bytes = [];
 
-    Uint8List encodedTitle = await CharsetConverter.encode("CP437", restoName);
-    Uint8List encodedLocalisation = await CharsetConverter.encode(
-        "CP437", "Cocody palmeraie boulevard mitterant");
-    Uint8List encodedPhone =
-        await CharsetConverter.encode("CP437", "Tél : +225 0787610716");
+    Uint8List encodedTitle =
+        await CharsetConverter.encode(encodeCharset, restoName);
 
-    Uint8List encodedTitle1 =
-        await CharsetConverter.encode("CP437", "Cient : $client");
-    Uint8List encodedTitle2 = await CharsetConverter.encode(
-        "CP437", "Serveur : ${userOrWaitressName(order, user)}");
-    Uint8List encodedTitle3 = await CharsetConverter.encode(
-        "CP437", "N.# : ${order.orderNumber}  $payementMethod");
+    Uint8List encodedDate = await CharsetConverter.encode(encodeCharset, date);
+    Uint8List encodedPhone =
+        await CharsetConverter.encode(encodeCharset, "+225 0787610716");
 
     bytes += ticket.textEncoded(
       encodedTitle,
       styles: const PosStyles(
+        bold: true,
         align: PosAlign.center,
         height: PosTextSize.size2,
-        width: PosTextSize.size2,
+        width: PosTextSize.size1,
       ),
     );
 
-    bytes += ticket.textEncoded(encodedLocalisation,
-        styles: const PosStyles(align: PosAlign.center));
-
     bytes += ticket.textEncoded(encodedPhone,
-        styles: const PosStyles(align: PosAlign.center));
+        styles: const PosStyles(align: PosAlign.center, bold: true));
+    bytes += ticket.textEncoded(encodedDate,
+        styles: const PosStyles(align: PosAlign.center, bold: false));
     bytes += ticket.emptyLines(1);
+    bytes += ticket.row(
+      getColumns("N°: ${order.orderNumber}", "$payementMethod", true),
+    );
 
-    bytes += ticket.textEncoded(encodedTitle1,
-        styles: const PosStyles(align: PosAlign.left));
-    bytes += ticket.textEncoded(encodedTitle2,
-        styles: const PosStyles(align: PosAlign.left));
-    bytes += ticket.textEncoded(encodedTitle3,
-        styles: const PosStyles(align: PosAlign.left));
+    bytes += ticket.row(
+      getColumns("Serveur:", userOrWaitressName(order, user), false),
+    );
+    bytes += ticket.row(
+      getColumns("Cient:", client, false),
+    );
+
     bytes += ticket.emptyLines(1);
     return bytes;
   }
@@ -295,7 +302,7 @@ class BluetoothSettingController extends GetxController {
     print("-----getColumItem--------");
     List<int> bytes = [];
     Uint8List encodedNameProduct = await CharsetConverter.encode(
-        "CP437", productLines.isNotEmpty ? productLines[0] : '');
+        encodeCharset, productLines.isNotEmpty ? productLines[0] : '');
     bytes += ticket.row([
       PosColumn(
         text: '$qte',
@@ -322,7 +329,7 @@ class BluetoothSettingController extends GetxController {
 
     for (int i = 1; i < productLines.length; i++) {
       Uint8List encodedNameProductLine =
-          await CharsetConverter.encode("CP437", productLines[i]);
+          await CharsetConverter.encode(encodeCharset, productLines[i]);
       bytes += ticket.row([
         PosColumn(
           text: '',
