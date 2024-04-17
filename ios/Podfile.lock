@@ -3,8 +3,6 @@ PODS:
     - Flutter
   - audioplayers_darwin (0.0.1):
     - Flutter
-  - blue_thermal_printer (0.0.1):
-    - Flutter
   - charset_converter (0.0.1):
     - Flutter
   - connectivity_plus (0.0.1):
@@ -74,6 +72,8 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - permission_handler_apple (9.3.0):
+    - Flutter
   - print_bluetooth_thermal (0.0.1):
     - Flutter
   - ReachabilitySwift (5.2.1)
@@ -94,7 +94,6 @@ PODS:
 DEPENDENCIES:
   - app_links (from `.symlinks/plugins/app_links/ios`)
   - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
-  - blue_thermal_printer (from `.symlinks/plugins/blue_thermal_printer/ios`)
   - charset_converter (from `.symlinks/plugins/charset_converter/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
@@ -107,6 +106,7 @@ DEPENDENCIES:
   - OneSignalXCFramework (< 6.0, >= 5.0.0)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - print_bluetooth_thermal (from `.symlinks/plugins/print_bluetooth_thermal/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
@@ -125,8 +125,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/app_links/ios"
   audioplayers_darwin:
     :path: ".symlinks/plugins/audioplayers_darwin/ios"
-  blue_thermal_printer:
-    :path: ".symlinks/plugins/blue_thermal_printer/ios"
   charset_converter:
     :path: ".symlinks/plugins/charset_converter/ios"
   connectivity_plus:
@@ -149,6 +147,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
   print_bluetooth_thermal:
     :path: ".symlinks/plugins/print_bluetooth_thermal/ios"
   share_plus:
@@ -165,7 +165,6 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   app_links: e70ca16b4b0f88253b3b3660200d4a10b4ea9795
   audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40
-  blue_thermal_printer: c83405103d2c17f8d67aaa43fcff94df5d616a66
   charset_converter: 215c7b04932ec2b9ba43be96a9bc34afed3e5322
   connectivity_plus: bf0076dd84a130856aa636df1c71ccaff908fa1d
   device_info_plus: c6fb39579d0f423935b0c9ce7ee2f44b71b9fce6
@@ -179,6 +178,7 @@ SPEC CHECKSUMS:
   OneSignalXCFramework: 613f696d70d7e544b9f99e7a21c8b49fa47d7942
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
+  permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
   print_bluetooth_thermal: 54a9ba9436479dd633d18f393669ee793ee498fa
   ReachabilitySwift: 5ae15e16814b5f9ef568963fb2c87aeb49158c66
   share_plus: c3fef564749587fc939ef86ffb283ceac0baf9f5

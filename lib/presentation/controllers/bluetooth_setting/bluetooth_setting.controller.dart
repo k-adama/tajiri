@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -105,10 +107,23 @@ class BluetoothSettingController extends GetxController {
 
   Future<void> disconnect() async {
     // if (connected.value == true) {
-    final bool status = await PrintBluetoothThermal.disconnect;
-    connected.value = false;
-    macConnected.value = null;
-    print("status disconnect $status");
+    try {
+      if (Platform.isIOS) {
+        if (connected.value == true) {
+          final bool status = await PrintBluetoothThermal.disconnect;
+          print("status disconnect $status");
+        }
+      } else {
+        final bool status = await PrintBluetoothThermal.disconnect;
+        print("status disconnect $status");
+      }
+
+      connected.value = false;
+      macConnected.value = null;
+    } catch (e) {
+      print(e);
+    }
+
     // AppHelpersCommon.showBottomSnackBar(
     //     Get.context!,
     //     const Text("Déconnection effectué avec succès"),
