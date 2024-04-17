@@ -76,18 +76,17 @@ class DrawerPageBodyComponent extends StatelessWidget {
               Get.toNamed(Routes.TABLE);
             },
           ),
-        if (checkListingType(user) == ListingType.waitress)
-          ListTile(
-            title: const DrawerBodyListRowComponent(
-              name: "Réglages bluetooth",
-              emoji: "assets/svgs/ic_bluetooth.svg",
-            ),
-            onTap: () {
-              // Mixpanel.instance.track("View Bluetooth",
-              //     properties: {"Date": DateTime.now().toString()});
-              Get.toNamed(Routes.SETTING_BLUETOOTH);
-            },
+        ListTile(
+          title: const DrawerBodyListRowComponent(
+            name: "Réglages bluetooth",
+            emoji: "assets/svgs/ic_bluetooth.svg",
           ),
+          onTap: () {
+            Mixpanel.instance.track("View Bluetooth",
+                properties: {"Date": DateTime.now().toString()});
+            Get.toNamed(Routes.SETTING_BLUETOOTH);
+          },
+        ),
         ListTile(
           title: const DrawerBodyListRowComponent(
             name: "Tutoriels",
