@@ -3,7 +3,7 @@
         {
             "name": "Flutter (Pixel_3a_API_34_extension_level_7_arm64-v8a)",
             "program": "lib/main.dart",
-            "deviceId": "emulator-5554",
+            "deviceId": "emulator-5556",
             "request": "launch",
             "type": "dart",
             "toolArgs": [
@@ -21,7 +21,7 @@
             ]
         },
         {
-            "name": "infinix",
+            "name": "Infinix X6835B (mobile)",
             "program": "lib/main.dart",
             "deviceId": "0985537369003203",
             "request": "launch",

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_details.entity.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/bluetooth_setting/bluetooth_setting.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/bluetooth_setting/bluetooth_setting.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/detail_content.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/information_invoice_component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/invoice_buttons.component.dart';
@@ -26,6 +30,7 @@ class InvoiceScreen extends StatefulWidget {
 
 class _InvoiceScreenState extends State<InvoiceScreen> {
   final controller = Get.put(InvoiceController());
+  late final OrderEntity arguments;
 
   backInvoiceScreen() {
     if (widget.isPaid == true) {
@@ -36,9 +41,16 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final OrderEntity arguments = Get.arguments ?? widget.order;
+  void initState() {
+    arguments = Get.arguments ?? widget.order;
+    if (mounted) {
+      setState(() {});
+    }
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     final user = controller.user;
 
     return PopScope(
@@ -246,11 +258,22 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                     InvoiceButtonsComponent(
                       ordersData: arguments,
                       printButtonTap: () {
-                        if (controller.connected.value == true) {
-                          controller.printFactureByBluetooth(arguments);
+                        final bluetoothController =
+                            Get.find<NavigationController>()
+                                .bluetoothController;
+
+                        if (bluetoothController.connected.value == false) {
+                          Get.toNamed(Routes.SETTING_BLUETOOTH);
                         } else {
-                          controller.notConnectedPrint(context);
+                          bluetoothController.printReceipt(arguments);
                         }
+                        // if (controller.connected.value == true) {
+                        //   //   controller.printFactureByBluetooth(arguments);
+                        //   controller.printNewModelFactureByBluetooth(arguments);
+                        // } else {
+                        //   // controller.notConnectedPrint(context);
+
+                        // }
                       },
                       shareButtonTap: () {
                         controller.shareFacture(arguments);

@@ -1,5 +1,6 @@
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/auth/auth.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/bluetooth_setting/bluetooth_setting.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/sales_reports/sales_reports.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/stock/stock.binding.dart';
@@ -13,6 +14,7 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/demo/demo.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/splash/splash.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/bluetooth_setting/bluetooth_setting.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/demo/demo.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/navigation.screen.dart';
@@ -107,6 +109,11 @@ class PresentationScreenRoute {
       name: _Paths.WAITRESS,
       page: () => const WaitressScreen(),
       binding: WaitressBinding(),
+    ),
+    GetPage(
+      name: _Paths.SETTING_BLUETOOTH,
+      page: () => const BluetoothSettingScreen(),
+      binding: BluetoothSettingBinding(),
     ),
     GetPage(
       name: _Paths.EDIT_WAITRESS,

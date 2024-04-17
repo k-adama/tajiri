@@ -3,6 +3,7 @@ import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/auth.constant.dart';
 import 'package:tajiri_pos_mobile/app/services/local_storage.service.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/bluetooth_setting/bluetooth_setting.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 
 class NavigationController extends GetxController {
@@ -11,6 +12,7 @@ class NavigationController extends GetxController {
   bool activeCart = false;
 
   final posController = Get.find<PosController>();
+  final bluetoothController = Get.find<BluetoothSettingController>();
 
   @override
   void onInit() {
