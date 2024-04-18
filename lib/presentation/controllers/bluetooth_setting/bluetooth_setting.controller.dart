@@ -4,7 +4,6 @@ import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:image/image.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
@@ -202,10 +201,10 @@ class BluetoothSettingController extends GetxController {
     bytes += ticket.hr(linesAfter: 1);
 
     bytes += ticket.row(
-      getColumns("TOTAL FACTURE", "${order.grandTotal ?? 0} F", false),
+      await getColumns("TOTAL FACTURE", "${order.grandTotal ?? 0} F", false),
     );
     bytes += ticket.row(
-      getColumns("RESTE A PAYER", leftToPay, true),
+      await getColumns("RESTE A PAYER", leftToPay, true),
     );
     bytes += ticket.emptyLines(1);
     bytes += ticket.hr(linesAfter: 1);
@@ -221,12 +220,12 @@ class BluetoothSettingController extends GetxController {
         styles: const PosStyles(align: PosAlign.center));
 
     // Print image
-    final ByteData data = await rootBundle.load('assets/images/logo_taj.png');
-    final imageBytes = data.buffer.asUint8List();
+    // final ByteData data = await rootBundle.load('assets/images/logo_taj.png');
+    // final imageBytes = data.buffer.asUint8List();
 
-    final image = decodeImage(imageBytes);
+    // final image = decodeImage(imageBytes);
 
-    bytes += ticket.image(image!);
+    // bytes += ticket.image(image!);
 
     ticket.feed(2);
     ticket.cut();
@@ -294,14 +293,14 @@ class BluetoothSettingController extends GetxController {
         styles: const PosStyles(align: PosAlign.center, bold: false));
     bytes += ticket.emptyLines(1);
     bytes += ticket.row(
-      getColumns("N°: ${order.orderNumber}", payementMethod, true),
+      await getColumns("N°: ${order.orderNumber}", payementMethod, true),
     );
 
     bytes += ticket.row(
-      getColumns("Serveur:", userOrWaitressName(order, user), false),
+      await getColumns("Serveur:", userOrWaitressName(order, user), false),
     );
     bytes += ticket.row(
-      getColumns("Cient:", client, false),
+      await getColumns("Cient:", client, false),
     );
 
     bytes += ticket.emptyLines(1);
@@ -402,14 +401,20 @@ class BluetoothSettingController extends GetxController {
     return bytes;
   }
 
-  List<PosColumn> getColumns(String title, String description, bool bold) {
+  Future<List<PosColumn>> getColumns(
+      String title, String description, bool bold) async {
+    Uint8List encodedTilte =
+        await CharsetConverter.encode(encodeCharset, title);
+    Uint8List encodedDescription =
+        await CharsetConverter.encode(encodeCharset, description);
+
     return [
       PosColumn(
-          text: title,
+          textEncoded: encodedTilte,
           width: 6,
           styles: PosStyles(align: PosAlign.left, bold: bold)),
       PosColumn(
-        text: description,
+        textEncoded: encodedDescription,
         width: 6,
         styles: PosStyles(align: PosAlign.right, bold: bold),
       ),

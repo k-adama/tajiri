@@ -24,6 +24,8 @@ class CategorieFoodComponent extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: categories.length,
               itemBuilder: (BuildContext context, index) {
+                print(
+                    "${categories[index].name}  ${categories[index].imageUrl}");
                 return InkWell(
                   onTap: () {
                     posController.handleFilter(
