@@ -1,0 +1,218 @@
+{
+  "" : {
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel-swift-master.dia",
+    "emit-module-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel-swift-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel-swift-master-emit-module.dia",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel-swift-master.swiftdeps"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/AutomaticEvents.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/AutomaticEvents.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/AutomaticEvents.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/AutomaticEvents.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/AutomaticEvents.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/AutomaticEvents.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/AutomaticEvents.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/AutomaticEvents.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/AutomaticEvents~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/AutomaticProperties.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/AutomaticProperties.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/AutomaticProperties.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/AutomaticProperties.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/AutomaticProperties.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/AutomaticProperties.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/AutomaticProperties.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/AutomaticProperties.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/AutomaticProperties~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/Constants.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Constants.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Constants.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Constants.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Constants.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Constants.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Constants.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Constants.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Constants~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/Error.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Error.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Error.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Error.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Error.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Error.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Error.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Error.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Error~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/FileLogging.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FileLogging.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FileLogging.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FileLogging.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FileLogging.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FileLogging.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FileLogging.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FileLogging.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FileLogging~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/Flush.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Flush.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Flush.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Flush.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Flush.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Flush.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Flush.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Flush.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Flush~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/FlushRequest.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FlushRequest.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FlushRequest.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FlushRequest.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FlushRequest.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FlushRequest.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FlushRequest.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FlushRequest.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FlushRequest~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/Group.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Group.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Group.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Group.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Group.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Group.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Group.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Group.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Group~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/JSONHandler.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/JSONHandler.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/JSONHandler.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/JSONHandler.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/JSONHandler.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/JSONHandler.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/JSONHandler.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/JSONHandler.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/JSONHandler~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/Logger.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Logger.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Logger.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Logger.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Logger.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Logger.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Logger.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Logger.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Logger~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/Mixpanel.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/MixpanelInstance.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelInstance.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelInstance.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelInstance.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelInstance.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelInstance.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelInstance.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelInstance.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelInstance~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/MixpanelPersistence.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelPersistence.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelPersistence.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelPersistence.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelPersistence.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelPersistence.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelPersistence.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelPersistence.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelPersistence~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/MixpanelType.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelType.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelType.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelType.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelType.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelType.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelType.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelType.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelType~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/MPDB.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MPDB.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MPDB.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MPDB.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MPDB.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MPDB.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MPDB.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MPDB.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MPDB~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/Network.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Network.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Network.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Network.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Network.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Network.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Network.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Network.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Network~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/People.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/People.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/People.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/People.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/People.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/People.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/People.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/People.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/People~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/PrintLogging.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/PrintLogging.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/PrintLogging.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/PrintLogging.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/PrintLogging.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/PrintLogging.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/PrintLogging.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/PrintLogging.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/PrintLogging~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/ReadWriteLock.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/ReadWriteLock.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/ReadWriteLock.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/ReadWriteLock.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/ReadWriteLock.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/ReadWriteLock.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/ReadWriteLock.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/ReadWriteLock.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/ReadWriteLock~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/SessionMetadata.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/SessionMetadata.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/SessionMetadata.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/SessionMetadata.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/SessionMetadata.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/SessionMetadata.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/SessionMetadata.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/SessionMetadata.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/SessionMetadata~partial.swiftmodule"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/Track.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Track.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Track.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Track.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Track.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Track.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Track.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Track.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Track~partial.swiftmodule"
+  }
+}

@@ -1,0 +1,10 @@
+framework module mixpanel_flutter {
+  umbrella header "mixpanel_flutter-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module mixpanel_flutter.__Swift {
+  exclude header "mixpanel_flutter-Swift.h"
+}

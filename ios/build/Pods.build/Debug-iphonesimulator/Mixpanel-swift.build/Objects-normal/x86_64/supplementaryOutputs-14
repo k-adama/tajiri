@@ -1,0 +1,18 @@
+"/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/Mixpanel.swift":
+  object: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel.o"
+  dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel.d"
+  const-values: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel.swiftconstvalues"
+  swift-dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel.swiftdeps"
+  diagnostics: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Mixpanel.dia"
+"/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/Logger.swift":
+  swift-dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Logger.swiftdeps"
+  object: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Logger.o"
+  dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Logger.d"
+  const-values: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Logger.swiftconstvalues"
+  diagnostics: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Logger.dia"
+"/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/MixpanelInstance.swift":
+  swift-dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelInstance.swiftdeps"
+  object: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelInstance.o"
+  const-values: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelInstance.swiftconstvalues"
+  diagnostics: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelInstance.dia"
+  dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/MixpanelInstance.d"

@@ -1,0 +1,193 @@
+{
+  "main_library": {
+    "exported_symbols": [
+      {
+        "data": {
+          "global": [
+            "_$s16mixpanel_flutter14MixpanelWriterCMn",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC5tokenSSSgvpWvd",
+            "_$s16mixpanel_flutter14MixpanelWriterCACycfc",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC13handleSetOnce33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC20trackAutomaticEventsSbSgvpWvd",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC20trackAutomaticEventsSbSgvpfi",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC5tokenSSSgvg",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC0A10PropertiesSDyS2SGSgvgTq",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC22handleEventElapsedTime33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC0A10PropertiesSDyS2SGSgvg",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC33handleRegisterSuperPropertiesOnce33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter3URIs5UInt8Vvp",
+            "_$s16mixpanel_flutter19MixpanelTypeHandlerCACycfCTq",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC20defaultFlushIntervalSdvpWvd",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC19handleOptInTracking33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC03getD8Instance33_786FF6545608A2FBFA64BEF2B35F6D58LLy0D00dH0CSgSSF",
+            "_$s16mixpanel_flutter19MixpanelTypeHandlerCfd",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC8register4withySo0eF9Registrar_p_tFZ",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC14handleAddGroup33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC11handleAlias33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC29handleUnregisterSuperProperty33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC5tokenSSSgvpMV",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC5tokenSSSgvpfi",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC8instance33_786FF6545608A2FBFA64BEF2B35F6D58LL0D00D8InstanceCSgvg",
+            "_$s16mixpanel_flutter20MixpanelReaderWriterCfD",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginCACycfc",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC5tokenSSSgvs",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC14handleSetGroup33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC0A10PropertiesSDyS2SGSgvs",
+            "_$sSD16mixpanel_flutterE5merge4dictySDyxq_G_tF",
+            "_$s16mixpanel_flutter19MixpanelTypeHandlerC0A10Properties10propertiesADSDySS0C00cD0_pGSDySSypGSg_AJtFZ",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginCN",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC16handleDeleteUser33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter14MixpanelWriterCfD",
+            "_$s16mixpanel_flutter14MixpanelWriterCACycfC",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC8instance33_786FF6545608A2FBFA64BEF2B35F6D58LL0D00D8InstanceCSgvpfi",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC5tokenSSSgvMTq",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC0A10PropertiesSDyS2SGSgvMTq",
+            "_$s16mixpanel_flutter14MixpanelReaderCMn",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC20defaultFlushIntervalSdvpfi",
+            "_$s16mixpanel_flutter14MixpanelReaderC4dataAC10Foundation4DataV_tcfC",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC24handleGroupSetProperties_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC0A5Group_8groupKey0H2ID0D00G0CSgSS_SSyptFTq",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC16handleInitialize33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginCMa",
+            "_$s16mixpanel_flutter14MixpanelWriterCN",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC20trackAutomaticEventsSbSgvMTq",
+            "_$s16mixpanel_flutter20MixpanelReaderWriterCMa",
+            "_$s16mixpanel_flutter14MixpanelReaderCMa",
+            "_$s16mixpanel_flutter14MixpanelReaderCN",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC18handleClearCharges33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter14MixpanelWriterCMa",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC6handle_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC9handleSet_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter20MixpanelReaderWriterCMn",
+            "_$s16mixpanel_flutter19MixpanelTypeHandlerCMm",
+            "_$s16mixpanel_flutter19MixpanelTypeHandlerCMa",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginCACycfC",
+            "_$s16mixpanel_flutter20MixpanelReaderWriterC6reader4withSo015FlutterStandardD0C10Foundation4DataV_tF",
+            "_$s16mixpanel_flutter14MixpanelWriterC4dataACSo13NSMutableDataC_tcfc",
+            "_$s16mixpanel_flutter14MixpanelReaderC4dataAC10Foundation4DataV_tcfc",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC11handleReset33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC23handleSetLoggingEnabled33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC8instance33_786FF6545608A2FBFA64BEF2B35F6D58LL0D00D8InstanceCSgvM",
+            "_$s16mixpanel_flutter3URIs5UInt8Vvau",
+            "_$s16mixpanel_flutter19MixpanelTypeHandlerCACycfc",
+            "_$s16mixpanel_flutter19MixpanelTypeHandlerCN",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC0A10PropertiesSDyS2SGSgvpfi",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC11handleFlush33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC8instance33_786FF6545608A2FBFA64BEF2B35F6D58LL0D00D8InstanceCSgvs",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC20trackAutomaticEventsSbSgvgTq",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC20trackAutomaticEventsSbSgvs",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC24handleGetSuperProperties33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC20defaultFlushIntervalSdvg",
+            "_$s16mixpanel_flutter9DATE_TIMEs5UInt8Vvp",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC0A5Group_8groupKey0H2ID0D00G0CSgSS_SSyptF",
+            "_mixpanel_flutterVersionNumber",
+            "_$s16mixpanel_flutter14MixpanelWriterC4dataACSo13NSMutableDataC_tcfC",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC25handleHasOptedOutTracking33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC6handle_6resultySo0E10MethodCallC_yypSgctFTq",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC0A10PropertiesSDyS2SGSgvpMV",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC29handleRegisterSuperProperties33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC17handleTrackCharge33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC0A10PropertiesSDyS2SGSgvpWvd",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC24handleGroupUnionProperty33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter20MixpanelReaderWriterCACycfC",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC12handleRemove33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC20trackAutomaticEventsSbSgvpMV",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC12handleAppend33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC14handleIdentify33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter14MixpanelReaderCACycfC",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC26handleGroupSetPropertyOnce33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC15handleTimeEvent33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC0A10PropertiesSDyS2SGSgvsTq",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC26handleClearSuperProperties33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC20handleOptOutTracking33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC5tokenSSSgvM",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC24handleGroupUnsetProperty33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginCfD",
+            "_$s16mixpanel_flutter20MixpanelReaderWriterCN",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC11handleUnion33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC17handleDeleteGroup33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC21handleTrackWithGroups33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC9handleSet_6resultySo0E10MethodCallC_yypSgctFTq",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginCMn",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC35handleSetUseIpAddressForGeolocation33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC18handleSetServerURL33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC11handleTrack33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC17handleRemoveGroup33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC20defaultFlushIntervalSdvpMV",
+            "_$s16mixpanel_flutter20MixpanelReaderWriterC6writer4withSo015FlutterStandardE0CSo13NSMutableDataC_tF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC5tokenSSSgvsTq",
+            "_$s16mixpanel_flutter14MixpanelReaderCfD",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC24handleGroupSetProperties_6resultySo0E10MethodCallC_yypSgctFTq",
+            "_$s16mixpanel_flutter20MixpanelReaderWriterCACycfc",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC0A10PropertiesSDyS2SGSgvM",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC5tokenSSSgvgTq",
+            "_mixpanel_flutterVersionString",
+            "_$s16mixpanel_flutter14MixpanelReaderCACycfc",
+            "_$s16mixpanel_flutter14MixpanelReaderC9readValue6ofTypeypSgs5UInt8V_tF",
+            "_$s16mixpanel_flutter19MixpanelTypeHandlerC0aD5Valuey0C00cD0_pSgypFZ",
+            "_$s16mixpanel_flutter9DATE_TIMEs5UInt8Vvau",
+            "_$s16mixpanel_flutter19MixpanelTypeHandlerCfD",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC15handleIncrement33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter19MixpanelTypeHandlerCMn",
+            "_$s16mixpanel_flutter19MixpanelTypeHandlerCACycfC",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC30handleGroupRemovePropertyValue33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC20trackAutomaticEventsSbSgvsTq",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC20trackAutomaticEventsSbSgvM",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC19handleGetDistinctId33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC23handleSetFlushBatchSize33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter14MixpanelWriterC10writeValueyyypF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC11handleUnset33_786FF6545608A2FBFA64BEF2B35F6D58LL_6resultySo0E10MethodCallC_yypSgctF",
+            "_$s16mixpanel_flutter26SwiftMixpanelFlutterPluginC20trackAutomaticEventsSbSgvg"
+          ],
+          "objc_class": [
+            "MixpanelFlutterPlugin",
+            "_TtC16mixpanel_flutter14MixpanelWriter",
+            "PodsDummy_mixpanel_flutter",
+            "_TtC16mixpanel_flutter20MixpanelReaderWriter",
+            "_TtC16mixpanel_flutter26SwiftMixpanelFlutterPlugin",
+            "_TtC16mixpanel_flutter14MixpanelReader"
+          ]
+        }
+      },
+      {
+        "data": {
+          "global": [
+            "_Swift50Overrides",
+            "_Swift51Overrides"
+          ]
+        },
+        "targets": [
+          "x86_64-ios-simulator"
+        ]
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/mixpanel_flutter.framework/mixpanel_flutter"
+      }
+    ],
+    "swift_abi": [
+      {
+        "abi": 7
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "12",
+        "target": "x86_64-ios-simulator"
+      },
+      {
+        "min_deployment": "14",
+        "target": "arm64-ios-simulator"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}

@@ -13,7 +13,7 @@
         {
             "name": "Flutter iphone 15 pro",
             "program": "lib/main.dart",
-            "deviceId": "C91C360B-FA56-4087-AE7D-732637EC5CBD",
+            "deviceId": "AEA330FB-3058-4C61-BF07-8FEFE625F204",
             "request": "launch",
             "type": "dart",
             "toolArgs": [

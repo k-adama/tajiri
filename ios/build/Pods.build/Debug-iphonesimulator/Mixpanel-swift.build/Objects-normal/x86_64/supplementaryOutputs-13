@@ -1,0 +1,18 @@
+"/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/Group.swift":
+  const-values: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Group.swiftconstvalues"
+  swift-dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Group.swiftdeps"
+  diagnostics: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Group.dia"
+  dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Group.d"
+  object: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/Group.o"
+"/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/JSONHandler.swift":
+  object: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/JSONHandler.o"
+  const-values: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/JSONHandler.swiftconstvalues"
+  swift-dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/JSONHandler.swiftdeps"
+  diagnostics: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/JSONHandler.dia"
+  dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/JSONHandler.d"
+"/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/FlushRequest.swift":
+  swift-dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FlushRequest.swiftdeps"
+  const-values: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FlushRequest.swiftconstvalues"
+  dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FlushRequest.d"
+  object: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FlushRequest.o"
+  diagnostics: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphonesimulator/Mixpanel-swift.build/Objects-normal/x86_64/FlushRequest.dia"

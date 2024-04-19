@@ -1,0 +1,18 @@
+{
+  "" : {
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Runner.build/Debug-iphonesimulator/RunnerTests.build/Objects-normal/x86_64/RunnerTests-master.dia",
+    "emit-module-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Runner.build/Debug-iphonesimulator/RunnerTests.build/Objects-normal/x86_64/RunnerTests-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Runner.build/Debug-iphonesimulator/RunnerTests.build/Objects-normal/x86_64/RunnerTests-master-emit-module.dia",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Runner.build/Debug-iphonesimulator/RunnerTests.build/Objects-normal/x86_64/RunnerTests-master.swiftdeps"
+  },
+  "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/RunnerTests/RunnerTests.swift" : {
+    "const-values" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Runner.build/Debug-iphonesimulator/RunnerTests.build/Objects-normal/x86_64/RunnerTests.swiftconstvalues",
+    "dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Runner.build/Debug-iphonesimulator/RunnerTests.build/Objects-normal/x86_64/RunnerTests.d",
+    "diagnostics" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Runner.build/Debug-iphonesimulator/RunnerTests.build/Objects-normal/x86_64/RunnerTests.dia",
+    "index-unit-output-path" : "/Runner.build/Debug-iphonesimulator/RunnerTests.build/Objects-normal/x86_64/RunnerTests.o",
+    "llvm-bc" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Runner.build/Debug-iphonesimulator/RunnerTests.build/Objects-normal/x86_64/RunnerTests.bc",
+    "object" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Runner.build/Debug-iphonesimulator/RunnerTests.build/Objects-normal/x86_64/RunnerTests.o",
+    "swift-dependencies" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Runner.build/Debug-iphonesimulator/RunnerTests.build/Objects-normal/x86_64/RunnerTests.swiftdeps",
+    "swiftmodule" : "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Runner.build/Debug-iphonesimulator/RunnerTests.build/Objects-normal/x86_64/RunnerTests~partial.swiftmodule"
+  }
+}

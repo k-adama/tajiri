@@ -273,7 +273,7 @@ class BluetoothSettingController extends GetxController {
     final client = order.customer?.firstname?.toString() ?? "Client invité";
 
     final payementMethod = order.status == "PAID"
-        ? "Via ${order.paymentMethod?.name ?? ""}"
+        ? "${order.paymentMethod?.name ?? "Cash"}"
         : "Non payé";
 
     print("payementMethod  $payementMethod  ${order.orderNumber}");
