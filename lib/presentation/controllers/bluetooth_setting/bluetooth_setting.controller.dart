@@ -46,13 +46,16 @@ class BluetoothSettingController extends GetxController {
       Permission.bluetoothConnect,
       Permission.bluetoothScan,
       Permission.location,
-      // Ajoutez d'autres permissions ici si nécessaire
     ];
 
     // Demander chaque permission successivement
     for (Permission permission in permissions) {
       if (!await permission.status.isGranted) {
-        await permission.request();
+        try {
+          await permission.request();
+        } catch (e) {
+          print(e);
+        }
       }
     }
   }
@@ -166,16 +169,20 @@ class BluetoothSettingController extends GetxController {
     }
   }
 
+  String addMilleSeparator(dynamic number) {
+    return NumberFormat("#,###").format(number).replaceAll(',', '.');
+  }
+
   Future<List<int>> demoReceipt(
       PaperSize paper, CapabilityProfile profile, OrderEntity order) async {
     final Generator ticket = Generator(paper, profile);
-    final leftToPay = order.status == "PAID" ? "0 F" : "${order.grandTotal} F";
+    final formattedOrderGrandTotal = addMilleSeparator(order.grandTotal ?? 0);
+
+    final leftToPay =
+        order.status == "PAID" ? "0 F" : "$formattedOrderGrandTotal F";
 
     List<int> bytes = [];
     bytes += ticket.reset();
-
-    // bytes += await printImageFromUrl(ticket,
-    //     "https://firebasestorage.googleapis.com/v0/b/parcmanager-87bbd.appspot.com/o/logo_taj.png?alt=media&token=36817d62-03e3-4fa5-a645-6c39522cecff");
 
     bytes += await getTitleReceipt(ticket, order);
 
@@ -190,10 +197,12 @@ class BluetoothSettingController extends GetxController {
         final price = orderDetail.price ?? 0;
         final calculatePrice = quantity * price;
 
+        final formattedPrice = addMilleSeparator(calculatePrice);
+
         List<String> productLines = splitText(foodName, 15);
         bytes += await getColumItem(
           productLines,
-          "$calculatePrice F",
+          "$formattedPrice F",
           ticket,
           quantity,
         );
@@ -202,7 +211,7 @@ class BluetoothSettingController extends GetxController {
     bytes += ticket.hr(linesAfter: 1);
 
     bytes += ticket.row(
-      await getColumns("TOTAL FACTURE", "${order.grandTotal ?? 0} F", false),
+      await getColumns("TOTAL FACTURE", "$formattedOrderGrandTotal F", false),
     );
     bytes += ticket.row(
       await getColumns("RESTE A PAYER", leftToPay, true),
