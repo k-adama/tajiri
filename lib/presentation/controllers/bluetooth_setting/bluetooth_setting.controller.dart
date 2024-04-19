@@ -10,6 +10,7 @@ import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:charset_converter/charset_converter.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
+import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 
 class BluetoothSettingController extends GetxController {
@@ -153,7 +154,7 @@ class BluetoothSettingController extends GetxController {
     bool conexionStatus = await PrintBluetoothThermal.connectionStatus;
     if (conexionStatus) {
       bool result = false;
-
+      Mixpanel.instance.track('Print Invoice');
       const PaperSize paper = PaperSize.mm58;
       final profile = await CapabilityProfile.load();
       List<int> ticket = await demoReceipt(paper, profile, order);
