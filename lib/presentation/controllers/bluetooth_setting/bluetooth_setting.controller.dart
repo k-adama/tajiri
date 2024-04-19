@@ -46,13 +46,16 @@ class BluetoothSettingController extends GetxController {
       Permission.bluetoothConnect,
       Permission.bluetoothScan,
       Permission.location,
-      // Ajoutez d'autres permissions ici si nécessaire
     ];
 
     // Demander chaque permission successivement
     for (Permission permission in permissions) {
       if (!await permission.status.isGranted) {
-        await permission.request();
+        try {
+          await permission.request();
+        } catch (e) {
+          print(e);
+        }
       }
     }
   }
@@ -180,9 +183,6 @@ class BluetoothSettingController extends GetxController {
 
     List<int> bytes = [];
     bytes += ticket.reset();
-
-    // bytes += await printImageFromUrl(ticket,
-    //     "https://firebasestorage.googleapis.com/v0/b/parcmanager-87bbd.appspot.com/o/logo_taj.png?alt=media&token=36817d62-03e3-4fa5-a645-6c39522cecff");
 
     bytes += await getTitleReceipt(ticket, order);
 
