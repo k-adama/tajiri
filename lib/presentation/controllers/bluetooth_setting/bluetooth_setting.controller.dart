@@ -165,10 +165,17 @@ class BluetoothSettingController extends GetxController {
     }
   }
 
+  String addMilleSeparator(dynamic number) {
+    return NumberFormat("#,###").format(number).replaceAll(',', '.');
+  }
+
   Future<List<int>> demoReceipt(
       PaperSize paper, CapabilityProfile profile, OrderEntity order) async {
     final Generator ticket = Generator(paper, profile);
-    final leftToPay = order.status == "PAID" ? "0 F" : "${order.grandTotal} F";
+    final formattedOrderGrandTotal = addMilleSeparator(order.grandTotal ?? 0);
+
+    final leftToPay =
+        order.status == "PAID" ? "0 F" : "$formattedOrderGrandTotal F";
 
     List<int> bytes = [];
     bytes += ticket.reset();
@@ -189,10 +196,12 @@ class BluetoothSettingController extends GetxController {
         final price = orderDetail.price ?? 0;
         final calculatePrice = quantity * price;
 
+        final formattedPrice = addMilleSeparator(calculatePrice);
+
         List<String> productLines = splitText(foodName, 15);
         bytes += await getColumItem(
           productLines,
-          "$calculatePrice F",
+          "$formattedPrice F",
           ticket,
           quantity,
         );
@@ -201,7 +210,7 @@ class BluetoothSettingController extends GetxController {
     bytes += ticket.hr(linesAfter: 1);
 
     bytes += ticket.row(
-      await getColumns("TOTAL FACTURE", "${order.grandTotal ?? 0} F", false),
+      await getColumns("TOTAL FACTURE", "$formattedOrderGrandTotal F", false),
     );
     bytes += ticket.row(
       await getColumns("RESTE A PAYER", leftToPay, true),
