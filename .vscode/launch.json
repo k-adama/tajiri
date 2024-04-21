@@ -29,6 +29,16 @@
             "toolArgs": [
                 "--dart-define-from-file=.env/dev.json"
             ]
+        },
+        {
+            "name": "iphone de Serge",
+            "program": "lib/main.dart",
+            "deviceId": "00008101-000111A11151003A",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define-from-file=.env/dev.json"
+            ]
         }
     ]
 }

@@ -1,8 +1,8 @@
 dependencies: \
   /Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/onesignal_flutter.build/module.modulemap \
-  /Users/sergekokoua/.pub-cache/hosted/pub.dev/onesignal_flutter-5.1.3/ios/Classes/OSFlutterDebug.m \
+  /Users/sergekokoua/.pub-cache/hosted/pub.dev/onesignal_flutter-5.1.5/ios/Classes/OSFlutterDebug.m \
   /Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Target\ Support\ Files/onesignal_flutter/onesignal_flutter-prefix.pch \
-  /Users/sergekokoua/.pub-cache/hosted/pub.dev/onesignal_flutter-5.1.3/ios/Classes/OSFlutterDebug.h \
+  /Users/sergekokoua/.pub-cache/hosted/pub.dev/onesignal_flutter-5.1.5/ios/Classes/OSFlutterDebug.h \
   /Users/sergekokoua/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64/Flutter.framework/Modules/module.modulemap \
   /Users/sergekokoua/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64/Flutter.framework/Headers/Flutter.h \
   /Users/sergekokoua/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64/Flutter.framework/Headers/FlutterAppDelegate.h \
@@ -87,4 +87,4 @@ dependencies: \
   /Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Debug-iphoneos/XCFrameworkIntermediates/OneSignalXCFramework/OneSignal/OneSignalFramework.framework/Headers/OneSignalFramework.h \
   /Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Debug-iphoneos/XCFrameworkIntermediates/OneSignalXCFramework/OneSignal/OneSignalFramework.framework/Headers/OneSignalLiveActivityController.h \
   /Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Debug-iphoneos/XCFrameworkIntermediates/OneSignalXCFramework/OneSignal/OneSignalFramework.framework/Headers/OneSignalFramework-Swift.h \
-  /Users/sergekokoua/.pub-cache/hosted/pub.dev/onesignal_flutter-5.1.3/ios/Classes/OSFlutterCategories.h
+  /Users/sergekokoua/.pub-cache/hosted/pub.dev/onesignal_flutter-5.1.5/ios/Classes/OSFlutterCategories.h

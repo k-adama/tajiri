@@ -1,18 +1,18 @@
 "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/Constants.swift":
+  swift-dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/Constants.swiftdeps"
   object: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/Constants.o"
   dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/Constants.d"
-  swift-dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/Constants.swiftdeps"
-  diagnostics: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/Constants.dia"
   const-values: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/Constants.swiftconstvalues"
-"/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/AutomaticEvents.swift":
-  dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticEvents.d"
-  swift-dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticEvents.swiftdeps"
-  diagnostics: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticEvents.dia"
-  const-values: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticEvents.swiftconstvalues"
-  object: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticEvents.o"
+  diagnostics: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/Constants.dia"
 "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/AutomaticProperties.swift":
+  const-values: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticProperties.swiftconstvalues"
   dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticProperties.d"
   object: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticProperties.o"
-  diagnostics: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticProperties.dia"
   swift-dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticProperties.swiftdeps"
-  const-values: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticProperties.swiftconstvalues"
+  diagnostics: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticProperties.dia"
+"/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/Pods/Mixpanel-swift/Sources/AutomaticEvents.swift":
+  swift-dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticEvents.swiftdeps"
+  dependencies: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticEvents.d"
+  object: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticEvents.o"
+  diagnostics: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticEvents.dia"
+  const-values: "/Users/sergekokoua/Github/tajiri/tajiri-pos-mobile/ios/build/Pods.build/Debug-iphoneos/Mixpanel-swift.build/Objects-normal/arm64/AutomaticEvents.swiftconstvalues"
