@@ -11,6 +11,8 @@ import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:charset_converter/charset_converter.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
+import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 
 class BluetoothSettingController extends GetxController {
@@ -192,7 +194,21 @@ class BluetoothSettingController extends GetxController {
     for (int index = 0; index < itemCount; index++) {
       final orderDetail = order.orderDetails?[index];
       if (orderDetail != null) {
-        final foodName = orderDetail.food?.name ?? orderDetail.bundle?['name'];
+        FoodDataEntity food = orderDetail.food ?? orderDetail.bundle;
+        FoodVariantEntity? foodVariant;
+
+        if (food.price != orderDetail.price &&
+            food.foodVariantCategory != null &&
+            food.foodVariantCategory!.isNotEmpty) {
+          foodVariant =
+              food.foodVariantCategory![0].foodVariant!.firstWhereOrNull(
+            (element) => element.price == orderDetail.price,
+          );
+        }
+
+        final foodName = foodVariant?.name ??
+            orderDetail.food?.name ??
+            orderDetail.bundle?['name'];
         final quantity = orderDetail.quantity ?? 0;
         final price = orderDetail.price ?? 0;
         final calculatePrice = quantity * price;
