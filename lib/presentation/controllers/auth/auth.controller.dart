@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -67,6 +68,7 @@ class AuthController extends GetxController {
       final response = await _authRepository.getProfileDetails();
       response.when(
         success: (data) async {
+          log("----USER : ${data?.toJson()}");
           LocalStorageService.instance
               .set(UserConstant.keyUser, jsonEncode(data));
           isLoading = false;
