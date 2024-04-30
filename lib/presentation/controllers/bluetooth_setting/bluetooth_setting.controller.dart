@@ -1,15 +1,17 @@
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image/image.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:charset_converter/charset_converter.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
+import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
@@ -185,6 +187,14 @@ class BluetoothSettingController extends GetxController {
 
     List<int> bytes = [];
     bytes += ticket.reset();
+
+    final logoURL = user?.restaurantUser?[0].restaurant?.logoUrl;
+    // add logo restaurant
+    bytes += await printImageFromUrl(
+      ticket,
+      logoURL,
+    );
+    bytes += ticket.emptyLines(1);
 
     bytes += await getTitleReceipt(ticket, order);
 
@@ -445,6 +455,36 @@ class BluetoothSettingController extends GetxController {
         styles: PosStyles(align: PosAlign.right, bold: bold),
       ),
     ];
+  }
+
+  Future<List<int>> printImageFromUrl(
+      Generator ticket, String? imageUrl) async {
+    print("------printImageFromUrl----$imageUrl--");
+    // Télécharger l'image à partir de l'URL
+    List<int> bytes = [];
+
+    final response = await http.get(Uri.parse(imageUrl ?? urlLogoTajiri));
+
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      // Convertir l'image téléchargée en bytes
+      final imageBytes = response.bodyBytes;
+
+      // Décodez l'image pour obtenir les informations de l'image
+      final image = decodeImage(imageBytes);
+      print(image);
+      // Vérifier si l'image est valide
+      if (image != null) {
+        // Imprimer l'image sur le ticket
+        bytes += ticket.image(image);
+      } else {
+        print('Failed to decode image');
+      }
+    } else {
+      print('Failed to load image from URL');
+    }
+    return bytes;
   }
 
   //
