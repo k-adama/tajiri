@@ -15,6 +15,7 @@ class UserEntity {
   String? active;
   String? img;
   String? referalCode;
+  bool? canUpdateOrCanceled; // permission for update or cancel
   RoleEntity? role;
   List<RestaurantUser>? restaurantUser;
 
@@ -32,6 +33,7 @@ class UserEntity {
       this.active,
       this.img,
       this.referalCode,
+      this.canUpdateOrCanceled,
       this.role,
       this.restaurantUser});
 
@@ -49,6 +51,7 @@ class UserEntity {
     active = json['active'];
     img = json['img'];
     referalCode = json['referalCode'];
+    canUpdateOrCanceled = json['canUpdateOrCanceled'];
     role = json['role'] != null ? RoleEntity.fromJson(json['role']) : null;
     if (json['restaurantUser'] != null) {
       restaurantUser = <RestaurantUser>[];
@@ -72,6 +75,7 @@ class UserEntity {
     data['registered_at'] = registeredAt;
     data['active'] = active;
     data['img'] = img;
+    data['canUpdateOrCanceled'] = canUpdateOrCanceled;
     data['referalCode'] = referalCode;
     if (role != null) {
       data['role'] = role!.toJson();

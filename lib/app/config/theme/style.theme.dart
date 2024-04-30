@@ -13,6 +13,8 @@ class Style {
     Style.yellowLigther,
   ];
 
+  static const Color grey100 = Color(0xFFE4E4E7);
+
   /// NEW COLOR
   static const Color light = Color(0xFFBCC4D1);
   static const Color lighter = Color(0xFFF2F7FF);

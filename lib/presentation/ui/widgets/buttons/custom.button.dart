@@ -20,9 +20,11 @@ class CustomButton extends StatelessWidget {
   final bool isUnderline;
   final Color underLineColor;
   final bool haveBorder;
+  final bool isGrised;
 
   const CustomButton({
     super.key,
+    this.isGrised = false,
     required this.title,
     required this.onPressed,
     this.isLoading = false,
@@ -47,16 +49,18 @@ class CustomButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           minimumSize: Size(0, height!),
           side: BorderSide(
-              color: borderColor, //Style.primaryColor,
+              color: isGrised == true
+                  ? Style.grey100
+                  : borderColor, //Style.primaryColor,
               width: haveBorder ? 2.r : 1.r),
           elevation: 0,
           shadowColor: Style.transparent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius.r),
           ),
-          backgroundColor: background,
+          backgroundColor: isGrised == true ? Style.grey100 : background,
         ),
-        onPressed: onPressed,
+        onPressed: isGrised == true ? null : onPressed,
         child: isLoading
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -85,7 +89,9 @@ class CustomButton extends StatelessWidget {
                     title,
                     style: Style.interNormal(
                       size: 15,
-                      color: textColor,
+                      color: isGrised == true
+                          ? Style.selectedItemsText
+                          : textColor,
                       underLineColor: underLineColor,
                       isUnderLine: isUnderline,
                       letterSpacing: -14 * 0.01,

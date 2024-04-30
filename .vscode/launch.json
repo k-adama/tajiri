@@ -21,6 +21,16 @@
             ]
         },
         {
+            "name": "samsung",
+            "program": "lib/main.dart",
+            "deviceId": "R39M40462HF",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define-from-file=.env/dev.json"
+            ]
+        },
+        {
             "name": "Infinix X6835B (mobile)",
             "program": "lib/main.dart",
             "deviceId": "0985537369003203",

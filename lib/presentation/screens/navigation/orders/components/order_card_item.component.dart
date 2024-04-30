@@ -16,17 +16,18 @@ import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/order.s
 class OrderCardItemComponent extends StatefulWidget {
   final List<OrderEntity> orders;
   final bool isRestaurant;
-  OrderCardItemComponent({super.key, required this.orders, required this.isRestaurant});
+  OrderCardItemComponent(
+      {super.key, required this.orders, required this.isRestaurant});
 
   @override
   State<OrderCardItemComponent> createState() => _OrderCardItemComponentState();
 }
 
 class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
-    final OrdersController _ordersController = Get.find();
-    final RefreshController _controller = RefreshController();
-    void _onRefresh() async {
-      _ordersController.fetchOrders();
+  final OrdersController _ordersController = Get.find();
+  final RefreshController _controller = RefreshController();
+  void _onRefresh() async {
+    _ordersController.fetchOrders();
     /*if(checkListingType(user) == ListingType.waitress){
       _ordersController.filterByWaitress(posController.waitressCurrentId);
     }else{
@@ -49,93 +50,95 @@ class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
-    controller: _controller,
-    enablePullDown: true,
-    enablePullUp: false,
-    onRefresh: _onRefresh,
-    onLoading: _onLoading,
-    child: ListView.builder(
-        itemCount: widget.orders.length,
-        itemBuilder: (BuildContext context, index) {
-          OrderEntity orderData = widget.orders[index];
-          bool isNew = orderData.status == AppConstants.orderAccepted ||
-              orderData.status == AppConstants.orderNew ||
-              orderData.status == AppConstants.orderCooking ||
-              orderData.status == AppConstants.orderReady && widget.isRestaurant;
-          return /*isNew ?*/ orderData.status != AppConstants.orderPaid
-              ? Slidable(
-                  endActionPane: ActionPane(
-                    extentRatio: 0.35,
-                    motion: const ScrollMotion(),
-                    children: [
-                      if ((orderData.status != AppConstants.orderReady) &&
-                          (orderData.status != AppConstants.orderCancelled))
-                        OrderStatusButtonComponent(
-                          buttonText:orderData.status != AppConstants.orderCooking
-                              ? "    En\nCuisine"
-                              : "Prête",
-                          buttonColor: Style.secondaryColor,
-                          onTap:() {
-                            _ordersController.updateOrderStatus(
-                              context,
-                              orderData.id.toString(),
-                              orderData.status != AppConstants.orderCooking
-                                  ? AppConstants.orderCooking
-                                  : AppConstants.orderReady,
-                            );
-                          },
-                        ),
-                      const SizedBox(width: 4.0),
-                      if ((orderData.status != AppConstants.orderReady) &&
-                          (orderData.status != AppConstants.orderCancelled))
-                        OrderStatusButtonComponent(
-                           buttonText:"Annuler",
-                         buttonColor: Style.red,
-                          onTap:() {
-                            AppHelpersCommon.showAlertDialog(
-                              context: context,
-                              child: OrderCancelDialogComponent(
-                                noCancel: () {
-                                  Navigator.pop(context);
-                                  Slidable.of(context)?.close();
-                                },
-                                cancel: () {
-                                  _ordersController.updateOrderStatus(
-                                    context,
-                                    orderData.id.toString(),
-                                    AppConstants.orderCancelled,
-                                  );
-                                  Navigator.pop(context);
-                                  Slidable.of(context)?.close();
-                                },
-                              ),
-                              radius: 10,
-                            );
-                          },
-                        ),
-                      if (orderData.status == AppConstants.orderCancelled)
-                        OrderStatusMessageComponent(
-                          status :"annulée",
-                           textColor :Style.red
+      controller: _controller,
+      enablePullDown: true,
+      enablePullUp: false,
+      onRefresh: _onRefresh,
+      onLoading: _onLoading,
+      child: ListView.builder(
+          itemCount: widget.orders.length,
+          itemBuilder: (BuildContext context, index) {
+            OrderEntity orderData = widget.orders[index];
+            bool isNew = orderData.status == AppConstants.orderAccepted ||
+                orderData.status == AppConstants.orderNew ||
+                orderData.status == AppConstants.orderCooking ||
+                orderData.status == AppConstants.orderReady &&
+                    widget.isRestaurant;
+            return /*isNew ?*/ orderData.status != AppConstants.orderPaid
+                ? Slidable(
+                    endActionPane: ActionPane(
+                      extentRatio: 0.35,
+                      motion: const ScrollMotion(),
+                      children: [
+                        if ((orderData.status != AppConstants.orderReady) &&
+                            (orderData.status != AppConstants.orderCancelled))
+                          OrderStatusButtonComponent(
+                            buttonText:
+                                orderData.status != AppConstants.orderCooking
+                                    ? "    En\nCuisine"
+                                    : "Prête",
+                            buttonColor: Style.secondaryColor,
+                            onTap: () {
+                              _ordersController.updateOrderStatus(
+                                context,
+                                orderData.id.toString(),
+                                orderData.status != AppConstants.orderCooking
+                                    ? AppConstants.orderCooking
+                                    : AppConstants.orderReady,
+                              );
+                            },
                           ),
-                      if (orderData.status == AppConstants.orderReady)
-                        OrderStatusMessageComponent(
-                          status : "prête",
-                          textColor : Style.secondaryColor),
-                    ],
-                  ),
-                  child: OrdersItemComponent(
+                        const SizedBox(width: 4.0),
+                        if ((orderData.status != AppConstants.orderReady) &&
+                            (orderData.status != AppConstants.orderCancelled))
+                          OrderStatusButtonComponent(
+                            buttonText: "Annuler",
+                            isGrised: AppHelpersCommon.getUserInLocalStorage()
+                                    ?.canUpdateOrCanceled ==
+                                false,
+                            buttonColor: Style.red,
+                            onTap: () {
+                              AppHelpersCommon.showAlertDialog(
+                                context: context,
+                                child: OrderCancelDialogComponent(
+                                  noCancel: () {
+                                    Navigator.pop(context);
+                                    Slidable.of(context)?.close();
+                                  },
+                                  cancel: () {
+                                    _ordersController.updateOrderStatus(
+                                      context,
+                                      orderData.id.toString(),
+                                      AppConstants.orderCancelled,
+                                    );
+                                    Navigator.pop(context);
+                                    Slidable.of(context)?.close();
+                                  },
+                                ),
+                                radius: 10,
+                              );
+                            },
+                          ),
+                        if (orderData.status == AppConstants.orderCancelled)
+                          OrderStatusMessageComponent(
+                              status: "annulée", textColor: Style.red),
+                        if (orderData.status == AppConstants.orderReady)
+                          OrderStatusMessageComponent(
+                              status: "prête", textColor: Style.secondaryColor),
+                      ],
+                    ),
+                    child: OrdersItemComponent(
+                      order: orderData,
+                      //mainController: mainController,
+                    ),
+                  )
+                : OrdersItemComponent(
                     order: orderData,
-                    //mainController: mainController,
-                  ),
-                )
-              : OrdersItemComponent(
-                  order: orderData,
-                );
-          /*: OrdersItem(
+                  );
+            /*: OrdersItem(
                   order: orderData,
                 );*/
-        }),
-  );
+          }),
+    );
   }
 }
