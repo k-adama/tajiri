@@ -21,6 +21,16 @@
             ]
         },
         {
+            "name": "tecno",
+            "program": "lib/main.dart",
+            "deviceId": "08154542B9004689",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define-from-file=.env/dev.json"
+            ]
+        },
+        {
             "name": "samsung",
             "program": "lib/main.dart",
             "deviceId": "R39M40462HF",

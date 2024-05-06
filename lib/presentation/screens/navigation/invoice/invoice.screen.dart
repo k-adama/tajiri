@@ -267,6 +267,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                         } else {
                           bluetoothController.printReceipt(arguments);
                         }
+
                         // if (controller.connected.value == true) {
                         //   //   controller.printFactureByBluetooth(arguments);
                         //   controller.printNewModelFactureByBluetooth(arguments);

@@ -192,9 +192,8 @@ class BluetoothSettingController extends GetxController {
     // add logo restaurant
     bytes += await printImageFromUrl(
       ticket,
-      logoURL,
+      null,
     );
-    bytes += ticket.emptyLines(1);
 
     bytes += await getTitleReceipt(ticket, order);
 
@@ -248,12 +247,17 @@ class BluetoothSettingController extends GetxController {
     final encodedRenerciment =
         await CharsetConverter.encode(encodeCharset, 'Merci de votre visite');
     final encodedEndRenerciment =
-        await CharsetConverter.encode(encodeCharset, 'A très bientôt.');
+        await CharsetConverter.encode(encodeCharset, 'A tres bientot.');
 
     bytes += ticket.textEncoded(encodedRenerciment,
         styles: const PosStyles(align: PosAlign.center));
     bytes += ticket.textEncoded(encodedEndRenerciment,
-        styles: const PosStyles(align: PosAlign.center));
+        styles: const PosStyles(
+          align: PosAlign.center,
+        ));
+
+    bytes += ticket.text('', styles: const PosStyles(align: PosAlign.center));
+    bytes += ticket.text('', styles: const PosStyles(align: PosAlign.center));
 
     // Print image
     // final ByteData data = await rootBundle.load('assets/images/logo_taj.png');
@@ -263,7 +267,7 @@ class BluetoothSettingController extends GetxController {
 
     // bytes += ticket.image(image!);
 
-    ticket.feed(2);
+    ticket.emptyLines(4);
     ticket.cut();
     return bytes;
   }
@@ -275,7 +279,7 @@ class BluetoothSettingController extends GetxController {
     bytes += ticket.reset();
 
     final encoded = await CharsetConverter.encode(
-        encodeCharset, "Bienvenue chez Tajiri , à très bientôt");
+        encodeCharset, "Bienvenue chez Tajiri , a tres bientot");
 
     bytes += ticket.textEncoded(encoded);
 
@@ -296,11 +300,11 @@ class BluetoothSettingController extends GetxController {
         "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
     final restoPhone =
         "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.contactPhone : user?.phone ?? ""}";
-    final client = order.customer?.firstname?.toString() ?? "Client invité";
+    final client = order.customer?.firstname?.toString() ?? "Client invite";
 
     final payementMethod = order.status == "PAID"
         ? "${order.paymentMethod?.name ?? "Cash"}"
-        : "Non payé";
+        : "Non paye";
 
     print("payementMethod  $payementMethod  ${order.orderNumber}");
 
@@ -332,12 +336,9 @@ class BluetoothSettingController extends GetxController {
       await getColumns("N°: ${order.orderNumber}", payementMethod, true),
     );
 
-    bytes += ticket.row(
-      await getColumns("Serveur:", userOrWaitressName(order, user), false),
-    );
-    bytes += ticket.row(
-      await getColumns("Cient:", client, false),
-    );
+    bytes += ticket.text("Serveur: ${userOrWaitressName(order, user)}");
+
+    bytes += ticket.text("Client: $client");
 
     bytes += ticket.emptyLines(1);
     return bytes;
@@ -387,7 +388,7 @@ class BluetoothSettingController extends GetxController {
         text: '$qte',
         width: 2,
         styles: const PosStyles(
-          align: PosAlign.left,
+          align: PosAlign.right,
         ),
       ),
       PosColumn(
