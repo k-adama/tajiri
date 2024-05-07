@@ -190,11 +190,16 @@ class BluetoothSettingController extends GetxController {
 
     final logoURL = user?.restaurantUser?[0].restaurant?.logoUrl;
     // add logo restaurant
-    bytes += await printImageFromUrl(
+  /*  bytes += await printImageFromUrl(
       ticket,
       null,
-    );
-
+    );*/
+    if (logoURL != null) {
+      bytes += await printImageFromUrl(
+        ticket,
+        logoURL,
+      );
+    }
     bytes += await getTitleReceipt(ticket, order);
 
     // get columns
