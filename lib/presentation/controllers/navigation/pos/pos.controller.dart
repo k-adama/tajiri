@@ -230,8 +230,7 @@ class PosController extends GetxController {
           final int foodPrice =
               item.food != null ? item.food?.price : item.bundle['price'];
           return {
-            'Product Name':
-                item.food != null ? item.food?.name : item.bundle['name'],
+            'Product Name': getNameFromOrderDetail(item),
             'Price': item.price,
             'Quantity': item.quantity,
             'IsVariant': item.price != foodPrice ? true : false
@@ -284,8 +283,7 @@ class PosController extends GetxController {
           final int foodPrice =
               item.food != null ? item.food?.price : item.bundle['price'];
           return {
-            'Product Name':
-                item.food != null ? item.food?.name : item.bundle['name'],
+            'Product Name': getNameFromOrderDetail(item),
             'Price': item.price,
             'Quantity': item.quantity,
             'IsVariant': item.price != foodPrice ? true : false
