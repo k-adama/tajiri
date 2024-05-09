@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/domain/entities/data_point_chart.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
@@ -71,6 +72,17 @@ String getNameFromOrderDetail(OrderDetailsEntity? orderDetail) {
   } else {
     return orderDetail.food?.name ?? 'N/A';
   }
+}
+
+String paymentMethodNameByOrder(OrderEntity order) {
+  if (order.paymentMethod == null) {
+    final payment = PAIEMENTS.firstWhere(
+      (item) => item['id'] == order.paymentMethodId,
+      orElse: () => <String, dynamic>{},
+    );
+    return payment['name'] ?? "";
+  }
+  return order.paymentMethod?.name ?? "";
 }
 
 // sales_calculator.dart
