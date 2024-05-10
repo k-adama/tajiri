@@ -54,17 +54,6 @@ class InvoiceController extends GetxController {
   //   }
   // }
 
-  String paymentMethodName(OrderEntity order) {
-    if (order.paymentMethod == null) {
-      final payment = PAIEMENTS.firstWhere(
-        (item) => item['id'] == order.paymentMethodId,
-        orElse: () => <String, dynamic>{},
-      );
-      return payment['name'] ?? "";
-    }
-    return order.paymentMethod?.name ?? "";
-  }
-
   // void printNewModelFactureByBluetooth(OrderEntity order) async {
   //   var dateFormat = DateFormat("dd/MM/yyyy HH:mm", 'fr_FR');
 
