@@ -61,7 +61,7 @@ dependencies:
 
   # blue_thermal_printer: ^1.2.3 #old
   print_bluetooth_thermal: ^1.1.0
-  esc_pos_utils_plus: ^2.0.3
+  flutter_esc_pos_utils: ^1.0.1
   image: ^4.0.15
   charset_converter: ^2.2.0
 

@@ -1,7 +1,7 @@
 import 'dart:io';
+import 'package:flutter_esc_pos_utils/flutter_esc_pos_utils.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
-import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -197,10 +197,6 @@ class BluetoothSettingController extends GetxController {
 
     final logoURL = user?.restaurantUser?[0].restaurant?.logoUrl;
     // add logo restaurant
-    /*  bytes += await printImageFromUrl(
-      ticket,
-      null,
-    );*/
     if (logoURL != null) {
       bytes += await printImageFromUrl(
         ticket,
