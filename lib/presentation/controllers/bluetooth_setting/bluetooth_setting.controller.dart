@@ -162,19 +162,18 @@ class BluetoothSettingController extends GetxController {
     bool conexionStatus = await PrintBluetoothThermal.connectionStatus;
     if (conexionStatus) {
       try {
-              bool result = false;
-      isLoading.value = true;
-      Mixpanel.instance.track('Print Invoice');
-      const PaperSize paper = PaperSize.mm58;
-      final profile = await CapabilityProfile.load();
-      List<int> ticket = await demoReceipt(paper, profile, order);
-      result = await PrintBluetoothThermal.writeBytes(ticket);
-      print("print Receipt result:  $result");
-      isLoading.value = false;
+        bool result = false;
+        isLoading.value = true;
+        Mixpanel.instance.track('Print Invoice');
+        const PaperSize paper = PaperSize.mm58;
+        final profile = await CapabilityProfile.load();
+        List<int> ticket = await demoReceipt(paper, profile, order);
+        result = await PrintBluetoothThermal.writeBytes(ticket);
+        print("print Receipt result:  $result");
+        isLoading.value = false;
       } catch (e) {
         isLoading.value = false;
       }
-
     } else {
       print("print Receipt conexionStatus: $conexionStatus");
       disconnect();
@@ -473,8 +472,7 @@ class BluetoothSettingController extends GetxController {
     ];
   }
 
-  Future<List<int>> printImageFromUrl(
-      Generator ticket, String imageUrl) async {
+  Future<List<int>> printImageFromUrl(Generator ticket, String imageUrl) async {
     print("------printImageFromUrl----$imageUrl--");
     // Télécharger l'image à partir de l'URL
     List<int> bytes = [];
@@ -506,7 +504,9 @@ class BluetoothSettingController extends GetxController {
           image = decodeImage(compressedImage);
         }
         // Imprimer l'image sur le ticket
-        bytes += ticket.image(image!);
+        if (image != null) {
+          bytes += ticket.image(image);
+        }
       } else {
         print('Failed to decode image');
       }
