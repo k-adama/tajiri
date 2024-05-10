@@ -1,9 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/domain/entities/data_point_chart.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/orders_details.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
 
 enum ListingType {
@@ -55,6 +57,32 @@ getInitialName(String fullName) {
   }
 
   return initials.toUpperCase();
+}
+
+String getNameFromOrderDetail(OrderDetailsEntity? orderDetail) {
+  if (orderDetail == null) {
+    return 'N/A';
+  }
+  if (orderDetail.food == null) {
+    if (orderDetail.bundle != null) {
+      return orderDetail.bundle['name'] ?? 'Produit supprimé';
+    } else {
+      return 'Produit supprimé';
+    }
+  } else {
+    return orderDetail.food?.name ?? 'N/A';
+  }
+}
+
+String paymentMethodNameByOrder(OrderEntity order) {
+  if (order.paymentMethod == null) {
+    final payment = PAIEMENTS.firstWhere(
+      (item) => item['id'] == order.paymentMethodId,
+      orElse: () => <String, dynamic>{},
+    );
+    return payment['name'] ?? "";
+  }
+  return order.paymentMethod?.name ?? "";
 }
 
 // sales_calculator.dart

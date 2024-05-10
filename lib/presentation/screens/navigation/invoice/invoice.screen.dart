@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_details.entity.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/bluetooth_setting/bluetooth_setting.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/bluetooth_setting/bluetooth_setting.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/detail_content.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/information_invoice_component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/invoice_buttons.component.dart';
@@ -32,11 +29,14 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   final controller = Get.put(InvoiceController());
   late final OrderEntity arguments;
 
-  backInvoiceScreen() {
+  bool backInvoiceScreen() {
     if (widget.isPaid == true) {
-      Get.offAllNamed(Routes.NAVIGATION, arguments: {"selectIndex": 0});
+      // Get.offAllNamed(Routes.NAVIGATION, arguments: {"selectIndex": 0});
+      Navigator.popUntil(context, ModalRoute.withName(Routes.NAVIGATION));
+      return true;
     } else {
       Get.back();
+      return true;
     }
   }
 
@@ -53,13 +53,13 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   Widget build(BuildContext context) {
     final user = controller.user;
 
-    return PopScope(
-      canPop: widget.isPaid == true ? false : true,
-      onPopInvoked: widget.isPaid == true
-          ? (didPop) {
-              backInvoiceScreen();
-            }
-          : null,
+    return WillPopScope(
+      onWillPop: () async {
+        if (widget.isPaid == true) {
+          return backInvoiceScreen();
+        }
+        return true;
+      },
       child: Scaffold(
           backgroundColor: Style.lighter,
           appBar: AppBar(
@@ -163,7 +163,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                 4.verticalSpace,
                                 arguments.status == "PAID"
                                     ? Text(
-                                        controller.paymentMethodName(arguments),
+                                        paymentMethodNameByOrder(arguments),
                                         style: Style.interBold(),
                                       )
                                     : Text(
@@ -280,9 +280,10 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                         controller.shareFacture(arguments);
                       },
                       returnToOrderButtonTap: () {
+                        Get.find<NavigationController>().selectIndexFunc(1);
                         if (widget.isPaid == true) {
-                          Get.offAllNamed(Routes.NAVIGATION,
-                              arguments: {"selectIndex": 0});
+                          Navigator.popUntil(
+                              context, ModalRoute.withName(Routes.NAVIGATION));
                         } else {
                           Get.back();
                         }

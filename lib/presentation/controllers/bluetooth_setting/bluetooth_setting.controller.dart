@@ -208,21 +208,21 @@ class BluetoothSettingController extends GetxController {
     for (int index = 0; index < itemCount; index++) {
       final orderDetail = order.orderDetails?[index];
       if (orderDetail != null) {
-        FoodDataEntity food = orderDetail.food ?? orderDetail.bundle;
+        FoodDataEntity? food = orderDetail.food ?? orderDetail.bundle;
         FoodVariantEntity? foodVariant;
-
-        if (food.price != orderDetail.price &&
-            food.foodVariantCategory != null &&
-            food.foodVariantCategory!.isNotEmpty) {
-          foodVariant =
-              food.foodVariantCategory![0].foodVariant!.firstWhereOrNull(
-            (element) => element.price == orderDetail.price,
-          );
+        if (food != null) {
+          if (food.price != orderDetail.price &&
+              food.foodVariantCategory != null &&
+              food.foodVariantCategory!.isNotEmpty) {
+            foodVariant =
+                food.foodVariantCategory![0].foodVariant!.firstWhereOrNull(
+              (element) => element.price == orderDetail.price,
+            );
+          }
         }
 
-        final foodName = foodVariant?.name ??
-            orderDetail.food?.name ??
-            orderDetail.bundle?['name'];
+        final foodName =
+            foodVariant?.name ?? getNameFromOrderDetail(orderDetail);
         final quantity = orderDetail.quantity ?? 0;
         final price = orderDetail.price ?? 0;
         final calculatePrice = quantity * price;
@@ -308,7 +308,9 @@ class BluetoothSettingController extends GetxController {
     final client = order.customer?.firstname?.toString() ?? "Client invite";
 
     final payementMethod = order.status == "PAID"
-        ? "${order.paymentMethod?.name ?? "Cash"}"
+        ? paymentMethodNameByOrder(order).isEmpty
+            ? "Cash"
+            : paymentMethodNameByOrder(order)
         : "Non paye";
 
     print("payementMethod  $payementMethod  ${order.orderNumber}");

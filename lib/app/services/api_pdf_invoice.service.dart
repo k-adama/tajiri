@@ -118,7 +118,7 @@ class ApiPdfInvoiceService {
 
     final data = ordersData.orderDetails?.map((item) {
       int calculate = (item.price ?? 0) * (item.quantity ?? 0);
-      final food = item.food == null ? item.bundle['name'] : item.food?.name;
+      final food = getNameFromOrderDetail(item);
       print(food);
       return [food, '${item.quantity ?? 0}', '${item.price ?? 0}', calculate];
     }).toList();

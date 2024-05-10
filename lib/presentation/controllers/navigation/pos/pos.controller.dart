@@ -16,6 +16,8 @@ import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.d
 import 'package:tajiri_pos_mobile/domain/entities/local_cart_enties/main_item.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/data/repositories/products/products.repository.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/table/table.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/waitress/waitress.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
@@ -67,7 +69,7 @@ class PosController extends GetxController {
   List<Map<String, dynamic>> dropdownItems = [];
   bool listingEnable = true;
   String listingType = "waitress";
-  String waitressId = '';
+  // String waitressId = '';
   String tableId = '';
   String? waitressCurrentId;
   String? tableCurrentId;
@@ -230,8 +232,7 @@ class PosController extends GetxController {
           final int foodPrice =
               item.food != null ? item.food?.price : item.bundle['price'];
           return {
-            'Product Name':
-                item.food != null ? item.food?.name : item.bundle['name'],
+            'Product Name': getNameFromOrderDetail(item),
             'Price': item.price,
             'Quantity': item.quantity,
             'IsVariant': item.price != foodPrice ? true : false
@@ -266,6 +267,7 @@ class PosController extends GetxController {
             content: "La commande a bien été payée.",
             svgPicture: "assets/svgs/success payment 1.svg",
             redirect: () {
+              Get.close(2);
               Get.to(InvoiceScreen(
                 order: newOrder,
                 isPaid: true,
@@ -284,8 +286,7 @@ class PosController extends GetxController {
           final int foodPrice =
               item.food != null ? item.food?.price : item.bundle['price'];
           return {
-            'Product Name':
-                item.food != null ? item.food?.name : item.bundle['name'],
+            'Product Name': getNameFromOrderDetail(item),
             'Price': item.price,
             'Quantity': item.quantity,
             'IsVariant': item.price != foodPrice ? true : false
@@ -363,7 +364,22 @@ class PosController extends GetxController {
     settleOrderId.value = "ON_PLACE";
     note.clear();
     currentOrder = OrderEntity();
+
     update();
+  }
+
+  //TODO : for clear selected  waitress and table
+  resetSelectedTableOrWaitress() {
+    // reset waitress and table select
+
+    final waitressController = Get.find<WaitressController>();
+    final tableController = Get.find<TableController>();
+
+    waitressController.selectedWaitress.value = null;
+    tableController.selectedTable.value = null;
+
+    waitressCurrentId = null;
+    tableCurrentId = null;
   }
 
   void setCategoryId(String id) {

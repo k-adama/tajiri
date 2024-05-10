@@ -9,6 +9,7 @@ import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/orders_details.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_save_or_paid_button.component.dart';
@@ -139,7 +140,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                             child: Container(
                               margin: const EdgeInsets.only(left: 2),
                               child: Text(
-                                "${widget.order.orderDetails?[i]?.quantity ?? ''}x ${widget.order.orderDetails?[i]?.food?.name ?? 'N/A'}",
+                                "${widget.order.orderDetails?[i].quantity ?? ''}x ${getNameFromOrderDetail(widget.order.orderDetails?[i])}",
                                 style: Style.interNormal(color: Style.black),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -172,8 +173,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
-                              "${orderDetail.food == null ? orderDetail.bundle['name'] : orderDetail.food!.name}" +
-                                  " x ${orderDetail.quantity ?? ''}",
+                              "${getNameFromOrderDetail(orderDetail)} x ${orderDetail.quantity ?? ''}",
                             ),
                           );
                         }).toList() ??
@@ -182,7 +182,8 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
               20.verticalSpace,
               Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
-                child: OrderSaveOrPaidButtonComponent(order: widget.order,isPaid:isPaid),
+                child: OrderSaveOrPaidButtonComponent(
+                    order: widget.order, isPaid: isPaid),
               ),
               10.verticalSpace,
             ],

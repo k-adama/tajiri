@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_details.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/detail_content.component.dart';
@@ -28,7 +29,7 @@ class InvoiceOrderItemComponent extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     OrderDetailStringContent(
-                        text: getNameFood(orderDetail),
+                        text: getNameFromOrderDetail(orderDetail),
                         isBold: false,
                         isEnd: false),
                     Text(
@@ -45,15 +46,5 @@ class InvoiceOrderItemComponent extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String getNameFood(OrderDetailsEntity orderDetails) {
-    final food = orderDetails.food;
-    if (food == null) return orderDetails.bundle['name'];
-    // if (food.foodVariantCategory?.isNotEmpty ?? false) {
-    //   return food.foodVariantCategory![0].name ?? '_';
-    // } else {
-    return food.name ?? '_';
-    // }
   }
 }
