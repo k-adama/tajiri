@@ -1,9 +1,11 @@
 import 'dart:io';
-
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:http/http.dart' as http;
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image/image.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
@@ -27,6 +29,7 @@ class BluetoothSettingController extends GetxController {
 
   final macConnected = Rx<String?>(null);
   final items = Rx<List<BluetoothInfo>>([]);
+  final isLoading = false.obs;
 
   @override
   void onInit() {
@@ -158,13 +161,19 @@ class BluetoothSettingController extends GetxController {
   Future<void> printReceipt(OrderEntity order) async {
     bool conexionStatus = await PrintBluetoothThermal.connectionStatus;
     if (conexionStatus) {
-      bool result = false;
-      Mixpanel.instance.track('Print Invoice');
-      const PaperSize paper = PaperSize.mm58;
-      final profile = await CapabilityProfile.load();
-      List<int> ticket = await demoReceipt(paper, profile, order);
-      result = await PrintBluetoothThermal.writeBytes(ticket);
-      print("print Receipt result:  $result");
+      try {
+        bool result = false;
+        isLoading.value = true;
+        Mixpanel.instance.track('Print Invoice');
+        const PaperSize paper = PaperSize.mm58;
+        final profile = await CapabilityProfile.load();
+        List<int> ticket = await demoReceipt(paper, profile, order);
+        result = await PrintBluetoothThermal.writeBytes(ticket);
+        print("print Receipt result:  $result");
+        isLoading.value = false;
+      } catch (e) {
+        isLoading.value = false;
+      }
     } else {
       print("print Receipt conexionStatus: $conexionStatus");
       disconnect();
@@ -186,6 +195,18 @@ class BluetoothSettingController extends GetxController {
     List<int> bytes = [];
     bytes += ticket.reset();
 
+    final logoURL = user?.restaurantUser?[0].restaurant?.logoUrl;
+    // add logo restaurant
+    /*  bytes += await printImageFromUrl(
+      ticket,
+      null,
+    );*/
+    if (logoURL != null) {
+      bytes += await printImageFromUrl(
+        ticket,
+        logoURL,
+      );
+    }
     bytes += await getTitleReceipt(ticket, order);
 
     // get columns
@@ -238,12 +259,17 @@ class BluetoothSettingController extends GetxController {
     final encodedRenerciment =
         await CharsetConverter.encode(encodeCharset, 'Merci de votre visite');
     final encodedEndRenerciment =
-        await CharsetConverter.encode(encodeCharset, 'A très bientôt.');
+        await CharsetConverter.encode(encodeCharset, 'A tres bientot.');
 
     bytes += ticket.textEncoded(encodedRenerciment,
         styles: const PosStyles(align: PosAlign.center));
     bytes += ticket.textEncoded(encodedEndRenerciment,
-        styles: const PosStyles(align: PosAlign.center));
+        styles: const PosStyles(
+          align: PosAlign.center,
+        ));
+
+    bytes += ticket.text('', styles: const PosStyles(align: PosAlign.center));
+    bytes += ticket.text('', styles: const PosStyles(align: PosAlign.center));
 
     // Print image
     // final ByteData data = await rootBundle.load('assets/images/logo_taj.png');
@@ -253,7 +279,7 @@ class BluetoothSettingController extends GetxController {
 
     // bytes += ticket.image(image!);
 
-    ticket.feed(2);
+    ticket.emptyLines(4);
     ticket.cut();
     return bytes;
   }
@@ -265,7 +291,7 @@ class BluetoothSettingController extends GetxController {
     bytes += ticket.reset();
 
     final encoded = await CharsetConverter.encode(
-        encodeCharset, "Bienvenue chez Tajiri , à très bientôt");
+        encodeCharset, "Bienvenue chez Tajiri , a tres bientot");
 
     bytes += ticket.textEncoded(encoded);
 
@@ -286,13 +312,13 @@ class BluetoothSettingController extends GetxController {
         "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
     final restoPhone =
         "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.contactPhone : user?.phone ?? ""}";
-    final client = order.customer?.firstname?.toString() ?? "Client invité";
+    final client = order.customer?.firstname?.toString() ?? "Client invite";
 
     final payementMethod = order.status == "PAID"
         ? paymentMethodNameByOrder(order).isEmpty
             ? "Cash"
             : paymentMethodNameByOrder(order)
-        : "Non payé";
+        : "Non paye";
 
     print("payementMethod  $payementMethod  ${order.orderNumber}");
 
@@ -324,12 +350,9 @@ class BluetoothSettingController extends GetxController {
       await getColumns("N°: ${order.orderNumber}", payementMethod, true),
     );
 
-    bytes += ticket.row(
-      await getColumns("Serveur:", userOrWaitressName(order, user), false),
-    );
-    bytes += ticket.row(
-      await getColumns("Cient:", client, false),
-    );
+    bytes += ticket.text("Serveur: ${userOrWaitressName(order, user)}");
+
+    bytes += ticket.text("Client: $client");
 
     bytes += ticket.emptyLines(1);
     return bytes;
@@ -345,7 +368,7 @@ class BluetoothSettingController extends GetxController {
         text: 'Qte',
         width: 2,
         styles: const PosStyles(
-          align: PosAlign.left,
+          align: PosAlign.center,
         ),
       ),
       PosColumn(
@@ -379,7 +402,7 @@ class BluetoothSettingController extends GetxController {
         text: '$qte',
         width: 2,
         styles: const PosStyles(
-          align: PosAlign.left,
+          align: PosAlign.center,
         ),
       ),
       PosColumn(
@@ -447,6 +470,50 @@ class BluetoothSettingController extends GetxController {
         styles: PosStyles(align: PosAlign.right, bold: bold),
       ),
     ];
+  }
+
+  Future<List<int>> printImageFromUrl(Generator ticket, String imageUrl) async {
+    print("------printImageFromUrl----$imageUrl--");
+    // Télécharger l'image à partir de l'URL
+    List<int> bytes = [];
+
+    final response = await http.get(Uri.parse(imageUrl));
+
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      // Convertir l'image téléchargée en bytes
+      final imageBytes = response.bodyBytes;
+
+      // Décodez l'image pour obtenir les informations de l'image
+      var image = decodeImage(imageBytes);
+      print(image);
+      // Vérifier si l'image est valide
+      if (image != null) {
+        const maxWidth = 200;
+        const maxHeight = 100;
+        if (image.width > maxWidth || image.height > maxHeight) {
+          // Redimensionner l'image tout en conservant le ratio hauteur/largeur
+          Uint8List compressedImage =
+              await FlutterImageCompress.compressWithList(
+            imageBytes,
+            minWidth: maxWidth,
+            minHeight: maxHeight,
+          );
+
+          image = decodeImage(compressedImage);
+        }
+        // Imprimer l'image sur le ticket
+        if (image != null) {
+          bytes += ticket.image(image);
+        }
+      } else {
+        print('Failed to decode image');
+      }
+    } else {
+      print('Failed to load image from URL');
+    }
+    return bytes;
   }
 
   //

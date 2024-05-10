@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/instance_manager.dart';
 
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom_secondary.button.dart';
 
 class InvoiceButtonsComponent extends StatefulWidget {
   final OrderEntity ordersData;
-  final VoidCallback printButtonTap;
+  final VoidCallback? printButtonTap;
   final VoidCallback shareButtonTap;
   final VoidCallback returnToOrderButtonTap;
+  final bool isLoading;
 
   const InvoiceButtonsComponent({
     super.key,
     required this.ordersData,
     required this.printButtonTap,
     required this.shareButtonTap,
-    required this.returnToOrderButtonTap,
+    required this.returnToOrderButtonTap,  this.isLoading=false,
   });
 
   @override
@@ -26,6 +29,8 @@ class InvoiceButtonsComponent extends StatefulWidget {
 }
 
 class _InvoiceButtonsComponentState extends State<InvoiceButtonsComponent> {
+  final bluetoothController =
+      Get.find<NavigationController>().bluetoothController;
   @override
   void initState() {
     super.initState();
@@ -42,6 +47,7 @@ class _InvoiceButtonsComponentState extends State<InvoiceButtonsComponent> {
         child: Column(
           children: [
             CustomButton(
+              isLoading: widget.isLoading,
               title: widget.ordersData.status == "PAID"
                   ? 'Imprimer le reçu'
                   : 'Imprimer la facture',

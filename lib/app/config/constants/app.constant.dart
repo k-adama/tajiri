@@ -80,8 +80,7 @@ class AppConstants {
   static const Duration productCartSnackbarDuration =
       Duration(days: 6000000000000000);
 
-  static bool getStatusOrderInProgressOrDone(
-      OrderEntity order, String status) {
+  static bool getStatusOrderInProgressOrDone(OrderEntity order, String status) {
     bool checking = false;
     switch (status) {
       case "IN_PROGRESS":
@@ -326,3 +325,5 @@ const List<Map<String, dynamic>> TABLE = [
   {'id': '3', 'name': 'Table 3'},
   {'id': '4', 'name': 'Table 4'}
 ];
+
+
