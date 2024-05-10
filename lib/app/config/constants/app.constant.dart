@@ -326,5 +326,4 @@ const List<Map<String, dynamic>> TABLE = [
   {'id': '4', 'name': 'Table 4'}
 ];
 
-final urlLogoTajiri =
-    "https://firebasestorage.googleapis.com/v0/b/parcmanager-87bbd.appspot.com/o/logo_taj.png?alt=media&token=36817d62-03e3-4fa5-a645-6c39522cecff";
+

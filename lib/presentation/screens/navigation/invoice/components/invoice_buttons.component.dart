@@ -10,16 +10,17 @@ import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom_seconda
 
 class InvoiceButtonsComponent extends StatefulWidget {
   final OrderEntity ordersData;
-  final VoidCallback printButtonTap;
+  final VoidCallback? printButtonTap;
   final VoidCallback shareButtonTap;
   final VoidCallback returnToOrderButtonTap;
+  final bool isLoading;
 
   const InvoiceButtonsComponent({
     super.key,
     required this.ordersData,
     required this.printButtonTap,
     required this.shareButtonTap,
-    required this.returnToOrderButtonTap,
+    required this.returnToOrderButtonTap,  this.isLoading=false,
   });
 
   @override
@@ -46,6 +47,7 @@ class _InvoiceButtonsComponentState extends State<InvoiceButtonsComponent> {
         child: Column(
           children: [
             CustomButton(
+              isLoading: widget.isLoading,
               title: widget.ordersData.status == "PAID"
                   ? 'Imprimer le reçu'
                   : 'Imprimer la facture',

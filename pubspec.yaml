@@ -81,6 +81,7 @@ dependencies:
   flutter_rounded_date_picker: ^3.0.4
   shimmer: ^3.0.0
   permission_handler: ^11.3.1
+  flutter_image_compress: ^2.2.0
   
 flutter_launcher_icons:
   android: "launcher_icon"

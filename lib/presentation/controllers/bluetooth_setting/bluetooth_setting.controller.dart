@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,6 @@ import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:charset_converter/charset_converter.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
-import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
@@ -29,6 +29,7 @@ class BluetoothSettingController extends GetxController {
 
   final macConnected = Rx<String?>(null);
   final items = Rx<List<BluetoothInfo>>([]);
+  final isLoading = false.obs;
 
   @override
   void onInit() {
@@ -160,13 +161,20 @@ class BluetoothSettingController extends GetxController {
   Future<void> printReceipt(OrderEntity order) async {
     bool conexionStatus = await PrintBluetoothThermal.connectionStatus;
     if (conexionStatus) {
-      bool result = false;
+      try {
+              bool result = false;
+      isLoading.value = true;
       Mixpanel.instance.track('Print Invoice');
       const PaperSize paper = PaperSize.mm58;
       final profile = await CapabilityProfile.load();
       List<int> ticket = await demoReceipt(paper, profile, order);
       result = await PrintBluetoothThermal.writeBytes(ticket);
       print("print Receipt result:  $result");
+      isLoading.value = false;
+      } catch (e) {
+        isLoading.value = false;
+      }
+
     } else {
       print("print Receipt conexionStatus: $conexionStatus");
       disconnect();
@@ -361,7 +369,7 @@ class BluetoothSettingController extends GetxController {
         text: 'Qte',
         width: 2,
         styles: const PosStyles(
-          align: PosAlign.left,
+          align: PosAlign.center,
         ),
       ),
       PosColumn(
@@ -395,7 +403,7 @@ class BluetoothSettingController extends GetxController {
         text: '$qte',
         width: 2,
         styles: const PosStyles(
-          align: PosAlign.right,
+          align: PosAlign.center,
         ),
       ),
       PosColumn(
@@ -466,12 +474,12 @@ class BluetoothSettingController extends GetxController {
   }
 
   Future<List<int>> printImageFromUrl(
-      Generator ticket, String? imageUrl) async {
+      Generator ticket, String imageUrl) async {
     print("------printImageFromUrl----$imageUrl--");
     // Télécharger l'image à partir de l'URL
     List<int> bytes = [];
 
-    final response = await http.get(Uri.parse(imageUrl ?? urlLogoTajiri));
+    final response = await http.get(Uri.parse(imageUrl));
 
     print(response.statusCode);
 
@@ -480,12 +488,25 @@ class BluetoothSettingController extends GetxController {
       final imageBytes = response.bodyBytes;
 
       // Décodez l'image pour obtenir les informations de l'image
-      final image = decodeImage(imageBytes);
+      var image = decodeImage(imageBytes);
       print(image);
       // Vérifier si l'image est valide
       if (image != null) {
+        const maxWidth = 200;
+        const maxHeight = 100;
+        if (image.width > maxWidth || image.height > maxHeight) {
+          // Redimensionner l'image tout en conservant le ratio hauteur/largeur
+          Uint8List compressedImage =
+              await FlutterImageCompress.compressWithList(
+            imageBytes,
+            minWidth: maxWidth,
+            minHeight: maxHeight,
+          );
+
+          image = decodeImage(compressedImage);
+        }
         // Imprimer l'image sur le ticket
-        bytes += ticket.image(image);
+        bytes += ticket.image(image!);
       } else {
         print('Failed to decode image');
       }
