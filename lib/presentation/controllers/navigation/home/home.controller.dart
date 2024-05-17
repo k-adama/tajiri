@@ -161,7 +161,10 @@ class HomeController extends GetxController {
     );
 
     ordersResponse.when(success: (data) {
-      if (data.isEmpty) {
+      final newData =
+          data.where((item) => item['status'] != 'CANCELLED').toList();
+
+      if (newData.isEmpty) {
         totalAmount.value = 0;
         ordersPaid.value = 0;
         ordersSave.value = 0;
@@ -172,24 +175,23 @@ class HomeController extends GetxController {
         isFetching.value = false;
         update();
       } else {
-        final top10FoodsValue = getTop10Foods(data);
+        final top10FoodsValue = getTop10Foods(newData);
         top10Foods.assignAll(top10FoodsValue);
-        final groupByCategoriesValue = groupByCategories(data);
+        final groupByCategoriesValue = groupByCategories(newData);
         final ordersForCategoriesValue =
             ordersForCategories(groupByCategoriesValue);
         categoriesAmount.assignAll(ordersForCategoriesValue);
 
-        final groupedByPaymentMethodValue = groupedByPaymentMethod(data);
+        final groupedByPaymentMethodValue = groupedByPaymentMethod(newData);
         paymentsMethodAmount
             .assignAll(paymentMethodsData(groupedByPaymentMethodValue));
 
-        // totalAmount.value = getTotalAmount(data);
-        totalAmount.value = getTotalAmount(
-            data.where((item) => item['status'] != 'CANCELLED').toList());
+        totalAmount.value = getTotalAmount(newData);
+
         ordersPaid.value = getTotalAmount(
-            data.where((item) => item['status'] == 'PAID').toList());
+            newData.where((item) => item['status'] == 'PAID').toList());
         ordersSave.value = getTotalAmount(
-            data.where((item) => item['status'] == "NEW").toList());
+            newData.where((item) => item['status'] == "NEW").toList());
         getDayActive();
         final int ordersComparaisonsAmount =
             getTotalAmount(comparaisonOders.data);
