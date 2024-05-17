@@ -86,7 +86,7 @@ class OrdersController extends GetxController {
 
   Future<void> fetchOrders() async {
     final DateTime today = DateTime.now();
-    final DateTime sevenDaysAgo = today.subtract(const Duration(days: 7));
+    final DateTime sevenDaysAgo = today.subtract(const Duration(days: 2));
     String startDate =
         DateFormat("yyyy-MM-dd").format(startRangeDate ?? sevenDaysAgo);
     String endDate = DateFormat("yyyy-MM-dd").format(endRangeDate ?? today);
