@@ -27,6 +27,12 @@ class AppHelpersCommon {
     return user;
   }
 
+  String? getMacAdress() {
+    final macAdress =
+        LocalStorageService.instance.get(UserConstant.keymacAdress);
+    return macAdress;
+  }
+
   static logoutApi() async {
     HttpService server = HttpService();
     try {
