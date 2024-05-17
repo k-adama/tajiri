@@ -161,7 +161,10 @@ class HomeController extends GetxController {
     );
 
     ordersResponse.when(success: (data) {
-      if(data.isEmpty){
+      final newData =
+          data.where((item) => item['status'] != 'CANCELLED').toList();
+
+      if (newData.isEmpty) {
         totalAmount.value = 0;
         ordersPaid.value = 0;
         ordersSave.value = 0;
@@ -171,36 +174,37 @@ class HomeController extends GetxController {
         orders.clear();
         isFetching.value = false;
         update();
-      }else{
-        final top10FoodsValue = getTop10Foods(data);
+      } else {
+        final top10FoodsValue = getTop10Foods(newData);
         top10Foods.assignAll(top10FoodsValue);
-        final groupByCategoriesValue = groupByCategories(data);
+        final groupByCategoriesValue = groupByCategories(newData);
         final ordersForCategoriesValue =
-        ordersForCategories(groupByCategoriesValue);
+            ordersForCategories(groupByCategoriesValue);
         categoriesAmount.assignAll(ordersForCategoriesValue);
 
-        final groupedByPaymentMethodValue = groupedByPaymentMethod(data);
+        final groupedByPaymentMethodValue = groupedByPaymentMethod(newData);
         paymentsMethodAmount
             .assignAll(paymentMethodsData(groupedByPaymentMethodValue));
 
-        totalAmount.value = getTotalAmount(data);
+        totalAmount.value = getTotalAmount(newData);
+
         ordersPaid.value = getTotalAmount(
-            data.where((item) => item['status'] == 'PAID').toList());
+            newData.where((item) => item['status'] == 'PAID').toList());
         ordersSave.value = getTotalAmount(
-            data.where((item) => item['status'] == "NEW").toList());
+            newData.where((item) => item['status'] == "NEW").toList());
         getDayActive();
         final int ordersComparaisonsAmount =
-        getTotalAmount(comparaisonOders.data);
+            getTotalAmount(comparaisonOders.data);
         percentComparaison.value =
             ((totalAmount.value - ordersComparaisonsAmount) /
-                ordersComparaisonsAmount) *
+                    ordersComparaisonsAmount) *
                 100;
 
         isFetching.value = false;
 
         final json = data as List<dynamic>;
         final ordersData =
-        json.map((item) => OrderEntity.fromJson(item)).toList();
+            json.map((item) => OrderEntity.fromJson(item)).toList();
         orders.assignAll(ordersData);
         isFetching.value = false;
         update();
@@ -458,7 +462,8 @@ class HomeController extends GetxController {
         String foodSelected = food['foodId'] ?? food['bundleId'] ?? 'Unknown';
 
         if (!groupedByFoods.containsKey(foodSelected)) {
-          String name = food['food']?['name'] ?? food['bundle']?['name'] ??  'Unknown';
+          String name =
+              food['food']?['name'] ?? food['bundle']?['name'] ?? 'Unknown';
           groupedByFoods[foodSelected] = {
             'name': name ?? 'Unknown',
             'quantity': food['quantity'] ?? 0,
@@ -483,7 +488,6 @@ class HomeController extends GetxController {
       return foodsData.sublist(0, 10);
     }
   }
-
 
   List<PaymentMethodDataEntity> paymentMethodsData(
       Map<String, List<dynamic>> groupedByPaymentMethod) {
@@ -527,8 +531,12 @@ class HomeController extends GetxController {
 
     for (var order in data) {
       order['orderDetails']?.forEach((dynamic orderDetail) {
-        String categoryId = orderDetail['food']?['category']?['name'] ?? orderDetail['bundle']?['category']?['name'] ?? 'Unknown';
-        String categoryIcon = orderDetail['food']?['category']?['imageUrl'] ?? orderDetail['bundle']?['category']?['imageUrl'] ?? 'Unknown';
+        String categoryId = orderDetail['food']?['category']?['name'] ??
+            orderDetail['bundle']?['category']?['name'] ??
+            'Unknown';
+        String categoryIcon = orderDetail['food']?['category']?['imageUrl'] ??
+            orderDetail['bundle']?['category']?['imageUrl'] ??
+            'Unknown';
 
         Map<String, dynamic> category = acc[categoryId] ??
             {
@@ -545,7 +553,6 @@ class HomeController extends GetxController {
 
     return acc;
   }
-
 
   int getTotalAmount(List<dynamic> orders) {
     return orders.fold(
