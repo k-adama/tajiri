@@ -37,7 +37,6 @@ class BluetoothSettingController extends GetxController {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await _requestPermissions();
       await Get.find<BluetoothSettingController>().getBluetoothDevices();
-      disconnect();
     });
 
     // initPlatformState();
@@ -90,7 +89,7 @@ class BluetoothSettingController extends GetxController {
   }
 
   Future<void> connect(String mac, String name) async {
-    print('===================connect');
+    print('===================connect to $mac');
     progress.value = true;
     msjprogress = "Connecting...";
     connected.value = false;
@@ -101,29 +100,29 @@ class BluetoothSettingController extends GetxController {
     if (result) {
       macConnected.value = mac;
       connected.value = true;
+      AppHelpersCommon.setPrinterMacAdress(mac);
     } else {
       disconnect();
-      // AppHelpersCommon.showBottomSnackBar(
-      //     Get.context!,
-      //     Text(
-      //         "Impossible de vous connecter à $name ,  Vérifié si l'imprimante n'est pas connecté à un autre device"),
-      //     const Duration(seconds: 3),
-      //     true);
     }
     progress.value = false;
   }
 
   Future<void> disconnect() async {
-    // if (connected.value == true) {
     try {
       if (Platform.isIOS) {
         if (connected.value == true) {
-          final bool status = await PrintBluetoothThermal.disconnect;
+          final status = await PrintBluetoothThermal.disconnect;
           print("status disconnect $status");
+          if (status) {
+            AppHelpersCommon.deletePrinterMacAdress();
+          }
         }
       } else {
-        final bool status = await PrintBluetoothThermal.disconnect;
+        final status = await PrintBluetoothThermal.disconnect;
         print("status disconnect $status");
+        if (status) {
+          AppHelpersCommon.deletePrinterMacAdress();
+        }
       }
 
       connected.value = false;
@@ -131,13 +130,6 @@ class BluetoothSettingController extends GetxController {
     } catch (e) {
       print(e);
     }
-
-    // AppHelpersCommon.showBottomSnackBar(
-    //     Get.context!,
-    //     const Text("Déconnection effectué avec succès"),
-    //     const Duration(seconds: 3),
-    //     true);
-    // }
   }
 
   Future<void> initPlatformState() async {
