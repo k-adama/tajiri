@@ -1,4 +1,4 @@
-package com.example.tajiri_pos_mobile
+package com.tajiri.mobile
 
 import io.flutter.embedding.android.FlutterActivity
 

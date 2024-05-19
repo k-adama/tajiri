@@ -1,0 +1,64 @@
+{
+    "configurations": [
+        {
+            "name": "Flutter (Pixel_3a_API_34_extension_level_7_arm64-v8a)",
+            "program": "lib/main.dart",
+            "deviceId": "emulator-5554",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define-from-file=.env/dev.json"
+            ]
+        },
+        {
+            "name": "Flutter iphone 15 pro",
+            "program": "lib/main.dart",
+            "deviceId": "AEA330FB-3058-4C61-BF07-8FEFE625F204",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define-from-file=.env/dev.json"
+            ]
+        },
+        {
+            "name": "tecno",
+            "program": "lib/main.dart",
+            "deviceId": "08154542B9004689",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define-from-file=.env/dev.json"
+            ]
+        },
+        {
+            "name": "samsung",
+            "program": "lib/main.dart",
+            "deviceId": "R39M40462HF",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define-from-file=.env/dev.json"
+            ]
+        },
+        {
+            "name": "Infinix X6835B (mobile)",
+            "program": "lib/main.dart",
+            "deviceId": "078753724E003404",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define-from-file=.env/dev.json"
+            ]
+        },
+        {
+            "name": "iphone de Serge",
+            "program": "lib/main.dart",
+            "deviceId": "00008101-000111A11151003A",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define-from-file=.env/prod.json"
+            ]
+        }
+    ]
+}

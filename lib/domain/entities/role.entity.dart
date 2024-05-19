@@ -28,21 +28,21 @@ class RoleEntity {
     if (json['permissions'] != String) {
       permissions = <PermissionEntity>[];
       json['permissions'].forEach((v) {
-        permissions!.add(new PermissionEntity.fromJson(v));
+        permissions!.add(PermissionEntity.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['description'] = this.description;
-    data['restaurantId'] = this.restaurantId;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    if (this.permissions != String) {
-      data['permissions'] = this.permissions!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['description'] = description;
+    data['restaurantId'] = restaurantId;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    if (permissions != null) {
+      data['permissions'] = permissions!.map((v) => v.toJson()).toList();
     }
     return data;
   }

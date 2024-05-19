@@ -1,0 +1,755 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:get/get.dart';
+import 'dart:async';
+import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
+import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
+import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
+import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
+import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
+import 'package:tajiri_pos_mobile/domain/entities/categorie_entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/customer.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/local_cart_enties/main_item.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
+import 'package:tajiri_pos_mobile/data/repositories/products/products.repository.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/table/table.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/waitress/waitress.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
+
+class PosController extends GetxController {
+  final ProductsRepository _productsRepository = ProductsRepository();
+  final KIT_ID = "1c755978-ae56-47c6-b8e6-a5e3b03577ce";
+  bool isLoading = true;
+  String? selectedOption;
+  bool isAddAndRemoveLoading = false;
+  final isProductLoading = true.obs;
+  bool isCustomnersLoading = true;
+  final foods = List<FoodDataEntity>.empty().obs;
+  final foodsInit = List<FoodDataEntity>.empty().obs;
+  RxList bundlePacks = [].obs;
+  final categories = List<CategoryEntity>.empty().obs;
+  RxString categoryId = 'all'.obs;
+  Rx<dynamic> customerSelected = null.obs;
+  int totalCartValue = 0;
+
+  final cartItemList = List<MainItemEntity>.empty().obs;
+
+  RxString settleOrderId = "ON_PLACE".obs;
+  RxString orderNotes = "".obs;
+  RxString paymentMethodId = "d8b8d45d-da79-478f-9d5f-693b33d654e6".obs;
+  OrderEntity newOrder = OrderEntity();
+  OrderEntity currentOrder = OrderEntity();
+  Rx<bool> isLoadingOrder = false.obs;
+  RxString emptySearchMessage = "".obs;
+  RxList<String> searchResults = <String>[].obs;
+
+  final foodVariantCategories = List<FoodVariantCategoryEntity>.empty().obs;
+
+  List<CustomerEntity> customers = List<CustomerEntity>.empty().obs;
+  List<CustomerEntity> customerInit = List<CustomerEntity>.empty().obs;
+  Rx<CustomerEntity> customer = CustomerEntity().obs;
+
+  // RxString customerMessage = "".obs;
+  // RxString customerId = ''.obs;
+  // String customerFirstname = "";
+  // String customerLastname = "";
+  // String customerPhone = "";
+
+  TextEditingController note = TextEditingController();
+
+  bool isLoadingCreateCustomer = false;
+  // Rx<bool> isPaid = false.obs;
+  Map<String, dynamic>? waitressOrTableValue;
+  List<Map<String, dynamic>> dropdownItems = [];
+  bool listingEnable = true;
+  String listingType = "waitress";
+  // String waitressId = '';
+  String tableId = '';
+  String? waitressCurrentId;
+  String? tableCurrentId;
+  Color containerColor = Style.menuFlottant;
+
+  final user = AppHelpersCommon.getUserInLocalStorage();
+
+  @override
+  void onInit() async {
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    AppHelpersCommon.removeCurrentSnackBar(Get.context!);
+    super.onClose();
+  }
+
+  @override
+  void onReady() async {
+    fetchFoods();
+    fetchCustomers();
+    super.onReady();
+  }
+
+  setCurrentOrder(OrderEntity order) {
+    currentOrder = order;
+    update();
+  }
+
+  Future<void> fetchFoods() async {
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      isProductLoading.value = true;
+      final response = await _productsRepository.getFoods();
+      final responseBundlePacks = await _productsRepository
+          .getBundlePacks(); //TODO: GET BUNDLE PACK DOIT RETURNER PACK ENTITY ET NN DYNAMIC
+
+      response.when(
+        success: (data) async {
+          if (data == null) {
+            return;
+          }
+
+          foods.assignAll(
+              data.where((element) => element.isAvailable == true).toList());
+          foodsInit.assignAll(
+              data.where((element) => element.isAvailable == true).toList());
+
+          bundlePacks.assignAll(responseBundlePacks.data);
+
+          isProductLoading.value = false;
+
+          final newCategories = data
+              .where((e) {
+                return e.category != null;
+              }) // Filter out items with null category
+              .map((e) => e.category!) // Safe to use non-nullable access now
+              .toSet()
+              .toList();
+
+          newCategories.insert(
+            0,
+            CategoryEntity(
+              id: "all",
+              name: "Tout",
+              imageUrl: '🗂️',
+            ),
+          );
+          newCategories.insert(
+            newCategories.length,
+            CategoryEntity(
+              id: KIT_ID,
+              name: "Packs de vente",
+              imageUrl: '🎁',
+            ),
+          );
+          categories.assignAll(newCategories);
+
+          List<FoodVariantCategoryEntity> newFoodVariantCategories = [];
+
+          for (var foodData in data) {
+            final listFoodVariantCategories = foodData.foodVariantCategory;
+
+            if (listFoodVariantCategories!.isNotEmpty) {
+              for (var value in listFoodVariantCategories) {
+                newFoodVariantCategories.add(value);
+              }
+            }
+          }
+
+          foodVariantCategories.assignAll(newFoodVariantCategories);
+          update();
+        },
+        failure: (failure, status) {
+          isProductLoading.value = false;
+          update();
+          /*  AppHelpersCommon.showCheckTopSnackBar(
+              context,
+              status.toString(),
+            ); */
+        },
+      );
+    }
+  }
+
+  int getQuantity(int index) {
+    final quantity = cartItemList
+            .firstWhereOrNull((element) => element.id == foods[index].id)
+            ?.quantity ??
+        0;
+    return quantity;
+  }
+
+  Future<void> handleSaveOrder(BuildContext context, String status) async {
+    final restaurantId = user?.role?.restaurantId;
+
+    if (restaurantId == null) {
+      isLoadingOrder.value = false;
+      update();
+      return AppHelpersCommon.showCheckTopSnackBarInfoForm(
+        context,
+        "Aucun restaurant connecté",
+      );
+    }
+
+    final itemFoods = cartItemList.map((item) {
+      return {
+        'foodId': item.id,
+        'price': item.price,
+        'quantity': item.quantity,
+      };
+    }).toList();
+
+    final Map<String, dynamic> params =
+        chooseUseWaitressOrTable(status, restaurantId, itemFoods);
+
+    String paymentMethodName = PAIEMENTS.firstWhereOrNull(
+        (element) => element['id'] == paymentMethodId.value)?['name'];
+    if (status == 'PAID') {
+      params['paymentMethodId'] = paymentMethodId.value;
+    }
+
+    final response = currentOrder.id != null
+        ? await _productsRepository.updateOrder(params, currentOrder.id!)
+        : await _productsRepository.createOrder(params);
+
+    response.when(success: (data) async {
+      newOrder = data!;
+      update();
+      handleInitialState();
+
+      customer.value = CustomerEntity();
+      Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
+        "CustomerEntity type": newOrder.customer == null ? 'GUEST' : 'SAVED',
+        "Order Status": status,
+        "Payment method": status == 'PAID' ? paymentMethodName : "",
+        "Status": "Success",
+        "Products": newOrder.orderDetails?.map((item) {
+          final int foodPrice =
+              item.food != null ? item.food?.price : item.bundle['price'];
+          return {
+            'Product Name': getNameFromOrderDetail(item),
+            'Price': item.price,
+            'Quantity': item.quantity,
+            'IsVariant': item.price != foodPrice ? true : false
+          };
+        }).toList()
+      });
+
+      if (status != 'PAID') {
+        AppHelpersCommon.showAlertDialog(
+          context: context,
+          canPop: false,
+          child: SuccessfullDialog(
+            haveButton: false,
+            isCustomerAdded: false,
+            title: "Enregistrement effectué",
+            content: "Consulter l'élément dans l'historique",
+            svgPicture: "assets/svgs/enregistrement 1.svg",
+            redirect: () {
+              Get.close(3);
+            },
+          ),
+        );
+      } else {
+        // isPaid.value = true;
+        AppHelpersCommon.showAlertDialog(
+          context: context,
+          canPop: false,
+          child: SuccessfullDialog(
+            isCustomerAdded: false,
+            haveButton: false,
+            title: "Paiement effectué",
+            content: "La commande a bien été payée.",
+            svgPicture: "assets/svgs/success payment 1.svg",
+            redirect: () {
+              Get.close(2);
+              Get.to(InvoiceScreen(
+                order: newOrder,
+                isPaid: true,
+              ));
+            },
+          ),
+        );
+      }
+    }, failure: (failure, statusCode) {
+      Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
+        "CustomerEntity type": newOrder.customer == null ? 'GUEST' : 'SAVED',
+        "Order Status": status,
+        "Payment method": status == 'PAID' ? paymentMethodName : "",
+        "Status": "Failure",
+        "Products": newOrder.orderDetails?.map((item) {
+          final int foodPrice =
+              item.food != null ? item.food?.price : item.bundle['price'];
+          return {
+            'Product Name': getNameFromOrderDetail(item),
+            'Price': item.price,
+            'Quantity': item.quantity,
+            'IsVariant': item.price != foodPrice ? true : false
+          };
+        }).toList()
+      });
+
+      AppHelpersCommon.showCheckTopSnackBar(
+        context,
+        statusCode.toString(),
+      );
+      isLoadingOrder.value = false;
+    });
+  }
+
+  Map<String, dynamic> chooseUseWaitressOrTable(
+      String status, String restaurantId, dynamic itemFoods) {
+    // Initialiser les paramètres communs
+    Map<String, dynamic> paramsMap = {
+      'subTotal': totalCartValue,
+      'grandTotal': totalCartValue,
+      'customerType': customer.value.id == null ? 'GUEST' : 'SAVED',
+      'status': status,
+      'customerId': customer.value.id,
+      'items': itemFoods,
+      'orderType': settleOrderId.value,
+      'orderNotes': orderNotes.value,
+      'restaurantId': restaurantId,
+      'createdId': user!.id!,
+      'couponCode': "",
+      'discountAmount': 0,
+      'pinCode': "",
+      'address': "",
+      'tax': 0,
+    };
+
+    // Choisir les paramètres en fonction du type de liste
+    if (checkListingType(user) == ListingType.waitress) {
+      paramsMap['waitressId'] = currentOrder.waitressId ?? waitressCurrentId;
+    } else if (checkListingType(user) == ListingType.table) {
+      paramsMap['tableId'] = currentOrder.tableId ?? tableCurrentId;
+    }
+
+    return paramsMap;
+  }
+
+  Future<void> handleCreateOrder(BuildContext context) async {
+    try {
+      isLoadingOrder.value = true;
+      update();
+      await handleSaveOrder(context, 'PAID');
+    } catch (error) {
+      isLoadingOrder.value = false;
+      update();
+    }
+  }
+
+  Future<void> handleCreateOrderInProgres(BuildContext context) async {
+    try {
+      isLoadingOrder.value = true;
+      update();
+      await handleSaveOrder(context, 'NEW');
+    } catch (error) {
+      isLoadingOrder.value = false;
+      update();
+    } finally {
+      isLoadingOrder.value = false;
+      update();
+    }
+  }
+
+  void handleInitialState() {
+    cartItemList.clear();
+    isLoadingOrder.value = false;
+    settleOrderId.value = "ON_PLACE";
+    note.clear();
+    currentOrder = OrderEntity();
+
+    update();
+  }
+
+  //TODO : for clear selected  waitress and table
+  resetSelectedTableOrWaitress() {
+    // reset waitress and table select
+
+    final waitressController = Get.find<WaitressController>();
+    final tableController = Get.find<TableController>();
+
+    waitressController.selectedWaitress.value = null;
+    tableController.selectedTable.value = null;
+
+    waitressCurrentId = null;
+    tableCurrentId = null;
+  }
+
+  void setCategoryId(String id) {
+    categoryId.value = id;
+    update();
+  }
+
+  void handleFilter(String categoryId, String categoryName) {
+    setCategoryId(categoryId);
+
+    if (categoryId == 'all') {
+      foods.assignAll(foodsInit);
+      update();
+      Mixpanel.instance.track("POS Category Filter", properties: {
+        "Category Name": categoryName,
+        "Number of Search Results": foods.length,
+        "Number of Out of Stock":
+            foods.where((food) => food.quantity == 0).length,
+        "Number of products with variants": foods
+            .where((food) =>
+                food.foodVariantCategory != null &&
+                food.foodVariantCategory!.isNotEmpty)
+            .length
+      });
+      return;
+    }
+
+    if (categoryId == KIT_ID) {
+      final transformedList = bundlePacks.map((bundle) {
+        return {
+          ...bundle,
+          'type': 'bundle',
+        };
+      }).toList();
+      final foodData =
+          transformedList.map((item) => FoodDataEntity.fromJson(item)).toList();
+      foods.assignAll(foodData);
+      update();
+
+      Mixpanel.instance.track("POS Category Filter", properties: {
+        "Category Name": categoryName,
+        "Number of Search Results": transformedList.length,
+        "Number of Out of Stock": 0,
+        "Number of products with variants": 0
+      });
+      return;
+    }
+
+    final newData =
+        foodsInit.where((item) => item.categoryId == categoryId).toList();
+    foods.assignAll(newData);
+    update();
+
+    Mixpanel.instance.track("POS Category Filter", properties: {
+      "Category Name": categoryName,
+      "Number of Search Results": newData.length,
+      "Number of Out of Stock":
+          newData.where((food) => food.quantity == 0).length,
+      "Number of products with variants": newData
+          .where((food) =>
+              food.foodVariantCategory != null &&
+              food.foodVariantCategory!.isNotEmpty)
+          .length
+    });
+  }
+
+  Future<void> fetchCustomers() async {
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      isCustomnersLoading = true;
+      update();
+      final response = await _productsRepository.getCustomers();
+      response.when(
+        success: (data) async {
+          customers.assignAll(data!);
+          customerInit.assignAll(data);
+          isCustomnersLoading = false;
+          update();
+        },
+        failure: (failure, status) {
+          isCustomnersLoading = false;
+          update();
+        },
+      );
+    }
+  }
+
+  String quantityProduct() {
+    if (cartItemList.length > 1) return "${cartItemList.length} produits";
+    return "${cartItemList.length} produit";
+  }
+
+  Future<void> saveCustomers(
+    BuildContext context,
+    String customerLastname,
+    String customerPhone,
+  ) async {
+    isLoadingCreateCustomer = true;
+    update();
+
+    final restaurantId = user?.role?.restaurantId;
+
+    if (restaurantId == null) {
+      isLoadingCreateCustomer = false;
+      update();
+      return AppHelpersCommon.showCheckTopSnackBarInfoForm(
+        context,
+        "Aucun restaurant connecté",
+      );
+    }
+
+    if (customerLastname.trim().isEmpty || customerPhone.trim().isEmpty) {
+      isLoadingCreateCustomer = false;
+      update();
+      return AppHelpersCommon.showCheckTopSnackBarInfoForm(
+        context,
+        "Veuillez remplir les champs obligatoires",
+      );
+    }
+    Map<String, dynamic> requestData = {
+      'lastname': customerLastname,
+      'phone': customerPhone,
+      'restaurantId': restaurantId,
+    };
+    final response = await _productsRepository.createCustomers(requestData);
+    response.when(success: (data) {
+      final newCustomer = data!;
+      isLoadingCreateCustomer = false;
+      update();
+
+      AppHelpersCommon.showAlertDialog(
+        context: context,
+        canPop: false,
+        child: SuccessfullDialog(
+          haveButton: false,
+          isCustomerAdded: true,
+          title: "Client ajouté",
+          content:
+              "Le client $customerLastname a été crée et ajouté à votre base de donnée client.",
+          svgPicture: "assets/svgs/user 1.svg",
+          redirect: () {
+            Get.close(3);
+          },
+        ),
+      );
+      customer.value = newCustomer;
+      fetchCustomers();
+      customerInitialState();
+    }, failure: (failure, statusCode) {
+      isLoadingCreateCustomer = false;
+      update();
+      AppHelpersCommon.showCheckTopSnackBar(
+        context,
+        statusCode.toString(),
+      );
+    });
+  }
+
+  void customerInitialState() {
+    isLoading = false;
+    //Get.back();
+    update();
+  }
+
+  Future<void> addCount(
+      {required BuildContext context,
+      required String foodId,
+      String? foodVariantId}) async {
+    Vibrate.feedback(FeedbackType.selection);
+    MainItemEntity elementToUpdate = cartItemList.firstWhere(
+        (element) => element.id == foodId,
+        orElse: () => MainItemEntity());
+
+    if (foodVariantId != null) {
+      elementToUpdate = cartItemList.firstWhere(
+          (element) =>
+              element.variant != null && element.variant!.id == foodVariantId,
+          orElse: () => MainItemEntity());
+    }
+
+    elementToUpdate.quantity = elementToUpdate.quantity! + 1;
+    cartItemList.remove(elementToUpdate);
+    cartItemList.add(elementToUpdate);
+    update();
+    calculateTotal();
+  }
+
+  Future addCart(
+      BuildContext context,
+      FoodDataEntity product,
+      FoodVariantEntity? foodVariant,
+      int? quantity,
+      int? price,
+      bool isModifyOrder) async {
+    Vibrate.feedback(FeedbackType.selection);
+    if (foodVariant == null) {
+      cartItemList.add(MainItemEntity(
+        id: product.id,
+        quantity: quantity,
+        name: product.name,
+        image: product.imageUrl,
+        price: price == 0 ? product.price : price,
+      ));
+    } else {
+      cartItemList.add(MainItemEntity(
+          id: product.id,
+          quantity: quantity,
+          name: "${product.name} (${foodVariant.name}) ",
+          image: product.imageUrl,
+          price: price == 0 ? foodVariant.price : price,
+          variant: MainItemVariation(
+              id: foodVariant.id,
+              itemId: 1,
+              name: foodVariant.name,
+              price: price == 0 ? foodVariant.price : price)));
+    }
+    isLoading = false;
+    Mixpanel.instance.track("Added to Cart", properties: {
+      "Product name": product.name,
+      "Product ID": product.id,
+      "Category": product.category?.name,
+      "Selling Price": price == 0 ? product.price : price,
+      "Quantity": quantity,
+      "Stock Availability": product.quantity,
+      "IsVariant": foodVariant != null ? true : false
+    });
+    update();
+    calculateTotal();
+  }
+
+  Future<void> removeCount(
+      {required BuildContext context,
+      required String foodId,
+      String? foodVariantId}) async {
+    Vibrate.feedback(FeedbackType.selection);
+    MainItemEntity elementToUpdate = cartItemList.firstWhere(
+        (element) => element.id == foodId,
+        orElse: () => MainItemEntity());
+
+    if (foodVariantId != null) {
+      elementToUpdate = cartItemList.firstWhere(
+          (element) =>
+              element.variant != null && element.variant!.id == foodVariantId,
+          orElse: () => MainItemEntity());
+    }
+
+    if (elementToUpdate.quantity! > 1) {
+      elementToUpdate.quantity = elementToUpdate.quantity! - 1;
+      cartItemList.remove(elementToUpdate);
+      cartItemList.add(elementToUpdate);
+      update();
+      calculateTotal();
+    } else {
+      if (foodVariantId != null) {
+        cartItemList.removeWhere((element) =>
+            element.variant != null &&
+            element.variant!.id == elementToUpdate.variant?.id);
+      } else {
+        cartItemList.removeWhere((element) => element.id == elementToUpdate.id);
+      }
+      isAddAndRemoveLoading = false;
+      update();
+      calculateTotal();
+    }
+
+    if (cartItemList.isEmpty) {
+      AppHelpersCommon.removeCurrentSnackBar(context);
+      update();
+    }
+  }
+
+  List<MainItemEntity> getSortList(List<MainItemEntity>? items) {
+    if (items == null) {
+      return [];
+    }
+    List<MainItemEntity>? sortedItems = items.map((e) => e).toList()
+      ..sort((a, b) => b.name!.compareTo(a.name!));
+    return sortedItems;
+  }
+
+  void calculateTotal() {
+    totalCartValue = cartItemList.fold<int>(
+      0,
+      (previousTotal, item) =>
+          previousTotal + ((item.quantity!) * (item.price!)),
+    );
+
+    update();
+  }
+
+  void deleteCart() async {
+    cartItemList.clear();
+    update();
+  }
+
+  void searchFilter(String search) {
+    setCategoryId("all");
+    foods.clear();
+    update();
+    if (search.isEmpty) {
+      foods.addAll(foodsInit);
+    } else {
+      final nameRecherch = search.toLowerCase();
+      foods.addAll(foodsInit.where((item) {
+        final foodName = item.name!.toLowerCase();
+        final categoryName = item.category!.name!.toLowerCase();
+
+        return foodName.startsWith(nameRecherch) ||
+            categoryName.startsWith(nameRecherch);
+      }).toList());
+      update();
+    }
+  }
+
+  void searchClient(search) {
+    customers.clear();
+    update();
+    if (search.isEmpty) {
+      customers.addAll(customerInit);
+      update();
+    } else {
+      final searchCustomers = search.toLowerCase();
+      customers.addAll(customerInit.where((item) {
+        final customerFirstname = item.firstname?.toLowerCase() ?? "";
+        final customerLastname = item.lastname.toString().toLowerCase();
+        final customerPhone = item.phone.toString().toLowerCase();
+
+        return customerFirstname.startsWith(searchCustomers) ||
+            customerLastname.startsWith(searchCustomers) ||
+            customerPhone.startsWith(searchCustomers);
+      }).toList());
+      update();
+    }
+  }
+
+  void fullCartAndUpdateOrder(BuildContext context, OrderEntity order) async {
+    deleteCart();
+    orderNotes.value = order.orderNotes!;
+    for (var i = 0; i < order.orderDetails!.length; i++) {
+      FoodDataEntity food =
+          order.orderDetails![i].food ?? order.orderDetails![i].bundle;
+
+      if (food.price != order.orderDetails![i].price &&
+          food.foodVariantCategory != null &&
+          food.foodVariantCategory!.isNotEmpty) {
+        final foodVariant = food.foodVariantCategory![0].foodVariant!
+            .firstWhere(
+                (element) => element.price! == order.orderDetails![i].price);
+        addCart(context, food, foodVariant, order.orderDetails![i].quantity,
+            order.orderDetails![i].price, true);
+        continue;
+      }
+
+      addCart(context, food, null, order.orderDetails![i].quantity,
+          order.orderDetails![i].price, true);
+    }
+    setCurrentOrder(order);
+    if (order.customer != null) {
+      customer.value = order.customer!;
+    }
+
+    orderNotes.value = order.orderNotes!;
+    note.text = order.orderNotes!;
+
+    AppHelpersCommon.showCustomModalBottomSheet(
+      context: context,
+      modal: const CartScreen(),
+      isDarkMode: false,
+      isDrag: true,
+      radius: 12,
+    );
+  }
+}
