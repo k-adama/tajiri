@@ -43,7 +43,7 @@
         {
             "name": "Infinix X6835B (mobile)",
             "program": "lib/main.dart",
-            "deviceId": "0985537369003203",
+            "deviceId": "078753724E003404",
             "request": "launch",
             "type": "dart",
             "toolArgs": [

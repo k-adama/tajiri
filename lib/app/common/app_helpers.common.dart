@@ -27,6 +27,22 @@ class AppHelpersCommon {
     return user;
   }
 
+  static String? getPrinterMacAdress() {
+    final macAdress =
+        LocalStorageService.instance.get(UserConstant.keymacAdress);
+    return macAdress;
+  }
+
+  static setPrinterMacAdress(String? adress) {
+    if (adress != null) {
+      LocalStorageService.instance.set(UserConstant.keymacAdress, adress);
+    }
+  }
+
+  static deletePrinterMacAdress() {
+    LocalStorageService.instance.delete(UserConstant.keymacAdress);
+  }
+
   static logoutApi() async {
     HttpService server = HttpService();
     try {
