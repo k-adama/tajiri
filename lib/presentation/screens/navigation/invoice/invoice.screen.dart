@@ -263,16 +263,15 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                         ordersData: arguments,
                         isLoading: bluetoothController.isLoading.value,
                         printButtonTap: () {
-                         // print("dhhgf ${arguments.toJson()}");
-                            if (bluetoothController.isLoading.value) {
-                              return;
-                            }                      
-                            if (bluetoothController.connected.value == false) {
-                              Get.toNamed(Routes.SETTING_BLUETOOTH);
-                            } else {
-                              bluetoothController.printReceipt(arguments);
-                            }
-                        
+                          if (bluetoothController.isLoading.value) {
+                            return;
+                          }
+                          if (bluetoothController.connected.value == false) {
+                            Get.toNamed(Routes.SETTING_BLUETOOTH);
+                          } else {
+                            bluetoothController.printReceipt(arguments);
+                          }
+
                           // if (controller.connected.value == true) {
                           //   //   controller.printFactureByBluetooth(arguments);
                           //   controller.printNewModelFactureByBluetooth(arguments);
