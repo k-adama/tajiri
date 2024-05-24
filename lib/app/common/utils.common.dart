@@ -36,15 +36,25 @@ ListingType? checkListingType(UserEntity? user) {
 }
 
 String userOrWaitressName(OrderEntity orderItem, UserEntity? user) {
-  final currentUserName = "${user?.firstname ?? ""} ${user?.lastname ?? ""}";
+  final createdUserName = "${user?.firstname ?? ""} ${user?.lastname ?? ""}";
+  final createdUserOrtableName = orderItem.tableId != null ? orderItem.table?.name ?? createdUserName : "-----";
+  return checkListingType(user) == ListingType.waitress ? (orderItem.waitressId != null ? orderItem.waitress?.name ?? createdUserOrtableName : createdUserOrtableName) : createdUserOrtableName;
+}
+
+/*String userOrWaitressName(OrderEntity orderItem, UserEntity? user) {
+  final creataedUserName =
+      "${orderItem.createdUser?.firstname ?? ""} ${orderItem.createdUser?.lastname ?? ""}";
+  final createdUserOrtableName = orderItem.tableId != null
+      ? orderItem.table?.name ?? creataedUserName
+      : "-----";
   if (checkListingType(user) == ListingType.waitress) {
     return orderItem.waitressId != null
-        ? orderItem.waitress?.name ?? currentUserName
-        : currentUserName;
+        ? orderItem.waitress?.name ?? createdUserOrtableName
+        : createdUserOrtableName;
   } else {
-    return currentUserName;
+    return createdUserOrtableName;
   }
-}
+}*/
 
 getInitialName(String fullName) {
   List<String> nameParts = fullName.split(" ");

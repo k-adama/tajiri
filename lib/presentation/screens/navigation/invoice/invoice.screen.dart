@@ -29,9 +29,8 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   final controller = Get.put(InvoiceController());
   late final OrderEntity arguments;
 
-   final bluetoothController =
-                            Get.find<NavigationController>()
-                                .bluetoothController;
+  final bluetoothController =
+      Get.find<NavigationController>().bluetoothController;
 
   bool backInvoiceScreen() {
     if (widget.isPaid == true) {
@@ -259,12 +258,12 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       order: arguments,
                     ),
                     5.verticalSpace,
-                    Obx(
-                  () {
-                        return InvoiceButtonsComponent(
-                          ordersData: arguments,
-                          isLoading: bluetoothController.isLoading.value,
-                          printButtonTap: () { 
+                    Obx(() {
+                      return InvoiceButtonsComponent(
+                        ordersData: arguments,
+                        isLoading: bluetoothController.isLoading.value,
+                        printButtonTap: () {
+                         // print("dhhgf ${arguments.toJson()}");
                             if (bluetoothController.isLoading.value) {
                               return;
                             }                      
@@ -274,29 +273,28 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               bluetoothController.printReceipt(arguments);
                             }
                         
-                            // if (controller.connected.value == true) {
-                            //   //   controller.printFactureByBluetooth(arguments);
-                            //   controller.printNewModelFactureByBluetooth(arguments);
-                            // } else {
-                            //   // controller.notConnectedPrint(context);
-                        
-                            // }
-                          },
-                          shareButtonTap: () {
-                            controller.shareFacture(arguments);
-                          },
-                          returnToOrderButtonTap: () {
-                            Get.find<NavigationController>().selectIndexFunc(1);
-                            if (widget.isPaid == true) {
-                              Navigator.popUntil(
-                                  context, ModalRoute.withName(Routes.NAVIGATION));
-                            } else {
-                              Get.back();
-                            }
-                          },
-                        );
-                      }
-                    ),
+                          // if (controller.connected.value == true) {
+                          //   //   controller.printFactureByBluetooth(arguments);
+                          //   controller.printNewModelFactureByBluetooth(arguments);
+                          // } else {
+                          //   // controller.notConnectedPrint(context);
+
+                          // }
+                        },
+                        shareButtonTap: () {
+                          controller.shareFacture(arguments);
+                        },
+                        returnToOrderButtonTap: () {
+                          Get.find<NavigationController>().selectIndexFunc(1);
+                          if (widget.isPaid == true) {
+                            Navigator.popUntil(context,
+                                ModalRoute.withName(Routes.NAVIGATION));
+                          } else {
+                            Get.back();
+                          }
+                        },
+                      );
+                    }),
                   ],
                 )),
           )),
