@@ -37,7 +37,7 @@ ListingType? checkListingType(UserEntity? user) {
 
 String userOrWaitressName(OrderEntity orderItem, UserEntity? user) {
   final createdUserName = "${orderItem.createdUser?.firstname ?? ""} ${orderItem.createdUser?.lastname ?? ""}";
-  final createdUserOrtableName = orderItem.tableId != null ? orderItem.table?.name ?? createdUserName : "-----";
+  final createdUserOrtableName = orderItem.tableId != null ? orderItem.table?.name ?? createdUserName : "";
   return checkListingType(user) == ListingType.waitress ? (orderItem.waitressId != null ? orderItem.waitress?.name ?? createdUserOrtableName : createdUserOrtableName) : createdUserOrtableName;
 }
 
