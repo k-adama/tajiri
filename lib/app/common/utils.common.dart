@@ -36,14 +36,16 @@ ListingType? checkListingType(UserEntity? user) {
 }
 
 String userOrWaitressName(OrderEntity orderItem, UserEntity? user) {
-  final currentUserName = "${user?.firstname ?? ""} ${user?.lastname ?? ""}";
-  if (checkListingType(user) == ListingType.waitress) {
-    return orderItem.waitressId != null
-        ? orderItem.waitress?.name ?? currentUserName
-        : currentUserName;
-  } else {
-    return currentUserName;
-  }
+  final createdUserName =
+      "${orderItem.createdUser?.firstname ?? ""} ${orderItem.createdUser?.lastname ?? ""}";
+  final createdUserOrtableName =
+      orderItem.tableId != null ? "${orderItem.table?.name ?? ""} " : createdUserName;
+
+  return checkListingType(user) == ListingType.waitress
+      ? (orderItem.waitressId != null
+          ? orderItem.waitress?.name ?? createdUserOrtableName
+          : createdUserOrtableName)
+      : createdUserOrtableName;
 }
 
 getInitialName(String fullName) {
