@@ -1,3 +1,4 @@
+import 'package:tajiri_pos_mobile/domain/entities/createdUserEntity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/customer.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_details.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/payment_method.entity.dart';
@@ -14,6 +15,7 @@ class OrderEntity {
     String? restaurantId,
     String? tableId,
     String? waitressId,
+    String? createdUserId,
     String? createdId,
     String? customerType,
     String? customerId,
@@ -33,6 +35,7 @@ class OrderEntity {
     List<OrderDetailsEntity>? orderDetails,
     TableEntity? table,
     WaitressEntity? waitress,
+    CreatedUserEntity? createdUser,
   }) {
     _id = id;
     _orderNumber = orderNumber;
@@ -58,8 +61,10 @@ class OrderEntity {
     _orderDetails = orderDetails;
     _tableId = tableId;
     _waitressId = waitressId;
+    _createdUserId = createdUserId;
     _table = table;
     _waitress = waitress;
+    _createdUser = createdUser;
   }
 
   OrderEntity.fromJson(dynamic json) {
@@ -73,6 +78,7 @@ class OrderEntity {
     _customerType = json['customerType'];
     _tableId = json['tableId'];
     _waitressId = json['waitressId'];
+    _createdUserId = json['createdUserId'];
     _customerId = json['customerId'];
     _orderType = json['orderType'];
     _pinCode = json['pinCode'];
@@ -88,6 +94,9 @@ class OrderEntity {
     _table = json['table'] != null ? TableEntity.fromJson(json['table']) : null;
     _waitress = json['waitress'] != null
         ? WaitressEntity.fromJson(json['waitress'])
+        : null;
+    _createdUser = json['createdUser'] != null
+        ? CreatedUserEntity.fromJson(json['createdUser'])
         : null;
     _paymentMethod = json['paymentMethod'] != null
         ? PaymentMethodEntity.fromJson(json['paymentMethod'])
@@ -121,6 +130,7 @@ class OrderEntity {
   int? _discountAmount;
   String? _tableId;
   String? _waitressId;
+  String? _createdUserId;
   String? _deliveryDate;
   String? _status;
   String? _createdAt;
@@ -128,6 +138,7 @@ class OrderEntity {
   int? _tax;
   TableEntity? _table;
   WaitressEntity? _waitress;
+  CreatedUserEntity? _createdUser;
   PaymentMethodEntity? _paymentMethod;
   CustomerEntity? _customer;
   List<OrderDetailsEntity>? _orderDetails;
@@ -155,9 +166,11 @@ class OrderEntity {
     int? tax,
     String? tableId,
     String? waitressId,
+    String? createdUserId,
     PaymentMethodEntity? paymentMethod,
     CustomerEntity? customer,
     WaitressEntity? waitress,
+    CreatedUserEntity? createdUser,
     List<OrderDetailsEntity>? orderDetails,
   }) =>
       OrderEntity(
@@ -185,8 +198,10 @@ class OrderEntity {
           customer: _customer ?? customer,
           tableId: _tableId ?? tableId,
           waitressId: _waitressId ?? waitressId,
+          createdUserId: _createdUserId ?? createdUserId,
           table: _table ?? table,
           waitress: _waitress ?? waitress,
+          createdUser: _createdUser ?? createdUser,
           orderDetails: _orderDetails ?? orderDetails);
 
   String? get id => _id;
@@ -205,8 +220,10 @@ class OrderEntity {
   String? get orderNotes => _orderNotes;
   String? get tableId => _tableId;
   String? get waitressId => _waitressId;
+  String? get createdUserId => _createdUserId;
   TableEntity? get table => _table;
   WaitressEntity? get waitress => _waitress;
+  CreatedUserEntity? get createdUser => _createdUser;
   int? get discountAmount => _discountAmount;
   int? get tax => _tax;
   String? get deliveryDate => _deliveryDate;
@@ -234,6 +251,7 @@ class OrderEntity {
     map['couponCode'] = _couponCode;
     map['tableId'] = _tableId;
     map['waitressId'] = _waitressId;
+    map['createdUserId'] = _createdUserId;
     map['orderNotes'] = _orderNotes;
     map['discountAmount'] = _discountAmount;
     map['deliveryDate'] = _deliveryDate;
@@ -252,6 +270,9 @@ class OrderEntity {
     }
     if (_waitress != null) {
       map['waitress'] = _waitress?.toJson();
+    }
+    if (_createdUser != null) {
+      map['createdUser'] = _createdUser?.toJson();
     }
     if (_orderDetails != null) {
       map['orderDetails'] = _orderDetails?.map((v) => v.toJson()).toList();
