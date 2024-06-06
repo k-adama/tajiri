@@ -7,6 +7,7 @@ class PermissionEntity {
   bool? managementProducts;
   bool? managementCustomers;
   bool? settingsRestaurant;
+  bool? canUpdateOrCanceled;
   String? createdAt;
   String? updatedAt;
 
@@ -19,6 +20,7 @@ class PermissionEntity {
       this.managementProducts,
       this.managementCustomers,
       this.settingsRestaurant,
+      this.canUpdateOrCanceled,
       this.createdAt,
       this.updatedAt});
 
@@ -31,6 +33,7 @@ class PermissionEntity {
     managementProducts = json['managementProducts'];
     managementCustomers = json['managementCustomers'];
     settingsRestaurant = json['settingsRestaurant'];
+    canUpdateOrCanceled = json['canUpdateOrCanceled'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
   }
@@ -45,6 +48,7 @@ class PermissionEntity {
     data['managementProducts'] = managementProducts;
     data['managementCustomers'] = managementCustomers;
     data['settingsRestaurant'] = settingsRestaurant;
+    data['canUpdateOrCanceled'] = canUpdateOrCanceled;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     return data;
