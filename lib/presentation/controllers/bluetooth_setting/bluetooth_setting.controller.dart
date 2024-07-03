@@ -157,7 +157,7 @@ class BluetoothSettingController extends GetxController {
         bool result = false;
         isLoading.value = true;
         Mixpanel.instance.track('Print Invoice');
-        const PaperSize paper = PaperSize.mm58;
+        const PaperSize paper = PaperSize.mm80;
         final profile = await CapabilityProfile.load();
         List<int> ticket = await demoReceipt(paper, profile, order);
         result = await PrintBluetoothThermal.writeBytes(ticket);
@@ -262,6 +262,7 @@ class BluetoothSettingController extends GetxController {
 
     bytes += ticket.text('', styles: const PosStyles(align: PosAlign.center));
     bytes += ticket.text('', styles: const PosStyles(align: PosAlign.center));
+    bytes += ticket.text('', styles: const PosStyles(align: PosAlign.center));
 
     // Print image
     // final ByteData data = await rootBundle.load('assets/images/logo_taj.png');
@@ -271,8 +272,7 @@ class BluetoothSettingController extends GetxController {
 
     // bytes += ticket.image(image!);
 
-    ticket.emptyLines(4);
-    ticket.cut();
+    bytes += ticket.cut();
     return bytes;
   }
 
