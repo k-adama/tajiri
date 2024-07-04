@@ -40,6 +40,14 @@ class LocalStorageService {
     await _preferences?.setString(key, value);
   }
 
+  int? getInt(String key) {
+    return _preferences?.getInt(key);
+  }
+
+  Future<void> setInt(String key, int value) async {
+    await _preferences?.setInt(key, value);
+  }
+
   void delete(String key) {
     _preferences?.remove(key);
   }
@@ -47,9 +55,8 @@ class LocalStorageService {
   bool getAppThemeMode() =>
       _preferences?.getBool(AppConstants.keyAppThemeMode) ?? false;
 
-  void logout(){
+  void logout() {
     delete(AuthConstant.keyToken);
     delete(UserConstant.keyUser);
   }
 }
-

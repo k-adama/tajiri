@@ -31,15 +31,27 @@ class BluetoothSettingController extends GetxController {
   final items = Rx<List<BluetoothInfo>>([]);
   final isLoading = false.obs;
 
+  final selectPaperSize = Rx<PaperSize?>(null);
+
+  getSelectSizePaper() async {
+    selectPaperSize.value = await AppHelpersCommon.getPaperSize();
+    print("==selectPaperSize : ${selectPaperSize.value?.value}===");
+  }
+
+  setSelectSizePaper(PaperSize paperSize) async {
+    selectPaperSize.value = paperSize;
+    AppHelpersCommon.setPaperSize(paperSize.value);
+    print("==selectPaperSize : ${selectPaperSize.value?.value}===");
+  }
+
   @override
   void onInit() {
     print("=============INIT BLUE CONTROLLER");
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await getSelectSizePaper();
       await _requestPermissions();
       await Get.find<BluetoothSettingController>().getBluetoothDevices();
     });
-
-    // initPlatformState();
     super.onInit();
   }
 
@@ -89,14 +101,16 @@ class BluetoothSettingController extends GetxController {
   }
 
   Future<void> connect(String mac, String name) async {
-    print('===================connect to $mac');
+    print('========oldconnect ${connected.value}===========connect to $mac');
     progress.value = true;
     msjprogress = "Connecting...";
     connected.value = false;
     macConnected.value = null;
+    // disconnect before connect otherwise if a device was connected it will be impossible to connect
+    await PrintBluetoothThermal.disconnect;
     final bool result =
         await PrintBluetoothThermal.connect(macPrinterAddress: mac);
-    print("state conected $result");
+    print("========state conected $result");
     if (result) {
       macConnected.value = mac;
       connected.value = true;
@@ -143,9 +157,11 @@ class BluetoothSettingController extends GetxController {
   }
 
   printDemo() async {
-    const PaperSize paper = PaperSize.mm58;
+    if (selectPaperSize.value == null) {
+      return;
+    }
     final profile = await CapabilityProfile.load();
-    List<int> ticket = await demoOneLine(paper, profile);
+    List<int> ticket = await demoOneLine(selectPaperSize.value!, profile);
     final result = await PrintBluetoothThermal.writeBytes(ticket);
     print("PRINTER RESULT : $result");
   }
@@ -154,12 +170,16 @@ class BluetoothSettingController extends GetxController {
     bool conexionStatus = await PrintBluetoothThermal.connectionStatus;
     if (conexionStatus) {
       try {
+        if (selectPaperSize.value == null) {
+          return;
+        }
+
         bool result = false;
         isLoading.value = true;
         Mixpanel.instance.track('Print Invoice');
-        const PaperSize paper = PaperSize.mm80;
         final profile = await CapabilityProfile.load();
-        List<int> ticket = await demoReceipt(paper, profile, order);
+        List<int> ticket =
+            await demoReceipt(selectPaperSize.value!, profile, order);
         result = await PrintBluetoothThermal.writeBytes(ticket);
         print("print Receipt result:  $result");
         isLoading.value = false;
@@ -228,7 +248,8 @@ class BluetoothSettingController extends GetxController {
 
         final formattedPrice = addMilleSeparator(calculatePrice);
 
-        List<String> productLines = splitText(foodName, 15);
+        List<String> productLines =
+            splitText(foodName, getMaxCharactersPerLine(selectPaperSize.value));
         bytes += await getColumItem(
           productLines,
           "$formattedPrice F",
@@ -260,20 +281,22 @@ class BluetoothSettingController extends GetxController {
           align: PosAlign.center,
         ));
 
-    bytes += ticket.text('', styles: const PosStyles(align: PosAlign.center));
-    bytes += ticket.text('', styles: const PosStyles(align: PosAlign.center));
-    bytes += ticket.text('', styles: const PosStyles(align: PosAlign.center));
-
-    // Print image
-    // final ByteData data = await rootBundle.load('assets/images/logo_taj.png');
-    // final imageBytes = data.buffer.asUint8List();
-
-    // final image = decodeImage(imageBytes);
-
-    // bytes += ticket.image(image!);
-
     bytes += ticket.cut();
     return bytes;
+  }
+
+  int getMaxCharactersPerLine(PaperSize? paperSize, {int columnWidth = 5}) {
+    if (paperSize == null) {
+      return 15;
+    }
+    int totalWidth = paperSize.width;
+    // Estimation de caractères par ligne selon la largeur
+    double charPerPixel = 1; // Ajuste cette valeur en fonction des tests
+    int maxCharacters = (totalWidth * charPerPixel).toInt();
+    final result = maxCharacters *
+        columnWidth ~/
+        12; // Ajustement basé sur la largeur de la colonne
+    return result;
   }
 
   Future<List<int>> demoOneLine(
@@ -286,9 +309,7 @@ class BluetoothSettingController extends GetxController {
         encodeCharset, "Bienvenue chez Tajiri , a tres bientot");
 
     bytes += ticket.textEncoded(encoded);
-
-    ticket.feed(2);
-    ticket.cut();
+    bytes += ticket.cut();
     return bytes;
   }
 

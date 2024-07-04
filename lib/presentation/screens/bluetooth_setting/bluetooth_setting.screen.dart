@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/bluetooth_setting/component/bluetooth_button.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/bluetooth_setting/component/bluetooth_device_item.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/bluetooth_setting/component/bluetooth_disconnect.component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/bluetooth_setting/component/dialog_paper_size.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/bluetooth_setting/component/header_bluetooth.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 
@@ -33,9 +35,6 @@ class _BluetoothSettingScreenState extends State<BluetoothSettingScreen> {
           },
         ),
       ),
-      // floatingActionButton: FloatingActionButton(onPressed: () {
-      //   print(bluetoothController.macConnected.value);
-      // }),
       body: Obx(() {
         return Column(
           children: [
@@ -94,8 +93,16 @@ class _BluetoothSettingScreenState extends State<BluetoothSettingScreen> {
                                                 .macConnected.value,
                                         name: e.name,
                                         onTap: () {
-                                          bluetoothController.connect(
-                                              e.macAdress, e.name);
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return DialogPaperSizeComponent(
+                                                  connectPrinter: () {
+                                                    bluetoothController.connect(
+                                                        e.macAdress, e.name);
+                                                  },
+                                                );
+                                              });
                                         },
                                       );
                                     }).toList(),
