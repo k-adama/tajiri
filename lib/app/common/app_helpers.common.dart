@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_esc_pos_utils/flutter_esc_pos_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/services/http.service.dart';
@@ -29,18 +30,48 @@ class AppHelpersCommon {
 
   static String? getPrinterMacAdress() {
     final macAdress =
-        LocalStorageService.instance.get(UserConstant.keymacAdress);
+        LocalStorageService.instance.get(UserConstant.keyMacAdress);
     return macAdress;
   }
 
   static setPrinterMacAdress(String? adress) {
     if (adress != null) {
-      LocalStorageService.instance.set(UserConstant.keymacAdress, adress);
+      LocalStorageService.instance.set(UserConstant.keyMacAdress, adress);
     }
   }
 
   static deletePrinterMacAdress() {
-    LocalStorageService.instance.delete(UserConstant.keymacAdress);
+    LocalStorageService.instance.delete(UserConstant.keyMacAdress);
+  }
+
+  // Paper Size
+
+  /// value of [mm58] = is 1;
+  /// value of [mm80] = is 2;
+  /// value of [mm72] = is 3;
+  static Future<PaperSize?> getPaperSize() async {
+    final paperSize =
+        LocalStorageService.instance.getInt(UserConstant.keyPaperSize);
+
+    if (paperSize == PaperSize.mm58.value) {
+      return PaperSize.mm58;
+    } else if (paperSize == PaperSize.mm80.value) {
+      return PaperSize.mm80;
+    } else if (paperSize == PaperSize.mm72.value) {
+      return PaperSize.mm72;
+    }
+    return null;
+  }
+
+  static setPaperSize(int? paperSizeValue) {
+    if (paperSizeValue != null) {
+      LocalStorageService.instance
+          .setInt(UserConstant.keyPaperSize, paperSizeValue);
+    }
+  }
+
+  static deletePaperSize() {
+    LocalStorageService.instance.delete(UserConstant.keyPaperSize);
   }
 
   static logoutApi() async {
