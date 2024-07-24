@@ -161,19 +161,21 @@ class HomeController extends GetxController {
 
       final ordersComparaison = comparaisonOders;
       var ordersData = ordersResponse;
-
       // Supprime les commandes annulees
-      ordersData =
+      final newOrderData =
           ordersData.where((item) => item.status != 'CANCELLED').toList();
-
-      orders.assignAll(ordersData);
-      final newData =
-          ordersData.where((item) => item.status != 'CANCELLED').toList();
-
+      totalAmount.value = getTotalAmount(newOrderData);
+      ordersPaid.value = getTotalAmount(
+          newOrderData.where((item) => item.status == 'PAID').toList());
+      ordersSave.value = getTotalAmount(
+          newOrderData.where((item) => item.status == "NEW").toList());
+       //final top10FoodsValue = getTop10Foods(ordersData);
+     // top10Foods.assignAll(top10FoodsValue);
       isFetching.value = false;
       update();
+      orders.assignAll(ordersData);
 
-      if (newData.isEmpty) {
+      /* if (newData.isEmpty) {
         totalAmount.value = 0;
         ordersPaid.value = 0;
         ordersSave.value = 0;
@@ -191,11 +193,7 @@ class HomeController extends GetxController {
             ordersForCategories(groupByCategoriesValue);
         categoriesAmount.assignAll(ordersForCategoriesValue);
 
-        final groupedByPaymentMethodValue = groupedByPaymentMethod(newData);
-        paymentsMethodAmount
-            .assignAll(paymentMethodsData(groupedByPaymentMethodValue));
-
-        totalAmount.value = getTotalAmount(newData);
+        // totalAmount.value = getTotalAmount(newData);
         ordersPaid.value = getTotalAmount(
             newData.where((item) => item.status == 'PAID').toList());
         ordersSave.value = getTotalAmount(
@@ -212,7 +210,7 @@ class HomeController extends GetxController {
         isFetching.value = false;
         update();
         eventFilter(indexFilter: indexFilter ?? 0, status: "Succes");
-      }
+      }*/
       //  eventFilter(indexFilter: indexFilter, status: "Succes");
     } catch (e) {
       // eventFilter(indexFilter: indexFilter, status: "Failure");
@@ -434,22 +432,6 @@ class HomeController extends GetxController {
     }
   }
 
-  Map<String, List<dynamic>> groupedByPaymentMethod(List<dynamic> data) {
-    Map<String, List<dynamic>> result = {};
-
-    for (var item in data) {
-      String payment = item['paymentMethod']?['name'] ?? "Cash";
-
-      if (!result.containsKey(payment)) {
-        result[payment] = [];
-      }
-
-      result[payment]!.add(item);
-    }
-
-    return result;
-  }
-
   Map<String, DateTime> getDatesForComparison() {
     DateTime now = DateTime.now();
     Map<String, DateTime> params = {
@@ -562,29 +544,6 @@ class HomeController extends GetxController {
     }
   }
 
-  List<PaymentMethodDataEntity> paymentMethodsData(
-      Map<String, List<dynamic>> groupedByPaymentMethod) {
-    return groupedByPaymentMethod.entries
-        .map((MapEntry<String, List<dynamic>> entry) {
-      String key = entry.key;
-      List<dynamic> items = entry.value;
-
-      if (key != "Carte bancaire") {
-        int total = items.fold(
-            0, (count, item) => count + (item['grandTotal'] as num).toInt());
-        dynamic id = items[0]['paymentMethod']?['id'] ??
-            PAIEMENTS.firstWhere((item) => item['name'] == "Cash",
-                orElse: () => {'id': null})['id'];
-
-        return PaymentMethodDataEntity(id: id, name: key, total: total);
-      }
-
-      return PaymentMethodDataEntity(id: "", name: "", total: 0);
-    })
-        // .where((element) => element != null)
-        .toList();
-  }
-
   List<CategoryAmountEntity> ordersForCategories(
       Map<String, dynamic> groupByCategories) {
     return groupByCategories.entries.map((MapEntry<String, dynamic> entry) {
@@ -627,9 +586,9 @@ class HomeController extends GetxController {
     return acc;
   }
 
-  int getTotalAmount(List<dynamic> orders) {
+  int getTotalAmount(List<Order> orders) {
     return orders.fold(
-        0, (count, item) => count + (item['grandTotal'] as num).toInt());
+        0, (count, item) => count + (item.grandTotal as num).toInt());
   }
 
   bool isSameDay(DateTime date1, DateTime date2) {
@@ -657,5 +616,17 @@ class HomeController extends GetxController {
     )..layout(minWidth: 0, maxWidth: double.infinity);
     if (text.length <= 6) return textPainter.width + 92;
     return textPainter.width + 80;
+  }
+
+  int calculateTotalAmountByPaymentMenthode(String paymentMethodId) {
+    int totalAmount = 0;
+    for (var order in orders) {
+      for (var payment in order.payments) {
+        if (payment.paymentMethodId == paymentMethodId) {
+          totalAmount += payment.amount;
+        }
+      }
+    }
+    return totalAmount;
   }
 }
