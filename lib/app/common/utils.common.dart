@@ -7,6 +7,7 @@ import 'package:tajiri_pos_mobile/domain/entities/data_point_chart.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_details.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 enum ListingType {
   table,
@@ -38,8 +39,9 @@ ListingType? checkListingType(UserEntity? user) {
 String userOrWaitressName(OrderEntity orderItem, UserEntity? user) {
   final createdUserName =
       "${orderItem.createdUser?.firstname ?? ""} ${orderItem.createdUser?.lastname ?? ""}";
-  final createdUserOrtableName =
-      orderItem.tableId != null ? "${orderItem.table?.name ?? ""} " : createdUserName;
+  final createdUserOrtableName = orderItem.tableId != null
+      ? "${orderItem.table?.name ?? ""} "
+      : createdUserName;
 
   return checkListingType(user) == ListingType.waitress
       ? (orderItem.waitressId != null
@@ -90,7 +92,7 @@ String paymentMethodNameByOrder(OrderEntity order) {
 // sales_calculator.dart
 class SalesCalculator {
   static Map<String, Map<String, dynamic>> calculateTotalSalesByDayOfWeek(
-      List<OrderEntity> orders) {
+      List<Order> orders) {
     Map<String, Map<String, dynamic>> dayOfWeekTotals = {
       "lun": {"grandTotal": 0},
       "mar": {"grandTotal": 0},
@@ -103,8 +105,8 @@ class SalesCalculator {
 
     List<String> days = ["lun", "mar", "mer", "jeu", "ven", "sam", "dim"];
 
-    for (OrderEntity order in orders) {
-      DateTime createdAtDate = DateTime.parse(order.createdAt!);
+    for (Order order in orders) {
+      DateTime createdAtDate = order.createdAt!;
       String dayOfWeek = days[createdAtDate.weekday - 1];
 
       if (dayOfWeekTotals.containsKey(dayOfWeek)) {
@@ -116,11 +118,11 @@ class SalesCalculator {
   }
 
   static Map<String, Map<String, dynamic>> calculateClassAndGrandTotalByWeek(
-      List<OrderEntity> orders) {
+      List<Order> orders) {
     Map<String, Map<String, dynamic>> result = {};
 
-    for (OrderEntity order in orders) {
-      DateTime createdAt = DateTime.parse(order.createdAt!);
+    for (Order order in orders) {
+      DateTime createdAt = order.createdAt!;
       String weekNumber = 'Sem ${getWeekNumber(createdAt).toString()}';
       int grandTotal = order.grandTotal!;
 
@@ -149,7 +151,7 @@ class SalesCalculator {
 
 class ChartUtils {
   static List<LineChartBarData> getFlatSpot(
-      List<OrderEntity> orders, String viewSelected) {
+      List<Order> orders, String viewSelected) {
     final List<Map<String, dynamic>> ordersForChart =
         getReportChart(orders, viewSelected);
     List<Color> gradientColors = [
@@ -191,14 +193,14 @@ class ChartUtils {
     return lineChartBarData;
   }
 
-  static getReportChart(List<OrderEntity> orders, String viewSelected) {
+  static getReportChart(List<Order> orders, String viewSelected) {
     List<Map<String, dynamic>> ordersForChart;
 
     if (viewSelected == "Jour") {
       Map<int, Map<String, dynamic>> ordersByHours = orders.fold(
         {},
-        (Map<int, Map<String, dynamic>> acc, OrderEntity order) {
-          DateTime createdAt = DateTime.parse(order.createdAt!);
+        (Map<int, Map<String, dynamic>> acc, Order order) {
+          DateTime createdAt = order.createdAt!;
 
           int hour = createdAt.hour;
 
@@ -247,8 +249,7 @@ class ChartUtils {
     return ordersForChart;
   }
 
-  static getTextChart(
-      List<OrderEntity> orders, double value, String viewSelected) {
+  static getTextChart(List<Order> orders, double value, String viewSelected) {
     final List<Map<String, dynamic>> ordersForChart =
         getReportChart(orders, viewSelected);
     const style = TextStyle(
@@ -265,13 +266,13 @@ class ChartUtils {
     return const Text("error", style: style);
   }
 
-  static int getMaxItemChart(List<OrderEntity> orders, String viewSelected) {
+  static int getMaxItemChart(List<Order> orders, String viewSelected) {
     final List<Map<String, dynamic>> ordersForChart =
         getReportChart(orders, viewSelected);
     return ordersForChart.length - 1;
   }
 
-  static double getMaxYChart(List<OrderEntity> orders, String viewSelected) {
+  static double getMaxYChart(List<Order> orders, String viewSelected) {
     final List<Map<String, dynamic>> ordersForChart =
         getReportChart(orders, viewSelected);
     double maxY = ordersForChart
@@ -281,7 +282,7 @@ class ChartUtils {
     return maxY + 10.0;
   }
 
-  static double getMinYChart(List<OrderEntity> orders, String viewSelected) {
+  static double getMinYChart(List<Order> orders, String viewSelected) {
     final List<Map<String, dynamic>> ordersForChart =
         getReportChart(orders, viewSelected);
     double minY = ordersForChart

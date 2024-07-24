@@ -9,13 +9,13 @@ import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/domain/entities/categorie_amount.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/payment_method_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/story.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/story_group.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/top_10_food.entity.dart';
 import 'package:tajiri_pos_mobile/data/repositories/orders/orders.repository.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class HomeController extends GetxController {
   final user = AppHelpersCommon.getUserInLocalStorage();
@@ -54,7 +54,8 @@ class HomeController extends GetxController {
 
   List<OrdersReportsEntity> ordersReports =
       List<OrdersReportsEntity>.empty().obs;
-  RxList<OrderEntity> orders = List<OrderEntity>.empty().obs;
+  RxList<Order> orders = List<Order>.empty().obs;
+  final tajiriSdk = TajiriSDK.instance;
 
   @override
   void onInit() {
@@ -143,23 +144,96 @@ class HomeController extends GetxController {
   fetchDataForReports({int? indexFilter}) async {
     final params = getDatesForComparison();
 
-    String startDateComparaison =
-        DateFormat("yyyy-MM-dd").format(params['startDate']!);
-    String endDateComparaison =
-        DateFormat("yyyy-MM-dd").format(params['endDate']!);
-
+    DateTime startDateComparaison = params['startDate']!;
+    DateTime endDateComparaison = params['endDate']!;
     String? ownerId = user?.role == "OWER" ? user?.id : null;
+    final GetOrdersDto dto = GetOrdersDto(
+        startDate: startDateComparaison,
+        endDate: endDateComparaison,
+        ownerId: ownerId);
+    final GetOrdersDto dtoStart =
+        GetOrdersDto(startDate: startDate, endDate: endDate, ownerId: ownerId);
+    try {
+      final [ordersResponse, comparaisonOders] = await Future.wait([
+        tajiriSdk.ordersService.getOrders(dtoStart),
+        tajiriSdk.ordersService.getOrders(dto),
+      ]);
 
-    final [ordersResponse, comparaisonOders] = await Future.wait(
+      final ordersComparaison = comparaisonOders;
+      var ordersData = ordersResponse;
+
+      // Supprime les commandes annulees
+      ordersData =
+          ordersData.where((item) => item.status != 'CANCELLED').toList();
+
+      orders.assignAll(ordersData);
+      final newData =
+          ordersData.where((item) => item.status != 'CANCELLED').toList();
+
+      isFetching.value = false;
+      update();
+
+      if (newData.isEmpty) {
+        totalAmount.value = 0;
+        ordersPaid.value = 0;
+        ordersSave.value = 0;
+        top10Foods.clear();
+        categoriesAmount.clear();
+        paymentsMethodAmount.clear();
+        orders.clear();
+        isFetching.value = false;
+        update();
+      } else {
+        final top10FoodsValue = getTop10Foods(newData);
+        top10Foods.assignAll(top10FoodsValue);
+        final groupByCategoriesValue = groupByCategories(newData);
+        final ordersForCategoriesValue =
+            ordersForCategories(groupByCategoriesValue);
+        categoriesAmount.assignAll(ordersForCategoriesValue);
+
+        final groupedByPaymentMethodValue = groupedByPaymentMethod(newData);
+        paymentsMethodAmount
+            .assignAll(paymentMethodsData(groupedByPaymentMethodValue));
+
+        totalAmount.value = getTotalAmount(newData);
+        ordersPaid.value = getTotalAmount(
+            newData.where((item) => item.status == 'PAID').toList());
+        ordersSave.value = getTotalAmount(
+            newData.where((item) => item.status == "NEW").toList());
+        getDayActive();
+        final int ordersComparaisonsAmount = getTotalAmount(ordersComparaison);
+        percentComparaison.value =
+            ((totalAmount.value - ordersComparaisonsAmount) /
+                    ordersComparaisonsAmount) *
+                100;
+        isFetching.value = false;
+        orders.assignAll(ordersData);
+
+        isFetching.value = false;
+        update();
+        eventFilter(indexFilter: indexFilter ?? 0, status: "Succes");
+      }
+      //  eventFilter(indexFilter: indexFilter, status: "Succes");
+    } catch (e) {
+      // eventFilter(indexFilter: indexFilter, status: "Failure");
+      isFetching.value = false;
+      update();
+    }
+    isFetching.value = false;
+    update();
+    /* String? ownerId =
+        user?.role?.permissions?[0].dashboardUnique == true ? user?.id : null;*/
+
+    /*  final [ordersResponse, comparaisonOders] = await Future.wait(
       [
         _ordersRepository.getOrders(DateFormat("yyyy-MM-dd").format(startDate),
             DateFormat("yyyy-MM-dd").format(endDate), ownerId),
         _ordersRepository.getOrders(
             startDateComparaison, endDateComparaison, ownerId)
       ],
-    );
+    );*/
 
-    ordersResponse.when(success: (data) {
+    /* ordersResponse.when(success: (data) {
       final newData =
           data.where((item) => item['status'] != 'CANCELLED').toList();
 
@@ -211,7 +285,7 @@ class HomeController extends GetxController {
       }
     }, failure: (status, _) {
       eventFilter(indexFilter: indexFilter ?? 0, status: "Failure");
-    });
+    });*/
   }
 
   void eventFilter({int indexFilter = 0, required String status}) {
