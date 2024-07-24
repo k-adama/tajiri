@@ -130,10 +130,10 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  InformationInvoiceComponent(
+                                /*  InformationInvoiceComponent(
                                     title: "Serveur:",
                                     body: userOrWaitressName(arguments, user),
-                                  ),
+                                  ),*/
                                   const Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 15),

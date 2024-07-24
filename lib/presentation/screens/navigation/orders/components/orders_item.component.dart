@@ -23,7 +23,7 @@ class OrdersItemComponent extends StatefulWidget {
 }
 
 class _OrdersItemComponentState extends State<OrdersItemComponent> {
-  final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
+ // final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
   final OrdersController orderController = Get.find();
   //final TableController tableController = Get.find();
 
@@ -31,7 +31,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
   @override
   void initState() {
     super.initState();
-    if (checkListingType(user) == ListingType.waitress) {
+    /*if (checkListingType(user) == ListingType.waitress) {
       isPaid =
           AppConstants.getStatusOrderInProgressOrDone(widget.order, "DONE");
 
@@ -44,7 +44,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         //orderController.filterByTable(posController.tableCurrentId);
       });
-    }
+    }*/
   }
 
   @override

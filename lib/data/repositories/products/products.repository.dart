@@ -114,11 +114,11 @@ class ProductsRepository {
       String name, String description) async {
     try {
       final user = AppHelpersCommon.getUserInLocalStorage();
-      final String restaurantId = user!.role!.restaurantId!;
+     // final String restaurantId = user!.role!.restaurantId!;
       final data = {
         "name": name,
         "description": description,
-        "restaurantId": restaurantId,
+       // "restaurantId": restaurantId,
         "isAvailable": true
       };
       final client =

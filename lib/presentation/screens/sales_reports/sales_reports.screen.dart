@@ -48,14 +48,14 @@ class _SalesReportsScreenState extends State<SalesReportsScreen> {
                     width: double.infinity,
                     child: ListView(
                       children: [
-                        UserOrRestaurantInformationComponent(
+                       /* UserOrRestaurantInformationComponent(
                           restaurantName:
                               "${salesReportController.user!.restaurantUser != null ? salesReportController.user!.restaurantUser![0].restaurant?.name : ""}",
                           contactPhone:
                               "${salesReportController.user!.restaurantUser != null ? salesReportController.user!.restaurantUser![0].restaurant?.contactPhone : ""}",
                           userName:
                               "${salesReportController.user!.lastname ?? ""} ${salesReportController.user!.firstname ?? ""}",
-                        ),
+                        ),*/
                         SalesReportsDatePickerInformationComponent(
                           startDate:
                               salesReportController.getStartDateInFrench(),

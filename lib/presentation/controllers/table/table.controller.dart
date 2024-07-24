@@ -66,11 +66,11 @@ class TableController extends GetxController {
       isLoadingTable = true;
       update();
       final user = AppHelpersCommon.getUserInLocalStorage();
-      final restaurantId = user?.role?.restaurantId;
+     /* final restaurantId = user?.role?.restaurantId;
       if (restaurantId == null) {
         print("====${restaurantId} null====");
         return;
-      }
+      }*/
 
       final persons = int.tryParse(tableNumberOfPlace);
 
@@ -96,7 +96,7 @@ class TableController extends GetxController {
         'description': tableDescription,
         'persons': persons,
         "status": true,
-        "restaurantId": restaurantId,
+       // "restaurantId": restaurantId,
       };
 
       final response = await _tablesRepository.createTable(requestData);

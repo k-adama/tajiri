@@ -13,8 +13,8 @@ class DrawerPageBodyComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = AppHelpersCommon.getUserInLocalStorage();
 
-    bool? isShowStock =
-        user?.role?.permissions?[0].inventory == true ? true : false;
+  /*  bool? isShowStock =
+        user?.role?.permissions?[0].inventory == true ? true : false;*/
     return Column(
       children: [
         ListTile(
@@ -28,8 +28,9 @@ class DrawerPageBodyComponent extends StatelessWidget {
             Get.toNamed(Routes.SALES_REPORT_DATE_TIME_PICKER);
           },
         ),
-        isShowStock
-            ? ListTile(
+       /* isShowStock
+            ? 
+            ListTile(
                 title: const DrawerBodyListRowComponent(
                   name: "Stocks",
                   emoji: "assets/svgs/stock.svg",
@@ -40,7 +41,7 @@ class DrawerPageBodyComponent extends StatelessWidget {
                   Get.toNamed(Routes.STOCK);
                 },
               )
-            : Container(),
+            : Container(),*/
         ListTile(
           title: const DrawerBodyListRowComponent(
             name: "Gestion des produits",
@@ -52,7 +53,7 @@ class DrawerPageBodyComponent extends StatelessWidget {
             Get.toNamed(Routes.PRODUCTS);
           },
         ),
-        if (checkListingType(user) == ListingType.waitress)
+       // if (checkListingType(user) == ListingType.waitress)
           ListTile(
             title: const DrawerBodyListRowComponent(
               name: "Gestion des serveurs",
@@ -64,7 +65,7 @@ class DrawerPageBodyComponent extends StatelessWidget {
               Get.toNamed(Routes.WAITRESS);
             },
           ),
-        if (checkListingType(user) == ListingType.table)
+        //if (checkListingType(user) == ListingType.table)
           ListTile(
             title: const DrawerBodyListRowComponent(
               name: "Gestion des tables",

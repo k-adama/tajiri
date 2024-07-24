@@ -207,9 +207,9 @@ class BluetoothSettingController extends GetxController {
     List<int> bytes = [];
     bytes += ticket.reset();
 
-    final logoURL = user?.restaurantUser?[0].restaurant?.logoUrl;
+   // final logoURL = user?.restaurantUser?[0].restaurant?.logoUrl;
     // add logo restaurant
-    if (logoURL != null) {
+    /*if (logoURL != null) {
       try {
         bytes += await printImageFromUrl(
           ticket,
@@ -218,7 +218,7 @@ class BluetoothSettingController extends GetxController {
       } catch (e) {
         print(e);
       }
-    }
+    }*/
     bytes += await getTitleReceipt(ticket, order);
 
     // get columns
@@ -321,10 +321,10 @@ class BluetoothSettingController extends GetxController {
     final date = dateFormat.format(
         DateTime.tryParse(order.createdAt.toString())?.toLocal() ??
             DateTime.now());
-    final restoName =
+ /*   final restoName =
         "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
     final restoPhone =
-        "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.contactPhone : user?.phone ?? ""}";
+        "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.contactPhone : user?.phone ?? ""}";*/
     final client = order.customer?.firstname?.toString() ?? "Client invite";
 
     final payementMethod = order.status == "PAID"
@@ -337,14 +337,14 @@ class BluetoothSettingController extends GetxController {
 
     List<int> bytes = [];
 
-    Uint8List encodedTitle =
-        await CharsetConverter.encode(encodeCharset, restoName);
+  /*  Uint8List encodedTitle =
+        await CharsetConverter.encode(encodeCharset, restoName);*/
 
     Uint8List encodedDate = await CharsetConverter.encode(encodeCharset, date);
-    Uint8List encodedPhone =
-        await CharsetConverter.encode(encodeCharset, restoPhone);
+   /* Uint8List encodedPhone =
+        await CharsetConverter.encode(encodeCharset, restoPhone);*/
 
-    bytes += ticket.textEncoded(
+   /* bytes += ticket.textEncoded(
       encodedTitle,
       styles: const PosStyles(
         bold: true,
@@ -352,10 +352,10 @@ class BluetoothSettingController extends GetxController {
         height: PosTextSize.size2,
         width: PosTextSize.size1,
       ),
-    );
+    );*/
 
-    bytes += ticket.textEncoded(encodedPhone,
-        styles: const PosStyles(align: PosAlign.center, bold: true));
+   /* bytes += ticket.textEncoded(encodedPhone,
+        styles: const PosStyles(align: PosAlign.center, bold: true));*/
     bytes += ticket.textEncoded(encodedDate,
         styles: const PosStyles(align: PosAlign.center, bold: false));
     bytes += ticket.emptyLines(1);
@@ -363,7 +363,7 @@ class BluetoothSettingController extends GetxController {
       await getColumns("N°: ${order.orderNumber}", payementMethod, true),
     );
 
-    bytes += ticket.text("Serveur: ${userOrWaitressName(order, user)}");
+   // bytes += ticket.text("Serveur: ${userOrWaitressName(order, user)}");
 
     bytes += ticket.text("Client: $client");
 

@@ -67,14 +67,14 @@ class WaitressController extends GetxController {
     isLoadingCreateWaitress = true;
     update();
     final user = AppHelpersCommon.getUserInLocalStorage();
-    final String? restaurantId = user?.role?.restaurantId;
+   /* final String? restaurantId = user?.role?.restaurantId;
     if (restaurantId == null) {
       print("restaurantId null");
       return;
-    }
+    }*/
     Map<String, dynamic> requestData = {
       "name": waitressName,
-      "restaurantId": restaurantId,
+      //"restaurantId": restaurantId,
       "gender": gender,
     };
 

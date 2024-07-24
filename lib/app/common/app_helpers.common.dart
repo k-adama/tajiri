@@ -3,14 +3,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_esc_pos_utils/flutter_esc_pos_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tajiri_pos_mobile/app/config/constants/restaurant.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/services/http.service.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/local_storage.service.dart';
-import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:get/route_manager.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/user.constant.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'dart:ui' as ui;
@@ -18,14 +19,26 @@ import 'dart:ui' as ui;
 class AppHelpersCommon {
   AppHelpersCommon._();
 
-  static UserEntity? getUserInLocalStorage() {
+  static Staff? getUserInLocalStorage() {
     final userEncoding = LocalStorageService.instance.get(UserConstant.keyUser);
     if (userEncoding == null) {
-      logoutApi();
+      // logoutApi();
       return null;
     }
-    final user = UserEntity.fromJson(jsonDecode(userEncoding));
+    final user = Staff.fromJson(
+        jsonDecode(LocalStorageService.instance.get(UserConstant.keyUser)!));
     return user;
+  }
+
+  static Restaurant? getRestaurantInLocalStorage() {
+    final restoEncoding =
+        LocalStorageService.instance.get(RestaurantConstant.keyRestaurant);
+    if (restoEncoding == null) {
+      return null;
+    }
+    final resto = Restaurant.fromJson(jsonDecode(
+        LocalStorageService.instance.get(RestaurantConstant.keyRestaurant)!));
+    return resto;
   }
 
   static String? getPrinterMacAdress() {

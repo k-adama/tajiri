@@ -38,10 +38,10 @@ class DrawerPageHearderComponent extends StatelessWidget {
             style: Style.interBold(color: Style.white, size: 15),
           ),
         ),
-        Text(
+       /* Text(
           user?.role?.name ?? '',
           style: Style.interNormal(color: Style.white, size: 12),
-        ),
+        ),*/
       ],
     );
   }

@@ -37,7 +37,7 @@ class OrdersController extends GetxController {
   DateTime? endRangeDate;
 
   DateTime dateTime = DateTime.now();
-  final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
+  //final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
   bool monuted = false;
 
   final posController = Get.find<PosController>();
@@ -59,7 +59,7 @@ class OrdersController extends GetxController {
     final channel = supabase
         .from('orders')
         .stream(primaryKey: ['id'])
-        .eq('restaurantId', user?.role?.restaurantId ?? "")
+       // .eq('restaurantId', user?.role?.restaurantId ?? "")
         .order('createdAt')
         .limit(1);
     channel.listen((eventList) async {
@@ -90,15 +90,15 @@ class OrdersController extends GetxController {
     String startDate =
         DateFormat("yyyy-MM-dd").format(startRangeDate ?? sevenDaysAgo);
     String endDate = DateFormat("yyyy-MM-dd").format(endRangeDate ?? today);
-    String? ownerId = (user?.role?.permissions![0].dashboardUnique ?? false)
+   /* String? ownerId = (user?.role?.permissions![0].dashboardUnique ?? false)
         ? user?.id
-        : null;
+        : null;*/
     final connected = await AppConnectivityService.connectivity();
 
     if (connected) {
       isProductLoading = true;
       update();
-      final response =
+    /*  final response =
           await _ordersRepository.getOrders(startDate, endDate, ownerId);
       response.when(
         success: (data) async {
@@ -119,7 +119,7 @@ class OrdersController extends GetxController {
           update();
         },
         failure: (failure, status) {},
-      );
+      );*/
     }
   }
 
@@ -195,7 +195,7 @@ class OrdersController extends GetxController {
     final response =
         await _ordersRepository.updateOrder(params, currentOrderId.value);
 
-    response.when(success: (data) {
+   /* response.when(success: (data) {
       Mixpanel.instance.track("Order PAID", properties: {
         'user': '${user?.lastname ?? ""} ${user?.firstname ?? ""}',
         'restaurant': user!.restaurantUser![0].restaurant?.name ?? "",
@@ -216,7 +216,7 @@ class OrdersController extends GetxController {
       isLoadingOrder.value = false;
       currentOrderId.value = "";
       update();
-    });
+    });*/
   }
 
   Future<void> updateOrderStatus(
@@ -271,19 +271,22 @@ class OrdersController extends GetxController {
   }
 
   String tableOrWaitressName(OrderEntity orderItem) {
-    if (checkListingType(user) == ListingType.waitress) {
+   /* if ( 
+      //checkListingType(user) == ListingType.waitress
+      ) {
       return orderItem.waitressId != null ? orderItem.waitress?.name ?? "" : "";
     } else {
       return orderItem.tableId != null ? orderItem.table?.name ?? "" : "";
-    }
+    }*/
+    return '';
   }
 
   tableOrWaitessNoNullOrNotEmpty(OrderEntity orderItem) {
-    if (user?.restaurantUser![0].restaurant?.listingType == "TABLE") {
+   /* if (user?.restaurantUser![0].restaurant?.listingType == "TABLE") {
       return orderItem.tableId != null ? true : false;
     } else {
       return orderItem.waitressId != null ? true : false;
-    }
+    }*/
   }
 
   void searchFilter(search) {

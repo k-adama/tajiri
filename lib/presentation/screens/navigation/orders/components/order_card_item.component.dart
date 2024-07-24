@@ -93,9 +93,9 @@ class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
                             (orderData.status != AppConstants.orderCancelled))
                           OrderStatusButtonComponent(
                             buttonText: "Annuler",
-                            isGrised: AppHelpersCommon.getUserInLocalStorage()
+                            /*isGrised: AppHelpersCommon.getUserInLocalStorage()
                                     ?.canUpdateOrCanceledOrder() ==
-                                false,
+                                false,*/
                             buttonColor: Style.red,
                             onTap: () {
                               AppHelpersCommon.showAlertDialog(

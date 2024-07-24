@@ -25,7 +25,7 @@ class OrdersScreen extends StatefulWidget {
 class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController = TabController(length: 3, vsync: this);
   final OrdersController _ordersController = Get.find();
-  final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
+  //final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
 
   @override
   void initState() {
@@ -49,7 +49,7 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
                               tabController: _tabController,
                               tabs: tabs,
                             ),
-                            Expanded(
+                          /*  Expanded(
                               child: TabBarView(
                                 controller: _tabController,
                                 children: [
@@ -111,7 +111,7 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
                                         ),
                                 ],
                               ),
-                            ),
+                            ),*/
                           ],
                         ),
                       ),

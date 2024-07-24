@@ -148,8 +148,7 @@ class HomeController extends GetxController {
     String endDateComparaison =
         DateFormat("yyyy-MM-dd").format(params['endDate']!);
 
-    String? ownerId =
-        user?.role?.permissions?[0].dashboardUnique == true ? user?.id : null;
+    String? ownerId = user?.role == "OWER" ? user?.id : null;
 
     final [ordersResponse, comparaisonOders] = await Future.wait(
       [

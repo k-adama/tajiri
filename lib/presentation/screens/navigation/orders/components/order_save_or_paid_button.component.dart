@@ -36,9 +36,9 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                     child: CustomButton(
                       isLoading: orderController.isAddAndRemoveLoading,
                       background: Style.secondaryColor,
-                      isGrised: AppHelpersCommon.getUserInLocalStorage()
+                     /* isGrised: AppHelpersCommon.getUserInLocalStorage()
                               ?.canUpdateOrCanceledOrder() ==
-                          false,
+                          false,*/
                       title: "Modifier",
                       textColor: Style.white,
                       isLoadingColor: Style.white,

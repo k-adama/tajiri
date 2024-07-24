@@ -25,7 +25,7 @@ class DrawerPageComponent extends StatelessWidget {
               child: DrawerPageHearderComponent(),
             )),
         const DrawerPageBodyComponent(),
-        const DrawerPageFooterComponent(),
+         DrawerPageFooterComponent(),
       ],
     );
   }

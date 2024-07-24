@@ -8,6 +8,7 @@ import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
 import 'package:tajiri_pos_mobile/app/services/api_pdf.service.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class ApiPdfInvoiceService {
   static final user = AppHelpersCommon.getUserInLocalStorage();
@@ -31,17 +32,17 @@ class ApiPdfInvoiceService {
     return ApiPdfService.saveDocument(name: 'facture.pdf', pdf: pdf);
   }
 
-  static Widget buildAppBar(UserEntity? user) => Container(
+  static Widget buildAppBar(Staff? user) => Container(
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+          /*  Text(
                 "${user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
             Text(
                 "${user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.contactPhone : ""}",
-                style: const TextStyle(fontSize: 13))
+                style: const TextStyle(fontSize: 13))*/
           ],
         ),
       );
@@ -82,10 +83,10 @@ class ApiPdfInvoiceService {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        information(
+                       /* information(
                           "Serveur:",
                           userOrWaitressName(ordersData, user),
-                        ),
+                        ),*/
                         SizedBox(
                           width: 15,
                         ),
