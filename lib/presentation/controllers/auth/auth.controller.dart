@@ -137,10 +137,10 @@ class AuthController extends GetxController {
             context, "Entrez un numéro de téléphone valide ");
         return;
       }
+      isLoading = true;
+      update();
       try {
-        isLoading = true;
-        update();
-        final response = await tajiriSdk.authService.demo(email, password);
+        final response = await tajiriSdk.authService.demo(name, email);
         final user = await tajiriSdk.staffService.getStaff("me");
         await Future.wait([
           LocalStorageService.instance
@@ -148,6 +148,7 @@ class AuthController extends GetxController {
           LocalStorageService.instance.set(AuthConstant.keyIsDemo, "true"),
           LocalStorageService.instance
               .set(UserConstant.keyUser, jsonEncode(user)),
+            
         ]);
 
         isLoading = false;
