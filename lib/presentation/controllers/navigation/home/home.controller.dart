@@ -46,11 +46,6 @@ class HomeController extends GetxController {
     fetchDataForReports();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
   void getDayActive() {
     if (viewSelected.value == 'Semaine') {
       if (selectedWeek.value == "current") {
