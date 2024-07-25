@@ -4,17 +4,13 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:ui' as ui;
-
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/domain/entities/categorie_amount.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/payment_method_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/story.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/story_group.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/top_10_food.entity.dart';
-import 'package:tajiri_pos_mobile/data/repositories/orders/orders.repository.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class HomeController extends GetxController {
@@ -30,14 +26,9 @@ class HomeController extends GetxController {
   Rx<DateTime> selectedDate = DateTime.now().obs;
   Rx<int> selectedMonth = 5.obs;
   RxString comparisonDate = "".obs;
-
   DateTime startDate = DateTime.now().obs.value;
   DateTime endDate = DateTime.now().obs.value;
-
   List<dynamic> weekDates = [];
-  RxList<PaymentMethodDataEntity> paymentsMethodAmount =
-      List<PaymentMethodDataEntity>.empty().obs;
-  final OrdersRepository _ordersRepository = OrdersRepository();
   RxList<CategoryAmountEntity> categoriesAmount =
       List<CategoryAmountEntity>.empty().obs;
   Rx<int> ordersPaid = 0.obs;
@@ -51,9 +42,6 @@ class HomeController extends GetxController {
   RxList<StoryEntity> stories = List<StoryEntity>.empty().obs;
   RxList<StoryGroupEntity> storiesGroup = List<StoryGroupEntity>.empty().obs;
   String? storyGroup;
-
-  List<OrdersReportsEntity> ordersReports =
-      List<OrdersReportsEntity>.empty().obs;
   RxList<Order> orders = List<Order>.empty().obs;
   final tajiriSdk = TajiriSDK.instance;
 
@@ -159,7 +147,6 @@ class HomeController extends GetxController {
         tajiriSdk.ordersService.getOrders(dto),
       ]);
 
-      final ordersComparaison = comparaisonOders;
       var ordersData = ordersResponse;
       // Supprime les commandes annulees
       final newOrderData =
@@ -169,137 +156,29 @@ class HomeController extends GetxController {
           newOrderData.where((item) => item.status == 'PAID').toList());
       ordersSave.value = getTotalAmount(
           newOrderData.where((item) => item.status == "NEW").toList());
-       //final top10FoodsValue = getTop10Foods(ordersData);
-     // top10Foods.assignAll(top10FoodsValue);
+      final groupByCategoriesValue = groupByCategories(newOrderData);
+      final ordersForCategoriesValue =
+          ordersForCategories(groupByCategoriesValue);
+      categoriesAmount.assignAll(ordersForCategoriesValue);
+      final top10FoodsValue = getTop10Foods(ordersData);
+      top10Foods.assignAll(top10FoodsValue);
+      getDayActive();
+      final int ordersComparaisonsAmount = getTotalAmount(comparaisonOders);
+      percentComparaison.value =
+          ((totalAmount.value - ordersComparaisonsAmount) /
+                  ordersComparaisonsAmount) *
+              100;
+
       isFetching.value = false;
       update();
       orders.assignAll(ordersData);
-
-      /* if (newData.isEmpty) {
-        totalAmount.value = 0;
-        ordersPaid.value = 0;
-        ordersSave.value = 0;
-        top10Foods.clear();
-        categoriesAmount.clear();
-        paymentsMethodAmount.clear();
-        orders.clear();
-        isFetching.value = false;
-        update();
-      } else {
-        final top10FoodsValue = getTop10Foods(newData);
-        top10Foods.assignAll(top10FoodsValue);
-        final groupByCategoriesValue = groupByCategories(newData);
-        final ordersForCategoriesValue =
-            ordersForCategories(groupByCategoriesValue);
-        categoriesAmount.assignAll(ordersForCategoriesValue);
-
-        // totalAmount.value = getTotalAmount(newData);
-        ordersPaid.value = getTotalAmount(
-            newData.where((item) => item.status == 'PAID').toList());
-        ordersSave.value = getTotalAmount(
-            newData.where((item) => item.status == "NEW").toList());
-        getDayActive();
-        final int ordersComparaisonsAmount = getTotalAmount(ordersComparaison);
-        percentComparaison.value =
-            ((totalAmount.value - ordersComparaisonsAmount) /
-                    ordersComparaisonsAmount) *
-                100;
-        isFetching.value = false;
-        orders.assignAll(ordersData);
-
-        isFetching.value = false;
-        update();
-        eventFilter(indexFilter: indexFilter ?? 0, status: "Succes");
-      }*/
-      //  eventFilter(indexFilter: indexFilter, status: "Succes");
     } catch (e) {
-      // eventFilter(indexFilter: indexFilter, status: "Failure");
+      eventFilter(indexFilter: indexFilter ?? 0, status: "Failure");
       isFetching.value = false;
       update();
     }
     isFetching.value = false;
     update();
-    /* String? ownerId =
-        user?.role?.permissions?[0].dashboardUnique == true ? user?.id : null;*/
-
-    /*  final [ordersResponse, comparaisonOders] = await Future.wait(
-      [
-        _ordersRepository.getOrders(DateFormat("yyyy-MM-dd").format(startDate),
-            DateFormat("yyyy-MM-dd").format(endDate), ownerId),
-        _ordersRepository.getOrders(
-            startDateComparaison, endDateComparaison, ownerId)
-      ],
-    );*/
-
-    /* ordersResponse.when(success: (data) {
-      final newData =
-          data.where((item) => item['status'] != 'CANCELLED').toList();
-
-      if (newData.isEmpty) {
-        totalAmount.value = 0;
-        ordersPaid.value = 0;
-        ordersSave.value = 0;
-        top10Foods.clear();
-        categoriesAmount.clear();
-        paymentsMethodAmount.clear();
-        orders.clear();
-        isFetching.value = false;
-        update();
-      } else {
-        final top10FoodsValue = getTop10Foods(newData);
-        top10Foods.assignAll(top10FoodsValue);
-        final groupByCategoriesValue = groupByCategories(newData);
-        final ordersForCategoriesValue =
-            ordersForCategories(groupByCategoriesValue);
-        categoriesAmount.assignAll(ordersForCategoriesValue);
-
-        final groupedByPaymentMethodValue = groupedByPaymentMethod(newData);
-        paymentsMethodAmount
-            .assignAll(paymentMethodsData(groupedByPaymentMethodValue));
-
-        totalAmount.value = getTotalAmount(newData);
-
-        ordersPaid.value = getTotalAmount(
-            newData.where((item) => item['status'] == 'PAID').toList());
-        ordersSave.value = getTotalAmount(
-            newData.where((item) => item['status'] == "NEW").toList());
-        getDayActive();
-        final int ordersComparaisonsAmount =
-            getTotalAmount(comparaisonOders.data);
-        percentComparaison.value =
-            ((totalAmount.value - ordersComparaisonsAmount) /
-                    ordersComparaisonsAmount) *
-                100;
-
-        isFetching.value = false;
-
-        final json = data as List<dynamic>;
-        final ordersData =
-            json.map((item) => OrderEntity.fromJson(item)).toList();
-        orders.assignAll(ordersData);
-        isFetching.value = false;
-        update();
-        eventFilter(indexFilter: indexFilter ?? 0, status: "Succes");
-      }
-    }, failure: (status, _) {
-      eventFilter(indexFilter: indexFilter ?? 0, status: "Failure");
-    });*/
-  }
-
-  void eventFilter({int indexFilter = 0, required String status}) {
-    switch (indexFilter) {
-      case 0:
-        Mixpanel.instance.track('Dashboard Reports filter',
-            properties: {"Periode used": "Day", "Status": status});
-        break;
-      case 1:
-        Mixpanel.instance.track('Dashboard Reports filter',
-            properties: {"Periode used": "Week", "Status": status});
-        break;
-      default:
-        Mixpanel.instance.track('Dashboard Reports filter',
-            properties: {"Periode used": "Month", "Status": status});
-    }
   }
 
   Map<String, DateTime> getFirstAndLastDayOfMonth(int monthIndex) {
@@ -509,24 +388,23 @@ class HomeController extends GetxController {
     return {"start": startOfWeek, "end": endOfWeek};
   }
 
-  List<Top10FoodEntity> getTop10Foods(List<dynamic> data) {
+  List<Top10FoodEntity> getTop10Foods(List<Order> data) {
     Map<String, Map<String, dynamic>> groupedByFoods = {};
 
     for (var item in data) {
-      item['orderDetails'].forEach((food) {
-        String foodSelected = food['foodId'] ?? food['bundleId'] ?? 'Unknown';
+      for (var product in item.orderProducts) {
+        String foodSelected = product.productId;
 
         if (!groupedByFoods.containsKey(foodSelected)) {
-          String name =
-              food['food']?['name'] ?? food['bundle']?['name'] ?? 'Unknown';
+          String name = product.product.name;
           groupedByFoods[foodSelected] = {
-            'name': name ?? 'Unknown',
-            'quantity': food['quantity'] ?? 0,
+            'name': name,
+            'quantity': product.quantity,
           };
         } else {
-          groupedByFoods[foodSelected]?['quantity'] += food['quantity'] ?? 0;
+          groupedByFoods[foodSelected]?['quantity'] += product.quantity;
         }
-      });
+      }
     }
 
     List<Top10FoodEntity> foodsData = groupedByFoods.values.map((food) {
@@ -558,17 +436,13 @@ class HomeController extends GetxController {
     }).toList();
   }
 
-  Map<String, dynamic> groupByCategories(List<dynamic> data) {
+  Map<String, dynamic> groupByCategories(List<Order> data) {
     Map<String, dynamic> acc = {};
 
     for (var order in data) {
-      order['orderDetails']?.forEach((dynamic orderDetail) {
-        String categoryId = orderDetail['food']?['category']?['name'] ??
-            orderDetail['bundle']?['category']?['name'] ??
-            'Unknown';
-        String categoryIcon = orderDetail['food']?['category']?['imageUrl'] ??
-            orderDetail['bundle']?['category']?['imageUrl'] ??
-            'Unknown';
+      for (var orderProduct in order.orderProducts) {
+        String categoryId = orderProduct.product.category.name;
+        String categoryIcon = orderProduct.product.category.imageUrl;
 
         Map<String, dynamic> category = acc[categoryId] ??
             {
@@ -578,9 +452,9 @@ class HomeController extends GetxController {
             };
 
         category['count'] += 1;
-        category['total'] += orderDetail['price'] * orderDetail['quantity'];
+        category['total'] += orderProduct.price * orderProduct.quantity;
         acc[categoryId] = category;
-      });
+      }
     }
 
     return acc;
@@ -628,5 +502,21 @@ class HomeController extends GetxController {
       }
     }
     return totalAmount;
+  }
+
+  void eventFilter({int indexFilter = 0, required String status}) {
+    switch (indexFilter) {
+      case 0:
+        Mixpanel.instance.track('Dashboard Reports filter',
+            properties: {"Periode used": "Day", "Status": status});
+        break;
+      case 1:
+        Mixpanel.instance.track('Dashboard Reports filter',
+            properties: {"Periode used": "Week", "Status": status});
+        break;
+      default:
+        Mixpanel.instance.track('Dashboard Reports filter',
+            properties: {"Periode used": "Month", "Status": status});
+    }
   }
 }

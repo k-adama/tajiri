@@ -43,15 +43,10 @@ class _SalesPayAndRegisterComponentState
                         color: Style.yellowLigther,
                         borderRadius: BorderRadius.circular(5)),
                     child: Center(
-                        child: InkWell(
-                      onTap: () {
-                        print(widget.homeController.ordersPaid);
-                      },
-                      child: Text(
-                        "Total",
-                        style: Style.interNormal(size: 14.sp),
-                      ),
-                    )),
+                        child: Text(
+                          "Total",
+                          style: Style.interNormal(size: 14.sp),
+                        )),
                   ),
                   SizedBox(
                     width: 200.w,
