@@ -27,11 +27,11 @@ class ShopBarItemComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        await homeController.fetchStoriesById(story?.productUuid ?? '');
+       /* await homeController.fetchStoriesById(story?.productUuid ?? '');
         Mixpanel.instance.track("Status viewed",
             properties: {"Canal viewed": story?.title, "Status": "Succes"});
         // Get.toNamed(Routes.STORY_PAGE);
-        Get.to(const StoryScreen());
+        Get.to(const StoryScreen());*/
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),

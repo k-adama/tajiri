@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:intl/intl.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:ui' as ui;
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/domain/entities/categorie_amount.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/story.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/story_group.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/top_10_food.entity.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
@@ -38,9 +35,6 @@ class HomeController extends GetxController {
   Rx<int> totalAmount = 0.obs;
   RxString dayActiveText = "Aujourd'hui".obs;
   Rx<double> percentComparaison = 0.0.obs;
-
-  RxList<StoryEntity> stories = List<StoryEntity>.empty().obs;
-  RxList<StoryGroupEntity> storiesGroup = List<StoryGroupEntity>.empty().obs;
   String? storyGroup;
   RxList<Order> orders = List<Order>.empty().obs;
   final tajiriSdk = TajiriSDK.instance;
@@ -48,7 +42,6 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchGroupStories();
     getWeekDates();
     fetchDataForReports();
   }
@@ -56,48 +49,6 @@ class HomeController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-  }
-
-  StoryEntity getStorieEntity(int index) {
-    return StoryEntity(
-      shopId: 1,
-      logoImg: storiesGroup[index].logoImg,
-      title: storiesGroup[index].name,
-      productUuid: storiesGroup[index].id,
-      productTitle: storiesGroup[index].name,
-      url: "",
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
-  }
-
-  Future<dynamic> fetchGroupStories() async {
-    final supabase = Supabase.instance.client;
-    final response = await supabase.from('stories_group').select('*');
-    final json = response as List<dynamic>;
-    final stories =
-        json.map((item) => StoryGroupEntity.fromJson(item)).toList();
-    storiesGroup.assignAll(stories);
-  }
-
-  Future<dynamic> fetchStoriesById(String id) async {
-    final supabase = Supabase.instance.client;
-    final response =
-        await supabase.from('stories').select('*').eq('storyGroupId', id);
-    final json = response as List<dynamic>;
-    final storiesData = json.map((item) => StoryEntity.fromJson(item)).toList();
-    stories.assignAll(storiesData);
-
-    final checkView = await supabase
-        .from('storie_views')
-        .select('*')
-        .eq('userId', user!.id!)
-        .eq('storyGroupId', id);
-    if (checkView.isEmpty) {
-      await supabase
-          .from('storie_views')
-          .insert({'userId': user!.id!, 'storyGroupId': id});
-    }
   }
 
   void getDayActive() {

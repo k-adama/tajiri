@@ -80,50 +80,7 @@ class _HomeScreenState extends State<HomeScreen>
               padding: EdgeInsets.only(bottom: 22.h),
               child: Column(
                 children: [
-                  Obx(() {
-                    return _homeController.storiesGroup.isNotEmpty
-                        ? SizedBox(
-                            height: (screenSize.height / 2) - 250.h,
-                            child: SmartRefresher(
-                              controller: _storyController,
-                              scrollDirection: Axis.horizontal,
-                              enablePullDown: false,
-                              enablePullUp: true,
-                              primary: false,
-                              onLoading: () async {
-                                await _homeController.fetchGroupStories();
-                              },
-                              child: AnimationLimiter(
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  primary: false,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount:
-                                      _homeController.storiesGroup.length,
-                                  padding: EdgeInsets.only(left: 16.w),
-                                  itemBuilder: (context, index) =>
-                                      AnimationConfiguration.staggeredList(
-                                    position: index,
-                                    duration: const Duration(milliseconds: 375),
-                                    child: SlideAnimation(
-                                      verticalOffset: 50.0,
-                                      child: FadeInAnimation(
-                                        child: ShopBarItemComponent(
-                                          index: index,
-                                          controller: _storyController,
-                                          homeController: _homeController,
-                                          story: _homeController
-                                              .getStorieEntity(index),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        : const SizedBox();
-                  }),
+                  10.verticalSpace,
                   TabViewComponent(
                     homeController: _homeController,
                     tabController: _tabController,
