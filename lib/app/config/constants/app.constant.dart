@@ -7,6 +7,10 @@ import 'package:tajiri_sdk/tajiri_sdk.dart';
 class AppConstants {
   AppConstants._();
 
+//user permissions
+  static const String UPDATE_ORDER_PRODUCTS = 'UPDATE_ORDER_PRODUCTS';
+  static const String CANCEL_ORDER = "CANCEL_ORDER";
+
   /// shared preferences keys
   static const String orderCooking = 'COOKING';
   static const String orderCancelled = 'CANCELLED';

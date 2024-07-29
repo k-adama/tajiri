@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/app/extensions/staff.extension.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
@@ -20,6 +21,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
   final OrdersController orderController = Get.find();
   final NavigationController navigationController =
       Get.put(NavigationController());
+  final user = AppHelpersCommon.getUserInLocalStorage();
   @override
   Widget build(BuildContext context) {
     return order.status == AppConstants.orderNew ||
@@ -34,10 +36,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                     child: CustomButton(
                       isLoading: orderController.isAddAndRemoveLoading,
                       background: Style.secondaryColor,
-                     /*  isGrised: 
-                       AppHelpersCommon.getUserInLocalStorage()
-                              ?.canUpdateOrCanceledOrder() ==
-                          false,*/
+                      isGrised: !user.canUpdate,
                       title: "Modifier",
                       textColor: Style.white,
                       isLoadingColor: Style.white,
@@ -74,7 +73,6 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                                   isDarkMode: false,
                                   isDrag: true,
                                   radius: 12);
-                              //Navigator.pop(context);
                             },
                           )
                         : CustomButton(

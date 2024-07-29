@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 enum Role {
@@ -42,6 +43,13 @@ extension StaffExtension on Staff? {
   }
 
   Role get getRole => Role.fromString(this?.role ?? "UNKNOWN");
+  
+  bool get canCancel {
+    return isOwner || hasPermission(AppConstants.CANCEL_ORDER);
+  }
+   bool get canUpdate {
+    return isOwner || hasPermission(AppConstants.UPDATE_ORDER_PRODUCTS);
+  }
 
   String? get idOwnerForGetOrder {
     switch (getRole) {
