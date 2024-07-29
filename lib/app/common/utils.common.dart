@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';

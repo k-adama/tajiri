@@ -21,7 +21,6 @@ class OrderItemDetailsComponent extends StatefulWidget {
 }
 
 class _OrderItemDetailsComponentState extends State<OrderItemDetailsComponent> {
-  //final PosController posController = Get.find();
   final OrdersController ordersController = Get.put(OrdersController());
   //final MainController mainController = Get.put(MainController());
 

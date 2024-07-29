@@ -44,10 +44,9 @@ class _SalesPayAndRegisterComponentState
                         borderRadius: BorderRadius.circular(5)),
                     child: Center(
                         child: Text(
-                      "Total",
-                      style: Style.interNormal(size: 14.sp),
-                    )
-                    ),
+                          "Total",
+                          style: Style.interNormal(size: 14.sp),
+                        )),
                   ),
                   SizedBox(
                     width: 200.w,

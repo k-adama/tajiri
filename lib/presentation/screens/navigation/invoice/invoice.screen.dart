@@ -7,6 +7,7 @@ import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/domain/entities/printer_model.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/detail_content.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/information_invoice_component.dart';
@@ -28,7 +29,7 @@ class InvoiceScreen extends StatefulWidget {
 class _InvoiceScreenState extends State<InvoiceScreen> {
   final controller = Get.put(InvoiceController());
   late final taj.Order arguments;
-
+  final ordercontroller = Get.put(OrdersController());
   final bluetoothController =
       Get.find<NavigationController>().bluetoothController;
 
@@ -128,10 +129,11 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  /*  InformationInvoiceComponent(
+                                  InformationInvoiceComponent(
                                     title: "Serveur:",
-                                    body: userOrWaitressName(arguments, user),
-                                  ),*/
+                                    body: ordercontroller
+                                        .tableOrWaitressName(arguments),
+                                  ),
                                   const Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 15),

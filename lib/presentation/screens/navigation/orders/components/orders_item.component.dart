@@ -7,6 +7,8 @@ import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
 
+import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
+
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_save_or_paid_button.component.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
@@ -122,8 +124,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                             child: Container(
                               margin: const EdgeInsets.only(left: 2),
                               child: Text(
-                                "TODO",
-                                // "${widget.order.orderDetails?[i].quantity ?? ''}x ${getNameFromOrderDetail(widget.order.orderDetails?[i])}",
+                                "${widget.order.orderProducts[i].quantity}x ${getNameFromOrderDetail(widget.order.orderProducts?[i])}",
                                 style: Style.interNormal(color: Style.black),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -155,9 +156,9 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                           color: Style.bgGrey,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Text("TODO"
-                            // "${getNameFromOrderDetail(orderDetail)} x ${orderDetail.quantity ?? ''}",
-                            ),
+                        child: Text(
+                          "${getNameFromOrderDetail(orderDetail)} x ${orderDetail.quantity}",
+                        ),
                       );
                     }).toList(),
                   )),

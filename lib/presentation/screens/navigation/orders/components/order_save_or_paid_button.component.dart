@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -86,9 +84,11 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                             isLoadingColor: Style.secondaryColor,
                             textColor: Style.secondaryColor,
                             onPressed: () {
-                              orderController.currentOrderId.value = order.id!;
+                              orderController.currentOrderId.value = order.id;
+                              orderController.amount =
+                                  order.grandTotal.toDouble();
                               orderController.currentOrderNo.value =
-                                  order.orderNumber!.toString();
+                                  order.orderNumber.toString();
                               AppHelpersCommon.showCustomModalBottomSheet(
                                   paddingTop:
                                       MediaQuery.of(context).padding.top +

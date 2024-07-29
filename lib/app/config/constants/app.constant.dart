@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart' as taj;
+import 'package:get/get_utils/get_utils.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class AppConstants {
   AppConstants._();
@@ -129,6 +131,23 @@ class AppConstants {
     return status;
   }
 }
+
+String getNameWaitressById(String? id, List<Waitress> waitressList) {
+  final waitress = waitressList.firstWhereOrNull(
+    (element) => element.id == id,
+  );
+  return waitress != null ? waitress.name : 'Aucun Serveur';
+}
+
+String getNameTableById(String? id, List<taj.Table> tables) {
+  final table = tables.firstWhereOrNull(
+    (element) => element.id == id,
+  );
+  return table != null ? table.name : '';
+}
+
+const urlSound =
+    'https://xuyfavsmxnbbaefzkdam.supabase.co/storage/v1/object/public/tajiri-foods/core/mixkit-arabian-mystery-harp-notification-2489.wav';
 
 enum ShopStatus { notRequested, newShop, edited, approved, rejected }
 
@@ -261,20 +280,6 @@ String getNameCustomerById(String? id) {
   //   (element) => element.id == id,
   // );
   return 'Client invité';
-}
-
-String getNameWaitressById(String? id, List<taj.Waitress> waitressList) {
-  final waitress = waitressList.firstWhereOrNull(
-    (element) => element.id == id,
-  );
-  return waitress != null ? waitress.name : 'Aucun Serveur';
-}
-
-String getNameTableById(String? id, List<taj.Table> tables) {
-  final table = tables.firstWhereOrNull(
-    (element) => element.id == id,
-  );
-  return table != null ? table.name : '';
 }
 
 final tabs = [
