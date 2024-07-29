@@ -3,14 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-
 import 'package:tajiri_pos_mobile/domain/entities/position_table.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/table.entiy.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/table/components/custom_chair.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/table/components/vertical_chair.component.dart';
-
+import 'package:tajiri_sdk/src/models/table.model.dart' as taj_sdk;
 class CustomTableComponent extends StatelessWidget {
-  final TableEntity tableModel;
+  final taj_sdk.Table tableModel;
   final double? tableHeight;
   final double? tableWidth;
   final String type;
@@ -52,7 +50,7 @@ class ResponsiveTable extends StatelessWidget {
   final String title;
   final double? tableHeight;
   final double? tableWidth;
-  final TableEntity tableModel;
+  final taj_sdk.Table tableModel;
   final String type;
 
   const ResponsiveTable({

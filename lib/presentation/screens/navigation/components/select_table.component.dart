@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
-import 'package:tajiri_pos_mobile/domain/entities/table.entiy.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/table/table.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/select_dropdown.button.dart';
+import 'package:tajiri_sdk/src/models/table.model.dart' as taj_sdk;
 
 class SelectTableComponent extends StatefulWidget {
   const SelectTableComponent({super.key});
@@ -23,12 +23,12 @@ class _SelectTableComponentState extends State<SelectTableComponent> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return SelectDropDownButton<TableEntity>(
+      return SelectDropDownButton<taj_sdk.Table>(
         value: tableController.selectedTable.value,
         containerColor: posController.containerColor,
-        items: tableController.tableListData.value.map((TableEntity item) {
+        items: tableController.tableListData.value.map((taj_sdk.Table item) {
           int index = tableController.tableListData.value.indexOf(item);
-          return DropdownMenuItem<TableEntity>(
+          return DropdownMenuItem<taj_sdk.Table>(
             value: item,
             child: Container(
               height: 40,
@@ -42,7 +42,7 @@ class _SelectTableComponentState extends State<SelectTableComponent> {
                   SizedBox(
                     width: 100,
                     child: Text(
-                      item.name ?? "",
+                      item.name,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ),
@@ -52,7 +52,7 @@ class _SelectTableComponentState extends State<SelectTableComponent> {
             ),
           );
         }).toList(),
-        onChanged: (TableEntity? newValue) {
+        onChanged: (taj_sdk.Table? newValue) {
           Mixpanel.instance.track("Change Table", properties: {
             "Old Value": posController.tableCurrentId,
             "New Value": newValue?.id
