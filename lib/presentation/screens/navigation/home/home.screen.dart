@@ -6,13 +6,11 @@ import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/component
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/components/chart_bar_view.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/components/method_of_payment.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/components/sales_pay_and_register.component.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/components/shop_bar_item.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/components/tab_view.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/components/top_10_products.component.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -80,50 +78,7 @@ class _HomeScreenState extends State<HomeScreen>
               padding: EdgeInsets.only(bottom: 22.h),
               child: Column(
                 children: [
-                  Obx(() {
-                    return _homeController.storiesGroup.isNotEmpty
-                        ? SizedBox(
-                            height: (screenSize.height / 2) - 250.h,
-                            child: SmartRefresher(
-                              controller: _storyController,
-                              scrollDirection: Axis.horizontal,
-                              enablePullDown: false,
-                              enablePullUp: true,
-                              primary: false,
-                              onLoading: () async {
-                                await _homeController.fetchGroupStories();
-                              },
-                              child: AnimationLimiter(
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  primary: false,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount:
-                                      _homeController.storiesGroup.length,
-                                  padding: EdgeInsets.only(left: 16.w),
-                                  itemBuilder: (context, index) =>
-                                      AnimationConfiguration.staggeredList(
-                                    position: index,
-                                    duration: const Duration(milliseconds: 375),
-                                    child: SlideAnimation(
-                                      verticalOffset: 50.0,
-                                      child: FadeInAnimation(
-                                        child: ShopBarItemComponent(
-                                          index: index,
-                                          controller: _storyController,
-                                          homeController: _homeController,
-                                          story: _homeController
-                                              .getStorieEntity(index),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        : const SizedBox();
-                  }),
+                  10.verticalSpace,
                   TabViewComponent(
                     homeController: _homeController,
                     tabController: _tabController,

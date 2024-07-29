@@ -47,29 +47,31 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   Widget _buildUserDisplay() {
-    final userType = checkListingType(user);
-    final isWaitress = userType == ListingType.waitress;
-    final isTable = userType == ListingType.table;
+   // final userType = checkListingType(user);
+   /* final isWaitress = userType == ListingType.waitress;
+    final isTable = userType == ListingType.table;*/
     final isIndexValid = navigationController.selectIndex == 1 ||
         navigationController.selectIndex == 2;
     final hasUser = user != null;
 
-    if (hasUser) {
+   /* if (hasUser) {
       if (isWaitress && isIndexValid) {
         return const SelectWaitressComponent(); // const SelectWaitress();
       } else if (isTable && isIndexValid) {
         return const SelectTableComponent();
       } else {
-        final restaurantName =
-            "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
+       /* final restaurantName =
+            "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";*/
         return Text(
-          restaurantName,
+          'restaurantName',
+         // restaurantName,
           style: Style.interNormal(size: 16, color: Style.secondaryColor),
         );
       }
     } else {
       return const SizedBox();
-    }
+    }*/
+    return SizedBox();
   }
 
   @override

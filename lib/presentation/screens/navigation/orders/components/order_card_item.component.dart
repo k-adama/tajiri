@@ -5,16 +5,15 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_cancel_dialog.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_status_button.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_status_message.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/orders_item.component.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/order.screen.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class OrderCardItemComponent extends StatefulWidget {
-  final List<OrderEntity> orders;
+  final List<Order> orders;
   final bool isRestaurant;
   OrderCardItemComponent(
       {super.key, required this.orders, required this.isRestaurant});
@@ -58,7 +57,7 @@ class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
       child: ListView.builder(
           itemCount: widget.orders.length,
           itemBuilder: (BuildContext context, index) {
-            OrderEntity orderData = widget.orders[index];
+            Order orderData = widget.orders[index];
             bool isNew = orderData.status == AppConstants.orderAccepted ||
                 orderData.status == AppConstants.orderNew ||
                 orderData.status == AppConstants.orderCooking ||
@@ -93,9 +92,9 @@ class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
                             (orderData.status != AppConstants.orderCancelled))
                           OrderStatusButtonComponent(
                             buttonText: "Annuler",
-                            isGrised: AppHelpersCommon.getUserInLocalStorage()
+                            /*isGrised: AppHelpersCommon.getUserInLocalStorage()
                                     ?.canUpdateOrCanceledOrder() ==
-                                false,
+                                false,*/
                             buttonColor: Style.red,
                             onTap: () {
                               AppHelpersCommon.showAlertDialog(

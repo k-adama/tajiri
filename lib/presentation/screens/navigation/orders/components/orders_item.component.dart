@@ -1,37 +1,28 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_details.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_save_or_paid_button.component.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class OrdersItemComponent extends StatefulWidget {
-  //MainController? mainController;
-  OrderEntity order;
+  Order order;
   OrdersItemComponent({super.key, required this.order});
   @override
   State<OrdersItemComponent> createState() => _OrdersItemComponentState();
 }
 
 class _OrdersItemComponentState extends State<OrdersItemComponent> {
-  final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
   final OrdersController orderController = Get.find();
-  //final TableController tableController = Get.find();
-
   bool isPaid = false;
   @override
   void initState() {
     super.initState();
-    if (checkListingType(user) == ListingType.waitress) {
+    /*if (checkListingType(user) == ListingType.waitress) {
       isPaid =
           AppConstants.getStatusOrderInProgressOrDone(widget.order, "DONE");
 
@@ -44,7 +35,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         //orderController.filterByTable(posController.tableCurrentId);
       });
-    }
+    }*/
   }
 
   @override
@@ -76,7 +67,8 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    orderController.tableOrWaitessNoNullOrNotEmpty(widget.order)
+                    widget.order.waitressId != null ||
+                            widget.order.tableId != null
                         ? Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
@@ -134,13 +126,12 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                 : Row(
                     children: [
                       for (int i = 0; i < 2; i++)
-                        if (widget.order.orderDetails != null &&
-                            i < widget.order.orderDetails!.length)
+                        if (i < widget.order.orderProducts.length)
                           Flexible(
                             child: Container(
                               margin: const EdgeInsets.only(left: 2),
                               child: Text(
-                                "${widget.order.orderDetails?[i].quantity ?? ''}x ${getNameFromOrderDetail(widget.order.orderDetails?[i])}",
+                                "${widget.order.orderProducts[i].quantity}x ${getNameFromOrderDetail(widget.order.orderProducts?[i])}",
                                 style: Style.interNormal(color: Style.black),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -163,7 +154,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                   child: Wrap(
                     spacing: 8.0,
                     runSpacing: 8.0,
-                    children: widget.order.orderDetails?.map((orderDetail) {
+                    children: widget.order.orderProducts.map((orderDetail) {
                           return Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 4),
@@ -173,7 +164,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
-                              "${getNameFromOrderDetail(orderDetail)} x ${orderDetail.quantity ?? ''}",
+                              "${getNameFromOrderDetail(orderDetail)} x ${orderDetail.quantity}",
                             ),
                           );
                         }).toList() ??

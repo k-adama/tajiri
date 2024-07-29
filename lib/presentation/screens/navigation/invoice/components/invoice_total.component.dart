@@ -6,8 +6,10 @@ import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'dart:ui' as ui;
 
+import 'package:tajiri_sdk/src/models/order.model.dart';
+
 class InvoiceTotalComponent extends StatelessWidget {
-  final OrderEntity order;
+  final Order order;
   const InvoiceTotalComponent({super.key, required this.order});
 
   @override

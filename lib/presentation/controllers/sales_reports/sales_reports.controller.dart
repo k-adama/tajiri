@@ -35,8 +35,8 @@ class SalesReportController extends GetxController {
   String endDate = "";
 
   Future<void> fetchOrdersReports() async {
-    String? ownerId =
-        user?.role?.permissions![0].dashboardUnique == true ? user?.id : null;
+   /* String? ownerId =
+        user?.role?.permissions![0].dashboardUnique == true ? user?.id : null;*/
     startDate = "${pickStartDate.text} ${pickStartTime.text}";
     endDate = "${pickEndDate.text} ${pickEndTime.text}";
     final connected = await AppConnectivityService.connectivity();
@@ -44,7 +44,7 @@ class SalesReportController extends GetxController {
       isLoadingReport = true;
       update();
 
-      final response =
+     /* final response =
           await _ordersRepository.getOrdersReports(startDate, endDate, ownerId);
       response.when(
         success: (data) async {
@@ -80,7 +80,7 @@ class SalesReportController extends GetxController {
           isLoadingReport = false;
           update();
         },
-      );
+      );*/
     }
   }
 

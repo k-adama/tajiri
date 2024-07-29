@@ -144,7 +144,7 @@ class _CartScreen extends State<CartScreen> {
                                   posController.currentOrder.id != null
                                       ? const SizedBox()
                                       : 80.horizontalSpace,
-                                  posController.currentOrder.id != null
+                                 /* posController.currentOrder.id != null
                                       ? const SizedBox()
                                       : checkListingType(user) ==
                                               ListingType.waitress
@@ -152,7 +152,7 @@ class _CartScreen extends State<CartScreen> {
                                           : checkListingType(user) ==
                                                   ListingType.table
                                               ? const SelectTableComponent() //const SelectTable()
-                                              : const SizedBox(),
+                                              : const SizedBox(),*/
                                 ],
                               ),
                             ),
@@ -235,14 +235,14 @@ class _CartScreen extends State<CartScreen> {
                     haveBorder: false,
                     radius: 5,
                     onPressed: () {
-                      final arguments =
+                     /* final arguments =
                           checkListingType(user) == ListingType.waitress
                               ? {"waitressId": posController.waitressCurrentId}
-                              : {"tableId": posController.tableCurrentId};
+                              : {"tableId": posController.tableCurrentId};*/
 
                       Get.toNamed(
                         Routes.CART_SAVE,
-                        arguments: arguments,
+                       // arguments: arguments,
                         preventDuplicates: false,
                       );
                     },
@@ -259,13 +259,13 @@ class _CartScreen extends State<CartScreen> {
                     radius: 5,
                     haveBorder: false,
                     onPressed: () {
-                      final arguments =
+                     /* final arguments =
                           checkListingType(user) == ListingType.waitress
                               ? {"waitressId": posController.waitressCurrentId}
-                              : {"tableId": posController.tableCurrentId};
+                              : {"tableId": posController.tableCurrentId};*/
                       Get.toNamed(
                         Routes.CART_PAID,
-                        arguments: arguments,
+                       // arguments: arguments,
                         preventDuplicates: false,
                       );
                     },

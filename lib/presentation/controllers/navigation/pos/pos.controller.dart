@@ -21,6 +21,7 @@ import 'package:tajiri_pos_mobile/presentation/controllers/waitress/waitress.con
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class PosController extends GetxController {
   final ProductsRepository _productsRepository = ProductsRepository();
@@ -185,16 +186,16 @@ class PosController extends GetxController {
   }
 
   Future<void> handleSaveOrder(BuildContext context, String status) async {
-    final restaurantId = user?.role?.restaurantId;
+    //final restaurantId = user?.role?.restaurantId;
 
-    if (restaurantId == null) {
+   /* if (restaurantId == null) {
       isLoadingOrder.value = false;
       update();
       return AppHelpersCommon.showCheckTopSnackBarInfoForm(
         context,
         "Aucun restaurant connecté",
       );
-    }
+    }*/
 
     final itemFoods = cartItemList.map((item) {
       return {
@@ -204,20 +205,20 @@ class PosController extends GetxController {
       };
     }).toList();
 
-    final Map<String, dynamic> params =
-        chooseUseWaitressOrTable(status, restaurantId, itemFoods);
+   /* final Map<String, dynamic> params =
+        chooseUseWaitressOrTable(status, restaurantId, itemFoods);*/
 
-    String paymentMethodName = PAIEMENTS.firstWhereOrNull(
+  /*  String paymentMethodName = PAIEMENTS.firstWhereOrNull(
         (element) => element['id'] == paymentMethodId.value)?['name'];
     if (status == 'PAID') {
       params['paymentMethodId'] = paymentMethodId.value;
-    }
+    }*/
 
-    final response = currentOrder.id != null
+    /*final response = currentOrder.id != null
         ? await _productsRepository.updateOrder(params, currentOrder.id!)
-        : await _productsRepository.createOrder(params);
+        : await _productsRepository.createOrder(params);*/
 
-    response.when(success: (data) async {
+   /* response.when(success: (data) async {
       newOrder = data!;
       update();
       handleInitialState();
@@ -226,7 +227,7 @@ class PosController extends GetxController {
       Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
         "CustomerEntity type": newOrder.customer == null ? 'GUEST' : 'SAVED',
         "Order Status": status,
-        "Payment method": status == 'PAID' ? paymentMethodName : "",
+      //  "Payment method": status == 'PAID' ? paymentMethodName : "",
         "Status": "Success",
         "Products": newOrder.orderDetails?.map((item) {
           final int foodPrice =
@@ -299,7 +300,7 @@ class PosController extends GetxController {
         statusCode.toString(),
       );
       isLoadingOrder.value = false;
-    });
+    });*/
   }
 
   Map<String, dynamic> chooseUseWaitressOrTable(
@@ -324,11 +325,11 @@ class PosController extends GetxController {
     };
 
     // Choisir les paramètres en fonction du type de liste
-    if (checkListingType(user) == ListingType.waitress) {
+   /* if (checkListingType(user) == ListingType.waitress) {
       paramsMap['waitressId'] = currentOrder.waitressId ?? waitressCurrentId;
     } else if (checkListingType(user) == ListingType.table) {
       paramsMap['tableId'] = currentOrder.tableId ?? tableCurrentId;
-    }
+    }*/
 
     return paramsMap;
   }
@@ -480,16 +481,16 @@ class PosController extends GetxController {
     isLoadingCreateCustomer = true;
     update();
 
-    final restaurantId = user?.role?.restaurantId;
+   // final restaurantId = user?.role?.restaurantId;
 
-    if (restaurantId == null) {
+   /* if (restaurantId == null) {
       isLoadingCreateCustomer = false;
       update();
       return AppHelpersCommon.showCheckTopSnackBarInfoForm(
         context,
         "Aucun restaurant connecté",
       );
-    }
+    }*/
 
     if (customerLastname.trim().isEmpty || customerPhone.trim().isEmpty) {
       isLoadingCreateCustomer = false;
@@ -502,7 +503,7 @@ class PosController extends GetxController {
     Map<String, dynamic> requestData = {
       'lastname': customerLastname,
       'phone': customerPhone,
-      'restaurantId': restaurantId,
+     // 'restaurantId': restaurantId,
     };
     final response = await _productsRepository.createCustomers(requestData);
     response.when(success: (data) {
@@ -715,9 +716,9 @@ class PosController extends GetxController {
     }
   }
 
-  void fullCartAndUpdateOrder(BuildContext context, OrderEntity order) async {
+  void fullCartAndUpdateOrder(BuildContext context, Order order) async {
     deleteCart();
-    orderNotes.value = order.orderNotes!;
+   /* orderNotes.value = order.orderNotes!;
     for (var i = 0; i < order.orderDetails!.length; i++) {
       FoodDataEntity food =
           order.orderDetails![i].food ?? order.orderDetails![i].bundle;
@@ -750,6 +751,6 @@ class PosController extends GetxController {
       isDarkMode: false,
       isDrag: true,
       radius: 12,
-    );
+    );*/
   }
 }

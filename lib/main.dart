@@ -14,6 +14,7 @@ import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/splash/splash.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/custom_range_slider.widget.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,18 +23,17 @@ void main() async {
     url: Environment.supabaseUrl,
     anonKey: Environment.supabaseToken,
   );
+    TajiriSDK.initialize(env: EnvType.production, debugEnable: false);
+  try {
+    await Mixpanel.init(Environment.mixpanelToken, trackAutomaticEvents: true);
+  } catch (e) {
+    print("Mixpanel error : $e");
+  }
 
   //Remove this method to stop OneSignal Debugging
   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   OneSignal.initialize(Environment.onesignalToken);
   OneSignal.Notifications.requestPermission(true);
-
-  // TODO: OLD ONESIGNAL VERSION
-  // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-  // OneSignal.shared.setAppId(Environment.onesignalToken);
-  // OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
-  //   print("Accepted permission: $accepted");
-  // });
 
   await Mixpanel.init(Environment.mixpanelToken, trackAutomaticEvents: true);
 

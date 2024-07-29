@@ -16,11 +16,13 @@ import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart' as taj_sdk;
 
 class BluetoothSettingController extends GetxController {
   final connected = false.obs;
   final progress = false.obs;
   final user = AppHelpersCommon.getUserInLocalStorage();
+  final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
 
   final encodeCharset = "CP437";
 
@@ -166,7 +168,7 @@ class BluetoothSettingController extends GetxController {
     print("PRINTER RESULT : $result");
   }
 
-  Future<void> printReceipt(OrderEntity order) async {
+  Future<void> printReceipt(taj_sdk.Order order) async {
     bool conexionStatus = await PrintBluetoothThermal.connectionStatus;
     if (conexionStatus) {
       try {
@@ -197,7 +199,7 @@ class BluetoothSettingController extends GetxController {
   }
 
   Future<List<int>> demoReceipt(
-      PaperSize paper, CapabilityProfile profile, OrderEntity order) async {
+      PaperSize paper, CapabilityProfile profile, taj_sdk.Order order) async {
     final Generator ticket = Generator(paper, profile);
     final formattedOrderGrandTotal = addMilleSeparator(order.grandTotal ?? 0);
 
@@ -207,9 +209,9 @@ class BluetoothSettingController extends GetxController {
     List<int> bytes = [];
     bytes += ticket.reset();
 
-    final logoURL = user?.restaurantUser?[0].restaurant?.logoUrl;
+    // final logoURL = user?.restaurantUser?[0].restaurant?.logoUrl;
     // add logo restaurant
-    if (logoURL != null) {
+    /*if (logoURL != null) {
       try {
         bytes += await printImageFromUrl(
           ticket,
@@ -218,44 +220,46 @@ class BluetoothSettingController extends GetxController {
       } catch (e) {
         print(e);
       }
-    }
+    }*/
     bytes += await getTitleReceipt(ticket, order);
 
     // get columns
     bytes += getHeaderItem(ticket);
-    int itemCount = order.orderDetails?.length ?? 0;
+    int itemCount = order.orderProducts.length;
     for (int index = 0; index < itemCount; index++) {
-      final orderDetail = order.orderDetails?[index];
-      if (orderDetail != null) {
-        FoodDataEntity? food = orderDetail.food ?? orderDetail.bundle;
-        FoodVariantEntity? foodVariant;
-        if (food != null) {
-          if (food.price != orderDetail.price &&
+      final orderProduct = order.orderProducts[index];
+      if (orderProduct != null) {
+        taj_sdk.Product? food = orderProduct.product;
+        //Product? foodVariant;
+        /* if (food != null) {
+          if (food.price != orderDetail.price 
+              &&
               food.foodVariantCategory != null &&
-              food.foodVariantCategory!.isNotEmpty) {
+              food.foodVariantCategory!.isNotEmpty
+              ) {
             foodVariant =
                 food.foodVariantCategory![0].foodVariant!.firstWhereOrNull(
               (element) => element.price == orderDetail.price,
             );
           }
-        }
+        }*/
 
-        final foodName =
-            foodVariant?.name ?? getNameFromOrderDetail(orderDetail);
-        final quantity = orderDetail.quantity ?? 0;
-        final price = orderDetail.price ?? 0;
+        // final foodName =
+        //   foodVariant?.name ?? getNameFromOrderDetail(orderDetail);
+        final quantity = orderProduct.quantity;
+        final price = orderProduct.price;
         final calculatePrice = quantity * price;
 
         final formattedPrice = addMilleSeparator(calculatePrice);
 
-        List<String> productLines =
-            splitText(foodName, getMaxCharactersPerLine(selectPaperSize.value));
-        bytes += await getColumItem(
+        // List<String> productLines =
+        //  splitText(foodName, getMaxCharactersPerLine(selectPaperSize.value));
+        /*  bytes += await getColumItem(
           productLines,
           "$formattedPrice F",
           ticket,
           quantity,
-        );
+        );*/
       }
     }
     bytes += ticket.hr(linesAfter: 1);
@@ -315,17 +319,19 @@ class BluetoothSettingController extends GetxController {
 
   // Receipt refactoring
 
-  Future<List<int>> getTitleReceipt(Generator ticket, OrderEntity order) async {
+  Future<List<int>> getTitleReceipt(
+      Generator ticket, taj_sdk.Order order) async {
     print("-----getTitleReceipt--------");
     var dateFormat = DateFormat("dd/MM/yyyy HH:mm", 'fr_FR');
     final date = dateFormat.format(
         DateTime.tryParse(order.createdAt.toString())?.toLocal() ??
             DateTime.now());
-    final restoName =
-        "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
-    final restoPhone =
-        "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.contactPhone : user?.phone ?? ""}";
-    final client = order.customer?.firstname?.toString() ?? "Client invite";
+    final restoName = restaurant?.name ?? "";
+    final restoPhone = user?.phone ?? restaurant?.phone ?? "";
+    final client = "Customer firstname"
+        //order.customer?.firstname?.toString()
+        ??
+        "Client invite";
 
     final payementMethod = order.status == "PAID"
         ? paymentMethodNameByOrder(order).isEmpty
@@ -333,18 +339,16 @@ class BluetoothSettingController extends GetxController {
             : paymentMethodNameByOrder(order)
         : "Non paye";
 
-    print("payementMethod  $payementMethod  ${order.orderNumber}");
-
     List<int> bytes = [];
 
-    Uint8List encodedTitle =
+     Uint8List encodedTitle =
         await CharsetConverter.encode(encodeCharset, restoName);
 
     Uint8List encodedDate = await CharsetConverter.encode(encodeCharset, date);
-    Uint8List encodedPhone =
+     Uint8List encodedPhone =
         await CharsetConverter.encode(encodeCharset, restoPhone);
 
-    bytes += ticket.textEncoded(
+     bytes += ticket.textEncoded(
       encodedTitle,
       styles: const PosStyles(
         bold: true,
@@ -354,7 +358,7 @@ class BluetoothSettingController extends GetxController {
       ),
     );
 
-    bytes += ticket.textEncoded(encodedPhone,
+     bytes += ticket.textEncoded(encodedPhone,
         styles: const PosStyles(align: PosAlign.center, bold: true));
     bytes += ticket.textEncoded(encodedDate,
         styles: const PosStyles(align: PosAlign.center, bold: false));
@@ -363,7 +367,7 @@ class BluetoothSettingController extends GetxController {
       await getColumns("N°: ${order.orderNumber}", payementMethod, true),
     );
 
-    bytes += ticket.text("Serveur: ${userOrWaitressName(order, user)}");
+    // bytes += ticket.text("Serveur: ${userOrWaitressName(order, user)}");
 
     bytes += ticket.text("Client: $client");
 

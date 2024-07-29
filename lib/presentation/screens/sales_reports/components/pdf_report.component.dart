@@ -16,9 +16,9 @@ class PdfReportComponent {
     pdf.addPage(
       MultiPage(
           build: (context) => [
-                buildAppBar(user),
+               // buildAppBar(user),
                 SizedBox(height: 29),
-                buildHeader(startDate, endDate, user),
+               // buildHeader(startDate, endDate, user),
                 SizedBox(height: 15),
                 buildInvoice(salesData),
                 SizedBox(height: 15),
