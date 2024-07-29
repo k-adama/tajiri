@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart' as taj;
 import 'package:get/get_utils/get_utils.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
-import 'package:tajiri_sdk/src/models/table.model.dart' as taj_sdk;
 
 class AppConstants {
   AppConstants._();
@@ -68,7 +69,6 @@ class AppConstants {
       'AIzaSyBgp-Y1H1fZwwfKuneopikYQcF1Kbcs0cg';
   static const String routingKey =
       '5b3ce3597851110001cf62480384c1db92764d1b8959761ea2510ac8';
-      
 
   /// locales
   static const String localeCodeEn = 'en';
@@ -83,7 +83,7 @@ class AppConstants {
   static const Duration productCartSnackbarDuration =
       Duration(days: 6000000000000000);
 
-  static bool getStatusOrderInProgressOrDone(Order order, String status) {
+  static bool getStatusOrderInProgressOrDone(taj.Order order, String status) {
     bool checking = false;
     switch (status) {
       case "IN_PROGRESS":
@@ -99,7 +99,7 @@ class AppConstants {
     return checking;
   }
 
-  static String getStatusInFrench(Order order) {
+  static String getStatusInFrench(taj.Order order) {
     String status = "";
     switch (order.status) {
       case orderCooking:
@@ -130,22 +130,25 @@ class AppConstants {
 
     return status;
   }
-
 }
-  String getNameWaitressById(String? id, List<Waitress> waitressList) {
+
+String getNameWaitressById(String? id, List<Waitress> waitressList) {
   final waitress = waitressList.firstWhereOrNull(
     (element) => element.id == id,
   );
   return waitress != null ? waitress.name : 'Aucun Serveur';
 }
-String getNameTableById(String? id, List<taj_sdk.Table> tables) {
+
+String getNameTableById(String? id, List<taj.Table> tables) {
   final table = tables.firstWhereOrNull(
     (element) => element.id == id,
   );
   return table != null ? table.name : '';
 }
+
 const urlSound =
     'https://xuyfavsmxnbbaefzkdam.supabase.co/storage/v1/object/public/tajiri-foods/core/mixkit-arabian-mystery-harp-notification-2489.wav';
+
 enum ShopStatus { notRequested, newShop, edited, approved, rejected }
 
 enum ChairPosition { top, bottom, left, right }
@@ -267,6 +270,18 @@ List<Map<String, dynamic>> PAIEMENTS = [
   },
 ];
 
+String? getNamePaiementById(String? id) {
+  final payment = PAIEMENTS.firstWhereOrNull((element) => element['id'] == id);
+  return payment != null ? payment['name'] : null;
+}
+
+String getNameCustomerById(String? id) {
+  // final customer = customers.firstWhereOrNull(
+  //   (element) => element.id == id,
+  // );
+  return 'Client invité';
+}
+
 final tabs = [
   const Tab(text: "Toutes"),
   const Tab(text: "En cours"),
@@ -342,5 +357,3 @@ const List<Map<String, dynamic>> TABLE = [
   {'id': '3', 'name': 'Table 3'},
   {'id': '4', 'name': 'Table 4'}
 ];
-
-

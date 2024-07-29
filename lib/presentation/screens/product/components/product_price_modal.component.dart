@@ -5,7 +5,7 @@ import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_product_price.component.dart';
 
 class ProductPriceModalComponent extends StatefulWidget {
-  final FoodDataEntity foodData;
+  final Product foodData;
   const ProductPriceModalComponent({super.key, required this.foodData});
 
   @override

@@ -10,7 +10,7 @@ import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_p
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
 
 class EditProductPriceComponent extends StatefulWidget {
-  final FoodDataEntity foodData;
+  final Product foodData;
   const EditProductPriceComponent({super.key, required this.foodData});
 
   @override

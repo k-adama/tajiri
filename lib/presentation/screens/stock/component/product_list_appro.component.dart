@@ -8,7 +8,7 @@ import 'package:tajiri_pos_mobile/presentation/screens/stock/component/stock_pro
 import 'package:tajiri_pos_mobile/presentation/ui/custom_network_image.ui.dart';
 
 class ProductListApproComponent extends StatefulWidget {
-  List<FoodDataEntity> foods;
+  List<Product> foods;
   ProductListApproComponent({super.key, required this.foods});
 
   @override
@@ -58,7 +58,7 @@ class _ProductListApproComponentState extends State<ProductListApproComponent> {
 }
 
 class ProductApproComponent extends StatelessWidget {
-  final FoodDataEntity food;
+  final Product food;
   final VoidCallback onTap;
   const ProductApproComponent(
       {super.key, required this.food, required this.onTap});

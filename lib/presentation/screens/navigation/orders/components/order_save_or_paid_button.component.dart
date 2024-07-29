@@ -43,8 +43,8 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                       haveBorder: false,
                       radius: 5,
                       onPressed: () {
-                        navigationController.posController
-                            .fullCartAndUpdateOrder(context, order);
+                        // navigationController.posController
+                        //     .fullCartAndUpdateOrder(context, order);
                       },
                     ),
                   ),
@@ -131,6 +131,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
             radius: 5,
             haveBorder: false,
             onPressed: () {
+              // log(order.toJson().toString());
               Get.toNamed(Routes.INVOICE, arguments: order);
             },
           );

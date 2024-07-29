@@ -10,7 +10,7 @@ import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
 
 class EditVariantComponent extends StatefulWidget {
-  final FoodVariantEntity foodVariant;
+  final ProductFoodVariant foodVariant;
   const EditVariantComponent({
     super.key,
     required this.foodVariant,

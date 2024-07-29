@@ -37,6 +37,7 @@ class HomeController extends GetxController {
   RxString dayActiveText = "Aujourd'hui".obs;
   Rx<double> percentComparaison = 0.0.obs;
   String? storyGroup;
+
   RxList<Order> orders = List<Order>.empty().obs;
   final tajiriSdk = TajiriSDK.instance;
 
@@ -81,7 +82,7 @@ class HomeController extends GetxController {
 
     DateTime startDateComparaison = params['startDate']!;
     DateTime endDateComparaison = params['endDate']!;
-   String? ownerId = user?.idOwnerForGetOrder;
+    String? ownerId = user?.idOwnerForGetOrder;
     final GetOrdersDto dto = GetOrdersDto(
         startDate: startDateComparaison,
         endDate: endDateComparaison,

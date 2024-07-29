@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/domain/entities/printer_model.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
@@ -14,10 +15,10 @@ import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/compon
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/invoice_order_item.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/invoice_total.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/total_command.component.dart';
-import 'package:tajiri_sdk/src/models/order.model.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart' as taj;
 
 class InvoiceScreen extends StatefulWidget {
-  final Order? order;
+  final taj.Order? order;
   final bool? isPaid;
   const InvoiceScreen({super.key, this.order, this.isPaid});
 
@@ -27,15 +28,13 @@ class InvoiceScreen extends StatefulWidget {
 
 class _InvoiceScreenState extends State<InvoiceScreen> {
   final controller = Get.put(InvoiceController());
+  late final taj.Order arguments;
   final ordercontroller = Get.put(OrdersController());
-  late final Order arguments;
-
   final bluetoothController =
       Get.find<NavigationController>().bluetoothController;
 
   bool backInvoiceScreen() {
     if (widget.isPaid == true) {
-      // Get.offAllNamed(Routes.NAVIGATION, arguments: {"selectIndex": 0});
       Navigator.popUntil(context, ModalRoute.withName(Routes.NAVIGATION));
       return true;
     } else {
@@ -56,6 +55,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   @override
   Widget build(BuildContext context) {
     final user = controller.user;
+    final restaurant = controller.restaurant;
 
     return WillPopScope(
       onWillPop: () async {
@@ -104,9 +104,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                 InformationInvoiceComponent(
                                     title: "Date",
                                     body: DateFormat("MM/dd/yy HH:mm").format(
-                                        DateTime.tryParse(arguments.createdAt
-                                                    .toString())
-                                                ?.toLocal() ??
+                                        arguments.createdAt?.toLocal() ??
                                             DateTime.now())),
                                 Container(
                                   decoration: BoxDecoration(
@@ -148,8 +146,8 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   InformationInvoiceComponent(
                                     title: "Client:",
                                     body: arguments.customerType == "SAVED"
-                                        ? "Customer Name"
-                                        //"${arguments.customer?.lastname ?? ""} ${arguments.customer?.firstname ?? ""}"
+                                        //TODO: get customer name "${arguments.customer?.lastname ?? ""} ${arguments.customer?.firstname ?? ""}"
+                                        ? "customer name"
                                         : "Client de passage",
                                   ),
                                 ],
@@ -207,18 +205,13 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.zero,
-                      itemCount: arguments.orderProducts.isEmpty
-                          ? 0
-                          : arguments.orderProducts.length,
+                      itemCount: arguments.orderProducts.length,
                       itemBuilder: (BuildContext context, int index) {
-                        if (arguments.orderProducts.isNotEmpty) {
-                          OrderProduct orderDetail =
-                              arguments.orderProducts[index];
-                          return InvoiceOrderItemComponent(
-                              orderDetail: orderDetail);
-                        } else {
-                          return const SizedBox.shrink();
-                        }
+                        taj.OrderProduct orderDetail =
+                            arguments.orderProducts[index];
+                        return InvoiceOrderItemComponent(
+                          orderProduct: orderDetail,
+                        );
                       },
                     ),
                     20.verticalSpace,
@@ -272,11 +265,16 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                           if (bluetoothController.connected.value == false) {
                             Get.toNamed(Routes.SETTING_BLUETOOTH);
                           } else {
-                             bluetoothController.printReceipt(arguments);
+                            final printerModel = arguments.toPrinterModelEntity(
+                              user?.lastname,
+                              restaurant?.name,
+                              restaurant?.phone,
+                            );
+                            bluetoothController.printReceipt(printerModel);
                           }
                         },
                         shareButtonTap: () {
-                          // controller.shareFacture(arguments);
+                          controller.shareFacture(arguments);
                         },
                         returnToOrderButtonTap: () {
                           Get.find<NavigationController>().selectIndexFunc(1);

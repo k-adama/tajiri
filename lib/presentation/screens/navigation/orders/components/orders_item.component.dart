@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
+import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
+
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
+
+import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
+
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_save_or_paid_button.component.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
@@ -17,29 +21,20 @@ class OrdersItemComponent extends StatefulWidget {
 }
 
 class _OrdersItemComponentState extends State<OrdersItemComponent> {
+  final user = AppHelpersCommon.getUserInLocalStorage();
   final OrdersController orderController = Get.find();
+
   bool isPaid = false;
   @override
   void initState() {
     super.initState();
-    /*if (checkListingType(user) == ListingType.waitress) {
-      isPaid =
-          AppConstants.getStatusOrderInProgressOrDone(widget.order, "DONE");
-
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        //orderController.filterByWaitress(posController.waitressCurrentId);
-      });
-    } else {
-      isPaid =
-          AppConstants.getStatusOrderInProgressOrDone(widget.order, "DONE");
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        //orderController.filterByTable(posController.tableCurrentId);
-      });
-    }*/
+    isPaid = AppConstants.getStatusOrderInProgressOrDone(widget.order, "DONE");
   }
 
   @override
   Widget build(BuildContext context) {
+    final tableOrWaitressName =
+        orderController.tableOrWaitressName(widget.order);
     return Padding(
         padding: EdgeInsets.only(top: 12.r),
         child: Container(
@@ -67,22 +62,20 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    widget.order.waitressId != null ||
-                            widget.order.tableId != null
-                        ? Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            decoration: BoxDecoration(
-                              color: Style.primaryColor,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Text(
-                              orderController.tableOrWaitressName(widget.order),
-                              style: Style.interNormal(
-                                color: Style.black,
-                              ),
-                            ),
-                          )
-                        : const SizedBox(),
+                    if (tableOrWaitressName.trim().isNotEmpty)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                          color: Style.primaryColor,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          tableOrWaitressName,
+                          style: Style.interNormal(
+                            color: Style.black,
+                          ),
+                        ),
+                      ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -155,20 +148,19 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                     spacing: 8.0,
                     runSpacing: 8.0,
                     children: widget.order.orderProducts.map((orderDetail) {
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 4),
-                            margin: const EdgeInsets.only(left: 10),
-                            decoration: BoxDecoration(
-                              color: Style.bgGrey,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text(
-                              "${getNameFromOrderDetail(orderDetail)} x ${orderDetail.quantity}",
-                            ),
-                          );
-                        }).toList() ??
-                        [],
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
+                        margin: const EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                          color: Style.bgGrey,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          "${getNameFromOrderDetail(orderDetail)} x ${orderDetail.quantity}",
+                        ),
+                      );
+                    }).toList(),
                   )),
               20.verticalSpace,
               Padding(

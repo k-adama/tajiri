@@ -46,11 +46,12 @@ class _CartScreen extends State<CartScreen> {
   }
 
   addCount(MainItemEntity food) {
-    if (posController.foods
-            .firstWhereOrNull((element) => element.id == food.id)
+    if (posController.products
+            .firstWhereOrNull((element) => element.id == food.productId)
             ?.quantity ==
         food.quantity) return;
-    posController.addCount(context: context, foodId: food.id.toString());
+    posController.addCount(
+        context: context, productId: food.productId.toString());
   }
 
   @override
@@ -141,10 +142,10 @@ class _CartScreen extends State<CartScreen> {
                                       ),
                                     ],
                                   ),
-                                  posController.currentOrder.id != null
+                                  posController.currentOrder?.id != null
                                       ? const SizedBox()
                                       : 80.horizontalSpace,
-                                 /* posController.currentOrder.id != null
+                                  /* posController.currentOrder.id != null
                                       ? const SizedBox()
                                       : checkListingType(user) ==
                                               ListingType.waitress
@@ -156,10 +157,10 @@ class _CartScreen extends State<CartScreen> {
                                 ],
                               ),
                             ),
-                            if (posController.currentOrder.id != null)
+                            if (posController.currentOrder?.id != null)
                               AddProductButtonComponent(
                                 onTap: () {
-                                  if (posController.currentOrder.id != null) {
+                                  if (posController.currentOrder?.id != null) {
                                     Get.close(1);
                                     if (navigationController != null) {
                                       navigationController.selectIndexFunc(1);
@@ -188,7 +189,7 @@ class _CartScreen extends State<CartScreen> {
                                 add: () => addCount(cartItem),
                                 remove: () => posController.removeCount(
                                   context: context,
-                                  foodId: cartItem.id.toString(),
+                                  foodId: cartItem.productId.toString(),
                                   foodVariantId:
                                       cartItem.variant?.id.toString(),
                                 ),
@@ -235,14 +236,14 @@ class _CartScreen extends State<CartScreen> {
                     haveBorder: false,
                     radius: 5,
                     onPressed: () {
-                     /* final arguments =
-                          checkListingType(user) == ListingType.waitress
-                              ? {"waitressId": posController.waitressCurrentId}
-                              : {"tableId": posController.tableCurrentId};*/
+                      final arguments = {
+                        "waitressId": posController.waitressCurrentId,
+                        "tableId": posController.tableCurrentId
+                      };
 
                       Get.toNamed(
                         Routes.CART_SAVE,
-                       // arguments: arguments,
+                        arguments: arguments,
                         preventDuplicates: false,
                       );
                     },
@@ -259,13 +260,13 @@ class _CartScreen extends State<CartScreen> {
                     radius: 5,
                     haveBorder: false,
                     onPressed: () {
-                     /* final arguments =
-                          checkListingType(user) == ListingType.waitress
-                              ? {"waitressId": posController.waitressCurrentId}
-                              : {"tableId": posController.tableCurrentId};*/
+                      final arguments = {
+                        "waitressId": posController.waitressCurrentId,
+                        "tableId": posController.tableCurrentId
+                      };
                       Get.toNamed(
                         Routes.CART_PAID,
-                       // arguments: arguments,
+                        arguments: arguments,
                         preventDuplicates: false,
                       );
                     },

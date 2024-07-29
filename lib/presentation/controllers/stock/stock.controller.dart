@@ -15,8 +15,8 @@ import 'package:tajiri_pos_mobile/domain/entities/stock_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
 
 class StockController extends GetxController {
-  List<FoodDataEntity> foods = List<FoodDataEntity>.empty().obs;
-  List<FoodDataEntity> foodsInit = List<FoodDataEntity>.empty().obs;
+  List<Product> foods = List<Product>.empty().obs;
+  List<Product> foodsInit = List<Product>.empty().obs;
   List<Map<String, dynamic>> foodsInventory = <Map<String, dynamic>>[];
   List<Map<String, dynamic>> foodsInventoryInit = <Map<String, dynamic>>[];
   bool isProductLoading = true;
@@ -64,8 +64,7 @@ class StockController extends GetxController {
     }
   }
 
-  Future<FoodDataEntity?> _updateChangeStock(
-      String id, int stock, String type) async {
+  Future<Product?> _updateChangeStock(String id, int stock, String type) async {
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
       try {

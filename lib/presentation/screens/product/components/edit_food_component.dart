@@ -28,7 +28,7 @@ class _EditFoodAndVariantComponentState
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late RefreshController _refreshController;
-  final FoodDataEntity? foodData = Get.arguments;
+  final Product? foodData = Get.arguments;
 
   @override
   void initState() {

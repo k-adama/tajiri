@@ -6,7 +6,7 @@ import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/effects/animat
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
 
 class MakeAjustmentComponent extends StatefulWidget {
-  final FoodDataEntity food;
+  final Product food;
   final VoidCallback decrement;
   final VoidCallback increment;
   final void Function(String)? onChanged;

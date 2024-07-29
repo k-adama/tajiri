@@ -7,7 +7,7 @@ import 'package:tajiri_pos_mobile/presentation/ui/custom_network_image.ui.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
 
 class StockModalBodyComponent extends StatefulWidget {
-  FoodDataEntity food;
+  Product food;
   StockModalBodyComponent({super.key, required this.food});
 
   @override

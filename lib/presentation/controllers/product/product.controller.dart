@@ -18,8 +18,8 @@ class ProductsController extends GetxController {
   final ProductsRepository _productsRepository = ProductsRepository();
   final KIT_ID = "1c755978-ae56-47c6-b8e6-a5e3b03577ce";
   bool isProductLoading = false;
-  List<FoodDataEntity> foods = List<FoodDataEntity>.empty().obs;
-  List<FoodDataEntity> foodsInit = List<FoodDataEntity>.empty().obs;
+  List<Product> foods = List<Product>.empty().obs;
+  List<Product> foodsInit = List<Product>.empty().obs;
   RxList bundlePacks = [].obs;
   final categories = List<CategoryEntity>.empty().obs;
   RxString categoryId = 'all'.obs;
@@ -122,7 +122,7 @@ class ProductsController extends GetxController {
   }
 
   Future<void> updateFood(
-      BuildContext context, FoodDataEntity foodData, bool isPrice) async {
+      BuildContext context, Product foodData, bool isPrice) async {
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isProductLoading = true;
@@ -147,7 +147,7 @@ class ProductsController extends GetxController {
           pickCategoryId.value = "";
           imageUrl.value = "";
           imageCompress.value = "";
-          _posController.fetchFoods();
+          _posController.fetchProducts();
           isProductLoading = false;
           update();
           AppHelpersCommon.showAlertDialog(
@@ -202,7 +202,7 @@ class ProductsController extends GetxController {
   }
 
   Future<void> updateFoodVariant(
-      BuildContext context, FoodVariantEntity foodVariant) async {
+      BuildContext context, ProductFoodVariant foodVariant) async {
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isProductLoading = true;
@@ -220,7 +220,7 @@ class ProductsController extends GetxController {
       response.when(
         success: (data) async {
           pickFoodVariantCategoryId.value = "";
-          _posController.fetchFoods();
+          _posController.fetchProducts();
           isProductLoading = false;
           AppHelpersCommon.showAlertDialog(
             context: context,
@@ -294,7 +294,7 @@ class ProductsController extends GetxController {
         };
       }).toList();
       final foodData =
-          transformedList.map((item) => FoodDataEntity.fromJson(item)).toList();
+          transformedList.map((item) => Product.fromJson(item)).toList();
       foods.assignAll(foodData);
       update();
 

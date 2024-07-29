@@ -8,7 +8,7 @@ import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.
 import 'package:get/get.dart';
 
 class SeeStockOrSaveButtonComponent extends StatefulWidget {
-  final FoodDataEntity food;
+  final Product food;
   bool seeHistory;
   final int addValue;
   VoidCallback haveSeeHistory;

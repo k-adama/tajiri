@@ -1,13 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/domain/entities/data_point_chart.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_details.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 enum ListingType {
@@ -27,31 +25,31 @@ String convertTofrenchDate(String originalDate) {
   return formattedDate;
 }
 
-ListingType? checkListingType(UserEntity? user) {
-  if (user?.restaurantUser?[0].restaurant?.listingEnable != true) {
-    return null;
+ListingType? checkListingType(Staff? user) {
+  // ON PREN EN COMPTE LES 2;
+  return null;
+  // if (user?.restaurantUser?[0].restaurant?.listingEnable != true) {
+  //   return null;
+  // }
+
+  // return user!.restaurantUser?[0].restaurant?.listingType == "TABLE"
+  //     ? ListingType.table
+  //     : ListingType.waitress;
+}
+
+String userOrWaitressName(Order orderItem, Staff? user) {
+  // TODO : CHECK
+  final currentUserName = "${user?.firstname ?? ""} ${user?.lastname ?? ""}";
+
+  if (orderItem.tableId != null) {
+    return "table id ${orderItem.tableId}";
+  } else if (orderItem.waitressId != null) {
+    return "waitress id ${orderItem.waitressId}";
+  } else {
+    return currentUserName;
   }
-
-  return user!.restaurantUser?[0].restaurant?.listingType == "TABLE"
-      ? ListingType.table
-      : ListingType.waitress;
 }
 
-
-/*String userOrWaitressName(OrderEntity orderItem, UserEntity? user) {
-  final createdUserName =
-      "${orderItem.createdUser?.firstname ?? ""} ${orderItem.createdUser?.lastname ?? ""}";
-  final createdUserOrtableName = orderItem.tableId != null
-      ? "${orderItem.table?.name ?? ""} "
-      : createdUserName;
-
-  return checkListingType(user) == ListingType.waitress
-      ? (orderItem.waitressId != null
-          ? orderItem.waitress?.name ?? createdUserOrtableName
-          : createdUserOrtableName)
-      : createdUserOrtableName;
-}
-*/
 getInitialName(String fullName) {
   List<String> nameParts = fullName.split(" ");
   String initials = "";
@@ -69,31 +67,24 @@ String getNameFromOrderDetail(OrderProduct? orderProduct) {
   if (orderProduct == null) {
     return 'N/A';
   }
-  if (orderProduct.product == null) {
-    return 'Produit supprimé';
-  } else {
-    return orderProduct.product.name ?? 'N/A';
-  }
+
+  return orderProduct.product.name;
 }
 
 String paymentMethodNameByOrder(Order order) {
-  for (var payment in order.payments) {
-    final paymentMethod = PAIEMENTS.firstWhere(
-      (item) => item['id'] == payment.paymentMethodId,
-      orElse: () => <String, dynamic>{'name': ""},
-    );
-    if (paymentMethod.isNotEmpty) {
-      return paymentMethod['name'] ?? "";
-    }
-  }
-  return "";
+  final payment = PAIEMENTS.firstWhereOrNull(
+    (item) => item['id'] == order.payments[0].paymentMethodId,
+  );
+  return payment != null ? payment['name'] : "";
 }
-String getNameCustomerById(String? id) {
-  // final customer = customers.firstWhereOrNull(
-  //   (element) => element.id == id,
-  // );
-  return 'Client invité';
+
+String? paymentMethodNameById(String? id) {
+  final payment = PAIEMENTS.firstWhereOrNull(
+    (item) => item['id'] == id,
+  );
+  return payment?['name'];
 }
+
 // sales_calculator.dart
 class SalesCalculator {
   static Map<String, Map<String, dynamic>> calculateTotalSalesByDayOfWeek(
@@ -129,7 +120,7 @@ class SalesCalculator {
     for (Order order in orders) {
       DateTime createdAt = order.createdAt!;
       String weekNumber = 'Sem ${getWeekNumber(createdAt).toString()}';
-      int grandTotal = order.grandTotal!;
+      int grandTotal = order.grandTotal;
 
       if (!result.containsKey(weekNumber)) {
         result[weekNumber] = {"grandTotal": grandTotal};

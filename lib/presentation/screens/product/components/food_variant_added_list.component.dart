@@ -26,12 +26,12 @@ class _FoodVariantAddedListState extends State<FoodVariantAddedList> {
   }
 
   void _onRefresh() async {
-    await posController.fetchFoods();
+    await posController.fetchProducts();
     _controller.refreshCompleted();
   }
 
   void _onLoading() async {
-    await posController.fetchFoods();
+    await posController.fetchProducts();
     _controller.loadComplete();
   }
 

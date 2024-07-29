@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart' as material;
+import 'package:get/get_instance/get_instance.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as mt;
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -6,10 +8,14 @@ import 'package:get/route_manager.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
-import 'package:tajiri_pos_mobile/app/extensions/staff.extension.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
+import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
+import 'dart:ui' as ui;
 import 'package:audioplayers/audioplayers.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
+import 'package:tajiri_pos_mobile/app/extensions/staff.extension.dart';
+
 import 'package:tajiri_sdk/src/models/table.model.dart' as taj_sdk;
 
 class OrdersController extends GetxController {
@@ -29,9 +35,17 @@ class OrdersController extends GetxController {
   final waitress = List<Waitress>.empty().obs;
   RxString currentOrderNo = "".obs;
   DateTime dateTime = DateTime.now();
+  final user = AppHelpersCommon.getUserInLocalStorage();
   bool monuted = false;
-  final Staff? user = AppHelpersCommon.getUserInLocalStorage();
+
+  final posController = Get.find<PosController>();
+
   final tajiriSdk = TajiriSDK.instance;
+
+  @override
+  void onInit() {
+    super.onInit();
+  }
 
   @override
   void onReady() {
@@ -116,7 +130,8 @@ class OrdersController extends GetxController {
     }
   }
 
-  Future<void> updateOrder(BuildContext context, String paymentMethodId) async {
+  Future<void> updateOrder(
+      material.BuildContext context, String paymentMethodId) async {
     if (currentOrderId.isEmpty) return;
     isLoadingOrder.value = true;
     update();
@@ -143,8 +158,8 @@ class OrdersController extends GetxController {
     }
   }
 
-  Future<void> updateOrderStatus(
-      BuildContext context, String currentOrderId, String status) async {
+  Future<void> updateOrderStatus(material.BuildContext context,
+      String currentOrderId, String status) async {
     if (currentOrderId.isEmpty) return;
     final UpdateOrderDto updateOrderDto = UpdateOrderDto(status: status);
     isLoadingOrder.value = true;
@@ -191,6 +206,16 @@ class OrdersController extends GetxController {
 
     isProductLoading = false;
     update();
+  }
+
+  String tableOrWaitressName(Order order) {
+    if (order.waitressId != null) {
+      return getNameWaitressById(order.waitressId, waitress);
+    } else if (order.tableId != null) {
+      return getNameTableById(order.tableId, tableListData);
+    } else {
+      return "";
+    }
   }
 
   void searchFilter(search) {
@@ -245,16 +270,6 @@ class OrdersController extends GetxController {
     orders.assignAll(ordersInit);
   }
 
-  String tableOrWaitressName(Order order) {
-    if (order.waitressId != null) {
-      return getNameWaitressById(order.waitressId, waitress);
-    } else if (order.tableId != null) {
-      return getNameTableById(order.waitressId, tableListData);
-    } else {
-      return "Aucun";
-    }
-  }
-
   Future<void> fetchWaitresses() async {
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
@@ -293,5 +308,27 @@ class OrdersController extends GetxController {
         update();
       }
     }
+  }
+
+  double getTextWidth(String text, material.TextStyle style) {
+    final material.TextPainter textPainter = material.TextPainter(
+      text: material.TextSpan(text: text, style: style),
+      maxLines: 1,
+      textDirection:
+          ui.TextDirection.ltr, // Use TextDirection.ltr for left-to-right text
+    )..layout(minWidth: 0, maxWidth: double.infinity);
+    if (text.length <= 6) return textPainter.width + 20;
+    if (text.length > 6 && text.length <= 10) return textPainter.width + 25;
+    return textPainter.width + 80;
+  }
+
+  getPayment(Order order) {
+    final payment = PAIEMENTS.firstWhere(
+      (item) => item['id'] == order.payments[0].paymentMethodId,
+      orElse: () => <String,
+          String>{}, // Provide an empty Map<String, String> as the default value
+    );
+
+    return payment;
   }
 }

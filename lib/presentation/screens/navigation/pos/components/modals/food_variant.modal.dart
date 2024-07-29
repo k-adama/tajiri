@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/food_variant.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/custom_network_image.ui.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class FoodVariantModal extends StatefulWidget {
-  final FoodDataEntity food;
+  final Product food;
   const FoodVariantModal({super.key, required this.food});
 
   @override
@@ -87,7 +87,7 @@ class _FoodVariantModalState extends State<FoodVariantModal> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.food.foodVariantCategory![0].name!,
+                            widget.food.variants![0].name!,
                             style: Style.interBold(size: 20.sp),
                           ),
                           const Divider(),
@@ -95,8 +95,7 @@ class _FoodVariantModalState extends State<FoodVariantModal> {
                       ),
                     ),
                     FoodVariantComponent(
-                      foodVariant:
-                          widget.food.foodVariantCategory![0].foodVariant,
+                      foodVariant: widget.food.variants,
                       food: widget.food,
                     ),
                   ],

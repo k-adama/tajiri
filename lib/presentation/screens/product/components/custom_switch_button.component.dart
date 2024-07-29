@@ -7,7 +7,7 @@ import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.controller.dart';
 
 class CustomSwitchButtonComponent extends StatefulWidget {
-  final FoodDataEntity foodData;
+  final Product foodData;
   const CustomSwitchButtonComponent({super.key, required this.foodData});
 
   @override
