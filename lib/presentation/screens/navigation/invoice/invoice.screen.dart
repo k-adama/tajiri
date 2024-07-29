@@ -4,10 +4,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_details.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/detail_content.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/information_invoice_component.dart';
@@ -15,9 +14,10 @@ import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/compon
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/invoice_order_item.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/invoice_total.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/total_command.component.dart';
+import 'package:tajiri_sdk/src/models/order.model.dart';
 
 class InvoiceScreen extends StatefulWidget {
-  final OrderEntity? order;
+  final Order? order;
   final bool? isPaid;
   const InvoiceScreen({super.key, this.order, this.isPaid});
 
@@ -27,7 +27,8 @@ class InvoiceScreen extends StatefulWidget {
 
 class _InvoiceScreenState extends State<InvoiceScreen> {
   final controller = Get.put(InvoiceController());
-  late final OrderEntity arguments;
+  final ordercontroller = Get.put(OrdersController());
+  late final Order arguments;
 
   final bluetoothController =
       Get.find<NavigationController>().bluetoothController;
@@ -103,8 +104,8 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                 InformationInvoiceComponent(
                                     title: "Date",
                                     body: DateFormat("MM/dd/yy HH:mm").format(
-                                        DateTime.tryParse(
-                                                    arguments.createdAt ?? "")
+                                        DateTime.tryParse(arguments.createdAt
+                                                    .toString())
                                                 ?.toLocal() ??
                                             DateTime.now())),
                                 Container(
@@ -130,10 +131,11 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                /*  InformationInvoiceComponent(
+                                  InformationInvoiceComponent(
                                     title: "Serveur:",
-                                    body: userOrWaitressName(arguments, user),
-                                  ),*/
+                                    body: ordercontroller
+                                        .tableOrWaitressName(arguments),
+                                  ),
                                   const Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 15),
@@ -146,7 +148,8 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   InformationInvoiceComponent(
                                     title: "Client:",
                                     body: arguments.customerType == "SAVED"
-                                        ? "${arguments.customer?.lastname ?? ""} ${arguments.customer?.firstname ?? ""}"
+                                        ? "Customer Name"
+                                        //"${arguments.customer?.lastname ?? ""} ${arguments.customer?.firstname ?? ""}"
                                         : "Client de passage",
                                   ),
                                 ],
@@ -204,13 +207,13 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.zero,
-                      itemCount: arguments.orderDetails == null
+                      itemCount: arguments.orderProducts.isEmpty
                           ? 0
-                          : arguments.orderDetails?.length,
+                          : arguments.orderProducts.length,
                       itemBuilder: (BuildContext context, int index) {
-                        if (arguments.orderDetails != null) {
-                          OrderDetailsEntity orderDetail =
-                              arguments.orderDetails![index];
+                        if (arguments.orderProducts.isNotEmpty) {
+                          OrderProduct orderDetail =
+                              arguments.orderProducts[index];
                           return InvoiceOrderItemComponent(
                               orderDetail: orderDetail);
                         } else {
@@ -269,11 +272,11 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                           if (bluetoothController.connected.value == false) {
                             Get.toNamed(Routes.SETTING_BLUETOOTH);
                           } else {
-                            bluetoothController.printReceipt(arguments);
+                             bluetoothController.printReceipt(arguments);
                           }
                         },
                         shareButtonTap: () {
-                          controller.shareFacture(arguments);
+                          // controller.shareFacture(arguments);
                         },
                         returnToOrderButtonTap: () {
                           Get.find<NavigationController>().selectIndexFunc(1);

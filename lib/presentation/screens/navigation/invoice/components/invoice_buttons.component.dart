@@ -7,9 +7,10 @@ import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom_secondary.button.dart';
+import 'package:tajiri_sdk/src/models/order.model.dart';
 
 class InvoiceButtonsComponent extends StatefulWidget {
-  final OrderEntity ordersData;
+  final Order ordersData;
   final VoidCallback? printButtonTap;
   final VoidCallback shareButtonTap;
   final VoidCallback returnToOrderButtonTap;

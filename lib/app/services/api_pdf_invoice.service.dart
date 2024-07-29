@@ -37,7 +37,7 @@ class ApiPdfInvoiceService {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          /*  Text(
+            /*  Text(
                 "${user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
             Text(
@@ -83,7 +83,7 @@ class ApiPdfInvoiceService {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                       /* information(
+                        /* information(
                           "Serveur:",
                           userOrWaitressName(ordersData, user),
                         ),*/
@@ -119,9 +119,10 @@ class ApiPdfInvoiceService {
 
     final data = ordersData.orderDetails?.map((item) {
       int calculate = (item.price ?? 0) * (item.quantity ?? 0);
-      final food = getNameFromOrderDetail(item);
-      print(food);
-      return [food, '${item.quantity ?? 0}', '${item.price ?? 0}', calculate];
+      //final food = getNameFromOrderDetail(item);
+      //print(food);
+      return ['', '${item.quantity ?? 0}', '${item.price ?? 0}', calculate];
+      // [food, '${item.quantity ?? 0}', '${item.price ?? 0}', calculate];
     }).toList();
 
     if (data == null) {

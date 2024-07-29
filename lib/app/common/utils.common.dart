@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
@@ -36,7 +37,8 @@ ListingType? checkListingType(UserEntity? user) {
       : ListingType.waitress;
 }
 
-String userOrWaitressName(OrderEntity orderItem, UserEntity? user) {
+
+/*String userOrWaitressName(OrderEntity orderItem, UserEntity? user) {
   final createdUserName =
       "${orderItem.createdUser?.firstname ?? ""} ${orderItem.createdUser?.lastname ?? ""}";
   final createdUserOrtableName = orderItem.tableId != null
@@ -49,7 +51,7 @@ String userOrWaitressName(OrderEntity orderItem, UserEntity? user) {
           : createdUserOrtableName)
       : createdUserOrtableName;
 }
-
+*/
 getInitialName(String fullName) {
   List<String> nameParts = fullName.split(" ");
   String initials = "";
@@ -63,32 +65,35 @@ getInitialName(String fullName) {
   return initials.toUpperCase();
 }
 
-String getNameFromOrderDetail(OrderDetailsEntity? orderDetail) {
-  if (orderDetail == null) {
+String getNameFromOrderDetail(OrderProduct? orderProduct) {
+  if (orderProduct == null) {
     return 'N/A';
   }
-  if (orderDetail.food == null) {
-    if (orderDetail.bundle != null) {
-      return orderDetail.bundle['name'] ?? 'Produit supprimé';
-    } else {
-      return 'Produit supprimé';
-    }
+  if (orderProduct.product == null) {
+    return 'Produit supprimé';
   } else {
-    return orderDetail.food?.name ?? 'N/A';
+    return orderProduct.product.name ?? 'N/A';
   }
 }
 
-String paymentMethodNameByOrder(OrderEntity order) {
-  if (order.paymentMethod == null) {
-    final payment = PAIEMENTS.firstWhere(
-      (item) => item['id'] == order.paymentMethodId,
-      orElse: () => <String, dynamic>{},
+String paymentMethodNameByOrder(Order order) {
+  for (var payment in order.payments) {
+    final paymentMethod = PAIEMENTS.firstWhere(
+      (item) => item['id'] == payment.paymentMethodId,
+      orElse: () => <String, dynamic>{'name': ""},
     );
-    return payment['name'] ?? "";
+    if (paymentMethod.isNotEmpty) {
+      return paymentMethod['name'] ?? "";
+    }
   }
-  return order.paymentMethod?.name ?? "";
+  return "";
 }
-
+String getNameCustomerById(String? id) {
+  // final customer = customers.firstWhereOrNull(
+  //   (element) => element.id == id,
+  // );
+  return 'Client invité';
+}
 // sales_calculator.dart
 class SalesCalculator {
   static Map<String, Map<String, dynamic>> calculateTotalSalesByDayOfWeek(

@@ -21,6 +21,7 @@ import 'package:tajiri_pos_mobile/presentation/controllers/waitress/waitress.con
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class PosController extends GetxController {
   final ProductsRepository _productsRepository = ProductsRepository();
@@ -715,9 +716,9 @@ class PosController extends GetxController {
     }
   }
 
-  void fullCartAndUpdateOrder(BuildContext context, OrderEntity order) async {
+  void fullCartAndUpdateOrder(BuildContext context, Order order) async {
     deleteCart();
-    orderNotes.value = order.orderNotes!;
+   /* orderNotes.value = order.orderNotes!;
     for (var i = 0; i < order.orderDetails!.length; i++) {
       FoodDataEntity food =
           order.orderDetails![i].food ?? order.orderDetails![i].bundle;
@@ -750,6 +751,6 @@ class PosController extends GetxController {
       isDarkMode: false,
       isDrag: true,
       radius: 12,
-    );
+    );*/
   }
 }

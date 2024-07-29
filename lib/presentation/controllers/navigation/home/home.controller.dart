@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:intl/intl.dart';
+import 'package:tajiri_pos_mobile/app/extensions/staff.extension.dart';
 import 'dart:ui' as ui;
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
@@ -80,7 +81,7 @@ class HomeController extends GetxController {
 
     DateTime startDateComparaison = params['startDate']!;
     DateTime endDateComparaison = params['endDate']!;
-    String? ownerId = user?.role == "OWER" ? user?.id : null;
+   String? ownerId = user?.idOwnerForGetOrder;
     final GetOrdersDto dto = GetOrdersDto(
         startDate: startDateComparaison,
         endDate: endDateComparaison,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_details.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/detail_content.component.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart' as taj_sdk;
 
 class InvoiceOrderItemComponent extends StatelessWidget {
-  final OrderDetailsEntity orderDetail;
+  final taj_sdk.OrderProduct orderDetail;
 
   const InvoiceOrderItemComponent({
     super.key,

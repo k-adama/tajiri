@@ -6,7 +6,6 @@ import 'package:get/instance_manager.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_card_item.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_filter.component.dart';
@@ -14,6 +13,7 @@ import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/compone
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/orders_search.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/custom_tab_bar.ui.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/loading.ui.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -25,7 +25,8 @@ class OrdersScreen extends StatefulWidget {
 class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController = TabController(length: 3, vsync: this);
   final OrdersController _ordersController = Get.find();
-  //final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
+    final Staff? user = AppHelpersCommon.getUserInLocalStorage();
+  final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
 
   @override
   void initState() {
@@ -49,69 +50,39 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
                               tabController: _tabController,
                               tabs: tabs,
                             ),
-                          /*  Expanded(
-                              child: TabBarView(
-                                controller: _tabController,
-                                children: [
-                                  ordersController.isProductLoading == true
-                                      ? const LoadingUi()
-                                      : ordersController.orders.isEmpty
-                                          ? OrderListEmptyComponent()
-                                          : OrderCardItemComponent(
-                                              orders:ordersController.orders,
-                                              isRestaurant :user != null &&
-                                                  user?.restaurantUser !=
-                                                      null &&
-                                                  user?.restaurantUser![0]
-                                                              .restaurant
-                                                          ?.type ==
-                                                      AppConstants
-                                                          .clientTypeRestaurant,
-                                              //widget.mainController,
-                                            ),
-                                  ordersController.isProductLoading == true ?  const LoadingUi() : ordersController.orders
-                                          .where((item) => AppConstants
-                                              .getStatusOrderInProgressOrDone(
-                                                  item, "IN_PROGRESS"))
-                                          .isEmpty
-                                      ? OrderListEmptyComponent()
-                                      : OrderCardItemComponent(
-                                          orders:ordersController.orders
-                                              .where((item) => AppConstants
-                                                  .getStatusOrderInProgressOrDone(
-                                                      item, "IN_PROGRESS"))
-                                              .toList(),
-                                          isRestaurant :user != null &&
-                                              user?.restaurantUser!= null &&
-                                              user?.restaurantUser![0]
-                                                      .restaurant?.type ==
-                                                  AppConstants
-                                                      .clientTypeRestaurant,
-                                          //widget.mainController,
-                                        ),
-                                  ordersController.isProductLoading == true ?  const LoadingUi() : ordersController.orders
-                                          .where((item) => AppConstants
-                                              .getStatusOrderInProgressOrDone(
-                                                  item, "DONE"))
-                                          .isEmpty
-                                      ? OrderListEmptyComponent()
-                                      : OrderCardItemComponent(
-                                          orders: ordersController.orders
-                                              .where((item) => AppConstants
-                                                  .getStatusOrderInProgressOrDone(
-                                                      item, "DONE"))
-                                              .toList(),
-                                          isRestaurant :user != null &&
-                                              user?.restaurantUser != null &&
-                                              user?.restaurantUser![0]
-                                                      .restaurant?.type ==
-                                                  AppConstants
-                                                      .clientTypeRestaurant,
-                                          //widget.mainController,
-                                        ),
-                                ],
-                              ),
-                            ),*/
+                            Expanded(
+                            child: TabBarView(
+                              controller: _tabController,
+                              children: [
+                                _buildOrderTab(
+                                  isLoading:
+                                      _ordersController.isProductLoading,
+                                  orders: _ordersController.orders,
+                                  filter: (order) =>
+                                      true, // No filter for the first tab
+                                  restaurant: restaurant,
+                                ),
+                                _buildOrderTab(
+                                  isLoading:
+                                      _ordersController.isProductLoading,
+                                  orders: _ordersController.orders,
+                                  filter: (order) => AppConstants
+                                      .getStatusOrderInProgressOrDone(
+                                          order, "IN_PROGRESS"),
+                                  restaurant: restaurant,
+                                ),
+                                _buildOrderTab(
+                                  isLoading:
+                                      _ordersController.isProductLoading,
+                                  orders: _ordersController.orders,
+                                  filter: (order) => AppConstants
+                                      .getStatusOrderInProgressOrDone(
+                                          order, "DONE"),
+                                  restaurant: restaurant,
+                                ),
+                              ],
+                            ),
+                          ),
                           ],
                         ),
                       ),
@@ -144,6 +115,35 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
               color: Style.white,
             ),
           ),
-        ));
+        )
+        );
+  }
+    bool _isRestaurantUser(Restaurant? restaurant) {
+    if (restaurant == null) {
+      return false;
+    }
+    return restaurant.name.isNotEmpty &&
+        restaurant.type == AppConstants.clientTypeRestaurant;
+  }
+
+  Widget _buildOrderTab({
+    required bool isLoading,
+    required List<Order> orders,
+    required bool Function(Order) filter,
+    required Restaurant? restaurant,
+  }) {
+    if (isLoading) {
+      return const LoadingUi();
+    }
+
+    final filteredOrders = orders.where(filter).toList();
+    if (filteredOrders.isEmpty) {
+      return OrderListEmptyComponent();
+    }
+
+    return OrderCardItemComponent(
+      orders: filteredOrders,
+      isRestaurant: _isRestaurantUser(restaurant),
+    );
   }
 }
