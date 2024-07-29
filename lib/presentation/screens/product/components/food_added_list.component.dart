@@ -65,8 +65,7 @@ class _FoodAddedListComponentState extends State<FoodAddedListComponent> {
                           shrinkWrap: false,
                           itemCount: productsController.foods.length,
                           itemBuilder: (BuildContext context, int index) {
-                            FoodDataEntity food =
-                                productsController.foods[index];
+                            Product food = productsController.foods[index];
                             return FoodListComponent(
                               onTap: () {
                                 Get.toNamed(Routes.EDIT_FOOD_AND_VARIANT,

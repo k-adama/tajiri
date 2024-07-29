@@ -9,13 +9,13 @@ import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/domain/entities/categorie_amount.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/payment_method_data.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/story.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/story_group.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/top_10_food.entity.dart';
 import 'package:tajiri_pos_mobile/data/repositories/orders/orders.repository.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class HomeController extends GetxController {
   final user = AppHelpersCommon.getUserInLocalStorage();
@@ -54,7 +54,7 @@ class HomeController extends GetxController {
 
   List<OrdersReportsEntity> ordersReports =
       List<OrdersReportsEntity>.empty().obs;
-  RxList<OrderEntity> orders = List<OrderEntity>.empty().obs;
+  RxList<Order> orders = List<Order>.empty().obs;
 
   @override
   void onInit() {
@@ -202,8 +202,7 @@ class HomeController extends GetxController {
         isFetching.value = false;
 
         final json = data as List<dynamic>;
-        final ordersData =
-            json.map((item) => OrderEntity.fromJson(item)).toList();
+        final ordersData = json.map((item) => Order.fromJson(item)).toList();
         orders.assignAll(ordersData);
         isFetching.value = false;
         update();

@@ -5,7 +5,7 @@ import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_variant.component.dart';
 
 class EditFoodVariantModal extends StatefulWidget {
-  final FoodVariantEntity foodVariant;
+  final ProductFoodVariant foodVariant;
   const EditFoodVariantModal({super.key, required this.foodVariant});
 
   @override

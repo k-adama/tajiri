@@ -1,5 +1,5 @@
-class FoodVariantEntity {
-  FoodVariantEntity({
+class ProductFoodVariant {
+  ProductFoodVariant({
     String? id,
     int? quantity,
     int? price,
@@ -19,7 +19,7 @@ class FoodVariantEntity {
     _updatedAt = updatedAt;
   }
 
-  FoodVariantEntity.fromJson(dynamic json) {
+  ProductFoodVariant.fromJson(dynamic json) {
     _id = json['id'];
     _quantity = json['quantity'];
     _price = json['price'];
@@ -39,7 +39,7 @@ class FoodVariantEntity {
   String? _createdAt;
   String? _updatedAt;
 
-  FoodVariantEntity copyWith({
+  ProductFoodVariant copyWith({
     String? id,
     int? quantity,
     int? price,
@@ -49,7 +49,7 @@ class FoodVariantEntity {
     String? createdAt,
     String? updatedAt,
   }) =>
-      FoodVariantEntity(
+      ProductFoodVariant(
         id: id ?? _id,
         quantity: quantity ?? _quantity,
         price: price ?? _price,

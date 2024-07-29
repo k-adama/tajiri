@@ -7,7 +7,7 @@ class FoodVariantCategoryEntity {
     String? foodId,
     String? createdAt,
     String? updatedAt,
-    List<FoodVariantEntity>? foodVariant,
+    List<ProductFoodVariant>? foodVariant,
   }) {
     _id = id;
     _name = name;
@@ -25,7 +25,7 @@ class FoodVariantCategoryEntity {
     if (json['foodVariant'] != null) {
       _foodVariant = [];
       json['foodVariant'].forEach((v) {
-        _foodVariant?.add(FoodVariantEntity.fromJson(v));
+        _foodVariant?.add(ProductFoodVariant.fromJson(v));
       });
     }
   }
@@ -35,7 +35,7 @@ class FoodVariantCategoryEntity {
   String? _foodId;
   String? _createdAt;
   String? _updatedAt;
-  List<FoodVariantEntity>? _foodVariant;
+  List<ProductFoodVariant>? _foodVariant;
 
   FoodVariantCategoryEntity copyWith({
     String? id,
@@ -43,7 +43,7 @@ class FoodVariantCategoryEntity {
     String? foodId,
     String? createdAt,
     String? updatedAt,
-    List<FoodVariantEntity>? foodVariant,
+    List<ProductFoodVariant>? foodVariant,
   }) =>
       FoodVariantCategoryEntity(
         id: id ?? _id,
@@ -59,7 +59,7 @@ class FoodVariantCategoryEntity {
   String? get foodId => _foodId;
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
-  List<FoodVariantEntity>? get foodVariant => _foodVariant;
+  List<ProductFoodVariant>? get foodVariant => _foodVariant;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

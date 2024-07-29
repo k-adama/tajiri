@@ -4,8 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_details.entity.dart';
+import 'package:tajiri_pos_mobile/domain/entities/printer_model.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
@@ -15,9 +14,10 @@ import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/compon
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/invoice_order_item.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/invoice_total.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/components/total_command.component.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart' as taj;
 
 class InvoiceScreen extends StatefulWidget {
-  final OrderEntity? order;
+  final taj.Order? order;
   final bool? isPaid;
   const InvoiceScreen({super.key, this.order, this.isPaid});
 
@@ -27,14 +27,13 @@ class InvoiceScreen extends StatefulWidget {
 
 class _InvoiceScreenState extends State<InvoiceScreen> {
   final controller = Get.put(InvoiceController());
-  late final OrderEntity arguments;
+  late final taj.Order arguments;
 
   final bluetoothController =
       Get.find<NavigationController>().bluetoothController;
 
   bool backInvoiceScreen() {
     if (widget.isPaid == true) {
-      // Get.offAllNamed(Routes.NAVIGATION, arguments: {"selectIndex": 0});
       Navigator.popUntil(context, ModalRoute.withName(Routes.NAVIGATION));
       return true;
     } else {
@@ -55,6 +54,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   @override
   Widget build(BuildContext context) {
     final user = controller.user;
+    final restaurant = controller.restaurant;
 
     return WillPopScope(
       onWillPop: () async {
@@ -103,9 +103,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                 InformationInvoiceComponent(
                                     title: "Date",
                                     body: DateFormat("MM/dd/yy HH:mm").format(
-                                        DateTime.tryParse(
-                                                    arguments.createdAt ?? "")
-                                                ?.toLocal() ??
+                                        arguments.createdAt?.toLocal() ??
                                             DateTime.now())),
                                 Container(
                                   decoration: BoxDecoration(
@@ -130,7 +128,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                /*  InformationInvoiceComponent(
+                                  /*  InformationInvoiceComponent(
                                     title: "Serveur:",
                                     body: userOrWaitressName(arguments, user),
                                   ),*/
@@ -146,7 +144,8 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   InformationInvoiceComponent(
                                     title: "Client:",
                                     body: arguments.customerType == "SAVED"
-                                        ? "${arguments.customer?.lastname ?? ""} ${arguments.customer?.firstname ?? ""}"
+                                        //TODO: get customer name "${arguments.customer?.lastname ?? ""} ${arguments.customer?.firstname ?? ""}"
+                                        ? "customer name"
                                         : "Client de passage",
                                   ),
                                 ],
@@ -204,18 +203,13 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.zero,
-                      itemCount: arguments.orderDetails == null
-                          ? 0
-                          : arguments.orderDetails?.length,
+                      itemCount: arguments.orderProducts.length,
                       itemBuilder: (BuildContext context, int index) {
-                        if (arguments.orderDetails != null) {
-                          OrderDetailsEntity orderDetail =
-                              arguments.orderDetails![index];
-                          return InvoiceOrderItemComponent(
-                              orderDetail: orderDetail);
-                        } else {
-                          return const SizedBox.shrink();
-                        }
+                        taj.OrderProduct orderDetail =
+                            arguments.orderProducts[index];
+                        return InvoiceOrderItemComponent(
+                          orderProduct: orderDetail,
+                        );
                       },
                     ),
                     20.verticalSpace,
@@ -269,7 +263,12 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                           if (bluetoothController.connected.value == false) {
                             Get.toNamed(Routes.SETTING_BLUETOOTH);
                           } else {
-                            bluetoothController.printReceipt(arguments);
+                            final printerModel = arguments.toPrinterModelEntity(
+                              user?.lastname,
+                              restaurant?.name,
+                              restaurant?.phone,
+                            );
+                            bluetoothController.printReceipt(printerModel);
                           }
                         },
                         shareButtonTap: () {

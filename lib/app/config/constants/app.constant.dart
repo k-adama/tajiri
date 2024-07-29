@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
+import 'package:get/get.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart' as taj;
 
 class AppConstants {
   AppConstants._();
@@ -80,7 +81,7 @@ class AppConstants {
   static const Duration productCartSnackbarDuration =
       Duration(days: 6000000000000000);
 
-  static bool getStatusOrderInProgressOrDone(OrderEntity order, String status) {
+  static bool getStatusOrderInProgressOrDone(taj.Order order, String status) {
     bool checking = false;
     switch (status) {
       case "IN_PROGRESS":
@@ -96,7 +97,7 @@ class AppConstants {
     return checking;
   }
 
-  static String getStatusInFrench(OrderEntity order) {
+  static String getStatusInFrench(taj.Order order) {
     String status = "";
     switch (order.status) {
       case orderCooking:
@@ -250,6 +251,32 @@ List<Map<String, dynamic>> PAIEMENTS = [
   },
 ];
 
+String? getNamePaiementById(String? id) {
+  final payment = PAIEMENTS.firstWhereOrNull((element) => element['id'] == id);
+  return payment != null ? payment['name'] : null;
+}
+
+String getNameCustomerById(String? id) {
+  // final customer = customers.firstWhereOrNull(
+  //   (element) => element.id == id,
+  // );
+  return 'Client invité';
+}
+
+String getNameWaitressById(String? id, List<taj.Waitress> waitressList) {
+  final waitress = waitressList.firstWhereOrNull(
+    (element) => element.id == id,
+  );
+  return waitress != null ? waitress.name : 'Aucun Serveur';
+}
+
+String getNameTableById(String? id, List<taj.Table> tables) {
+  final table = tables.firstWhereOrNull(
+    (element) => element.id == id,
+  );
+  return table != null ? table.name : '';
+}
+
 final tabs = [
   const Tab(text: "Toutes"),
   const Tab(text: "En cours"),
@@ -325,5 +352,3 @@ const List<Map<String, dynamic>> TABLE = [
   {'id': '3', 'name': 'Table 3'},
   {'id': '4', 'name': 'Table 4'}
 ];
-
-

@@ -3,11 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/tr_keys.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'dart:ui' as ui;
 
+import 'package:tajiri_sdk/tajiri_sdk.dart';
+
 class InvoiceTotalComponent extends StatelessWidget {
-  final OrderEntity order;
+  final Order order;
   const InvoiceTotalComponent({super.key, required this.order});
 
   @override

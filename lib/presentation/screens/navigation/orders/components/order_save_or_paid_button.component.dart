@@ -6,15 +6,15 @@ import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_payments_method_modal.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class OrderSaveOrPaidButtonComponent extends StatelessWidget {
-  final OrderEntity order;
+  final Order order;
   final bool isPaid;
   OrderSaveOrPaidButtonComponent(
       {super.key, required this.order, required this.isPaid});
@@ -36,7 +36,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                     child: CustomButton(
                       isLoading: orderController.isAddAndRemoveLoading,
                       background: Style.secondaryColor,
-                     /* isGrised: AppHelpersCommon.getUserInLocalStorage()
+                      /* isGrised: AppHelpersCommon.getUserInLocalStorage()
                               ?.canUpdateOrCanceledOrder() ==
                           false,*/
                       title: "Modifier",
@@ -45,8 +45,8 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                       haveBorder: false,
                       radius: 5,
                       onPressed: () {
-                        navigationController.posController
-                            .fullCartAndUpdateOrder(context, order);
+                        // navigationController.posController
+                        //     .fullCartAndUpdateOrder(context, order);
                       },
                     ),
                   ),
@@ -131,7 +131,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
             radius: 5,
             haveBorder: false,
             onPressed: () {
-              log(order.toJson().toString());
+              // log(order.toJson().toString());
               Get.toNamed(Routes.INVOICE, arguments: order);
             },
           );

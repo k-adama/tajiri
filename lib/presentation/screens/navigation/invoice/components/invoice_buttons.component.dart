@@ -3,13 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/instance_manager.dart';
 
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom_secondary.button.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class InvoiceButtonsComponent extends StatefulWidget {
-  final OrderEntity ordersData;
+  final Order ordersData;
   final VoidCallback? printButtonTap;
   final VoidCallback shareButtonTap;
   final VoidCallback returnToOrderButtonTap;
@@ -20,7 +20,8 @@ class InvoiceButtonsComponent extends StatefulWidget {
     required this.ordersData,
     required this.printButtonTap,
     required this.shareButtonTap,
-    required this.returnToOrderButtonTap,  this.isLoading=false,
+    required this.returnToOrderButtonTap,
+    this.isLoading = false,
   });
 
   @override

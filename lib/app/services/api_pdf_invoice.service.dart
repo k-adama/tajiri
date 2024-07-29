@@ -6,14 +6,12 @@ import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
 import 'package:tajiri_pos_mobile/app/services/api_pdf.service.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class ApiPdfInvoiceService {
   static final user = AppHelpersCommon.getUserInLocalStorage();
 
-  static Future<File> generate(OrderEntity ordersData) async {
+  static Future<File> generate(Order ordersData) async {
     final pdf = Document();
 
     pdf.addPage(
@@ -37,7 +35,7 @@ class ApiPdfInvoiceService {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          /*  Text(
+            /*  Text(
                 "${user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
             Text(
@@ -47,7 +45,7 @@ class ApiPdfInvoiceService {
         ),
       );
 
-  static Widget buildHeader(OrderEntity ordersData) => Container(
+  static Widget buildHeader(Order ordersData) => Container(
         width: double.infinity,
         child: Column(
           children: [
@@ -65,8 +63,7 @@ class ApiPdfInvoiceService {
                         information(
                             "Date",
                             DateFormat("MM/dd/yy HH:mm").format(
-                                DateTime.tryParse(ordersData.createdAt ?? "")
-                                        ?.toLocal() ??
+                                ordersData.createdAt?.toLocal() ??
                                     DateTime.now())),
                         Container(
                           child: Padding(
@@ -83,10 +80,10 @@ class ApiPdfInvoiceService {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                       /* information(
+                        information(
                           "Serveur:",
                           userOrWaitressName(ordersData, user),
-                        ),*/
+                        ),
                         SizedBox(
                           width: 15,
                         ),
@@ -96,7 +93,8 @@ class ApiPdfInvoiceService {
                         information(
                           "Client:",
                           ordersData.customerType == "SAVED"
-                              ? "${ordersData.customer?.lastname ?? ""} ${ordersData.customer?.firstname ?? ""}"
+                              //TODO: get customer name ${ordersData.customer?.lastname ?? ""} ${ordersData.customer?.firstname ?? ""}
+                              ? "customer name"
                               : "Client de passage",
                         ),
                       ],
@@ -109,7 +107,7 @@ class ApiPdfInvoiceService {
         ),
       );
 
-  static Widget buildInvoice(OrderEntity ordersData) {
+  static Widget buildInvoice(Order ordersData) {
     final headers = [
       'PRODUIT',
       'QUANTITÉ',
@@ -117,35 +115,31 @@ class ApiPdfInvoiceService {
       'TOTAL',
     ];
 
-    final data = ordersData.orderDetails?.map((item) {
-      int calculate = (item.price ?? 0) * (item.quantity ?? 0);
-      final food = getNameFromOrderDetail(item);
-      print(food);
-      return [food, '${item.quantity ?? 0}', '${item.price ?? 0}', calculate];
+    final data = ordersData.orderProducts.map((item) {
+      int calculate = (item.price) * (item.quantity);
+      final productName = getNameFromOrderDetail(item);
+      print(productName);
+      return [productName, '${item.quantity}', '${item.price}', calculate];
     }).toList();
 
-    if (data == null) {
-      return Container();
-    } else {
-      return TableHelper.fromTextArray(
-        headers: headers,
-        data: data,
-        border: null,
-        headerStyle: TextStyle(fontWeight: FontWeight.bold),
-        cellHeight: 30,
-        cellAlignments: {
-          0: Alignment.centerLeft,
-          1: Alignment.centerRight,
-          2: Alignment.centerRight,
-          3: Alignment.centerRight,
-          4: Alignment.centerRight,
-          5: Alignment.centerRight,
-        },
-      );
-    }
+    return TableHelper.fromTextArray(
+      headers: headers,
+      data: data,
+      border: null,
+      headerStyle: TextStyle(fontWeight: FontWeight.bold),
+      cellHeight: 30,
+      cellAlignments: {
+        0: Alignment.centerLeft,
+        1: Alignment.centerRight,
+        2: Alignment.centerRight,
+        3: Alignment.centerRight,
+        4: Alignment.centerRight,
+        5: Alignment.centerRight,
+      },
+    );
   }
 
-  static Widget subTotalAndReduction(OrderEntity ordersData) {
+  static Widget subTotalAndReduction(Order ordersData) {
     return Padding(
       padding: const EdgeInsets.only(top: 15.0),
       child: Container(
@@ -159,7 +153,7 @@ class ApiPdfInvoiceService {
               child: Column(
                 children: [
                   Divider(),
-                  totalCommand("Sous-Total", ordersData.subTotal ?? 0, false),
+                  totalCommand("Sous-Total", ordersData.subTotal, false),
                   totalCommand("Réduction", 0, false),
                 ],
               ),
@@ -170,7 +164,7 @@ class ApiPdfInvoiceService {
     );
   }
 
-  static Widget buildTotal(OrderEntity ordersData) {
+  static Widget buildTotal(Order ordersData) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
       child: SizedBox(

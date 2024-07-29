@@ -19,7 +19,7 @@ import 'package:tajiri_pos_mobile/presentation/screens/stock/component/see_stock
 import 'package:tajiri_pos_mobile/presentation/ui/custom_network_image.ui.dart';
 
 class StockProductModalComponent extends StatefulWidget {
-  FoodDataEntity food;
+  Product food;
   StockProductModalComponent({super.key, required this.food});
 
   @override

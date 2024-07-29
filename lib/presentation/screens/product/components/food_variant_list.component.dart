@@ -25,7 +25,7 @@ class _FoodVariantListComponentState extends State<FoodVariantListComponent> {
       shrinkWrap: true,
       itemCount: widget.foodVariantCategory.foodVariant!.length,
       itemBuilder: (BuildContext context, int index) {
-        FoodVariantEntity foodVariant =
+        ProductFoodVariant foodVariant =
             widget.foodVariantCategory.foodVariant![index];
         return InkWell(
           onTap: () {

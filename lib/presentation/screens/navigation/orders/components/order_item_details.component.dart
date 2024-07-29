@@ -7,17 +7,17 @@ import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/tr_keys.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
-import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_payments_method_modal.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class OrderItemDetailsComponent extends StatefulWidget {
   const OrderItemDetailsComponent({super.key});
 
   @override
-  State<OrderItemDetailsComponent> createState() => _OrderItemDetailsComponentState();
+  State<OrderItemDetailsComponent> createState() =>
+      _OrderItemDetailsComponentState();
 }
 
 class _OrderItemDetailsComponentState extends State<OrderItemDetailsComponent> {
@@ -25,7 +25,7 @@ class _OrderItemDetailsComponentState extends State<OrderItemDetailsComponent> {
   final OrdersController ordersController = Get.put(OrdersController());
   //final MainController mainController = Get.put(MainController());
 
-  final OrderEntity ordersData = Get.arguments;
+  final Order ordersData = Get.arguments;
   @override
   Widget build(BuildContext context) {
     final dynamic payment = ordersController.getPayment(ordersData);
@@ -147,7 +147,7 @@ class _OrderItemDetailsComponentState extends State<OrderItemDetailsComponent> {
               children: [
                 Text(
                   ordersData.tableId != null && ordersData.tableId!.isNotEmpty
-                      ? ordersData.table!.name!
+                      ? "getNameTableById" // getNameTableById(ordersData.tableId, [])
                       : ordersData.orderNotes == null ||
                               ordersData.orderNotes == ''
                           ? "Commande N° ${ordersData.orderNumber}"
@@ -162,7 +162,7 @@ class _OrderItemDetailsComponentState extends State<OrderItemDetailsComponent> {
                 ),
                 Text(
                   intl.DateFormat("MMM dd, HH:MM")
-                      .format(DateTime.parse(ordersData.createdAt ?? "")),
+                      .format(ordersData.createdAt!),
                   style: Style.interRegular(size: 13, color: Style.light),
                 )
               ],
@@ -195,7 +195,8 @@ class _OrderItemDetailsComponentState extends State<OrderItemDetailsComponent> {
   }
 
   Widget bottomsAction(bool isPaid) {
-    return AppConstants.getStatusOrderInProgressOrDone(ordersData, "IN_PROGRESS")
+    return AppConstants.getStatusOrderInProgressOrDone(
+            ordersData, "IN_PROGRESS")
         ? Column(
             children: [
               Flexible(
@@ -216,7 +217,8 @@ class _OrderItemDetailsComponentState extends State<OrderItemDetailsComponent> {
                               paddingTop:
                                   MediaQuery.of(context).padding.top + 100.h,
                               context: context,
-                              modal: const OrderPaymentsMethodesModalComponent(),
+                              modal:
+                                  const OrderPaymentsMethodesModalComponent(),
                               isDarkMode: false,
                               isDrag: true,
                               radius: 12);
@@ -239,7 +241,8 @@ class _OrderItemDetailsComponentState extends State<OrderItemDetailsComponent> {
                               paddingTop:
                                   MediaQuery.of(context).padding.top + 100.h,
                               context: context,
-                              modal: const OrderPaymentsMethodesModalComponent(),
+                              modal:
+                                  const OrderPaymentsMethodesModalComponent(),
                               isDarkMode: false,
                               isDrag: true,
                               radius: 12);
@@ -249,7 +252,7 @@ class _OrderItemDetailsComponentState extends State<OrderItemDetailsComponent> {
               ),
               Flexible(
                 child: CustomButton(
-                  isLoading: false ,//posController.isAddAndRemoveLoading,
+                  isLoading: false, //posController.isAddAndRemoveLoading,
                   background: Style.white,
                   radius: 5,
                   textColor: Style.titleDark,
@@ -339,7 +342,7 @@ class _OrderItemDetailsComponentState extends State<OrderItemDetailsComponent> {
   }
 
   Widget paymentMethodAndInvoice(dynamic payment, String title, String body,
-      bool isInvoice, OrderEntity ordersData, bool isPending) {
+      bool isInvoice, Order ordersData, bool isPending) {
     final sizeScreen = MediaQuery.of(context).size;
     return Container(
       width: isPending ? double.infinity : sizeScreen.width - 210.w,
@@ -411,7 +414,9 @@ class _OrderItemDetailsComponentState extends State<OrderItemDetailsComponent> {
             Text(
               customerType == "GUEST"
                   ? "Client de passe"
-                  : "${ordersData.customer?.lastname != null ? ordersData.customer?.lastname : ""} ${ordersData.customer?.firstname != null ? ordersData.customer?.firstname : ""}",
+                  :
+                  //TODO: get customer name ${ordersData.customer?.lastname ?? ""} ${ordersData.customer?.firstname ?? ""}
+                  "customer name",
               style: Style.interNormal(size: 14.sp, color: Style.titleDark),
             ),
           ],

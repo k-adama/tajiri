@@ -5,8 +5,8 @@ import 'package:tajiri_pos_mobile/domain/entities/payment_method.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/table.entiy.dart';
 import 'package:tajiri_pos_mobile/domain/entities/waitress.entity.dart';
 
-class OrderEntity {
-  OrderEntity({
+class Order {
+  Order({
     String? id,
     int? orderNumber,
     int? subTotal,
@@ -67,7 +67,7 @@ class OrderEntity {
     _createdUser = createdUser;
   }
 
-  OrderEntity.fromJson(dynamic json) {
+  Order.fromJson(dynamic json) {
     _id = json['id'];
     _orderNumber = json['orderNumber'];
     _subTotal = json['subTotal'];
@@ -143,7 +143,7 @@ class OrderEntity {
   CustomerEntity? _customer;
   List<OrderDetailsEntity>? _orderDetails;
 
-  OrderEntity copyWith({
+  Order copyWith({
     String? id,
     int? orderNumber,
     int? subTotal,
@@ -173,7 +173,7 @@ class OrderEntity {
     CreatedUserEntity? createdUser,
     List<OrderDetailsEntity>? orderDetails,
   }) =>
-      OrderEntity(
+      Order(
           id: _id ?? id,
           orderNumber: _orderNumber ?? orderNumber,
           subTotal: _subTotal ?? subTotal,

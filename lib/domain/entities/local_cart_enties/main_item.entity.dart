@@ -1,5 +1,5 @@
 class MainItemEntity {
-  String? id;
+  String? productId;
   int? quantity;
   String? name;
   int? price;
@@ -7,7 +7,7 @@ class MainItemEntity {
   MainItemVariation? variant;
 
   MainItemEntity({
-    this.id,
+    this.productId,
     this.quantity,
     this.name,
     this.price,
