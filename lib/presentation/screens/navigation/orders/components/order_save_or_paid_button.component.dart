@@ -59,10 +59,10 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                             textColor: Style.white,
                             isLoadingColor: Style.secondaryColor,
                             onPressed: () {
-                              orderController.currentOrderId.value = order.id!;
+                              orderController.currentOrderId.value = order.id;
 
                               orderController.currentOrderNo.value =
-                                  order.orderNumber!.toString();
+                                  order.orderNumber.toString();
                               AppHelpersCommon.showCustomModalBottomSheet(
                                   paddingTop:
                                       MediaQuery.of(context).padding.top +

@@ -15,7 +15,7 @@ import 'package:tajiri_sdk/tajiri_sdk.dart';
 class OrderCardItemComponent extends StatefulWidget {
   final List<Order> orders;
   final bool isRestaurant;
-  OrderCardItemComponent(
+  const OrderCardItemComponent(
       {super.key, required this.orders, required this.isRestaurant});
 
   @override
@@ -128,15 +128,11 @@ class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
                     ),
                     child: OrdersItemComponent(
                       order: orderData,
-                      //mainController: mainController,
                     ),
                   )
                 : OrdersItemComponent(
                     order: orderData,
                   );
-            /*: OrdersItem(
-                  order: orderData,
-                );*/
           }),
     );
   }

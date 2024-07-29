@@ -235,7 +235,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                 children: [
                                   TotalCommandComponent(
                                     name: "Sous Total",
-                                    price: arguments.subTotal ?? 0,
+                                    price: arguments.subTotal,
                                     isTotal: false,
                                   ),
                                   const TotalCommandComponent(

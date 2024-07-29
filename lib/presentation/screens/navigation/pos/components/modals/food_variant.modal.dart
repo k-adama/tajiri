@@ -36,7 +36,7 @@ class _FoodVariantModalState extends State<FoodVariantModal> {
                 Stack(
                   children: [
                     CustomNetworkImageUi(
-                      url: widget.food.imageUrl!,
+                      url: widget.food.imageUrl,
                       height: 300.h,
                       width: double.infinity,
                       radius: 10.r,
@@ -69,7 +69,7 @@ class _FoodVariantModalState extends State<FoodVariantModal> {
                             child: Padding(
                               padding: const EdgeInsets.all(3.0),
                               child: Text(
-                                '${widget.food.price!}'.currencyLong(),
+                                '${widget.food.price}'.currencyLong(),
                                 style: Style.interNormal(size: 11),
                               ),
                             ),
@@ -87,7 +87,7 @@ class _FoodVariantModalState extends State<FoodVariantModal> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.food.variants![0].name!,
+                            widget.food.variants[0].name,
                             style: Style.interBold(size: 20.sp),
                           ),
                           const Divider(),

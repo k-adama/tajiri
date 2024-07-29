@@ -6,6 +6,7 @@ import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
 import 'package:tajiri_pos_mobile/domain/entities/table.entiy.dart';
 import 'package:tajiri_pos_mobile/data/repositories/tables/tables.repository.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class TableController extends GetxController {
   final TablesRepository _tablesRepository = TablesRepository();
@@ -21,6 +22,9 @@ class TableController extends GetxController {
   TableEntity newTable = TableEntity();
   Rx<TableEntity?> selectedTable = Rx<TableEntity?>(null);
   // OrdersController ordersController = Get.find();
+
+  final user = AppHelpersCommon.getUserInLocalStorage();
+  final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
 
   @override
   void onReady() async {
@@ -65,12 +69,10 @@ class TableController extends GetxController {
     if (connected) {
       isLoadingTable = true;
       update();
-      final user = AppHelpersCommon.getUserInLocalStorage();
-     /* final restaurantId = user?.role?.restaurantId;
+      final restaurantId = restaurant?.id;
       if (restaurantId == null) {
-        print("====${restaurantId} null====");
         return;
-      }*/
+      }
 
       final persons = int.tryParse(tableNumberOfPlace);
 
@@ -96,7 +98,7 @@ class TableController extends GetxController {
         'description': tableDescription,
         'persons': persons,
         "status": true,
-       // "restaurantId": restaurantId,
+        // "restaurantId": restaurantId,
       };
 
       final response = await _tablesRepository.createTable(requestData);

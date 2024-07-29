@@ -14,8 +14,8 @@ import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/compone
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class OrdersItemComponent extends StatefulWidget {
-  Order order;
-  OrdersItemComponent({super.key, required this.order});
+  final Order order;
+  const OrdersItemComponent({super.key, required this.order});
   @override
   State<OrdersItemComponent> createState() => _OrdersItemComponentState();
 }
@@ -124,7 +124,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                             child: Container(
                               margin: const EdgeInsets.only(left: 2),
                               child: Text(
-                                "${widget.order.orderProducts[i].quantity}x ${getNameFromOrderDetail(widget.order.orderProducts?[i])}",
+                                "${widget.order.orderProducts[i].quantity}x ${getNameFromOrderDetail(widget.order.orderProducts[i])}",
                                 style: Style.interNormal(color: Style.black),
                                 overflow: TextOverflow.ellipsis,
                               ),

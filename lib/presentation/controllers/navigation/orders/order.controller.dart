@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart' as material;
 import 'package:get/get_instance/get_instance.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as mt;
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -9,20 +8,17 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
 import 'dart:ui' as ui;
 import 'package:audioplayers/audioplayers.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_pos_mobile/app/extensions/staff.extension.dart';
 
-import 'package:tajiri_sdk/src/models/table.model.dart' as taj_sdk;
-
 class OrdersController extends GetxController {
   bool isProductLoading = true;
   bool isLoadingCreateWaitress = false;
   bool isLoadingTable = false;
-  RxList<taj_sdk.Table> tableListData = List<taj_sdk.Table>.empty().obs;
+  RxList<Table> tableListData = List<Table>.empty().obs;
   bool isExpanded = false;
   bool isAddAndRemoveLoading = false;
   DateTime? startRangeDate;

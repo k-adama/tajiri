@@ -4,12 +4,9 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/instance_manager.dart';
 import 'package:proste_indexed_stack/proste_indexed_stack.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
-import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/drawer_page.component.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/select_table.component.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/select_waitress.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/home.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/order.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/pos.screen.dart';
@@ -26,6 +23,7 @@ class NavigationScreen extends StatefulWidget {
 class _NavigationScreenState extends State<NavigationScreen> {
   final navigationController = Get.find<NavigationController>();
   final user = AppHelpersCommon.getUserInLocalStorage();
+  final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
 
   late List<IndexedStackChild> list;
   void handleBottomNavBarTap(int index) {
@@ -47,31 +45,14 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   Widget _buildUserDisplay() {
-   // final userType = checkListingType(user);
-   /* final isWaitress = userType == ListingType.waitress;
-    final isTable = userType == ListingType.table;*/
-    final isIndexValid = navigationController.selectIndex == 1 ||
-        navigationController.selectIndex == 2;
-    final hasUser = user != null;
-
-   /* if (hasUser) {
-      if (isWaitress && isIndexValid) {
-        return const SelectWaitressComponent(); // const SelectWaitress();
-      } else if (isTable && isIndexValid) {
-        return const SelectTableComponent();
-      } else {
-       /* final restaurantName =
-            "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";*/
-        return Text(
-          'restaurantName',
-         // restaurantName,
-          style: Style.interNormal(size: 16, color: Style.secondaryColor),
-        );
-      }
-    } else {
-      return const SizedBox();
-    }*/
-    return SizedBox();
+    // final isIndexValid = navigationController.selectIndex == 1 ||
+    //     navigationController.selectIndex == 2;
+    // final hasUser = user != null;
+    final restaurantName = restaurant?.name ?? "";
+    return Text(
+      restaurantName,
+      style: Style.interNormal(size: 16, color: Style.secondaryColor),
+    );
   }
 
   @override

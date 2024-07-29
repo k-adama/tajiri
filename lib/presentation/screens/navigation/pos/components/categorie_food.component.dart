@@ -29,7 +29,7 @@ class CategorieFoodComponent extends StatelessWidget {
                 return InkWell(
                   onTap: () {
                     posController.handleFilter(
-                        categories[index].id!, categories[index].name!);
+                        categories[index].id, categories[index].name);
                   },
                   child: Padding(
                     padding: EdgeInsets.only(

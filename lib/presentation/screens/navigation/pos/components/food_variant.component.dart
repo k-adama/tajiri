@@ -69,14 +69,14 @@ class _FoodVariantComponentState extends State<FoodVariantComponent> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                foodVariant.name ?? '',
+                                foodVariant.name,
                                 style: Style.interNormal(
                                   size: 13.sp,
                                   color: Style.titleDark,
                                 ),
                               ),
                               Text(
-                                "${foodVariant.price ?? ''}".currencyShort(),
+                                "${foodVariant.price}".currencyShort(),
                                 style: Style.interNormal(
                                   size: 13.sp,
                                   color: Style.titleDark,
@@ -87,7 +87,7 @@ class _FoodVariantComponentState extends State<FoodVariantComponent> {
                           Text(
                             widget.food!.quantity != 0
                                 ? widget.food!.quantity != 0
-                                    ? '${widget.food!.quantity ?? widget.food!.type}  en stock'
+                                    ? '${widget.food!.quantity}  en stock'
                                     : 'Rupture'
                                 : 'Rupture',
                             style: Style.interNormal(
