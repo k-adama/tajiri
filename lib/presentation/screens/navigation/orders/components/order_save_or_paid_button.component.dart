@@ -34,7 +34,8 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                     child: CustomButton(
                       isLoading: orderController.isAddAndRemoveLoading,
                       background: Style.secondaryColor,
-                      /* isGrised: AppHelpersCommon.getUserInLocalStorage()
+                     /*  isGrised: 
+                       AppHelpersCommon.getUserInLocalStorage()
                               ?.canUpdateOrCanceledOrder() ==
                           false,*/
                       title: "Modifier",
@@ -43,8 +44,8 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                       haveBorder: false,
                       radius: 5,
                       onPressed: () {
-                        // navigationController.posController
-                        //     .fullCartAndUpdateOrder(context, order);
+                        navigationController.posController
+                            .fullCartAndUpdateOrder(context, order);
                       },
                     ),
                   ),
