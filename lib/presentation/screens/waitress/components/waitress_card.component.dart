@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/waitress.entity.dart';
+import 'package:tajiri_sdk/src/models/waitress.model.dart';
 
 class WaitressCardComponent extends StatelessWidget {
-  final WaitressEntity waitress;
+  final Waitress waitress;
   final Function(String)? onSelectedPopupMenuButton;
   const WaitressCardComponent(
       {super.key,
@@ -23,12 +23,12 @@ class WaitressCardComponent extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          waitress.gender != null && waitress.gender == 'MALE'
+          waitress.gender.isNotEmpty && waitress.gender == 'MALE'
               ? SvgPicture.asset('assets/svgs/noto_man.svg')
               : SvgPicture.asset('assets/svgs/noto_woman.svg'),
           SizedBox(width: 8.0.w),
           Expanded(
-            child: Text(waitress.name ?? "",
+            child: Text(waitress.name,
                 style: Style.interBold(
                   size: 15,
                 )),

@@ -4,11 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
-import 'package:tajiri_pos_mobile/domain/entities/waitress.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/waitress/waitress.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/select_dropdown.button.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class SelectWaitressComponent extends StatefulWidget {
   const SelectWaitressComponent({super.key});
@@ -26,12 +26,12 @@ class _SelectWaitressComponentState extends State<SelectWaitressComponent> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return SelectDropDownButton<WaitressEntity>(
+      return SelectDropDownButton<Waitress>(
         value: waitressController.selectedWaitress.value,
         containerColor: posController.containerColor,
-        items: waitressController.waitress.value.map((WaitressEntity item) {
+        items: waitressController.waitress.value.map((Waitress item) {
           int index = waitressController.waitress.value.indexOf(item);
-          return DropdownMenuItem<WaitressEntity>(
+          return DropdownMenuItem<Waitress>(
             value: item,
             child: Container(
               height: 40,
@@ -59,7 +59,7 @@ class _SelectWaitressComponentState extends State<SelectWaitressComponent> {
             ),
           );
         }).toList(),
-        onChanged: (WaitressEntity? newValue) {
+        onChanged: (Waitress? newValue) {
           Mixpanel.instance.track("Change Waitress", properties: {
             "Old Value": posController.waitressCurrentId,
             "New Value": newValue?.id
