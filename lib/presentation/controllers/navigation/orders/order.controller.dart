@@ -31,17 +31,10 @@ class OrdersController extends GetxController {
   final waitress = List<Waitress>.empty().obs;
   RxString currentOrderNo = "".obs;
   DateTime dateTime = DateTime.now();
-  final user = AppHelpersCommon.getUserInLocalStorage();
+  static final user = AppHelpersCommon.getUserInLocalStorage();
   bool monuted = false;
-
   final posController = Get.find<PosController>();
-
   final tajiriSdk = TajiriSDK.instance;
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   @override
   void onReady() {
