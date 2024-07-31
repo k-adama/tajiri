@@ -104,7 +104,7 @@ class _EditWaitressScreenState extends State<EditWaitressScreen> {
                       radius: 5,
                       onPressed: () {
                         print(waitressController.selectedGender);
-                        _waitressController.updateWaitressName(
+                        _waitressController.updateWaitress(
                             context, waitressController.waitressId!);
                       },
                     ),

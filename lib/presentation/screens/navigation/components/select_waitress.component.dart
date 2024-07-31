@@ -29,8 +29,8 @@ class _SelectWaitressComponentState extends State<SelectWaitressComponent> {
       return SelectDropDownButton<Waitress>(
         value: waitressController.selectedWaitress.value,
         containerColor: posController.containerColor,
-        items: waitressController.waitress.value.map((Waitress item) {
-          int index = waitressController.waitress.value.indexOf(item);
+        items: waitressController.waitressList.value.map((Waitress item) {
+          int index = waitressController.waitressList.value.indexOf(item);
           return DropdownMenuItem<Waitress>(
             value: item,
             child: Container(
@@ -66,7 +66,7 @@ class _SelectWaitressComponentState extends State<SelectWaitressComponent> {
           });
           setState(() {
             waitressController.selectedWaitress.value = newValue!;
-            int index = waitressController.waitress.indexOf(newValue);
+            int index = waitressController.waitressList.indexOf(newValue);
             posController.containerColor =
                 Style.colors[index % Style.colors.length];
           });

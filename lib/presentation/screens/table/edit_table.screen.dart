@@ -100,7 +100,7 @@ class _EditTableScreenState extends State<EditTableScreen> {
                       isLoadingColor: Style.secondaryColor,
                       radius: 5,
                       onPressed: () {
-                        _tableController.updateTableName(
+                        _tableController.updateTable(
                             context, tableController.tableId!);
                       },
                     ),
@@ -117,7 +117,7 @@ class _EditTableScreenState extends State<EditTableScreen> {
                       isLoadingColor: Style.secondaryColor,
                       radius: 5,
                       onPressed: () {
-                        _tableController.deleteTableName(
+                        _tableController.deleteTable(
                             context, tableController.tableId!);
                       },
                     ),

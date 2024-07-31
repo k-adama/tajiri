@@ -14,15 +14,13 @@ class WaitressController extends GetxController {
   bool listingEnable = true;
   String? waitressId;
   late Waitress newWaitress;
-  final waitress = List<Waitress>.empty().obs;
-  final waitressInit = List<Waitress>.empty().obs;
-  final waitressById = List<Waitress>.empty().obs;
+  final waitressList = List<Waitress>.empty().obs;
   Rx<Waitress?> selectedWaitress = Rx<Waitress?>(null);
   static final user = AppHelpersCommon.getUserInLocalStorage();
   final restaurantId = user?.restaurantId;
 
   final tajiriSdk = TajiriSDK.instance;
-  
+
   @override
   void onReady() async {
     fetchWaitress();
@@ -41,8 +39,7 @@ class WaitressController extends GetxController {
         isLoadingCreateWaitress = true;
         update();
         final result = await tajiriSdk.waitressesService.getWaitresses();
-        waitress.assignAll(result);
-        waitressInit.assignAll(result);
+        waitressList.assignAll(result);
         isLoadingCreateWaitress = false;
         update();
       } catch (e) {
@@ -52,7 +49,7 @@ class WaitressController extends GetxController {
     }
   }
 
-  Future<void> handleCreateWaitress(
+  Future<void> createWaitress(
       BuildContext context, String? gender, String waitressName) async {
     isLoadingCreateWaitress = true;
     update();
@@ -97,7 +94,7 @@ class WaitressController extends GetxController {
           },
         ),
       );
-      fetchWaitress();
+      fetchWaitressById(createWaitress.id);
       waitressInitialState();
     } catch (e) {
       AppHelpersCommon.showCheckTopSnackBar(
@@ -109,8 +106,7 @@ class WaitressController extends GetxController {
     }
   }
 
-  Future<void> updateWaitressName(
-      BuildContext context, String waitressId) async {
+  Future<void> updateWaitress(BuildContext context, String waitressId) async {
     if (waitressId.isEmpty) return;
     isLoadingUpdateWaitress = true;
     update();
@@ -119,10 +115,9 @@ class WaitressController extends GetxController {
       gender: selectedGender,
     );
     try {
-      await tajiriSdk.waitressesService
+      final result = await tajiriSdk.waitressesService
           .updateWaitress(waitressId, updateWaitressDto);
       isLoadingUpdateWaitress = false;
-      waitressId = "";
       update();
       AppHelpersCommon.showAlertDialog(
         context: context,
@@ -139,7 +134,7 @@ class WaitressController extends GetxController {
           },
         ),
       );
-      fetchWaitress();
+      updateWaitressList(result);
       waitressInitialState();
     } catch (e) {
       isLoadingCreateWaitress = false;
@@ -153,15 +148,13 @@ class WaitressController extends GetxController {
     }
   }
 
-  Future<void> deleteWaitressName(
-      BuildContext context, String waitressId) async {
+  Future<void> deleteWaitress(BuildContext context, String waitressId) async {
     if (waitressId.isEmpty) return;
     isLoadingUpdateWaitress = true;
     update();
 
     await tajiriSdk.waitressesService.deleteWaitress(waitressId);
     isLoadingUpdateWaitress = false;
-    waitressId = "";
     update();
     AppHelpersCommon.showAlertDialog(
       context: context,
@@ -178,9 +171,41 @@ class WaitressController extends GetxController {
         },
       ),
     );
-    waitressId = "";
+    waitressList.removeWhere((element) => element.id == waitressId);
     isLoadingUpdateWaitress = false;
     update();
+  }
+
+  Future<void> fetchWaitressById(String id) async {
+    print("=======fetchWaitressById========");
+    clearSelectWaitress();
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      try {
+        isLoadingCreateWaitress = true;
+        update();
+        final result = await tajiriSdk.waitressesService.getWaitress(id);
+        updateWaitressList(result);
+        isLoadingCreateWaitress = false;
+        update();
+      } catch (e) {
+        isLoadingCreateWaitress = false;
+        update();
+      }
+    }
+  }
+
+  void updateWaitressList(Waitress waitress) {
+    final indexInit =
+        waitressList.indexWhere((table) => table.id == waitress.id);
+    print("update order list $indexInit");
+    if (indexInit != -1) {
+      // Replace the old table with the new table in tablesInit
+      waitressList[indexInit] = waitress;
+    } else {
+      // Add the new table to tableInit if it doesn't exist
+      waitressList.insert(0, waitress);
+    }
   }
 
   void waitressInitialState() {

@@ -111,7 +111,7 @@ class TableController extends GetxController {
             },
           ),
         );
-        fetchTables();
+        fetchTablesById(result.id);
         tableInitialState();
       } catch (e) {
         isLoadingTable = false;
@@ -126,7 +126,7 @@ class TableController extends GetxController {
     }
   }
 
-  Future<void> updateTableName(BuildContext context, String tableId) async {
+  Future<void> updateTable(BuildContext context, String tableId) async {
     final persons = int.tryParse(tableNumberOfPlace);
 
     if (persons == null) {
@@ -144,8 +144,8 @@ class TableController extends GetxController {
     );
 
     try {
-      await tajiriSdk.tablesService.updateTable(tableId, updateTableDto);
-      tableId = "";
+      final result =
+          await tajiriSdk.tablesService.updateTable(tableId, updateTableDto);
       isLoadingEdetingTable = false;
       update();
       AppHelpersCommon.showAlertDialog(
@@ -162,7 +162,7 @@ class TableController extends GetxController {
           },
         ),
       );
-      fetchTables();
+      updateTableList(result);
       tableInitialState();
       isLoadingEdetingTable = false;
       update();
@@ -178,32 +178,73 @@ class TableController extends GetxController {
     }
   }
 
-  Future<void> deleteTableName(BuildContext context, String tableId) async {
+  Future<void> deleteTable(BuildContext context, String tableId) async {
     if (tableId.isEmpty) return;
-    isLoadingDeleteTable = true;
-    update();
+    try {
+      isLoadingDeleteTable = true;
+      update();
 
-    await tajiriSdk.tablesService.deleteTable(tableId);
-    isLoadingDeleteTable = false;
-    tableId = "";
-    update();
-    AppHelpersCommon.showAlertDialog(
-      context: context,
-      canPop: false,
-      child: SuccessfullDialog(
-        haveButton: false,
-        isCustomerAdded: false,
-        title: "Table supprimée",
-        content: "La $tableName a bien été supprimée",
-        svgPicture: "assets/svgs/table 1.svg",
-        redirect: () {
-          Get.close(2);
-        },
-      ),
-    );
-    fetchTables();
-    isLoadingDeleteTable = false;
-    update();
+      await tajiriSdk.tablesService.deleteTable(tableId);
+      isLoadingDeleteTable = false;
+      update();
+      AppHelpersCommon.showAlertDialog(
+        context: context,
+        canPop: false,
+        child: SuccessfullDialog(
+          haveButton: false,
+          isCustomerAdded: false,
+          title: "Table supprimée",
+          content: "La $tableName a bien été supprimée",
+          svgPicture: "assets/svgs/table 1.svg",
+          redirect: () {
+            Get.close(2);
+          },
+        ),
+      );
+      tableListData.removeWhere((element) => element.id == tableId);
+      update();
+    } catch (e) {
+      isLoadingDeleteTable = false;
+      update();
+      print("Error delete table $e");
+    }
+  }
+
+  Future<void> fetchTablesById(String id) async {
+    print("=======fetchTablesById========");
+    clearSelectTable();
+    if (restaurantId == null) {
+      return;
+    }
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      isLoadingTable = true;
+      update();
+      try {
+        isLoadingTable = true;
+        update();
+        final result = await tajiriSdk.tablesService.getTable(id);
+        updateTableList(result);
+        isLoadingTable = false;
+        update();
+      } catch (e) {
+        isLoadingTable = false;
+        update();
+      }
+    }
+  }
+
+  void updateTableList(taj_sdk.Table newTable) {
+    final indexInit =
+        tableListData.indexWhere((table) => table.id == newTable.id);
+    print("update order list $indexInit");
+    if (indexInit != -1) {
+      // Replace the old table with the new table in tablesInit
+      tableListData[indexInit] = newTable;
+    } else {
+      // Add the new table to tableInit if it doesn't exist
+      tableListData.insert(0, newTable);
+    }
   }
 
   void tableInitialState() {
