@@ -18,8 +18,6 @@ class StockController extends GetxController {
   List<StockInventoryEntity> stockInventory = [];
   bool isProductLoading = true;
   bool checkboxstatus = false;
-  String searchProductText = "";
-  int selectIndex = 0;
   static final user = AppHelpersCommon.getUserInLocalStorage();
   final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
   final restaurantId = user?.restaurantId;
@@ -218,17 +216,6 @@ class StockController extends GetxController {
       });
 
     return sortStockList;
-  }
-
-  String convertToDate(dynamic datestring) {
-    DateTime parseToDate;
-    if (datestring is DateTime) {
-      parseToDate = datestring;
-    } else {
-      parseToDate = DateTime.parse(datestring ?? "");
-    }
-    String formattedTime = DateFormat.Hm().format(parseToDate);
-    return formattedTime;
   }
 
   formatDateTime(DateTime date) {
