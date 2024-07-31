@@ -174,6 +174,7 @@ class StockController extends GetxController {
       } else {
         foodsInventory.assignAll(filteredFoods);
       }
+      
       update();
     }
   }
