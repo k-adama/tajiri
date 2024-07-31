@@ -49,10 +49,22 @@ class _SeeStockHistoryComponentState extends State<SeeStockHistoryComponent> {
                           ),
                           Text("${stockController.getTypeMove(stock)} ",
                               style: Style.interBold()),
-                          Text(
-                            "${stockController.getUser(stock)}",
-                            style:
-                                Style.interNormal(color: Style.dark, size: 14),
+                          FutureBuilder<String>(
+                            future: stockController.getUser(stock),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return SizedBox();
+                              } else if (snapshot.hasError) {
+                                return Text('Error');
+                              } else {
+                                return Text(
+                                  snapshot.data ?? '',
+                                  style: Style.interNormal(
+                                      color: Style.dark, size: 14),
+                                );
+                              }
+                            },
                           ),
                         ],
                       ),

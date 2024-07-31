@@ -29,11 +29,24 @@ class LastStockAddedComponent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text("Dernier approvisionnement"),
-              Text(stockController.lastMove(food.histories).toString(),
-                  style: Style.interSemi(
-                    size: 11,
-                    color: Style.black,
-                  )),
+              FutureBuilder<String>(
+                future: stockController.lastMove(food.histories),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return SizedBox();
+                  } else if (snapshot.hasError) {
+                    return Text('Error');
+                  } else {
+                    return Text(
+                      snapshot.data ?? '',
+                      style: Style.interSemi(
+                        size: 11,
+                        color: Style.black,
+                      ),
+                    );
+                  }
+                },
+              ),
             ],
           ),
           Container(

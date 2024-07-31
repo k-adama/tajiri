@@ -190,7 +190,7 @@ class StockController extends GetxController {
     return supplyUnique[0].addQuantity;
   }
 
-  lastMove(List<InventoryHistory>? stockList) async {
+  Future<String> lastMove(List<InventoryHistory>? stockList) async {
     if (stockList == null) return "";
     List<InventoryHistory> supplyUnique = stockList.map((e) => e).toList()
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
