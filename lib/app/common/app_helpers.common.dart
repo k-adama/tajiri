@@ -88,13 +88,13 @@ class AppHelpersCommon {
   }
 
   static logoutApi() async {
-    HttpService server = HttpService();
+    // HttpService server = HttpService();
     try {
-      final client =
-          server.client(requireAuth: true, requireRestaurantId: false);
-      await client.get(
-        '/auth/logout/',
-      );
+      // final client =
+      //     server.client(requireAuth: true, requireRestaurantId: false);
+      // await client.get(
+      //   '/auth/logout/',
+      // );
       Mixpanel.instance
           .track("Logout", properties: {"Date": DateTime.now().toString()});
       Mixpanel.instance.reset();

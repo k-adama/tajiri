@@ -78,6 +78,7 @@ class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
                                 orderData.status != AppConstants.orderCooking
                                     ? "    En\nCuisine"
                                     : "Prête",
+                            isGrised: !user.canUpdate,
                             buttonColor: Style.secondaryColor,
                             onTap: () {
                               _ordersController.updateOrderStatus(
