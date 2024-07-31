@@ -15,6 +15,7 @@ import 'package:tajiri_pos_mobile/presentation/ui/keyboard_dismisser.ui.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/shimmer/product_appro.shimmer.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/shimmer/product_list.shimmer.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class StockScreen extends StatefulWidget {
   const StockScreen({super.key});
@@ -28,12 +29,12 @@ class _StockScreenState extends State<StockScreen> {
   final StockController stockController = Get.find();
 
   void _onRefresh() async {
-    await stockController.fetchFoods();
+    await stockController.fetchFoodsInventory();
     _controller.refreshCompleted();
   }
 
   void _onLoading() async {
-    await stockController.fetchFoods();
+    await stockController.fetchFoodsInventory();
     _controller.loadComplete();
   }
 
@@ -148,11 +149,12 @@ class _StockScreenState extends State<StockScreen> {
                                       onLoading: _onLoading,
                                       onRefresh: _onRefresh,
                                       child: ProductListApproSaveComponent(
-                                        foods: _stockController.foodsInventory,
+                                        inventoryList:
+                                            _stockController.foodsInventory,
                                         updateQuantity: (int quantity,
-                                                dynamic foodUpdate) =>
+                                                Inventory foodInventory) =>
                                             _stockController.updateQuantity(
-                                                quantity, foodUpdate),
+                                                quantity, foodInventory),
                                       ),
                                     ),
                                   ),
@@ -168,7 +170,7 @@ class _StockScreenState extends State<StockScreen> {
                                   return const ProductApproShimmer();
                                 },
                               )
-                            : _stockController.foods.isEmpty
+                            : _stockController.isProductLoading
                                 ? SvgPicture.asset(
                                     "assets/svgs/empty.svg",
                                     height: 300.h,
@@ -181,7 +183,8 @@ class _StockScreenState extends State<StockScreen> {
                                       onLoading: _onLoading,
                                       onRefresh: _onRefresh,
                                       child: ProductListApproComponent(
-                                          foods: _stockController.foods),
+                                          foods:
+                                              _stockController.foodsInventory),
                                     ),
                                   ),
                       ),

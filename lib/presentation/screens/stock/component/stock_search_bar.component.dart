@@ -9,7 +9,8 @@ class StockSearchBarComponent extends StatefulWidget {
   const StockSearchBarComponent({super.key, required this.checkboxstatus});
 
   @override
-  State<StockSearchBarComponent> createState() => _StockSearchBarComponentState();
+  State<StockSearchBarComponent> createState() =>
+      _StockSearchBarComponentState();
 }
 
 class _StockSearchBarComponentState extends State<StockSearchBarComponent> {
@@ -58,29 +59,30 @@ class _StockSearchBarComponentState extends State<StockSearchBarComponent> {
                   focusNode: searchFocusNode,
                   decoration: InputDecoration(
                     hintText:
-                    isSearchFocused || recherch.text.isNotEmpty ? "" : "",
+                        isSearchFocused || recherch.text.isNotEmpty ? "" : "",
                     prefixIcon: isSearchFocused || recherch.text.isNotEmpty
                         ? null
                         : Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.search, color: Style.titleDark, size: 30,),
-                           SizedBox(width: 10.0.sp),
-                          Text("Rechercher un plat, une boisson ...",
-                              style: Style.interNormal(
-                                  color: Style.dark,
-                                  size: 14.sp
-                              )
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.search,
+                                  color: Style.titleDark,
+                                  size: 30,
+                                ),
+                                SizedBox(width: 10.0.sp),
+                                Text("Rechercher un plat, une boisson ...",
+                                    style: Style.interNormal(
+                                        color: Style.dark, size: 14.sp)),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
                     border: InputBorder.none,
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.r),
-                      borderSide:  BorderSide(
+                      borderSide: BorderSide(
                         color: Style.secondaryColor,
                         width: 1.0.w,
                       ),

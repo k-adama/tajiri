@@ -5,9 +5,10 @@ import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/stock/stock.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/custom_network_image.ui.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
+import 'package:tajiri_sdk/src/models/inventory.model.dart';
 
 class StockModalBodyComponent extends StatefulWidget {
-  Product food;
+  Inventory food;
   StockModalBodyComponent({super.key, required this.food});
 
   @override
@@ -42,13 +43,13 @@ class _StockModalBodyComponentState extends State<StockModalBodyComponent> {
           child: Column(
             children: [
               CustomNetworkImageUi(
-                url: widget.food.imageUrl ?? "",
+                url: widget.food.imageUrl,
                 height: 70,
                 width: 70,
                 radius: 3,
               ),
               Text(
-                widget.food?.name ?? "",
+                widget.food.name,
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
@@ -173,8 +174,9 @@ class _StockModalBodyComponentState extends State<StockModalBodyComponent> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 Text(
-                  "${stockController.lastMove(widget.food.Stock)}",
-                ) // TODO : STOCK model
+                  "${stockController.lastMove(widget.food.histories)}",
+                )
+                // TODO : STOCK model
               ],
             ),
           ),
@@ -192,14 +194,14 @@ class _StockModalBodyComponentState extends State<StockModalBodyComponent> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Dernier Approvisionnement ",
+                  "Dernier Approvisionnement",
                   style: TextStyle(
                       color: Style.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 25),
                 ),
-                Text(
-                  "${stockController.lastSupply(widget.food.Stock)}",
+                 Text(
+                  "${stockController.lastSupply(widget.food.histories)}",
                   style: const TextStyle(
                       color: Style.secondaryColor,
                       fontWeight: FontWeight.bold,

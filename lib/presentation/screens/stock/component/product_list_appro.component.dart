@@ -6,9 +6,11 @@ import 'package:tajiri_pos_mobile/app/services/local_storage.service.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/stock/component/stock_products_modal.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/custom_network_image.ui.dart';
+import 'package:tajiri_sdk/src/models/product.model.dart' as taj_sdk;
+import 'package:tajiri_sdk/src/models/inventory.model.dart';
 
 class ProductListApproComponent extends StatefulWidget {
-  List<Product> foods;
+  List<Inventory> foods;
   ProductListApproComponent({super.key, required this.foods});
 
   @override
@@ -34,14 +36,14 @@ class _ProductListApproComponentState extends State<ProductListApproComponent> {
               scrollDirection: Axis.vertical,
               itemCount: widget.foods.length,
               itemBuilder: (BuildContext context, int index) {
-                final food = widget.foods[index];
+                final product = widget.foods[index];
                 return ProductApproComponent(
-                    food: food,
+                    product: product,
                     onTap: () {
                       AppHelpersCommon.showCustomModalBottomSheet(
                         context: context,
                         modal: StockProductModalComponent(
-                          food: food,
+                          product: product,
                         ),
                         isDarkMode: false,
                         isDrag: true,
@@ -58,10 +60,10 @@ class _ProductListApproComponentState extends State<ProductListApproComponent> {
 }
 
 class ProductApproComponent extends StatelessWidget {
-  final Product food;
+  final Inventory product;
   final VoidCallback onTap;
   const ProductApproComponent(
-      {super.key, required this.food, required this.onTap});
+      {super.key, required this.product, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +85,7 @@ class ProductApproComponent extends StatelessWidget {
                 child: Row(
                   children: [
                     CustomNetworkImageUi(
-                      url: food.imageUrl ?? "",
+                      url: product.imageUrl,
                       height: 60.h,
                       width: 60.w,
                       radius: 10,
@@ -98,13 +100,13 @@ class ProductApproComponent extends StatelessWidget {
                           SizedBox(
                             width: size.width - 250,
                             child: Text(
-                              food.name ?? "",
+                              product.name,
                               style: Style.interBold(),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           Text(
-                            food.isAvailable == true
+                            product.isAvailable == true
                                 ? "Disponible"
                                 : "Indisponible",
                             style: Style.interNormal(color: Style.dark),
@@ -123,7 +125,7 @@ class ProductApproComponent extends StatelessWidget {
                     borderRadius: BorderRadius.circular(60)),
                 child: Center(
                   child: Text(
-                    food.quantity.toString(),
+                    product.quantity.toString(),
                     style: Style.interBold(
                       size: 14.sp,
                       color: Style.black,
