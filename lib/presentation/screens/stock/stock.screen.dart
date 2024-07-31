@@ -13,7 +13,6 @@ import 'package:tajiri_pos_mobile/presentation/screens/stock/component/stock_car
 import 'package:tajiri_pos_mobile/presentation/screens/stock/component/stock_search_bar.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/keyboard_dismisser.ui.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/shimmer/product_appro.shimmer.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/shimmer/product_list.shimmer.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
@@ -183,7 +182,7 @@ class _StockScreenState extends State<StockScreen> {
                                       onLoading: _onLoading,
                                       onRefresh: _onRefresh,
                                       child: ProductListApproComponent(
-                                          foods:
+                                          foodInventory:
                                               _stockController.foodsInventory),
                                     ),
                                   ),

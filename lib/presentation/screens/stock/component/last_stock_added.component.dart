@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/stock/stock.controller.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class LastStockAddedComponent extends StatelessWidget {
   final Inventory food;
   final Size size;
-  LastStockAddedComponent({super.key, required this.food, required this.size});
+  LastStockAddedComponent({
+    super.key,
+    required this.food,
+    required this.size,
+  });
 
   final StockController stockController = Get.find();
   @override

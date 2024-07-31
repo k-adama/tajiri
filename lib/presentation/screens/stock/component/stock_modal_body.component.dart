@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/stock/stock.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/custom_network_image.ui.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
 import 'package:tajiri_sdk/src/models/inventory.model.dart';
 
 class StockModalBodyComponent extends StatefulWidget {
-  Inventory food;
-  StockModalBodyComponent({super.key, required this.food});
+  Inventory foodInventory;
+  StockModalBodyComponent({super.key, required this.foodInventory});
 
   @override
   State<StockModalBodyComponent> createState() =>
@@ -33,7 +32,7 @@ class _StockModalBodyComponentState extends State<StockModalBodyComponent> {
 
     final StockController stockController = Get.find();
     @override
-    int quantity = widget.food.quantity ?? 0;
+    int quantity = widget.foodInventory.quantity ?? 0;
     int addValue = quantity + ajustementStock;
     return Column(
       children: [
@@ -43,13 +42,13 @@ class _StockModalBodyComponentState extends State<StockModalBodyComponent> {
           child: Column(
             children: [
               CustomNetworkImageUi(
-                url: widget.food.imageUrl,
+                url: widget.foodInventory.imageUrl,
                 height: 70,
                 width: 70,
                 radius: 3,
               ),
               Text(
-                widget.food.name,
+                widget.foodInventory.name,
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
@@ -174,7 +173,7 @@ class _StockModalBodyComponentState extends State<StockModalBodyComponent> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 Text(
-                  "${stockController.lastMove(widget.food.histories)}",
+                  "${stockController.lastMove(widget.foodInventory.histories)}",
                 )
                 // TODO : STOCK model
               ],
@@ -201,7 +200,7 @@ class _StockModalBodyComponentState extends State<StockModalBodyComponent> {
                       fontSize: 25),
                 ),
                  Text(
-                  "${stockController.lastSupply(widget.food.histories)}",
+                  "${stockController.lastSupply(widget.foodInventory.histories)}",
                   style: const TextStyle(
                       color: Style.secondaryColor,
                       fontWeight: FontWeight.bold,

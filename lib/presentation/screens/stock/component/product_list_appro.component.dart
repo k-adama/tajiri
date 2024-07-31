@@ -3,15 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/services/local_storage.service.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/stock/component/stock_products_modal.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/custom_network_image.ui.dart';
-import 'package:tajiri_sdk/src/models/product.model.dart' as taj_sdk;
 import 'package:tajiri_sdk/src/models/inventory.model.dart';
 
 class ProductListApproComponent extends StatefulWidget {
-  List<Inventory> foods;
-  ProductListApproComponent({super.key, required this.foods});
+  List<Inventory> foodInventory;
+  ProductListApproComponent({super.key, required this.foodInventory});
 
   @override
   State<ProductListApproComponent> createState() =>
@@ -34,16 +32,16 @@ class _ProductListApproComponentState extends State<ProductListApproComponent> {
             child: ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              itemCount: widget.foods.length,
+              itemCount: widget.foodInventory.length,
               itemBuilder: (BuildContext context, int index) {
-                final product = widget.foods[index];
+                final product = widget.foodInventory[index];
                 return ProductApproComponent(
                     product: product,
                     onTap: () {
                       AppHelpersCommon.showCustomModalBottomSheet(
                         context: context,
                         modal: StockProductModalComponent(
-                          product: product,
+                          foodInventory: product,
                         ),
                         isDarkMode: false,
                         isDrag: true,

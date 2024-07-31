@@ -174,7 +174,7 @@ class StockController extends GetxController {
       } else {
         foodsInventory.assignAll(filteredFoods);
       }
-      
+
       update();
     }
   }
@@ -190,7 +190,7 @@ class StockController extends GetxController {
     return supplyUnique[0].addQuantity;
   }
 
-  Future<String> lastMove(List<InventoryHistory>? stockList) async {
+  lastMove(List<InventoryHistory>? stockList) async {
     if (stockList == null) return "";
     List<InventoryHistory> supplyUnique = stockList.map((e) => e).toList()
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
@@ -198,7 +198,7 @@ class StockController extends GetxController {
     if (supplyUnique.isEmpty) return "0";
 
     InventoryHistory value = supplyUnique[0];
-    String time = convertToDate(value.createdAt);
+    String time = formatDateTime(value.createdAt);
 
     String? userId = value.userId;
     // Get Staff
@@ -228,6 +228,11 @@ class StockController extends GetxController {
       parseToDate = DateTime.parse(datestring ?? "");
     }
     String formattedTime = DateFormat.Hm().format(parseToDate);
+    return formattedTime;
+  }
+
+  formatDateTime(DateTime date) {
+    String formattedTime = DateFormat.Hm().format(date);
     return formattedTime;
   }
 

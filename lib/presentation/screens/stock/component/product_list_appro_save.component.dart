@@ -46,10 +46,8 @@ class _ProductListApproSaveComponentState
                       itemCount: widget.inventoryList.length,
                       itemBuilder: (BuildContext context, int index) {
                         final foodInventory = widget.inventoryList[index];
-                       // int addValue = foodInventory.quantity;
                         return ProductApproCardComponent(
-                          food: foodInventory,
-                          //addValue: addValue,
+                          foodInventory: foodInventory,
                           onChanged: (change) {
                             widget.updateQuantity(int.parse(change), foodInventory);
                           },
