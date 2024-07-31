@@ -6,11 +6,10 @@ import 'package:get/route_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/table.entiy.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/table/table.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/table/components/custom_table.component.dart';
-
+import 'package:tajiri_sdk/src/models/table.model.dart' as taj_sdk;
 class TablesBoardComponent extends StatefulWidget {
   const TablesBoardComponent({super.key});
 
@@ -101,7 +100,7 @@ class _TablesBoardComponentState extends State<TablesBoardComponent> {
     );
   }
 
-  void _navigateToEditTable(TableEntity tableModel) {
+  void _navigateToEditTable(taj_sdk.Table tableModel) {
     final String tableId = tableModel.id.toString();
     final String tableName = tableModel.name.toString();
     final String tableDescription = tableModel.description.toString();
