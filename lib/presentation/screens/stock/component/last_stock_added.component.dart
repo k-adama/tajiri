@@ -32,19 +32,13 @@ class LastStockAddedComponent extends StatelessWidget {
               FutureBuilder<String>(
                 future: stockController.lastMove(food.histories),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return SizedBox();
-                  } else if (snapshot.hasError) {
-                    return Text('Error');
-                  } else {
-                    return Text(
-                      snapshot.data ?? '',
-                      style: Style.interSemi(
-                        size: 11,
-                        color: Style.black,
-                      ),
-                    );
-                  }
+                  return Text(
+                    snapshot.data ?? '',
+                    style: Style.interSemi(
+                      size: 11,
+                      color: Style.black,
+                    ),
+                  );
                 },
               ),
             ],

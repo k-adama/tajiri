@@ -203,7 +203,7 @@ class StockController extends GetxController {
     Staff staff = await tajiriSdk.staffService.getStaff(userId);
     if (staff.lastname.isEmpty || staff.firstname.isEmpty) return '$time ';
 
-    return '$time par ${staff.lastname} ${staff.lastname}';
+    return '$time par ${staff.lastname} ${staff.firstname}';
   }
 
   List<InventoryHistory>? getSortList(List<InventoryHistory>? stockList) {
