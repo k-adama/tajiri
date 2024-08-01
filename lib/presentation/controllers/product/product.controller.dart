@@ -1,186 +1,259 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:get/instance_manager.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
-import 'package:tajiri_pos_mobile/data/repositories/products/products.repository.dart';
-import 'package:tajiri_pos_mobile/domain/entities/categorie_entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
+import 'package:tajiri_pos_mobile/app/extensions/product.extension.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class ProductsController extends GetxController {
-  final ProductsRepository _productsRepository = ProductsRepository();
   final KIT_ID = "1c755978-ae56-47c6-b8e6-a5e3b03577ce";
   bool isProductLoading = false;
-  List<Product> foods = List<Product>.empty().obs;
-  List<Product> foodsInit = List<Product>.empty().obs;
-  RxList bundlePacks = [].obs;
-  final categories = List<CategoryEntity>.empty().obs;
+  final products = List<Product>.empty().obs;
+  final productsInit = List<Product>.empty().obs;
+  final productsVariantList = List<ProductVariant>.empty().obs;
+  final categories = List<Category>.empty().obs;
   RxString categoryId = 'all'.obs;
-  // RxString categoryNameSelect = ''.obs;
 
   int price = 0;
   String name = "";
   String description = "";
-  int costBuy = 0;
-  int quantity = 0;
-  RxString pickCategoryId = "".obs;
-  RxString pickFoodVariantCategoryId = "".obs;
-  RxString pickFoodId = "".obs;
   bool isAvailable = false;
-  RxString imageUrl = "".obs;
-  RxString imageCompress = "".obs;
   final PosController _posController = Get.find();
-  final foodVariantCategories = List<FoodVariantCategoryEntity>.empty().obs;
-  final user = AppHelpersCommon.getUserInLocalStorage();
+  static final user = AppHelpersCommon.getUserInLocalStorage();
+  final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
+  final restaurantId = user?.restaurantId;
+  final tajiriSdk = TajiriSDK.instance;
 
   @override
   void onReady() async {
-    fetchFoods();
+    Future.wait([
+      fetchProductsAndCategories(),
+    ]);
     super.onReady();
   }
 
-  Future<void> fetchFoods({bool refreshCategorieId = false}) async {
+  Future<void> fetchProductsAndCategories() async {
+    fetchProducts();
+    fetchCategories();
+  }
+
+  Future<void> fetchProducts({bool refreshCategorieId = false}) async {
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isProductLoading = true;
       update();
-      final response = await _productsRepository.getFoods();
-      final responseBundlePacks = await _productsRepository.getBundlePacks();
 
-      response.when(
-        success: (data) async {
-          if (data == null) {
-            return;
+      final result = await tajiriSdk.productsService.getProducts(restaurantId!);
+      products.assignAll(result);
+      productsInit.assignAll(result);
+      if (refreshCategorieId) {
+        setCategoryId("all");
+      }
+      List<ProductVariant> newFoodVariantCategories = [];
+      for (var foodData in products) {
+        final listFoodVariantCategories = foodData.variants;
+
+        if (listFoodVariantCategories.isNotEmpty) {
+          for (var value in listFoodVariantCategories) {
+            newFoodVariantCategories.add(value);
           }
+        }
+      }
 
-          foods.assignAll(data.toList());
-          foodsInit.assignAll(data.toList());
+      productsVariantList.assignAll(newFoodVariantCategories);
 
-          bundlePacks.assignAll(responseBundlePacks.data);
-
-          if (refreshCategorieId) {
-            setCategoryId("all");
-          }
-
-          isProductLoading = false;
-          update();
-
-          final newCategories = data
-              .where((e) {
-                return e.category != null;
-              })
-              .map((e) => e.category!)
-              .toSet()
-              .toList();
-
-          newCategories.insert(
-            0,
-            CategoryEntity(
-              id: "all",
-              name: "Tout",
-              imageUrl: '🗂️',
-            ),
-          );
-          newCategories.insert(
-            newCategories.length,
-            CategoryEntity(
-              id: KIT_ID,
-              name: "Packs de vente",
-              imageUrl: '🎁',
-            ),
-          );
-          categories.assignAll(newCategories);
-
-          List<FoodVariantCategoryEntity> newFoodVariantCategories = [];
-
-          for (var foodData in data) {
-            final listFoodVariantCategories = foodData.foodVariantCategory;
-
-            if (listFoodVariantCategories!.isNotEmpty) {
-              for (var value in listFoodVariantCategories) {
-                newFoodVariantCategories.add(value);
-              }
-            }
-          }
-
-          foodVariantCategories.assignAll(newFoodVariantCategories);
-          update();
-        },
-        failure: (failure, status) {
-          isProductLoading = false;
-          update();
-        },
-      );
+      isProductLoading = false;
+      update();
     }
   }
 
-  Future<void> updateFood(
-      BuildContext context, Product foodData, bool isPrice) async {
+  Future<void> fetchCategories() async {
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isProductLoading = true;
       update();
-      final data = {
-        "name": name == "" ? foodData.name : name,
-        "description": description == "" ? foodData.description : description,
-        "price": price == 0 ? foodData.price : price,
-        "costBuy": costBuy == 0 ? 0 : costBuy,
-        "isFeatured": true,
-        "quantity": quantity == 0 ? foodData.quantity : quantity,
-        "isAvailable": isAvailable,
-        "categoryId": pickCategoryId.value == ""
-            ? foodData.categoryId
-            : pickCategoryId.value,
-        "imageUrl": imageUrl.value == "" ? foodData.imageUrl : imageUrl.value,
-      };
-      final response = await _productsRepository.updateFood(data, foodData.id!);
 
-      response.when(
-        success: (data) async {
-          pickCategoryId.value = "";
-          imageUrl.value = "";
-          imageCompress.value = "";
-          _posController.fetchProducts();
-          isProductLoading = false;
-          update();
-          AppHelpersCommon.showAlertDialog(
-            context: context,
-            canPop: false,
-            child: SuccessfullDialog(
-              haveButton: false,
-              isCustomerAdded: true,
-              title: isPrice
-                  ? "Le prix a été modifié avec succès!"
-                  : getAvailableMessage()['title'],
-              content: isPrice ? "" : getAvailableMessage()['content'],
-              svgPicture: isPrice
-                  ? "assets/svgs/icon_price_tag.svg"
-                  : getAvailableMessage()['image'],
-              redirect: () {
-                if (isPrice) {
-                  Get.close(3);
-                } else {
-                  Get.close(2);
-                }
-                fetchFoods(refreshCategorieId: true);
-              },
-            ),
-          );
-          update();
-        },
-        failure: (failure, status) {
-          isProductLoading = false;
-          update();
-        },
+      final newCategories =
+          await tajiriSdk.categoriesService.getCategories(restaurantId!);
+      newCategories.insert(
+        0,
+        Category(
+          id: "all",
+          name: "Tout",
+          imageUrl: '🗂️',
+          restaurantId: '',
+          mainCategoryId: '',
+        ),
       );
+      newCategories.insert(
+        newCategories.length,
+        Category(
+          id: KIT_ID,
+          name: "Packs de vente",
+          imageUrl: '🎁',
+          restaurantId: '',
+          mainCategoryId: '',
+        ),
+      );
+      categories.assignAll(newCategories);
+      handleFilter("all", "all");
+      isProductLoading = false;
+      update();
     }
+  }
+
+  Future<void> updateFoodPrice(
+      BuildContext context, Product product, bool isPrice) async {
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      isProductLoading = true;
+      update();
+      UpdateProductDto updateProductDto = UpdateProductDto(
+        price: price == 0 ? product.price : price,
+        isAvailable: isAvailable,
+      );
+      try {
+        await tajiriSdk.productsService
+            .updateProduct(product.id, updateProductDto);
+        _posController.fetchProducts();
+        AppHelpersCommon.showAlertDialog(
+          context: context,
+          canPop: false,
+          child: SuccessfullDialog(
+            haveButton: false,
+            isCustomerAdded: true,
+            title: isPrice
+                ? "Le prix a été modifié avec succès!"
+                : getAvailableMessage()['title'],
+            content: isPrice ? "" : getAvailableMessage()['content'],
+            svgPicture: isPrice
+                ? "assets/svgs/icon_price_tag.svg"
+                : getAvailableMessage()['image'],
+            redirect: () {
+              if (isPrice) {
+                Get.close(3);
+              } else {
+                Get.close(2);
+              }
+              fetchProducts(refreshCategorieId: true);
+            },
+          ),
+        );
+        update();
+        price = 0;
+      } catch (e) {
+        AppHelpersCommon.showCheckTopSnackBar(
+          context,
+          e.toString(),
+        );
+      }
+      isProductLoading = false;
+      update();
+    }
+  }
+
+  Future<void> updateFoodVariantPrice(
+      BuildContext context, ProductVariant productVariant) async {
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      isProductLoading = true;
+      update();
+      UpdateProductVariantDto updateProductVariantDto = UpdateProductVariantDto(
+        price: price == 0 ? productVariant.price : price,
+      );
+
+      try {
+        await tajiriSdk.productVariantsService
+            .updateVariant(productVariant.id, updateProductVariantDto);
+        _posController.fetchProducts();
+        AppHelpersCommon.showAlertDialog(
+          context: context,
+          canPop: false,
+          child: SuccessfullDialog(
+            haveButton: false,
+            isCustomerAdded: true,
+            title: "Le prix a été modifié avec succès!",
+            content: "",
+            svgPicture: "assets/svgs/icon_price_tag.svg",
+            redirect: () {
+              Get.close(3);
+              fetchProducts(refreshCategorieId: true);
+            },
+          ),
+        );
+        update();
+        price = 0;
+      } catch (e) {
+        AppHelpersCommon.showCheckTopSnackBar(
+          context,
+          e.toString(),
+        );
+      }
+      isProductLoading = false;
+      update();
+    }
+  }
+
+  void setPrice(String text) {
+    price = int.parse(text);
+  }
+
+  void setIsvalaible(bool text) {
+    isAvailable = text;
+  }
+
+  void setCategoryId(String id) {
+    categoryId.value = id;
+    update();
+  }
+
+  void handleFilter(String categoryId, String categoryName) {
+    setCategoryId(categoryId);
+
+    if (categoryId == 'all') {
+      products.assignAll(productsInit);
+      update();
+      Mixpanel.instance.track("POS Category Filter", properties: {
+        "Category Name": categoryName,
+        "Number of Search Results": products.length,
+        "Number of Out of Stock":
+            products.where((food) => food.quantity == 0).length,
+        "Number of products with variants":
+            products.where((food) => food.variants.isNotEmpty).length
+      });
+      return;
+    }
+
+    if (categoryId == KIT_ID) {
+      final newData = productsInit.where((item) => item.isBundle).toList();
+      products.assignAll(newData);
+      update();
+
+      Mixpanel.instance.track("POS Category Filter", properties: {
+        "Category Name": categoryName,
+        "Number of Search Results": newData.length,
+        "Number of Out of Stock": 0,
+        "Number of products with variants": 0
+      });
+      return;
+    }
+
+    final newData =
+        productsInit.where((item) => item.categoryId == categoryId).toList();
+    products.assignAll(newData);
+    update();
+
+    Mixpanel.instance.track("POS Category Filter", properties: {
+      "Category Name": categoryName,
+      "Number of Search Results": newData.length,
+      "Number of Out of Stock":
+          newData.where((food) => food.quantity == 0).length,
+      "Number of products with variants":
+          newData.where((food) => food.variants.isNotEmpty).length
+    });
   }
 
   getAvailableMessage() {
@@ -199,129 +272,5 @@ class ProductsController extends GetxController {
       };
       return data;
     }
-  }
-
-  Future<void> updateFoodVariant(
-      BuildContext context, ProductFoodVariant foodVariant) async {
-    final connected = await AppConnectivityService.connectivity();
-    if (connected) {
-      isProductLoading = true;
-      update();
-      final data = {
-        "name": name == "" ? foodVariant.name : name,
-        "price": price == 0 ? foodVariant.price : price,
-        "quantity": quantity == 0 ? foodVariant.quantity : quantity,
-        "managementStock": true,
-        "foodVariantCategoryId": foodVariant.foodVariantCategoryId,
-      };
-      final response =
-          await _productsRepository.updateFoodVariant(data, foodVariant.id!);
-
-      response.when(
-        success: (data) async {
-          pickFoodVariantCategoryId.value = "";
-          _posController.fetchProducts();
-          isProductLoading = false;
-          AppHelpersCommon.showAlertDialog(
-            context: context,
-            canPop: false,
-            child: SuccessfullDialog(
-              haveButton: false,
-              isCustomerAdded: true,
-              title: "Le prix a été modifié avec succès!",
-              content: "",
-              svgPicture: "assets/svgs/icon_price_tag.svg",
-              redirect: () {
-                Get.close(3);
-                fetchFoods(refreshCategorieId: true);
-              },
-            ),
-          );
-          update();
-        },
-        failure: (failure, status) {
-          isProductLoading = false;
-          update();
-        },
-      );
-    }
-  }
-
-  void setPrice(String text) {
-    price = int.parse(text);
-  }
-
-  void setIsvalaible(bool text) {
-    isAvailable = text;
-  }
-
-  void setCategoryId(String id) {
-    categoryId.value = id;
-    update();
-  }
-
-  // void setCategoryNameSelect(String name) {
-  //   categoryNameSelect.value = name;
-  //   update();
-  // }
-
-  void handleFilter(String categoryId, String categoryName) {
-    setCategoryId(categoryId);
-    // setCategoryNameSelect(categoryName);
-
-    if (categoryId == 'all') {
-      foods.assignAll(foodsInit);
-      update();
-      Mixpanel.instance.track("POS Category Filter", properties: {
-        "Category Name": categoryName,
-        "Number of Search Results": foods.length,
-        "Number of Out of Stock":
-            foods.where((food) => food.quantity == 0).length,
-        "Number of products with variants": foods
-            .where((food) =>
-                food.foodVariantCategory != null &&
-                food.foodVariantCategory!.isNotEmpty)
-            .length
-      });
-      return;
-    }
-
-    if (categoryId == KIT_ID) {
-      final transformedList = bundlePacks.map((bundle) {
-        return {
-          ...bundle,
-          'type': 'bundle',
-        };
-      }).toList();
-      final foodData =
-          transformedList.map((item) => Product.fromJson(item)).toList();
-      foods.assignAll(foodData);
-      update();
-
-      Mixpanel.instance.track("POS Category Filter", properties: {
-        "Category Name": categoryName,
-        "Number of Search Results": transformedList.length,
-        "Number of Out of Stock": 0,
-        "Number of products with variants": 0
-      });
-      return;
-    }
-
-    final newData =
-        foodsInit.where((item) => item.categoryId == categoryId).toList();
-    foods.assignAll(newData);
-    update();
-
-    Mixpanel.instance.track("POS Category Filter", properties: {
-      "Category Name": categoryName,
-      "Number of Search Results": newData.length,
-      "Number of Out of Stock":
-          newData.where((food) => food.quantity == 0).length,
-      "Number of products with variants": newData
-          .where((food) =>
-              food.foodVariantCategory != null &&
-              food.foodVariantCategory!.isNotEmpty)
-          .length
-    });
   }
 }

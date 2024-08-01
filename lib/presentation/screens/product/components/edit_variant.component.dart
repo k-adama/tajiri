@@ -4,13 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class EditVariantComponent extends StatefulWidget {
-  final ProductFoodVariant foodVariant;
+  final ProductVariant foodVariant;
   const EditVariantComponent({
     super.key,
     required this.foodVariant,
@@ -87,7 +87,7 @@ class _EditVariantComponentState extends State<EditVariantComponent> {
                       "ProductName": widget.foodVariant.name,
                       "Date": DateTime.now().toString(),
                     });
-                    productsController.updateFoodVariant(
+                    productsController.updateFoodVariantPrice(
                         context, widget.foodVariant);
                   },
                 ),

@@ -5,14 +5,14 @@ import 'package:get/get.dart';
 
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/custom_switch_button.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/custom_network_image.ui.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
+import 'package:tajiri_sdk/src/models/product.model.dart' as taj_sdk;
 
 class EditFoodTabulationComponent extends StatefulWidget {
-  Product foodData;
+  taj_sdk.Product foodData;
   EditFoodTabulationComponent({super.key, required this.foodData});
 
   @override
@@ -43,7 +43,7 @@ class _EditFoodState extends State<EditFoodTabulationComponent> {
                     "Le produit est-il disponible ?",
                     style: Style.interBold(),
                   ),
-                  CustomSwitchButtonComponent(foodData: widget.foodData)
+                  CustomSwitchButtonComponent(product: widget.foodData)
                 ],
               ),
               30.verticalSpace,

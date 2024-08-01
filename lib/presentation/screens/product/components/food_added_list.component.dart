@@ -4,11 +4,11 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_list.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/shimmer/food_list_card.shimmer.dart';
+import 'package:tajiri_sdk/src/models/product.model.dart';
 
 class FoodAddedListComponent extends StatefulWidget {
   const FoodAddedListComponent({super.key});
@@ -27,12 +27,12 @@ class _FoodAddedListComponentState extends State<FoodAddedListComponent> {
   }
 
   void _onRefresh() async {
-    await productsController.fetchFoods();
+    await productsController.fetchProductsAndCategories();
     _controller.refreshCompleted();
   }
 
   void _onLoading() async {
-    await productsController.fetchFoods();
+    await productsController.fetchProductsAndCategories();
     _controller.loadComplete();
   }
 
@@ -44,7 +44,7 @@ class _FoodAddedListComponentState extends State<FoodAddedListComponent> {
       child: Column(
         children: [
           Obx(
-            () => productsController.foods.isEmpty
+            () => productsController.products.isEmpty
                 ? Expanded(
                     child: ListView.builder(
                       itemCount: 10,
@@ -63,19 +63,20 @@ class _FoodAddedListComponentState extends State<FoodAddedListComponent> {
                         onRefresh: _onRefresh,
                         child: ListView.builder(
                           shrinkWrap: false,
-                          itemCount: productsController.foods.length,
+                          itemCount: productsController.products.length,
                           itemBuilder: (BuildContext context, int index) {
-                            Product food = productsController.foods[index];
+                            Product product =
+                                productsController.products[index];
                             return FoodListComponent(
                               onTap: () {
                                 Get.toNamed(Routes.EDIT_FOOD_AND_VARIANT,
-                                    arguments: food);
+                                    arguments: product);
                               },
-                              url: "${food.imageUrl}",
-                              foodName: "${food.name}",
-                              foodQuantity: "${food.quantity}",
-                              foodCategorieName: "${food.category?.name}",
-                              foodPrice: "${food.price ?? 0}",
+                              url: product.imageUrl,
+                              foodName: product.name,
+                              foodQuantity: "${product.quantity}",
+                              foodCategorieName: product.category.name,
+                              foodPrice: "${product.price}",
                             );
                           },
                         ),

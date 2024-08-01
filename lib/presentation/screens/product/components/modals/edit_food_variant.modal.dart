@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_variant.component.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class EditFoodVariantModal extends StatefulWidget {
-  final ProductFoodVariant foodVariant;
-  const EditFoodVariantModal({super.key, required this.foodVariant});
+  final ProductVariant productVariant;
+  const EditFoodVariantModal({super.key, required this.productVariant});
 
   @override
   State<EditFoodVariantModal> createState() => _EditFoodVariantModalState();
@@ -44,7 +44,7 @@ class _EditFoodVariantModalState extends State<EditFoodVariantModal> {
                     ),
                   ),
                   EditVariantComponent(
-                    foodVariant: widget.foodVariant,
+                    foodVariant: widget.productVariant,
                   )
                 ],
               ),

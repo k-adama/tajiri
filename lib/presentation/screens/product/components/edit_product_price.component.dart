@@ -4,14 +4,14 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_product_price_button.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
+import 'package:tajiri_sdk/src/models/product.model.dart';
 
 class EditProductPriceComponent extends StatefulWidget {
-  final Product foodData;
-  const EditProductPriceComponent({super.key, required this.foodData});
+  final Product product;
+  const EditProductPriceComponent({super.key, required this.product});
 
   @override
   State<EditProductPriceComponent> createState() => _EditProductPriceState();
@@ -79,12 +79,12 @@ class _EditProductPriceState extends State<EditProductPriceComponent> {
                   textColor: Style.secondaryColor,
                   onPressed: () {
                     Mixpanel.instance.track("Update price", properties: {
-                      "ProductID": widget.foodData.id,
-                      "ProductName": widget.foodData.name,
+                      "ProductID": widget.product.id,
+                      "ProductName": widget.product.name,
                       "Date": DateTime.now().toString(),
                     });
-                    productsController.updateFood(
-                        context, widget.foodData, true);
+                    productsController.updateFoodPrice(
+                        context, widget.product, true);
                   },
                 ),
                 EditProductPriceButtonComponent(

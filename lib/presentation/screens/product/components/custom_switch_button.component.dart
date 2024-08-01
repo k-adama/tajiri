@@ -3,12 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.controller.dart';
+import 'package:tajiri_sdk/src/models/product.model.dart';
 
 class CustomSwitchButtonComponent extends StatefulWidget {
-  final Product foodData;
-  const CustomSwitchButtonComponent({super.key, required this.foodData});
+  final Product product;
+  const CustomSwitchButtonComponent({super.key, required this.product});
 
   @override
   State<CustomSwitchButtonComponent> createState() =>
@@ -21,7 +21,7 @@ class _CustomSwitchButtonState extends State<CustomSwitchButtonComponent> {
   @override
   void initState() {
     super.initState();
-    _productsController.setIsvalaible(widget.foodData.isAvailable ?? false);
+    _productsController.setIsvalaible(widget.product.isAvailable ?? false);
   }
 
   @override
@@ -45,8 +45,8 @@ class _CustomSwitchButtonState extends State<CustomSwitchButtonComponent> {
                 //height: 50.h,
                 onChanged: (b) {
                   setState(() => productsController.setIsvalaible(b));
-                  productsController.updateFood(
-                      context, widget.foodData, false);
+                  productsController.updateFoodPrice(
+                      context, widget.product, false);
                 },
 
                 styleBuilder: (b) => ToggleStyle(

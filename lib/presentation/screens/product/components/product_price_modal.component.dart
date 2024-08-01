@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_product_price.component.dart';
+import 'package:tajiri_sdk/src/models/product.model.dart' as taj_sdk;
 
 class ProductPriceModalComponent extends StatefulWidget {
-  final Product foodData;
+  final taj_sdk.Product foodData;
   const ProductPriceModalComponent({super.key, required this.foodData});
 
   @override
@@ -46,7 +46,7 @@ class _ProductPriceModalComponentState
                     ),
                   ),
                   EditProductPriceComponent(
-                    foodData: widget.foodData,
+                    product: widget.foodData,
                   )
                 ],
               ),
