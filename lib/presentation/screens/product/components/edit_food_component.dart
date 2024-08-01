@@ -87,7 +87,7 @@ class _EditFoodAndVariantComponentState
                                 AppHelpersCommon.showCustomModalBottomSheet(
                                   context: context,
                                   modal: ProductPriceModalComponent(
-                                    foodData: foodData!,
+                                    product: foodData!,
                                   ),
                                   isDarkMode: false,
                                   isDrag: true,
@@ -102,7 +102,7 @@ class _EditFoodAndVariantComponentState
               ),
               EditFoodTabulation(
                 editFoodComponent: EditFoodTabulationComponent(
-                  foodData: foodData!,
+                  product: foodData!,
                 ),
                 foodVariantAddedListComponent: FoodVariantAddedList(
                   foodVariantCategory: foodData?.variants,
