@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/custom_switch_button.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/custom_network_image.ui.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
+import 'package:tajiri_sdk/src/models/product.model.dart';
 
 class EditFoodTabulationComponent extends StatefulWidget {
-  Product foodData;
-  EditFoodTabulationComponent({super.key, required this.foodData});
+  Product product;
+  EditFoodTabulationComponent({super.key, required this.product});
 
   @override
   State<EditFoodTabulationComponent> createState() => _EditFoodState();
@@ -30,7 +29,7 @@ class _EditFoodState extends State<EditFoodTabulationComponent> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomNetworkImageUi(
-                url: widget.foodData.imageUrl!,
+                url: widget.product.imageUrl!,
                 width: 80.w,
                 height: 80.h,
                 radius: 10.r,
@@ -43,24 +42,24 @@ class _EditFoodState extends State<EditFoodTabulationComponent> {
                     "Le produit est-il disponible ?",
                     style: Style.interBold(),
                   ),
-                  CustomSwitchButtonComponent(foodData: widget.foodData)
+                  CustomSwitchButtonComponent(product: widget.product)
                 ],
               ),
               30.verticalSpace,
               containerTextField(
-                  "Nom ", "", "${widget.foodData.name}", false, false),
+                  "Nom ", "", "${widget.product.name}", false, false),
               containerTextField("Description du produit ", "",
-                  widget.foodData.description.toString(), false, false),
+                  widget.product.description.toString(), false, false),
               containerTextField(
-                  "Prix", widget.foodData.price.toString(), "", true, true),
+                  "Prix", widget.product.price.toString(), "", true, true),
               containerTextField(
                   "Prix d'achat ",
-                  widget.foodData.price.toString(),
-                  widget.foodData.price.toString(),
+                  widget.product.price.toString(),
+                  widget.product.price.toString(),
                   false,
                   true),
               containerTextField("Catégorie ", "",
-                  "${widget.foodData.category?.name}", false, false),
+                  "${widget.product.category?.name}", false, false),
               containerTextField(
                   "Le produit est-il disponible ", "", "Oui", false, false)
             ],

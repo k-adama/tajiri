@@ -7,9 +7,10 @@ import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.d
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_variant_list.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/shimmer/food_variant_card.shimmer.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class FoodVariantAddedList extends StatefulWidget {
-  final List<FoodVariantCategoryEntity>? foodVariantCategory;
+  final List<ProductVariant>? foodVariantCategory;
   const FoodVariantAddedList({super.key, required this.foodVariantCategory});
 
   @override
@@ -69,10 +70,10 @@ class _FoodVariantAddedListState extends State<FoodVariantAddedList> {
                             shrinkWrap: true,
                             itemCount: widget.foodVariantCategory!.length,
                             itemBuilder: (BuildContext context, int index) {
-                              FoodVariantCategoryEntity foodVariantCategory =
+                              ProductVariant foodVariantCategory =
                                   widget.foodVariantCategory![index];
                               return FoodVariantListComponent(
-                                  foodVariantCategory: foodVariantCategory);
+                                  productVariant: foodVariantCategory);
                             }),
                       ],
                     ),

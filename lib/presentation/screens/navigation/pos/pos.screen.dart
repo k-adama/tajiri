@@ -70,7 +70,7 @@ class _PosScreenState extends State<PosScreen> {
       AppHelpersCommon.showCustomModalBottomSheet(
         context: context,
         modal: FoodVariantModal(
-          food: product,
+          product: product,
         ),
         isDarkMode: false,
         isDrag: true,
@@ -86,7 +86,7 @@ class _PosScreenState extends State<PosScreen> {
       AppHelpersCommon.showCustomModalBottomSheet(
         context: context,
         modal: FoodVariantModal(
-          food: food,
+          product: food,
         ),
         isDarkMode: false,
         isDrag: true,
@@ -106,7 +106,7 @@ class _PosScreenState extends State<PosScreen> {
       AppHelpersCommon.showCustomModalBottomSheet(
         context: context,
         modal: FoodVariantModal(
-          food: food,
+          product: food,
         ),
         isDarkMode: false,
         isDrag: true,
