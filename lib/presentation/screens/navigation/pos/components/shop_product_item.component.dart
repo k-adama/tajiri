@@ -36,7 +36,6 @@ class ShopProductItemComponent extends StatelessWidget {
         borderRadius: BorderRadius.all(
           Radius.circular(10.r),
         ),
-        // backgroundBlendMode: BlendMode.color,
         color: Style.white,
       ),
       child: Padding(
