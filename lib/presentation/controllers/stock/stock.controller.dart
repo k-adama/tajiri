@@ -14,6 +14,7 @@ import 'package:tajiri_sdk/src/dto/inventory.dto.dart';
 
 class StockController extends GetxController {
   late Inventory food;
+  List<Inventory> foodsInventoryInit = [];
   List<Inventory> foodsInventory = [];
   List<StockInventoryEntity> stockInventory = [];
   bool isProductLoading = true;
@@ -37,6 +38,7 @@ class StockController extends GetxController {
       try {
         final inventories = await tajiriSdk.inventoryService.getInventory();
         foodsInventory.assignAll(inventories);
+        foodsInventoryInit.assignAll(inventories);
         isProductLoading = false;
         update();
       } catch (e) {
@@ -162,7 +164,7 @@ class StockController extends GetxController {
       update();
     } else {
       final nameRecherch = search.toLowerCase();
-      final filteredFoods = foodsInventory.where((item) {
+      final filteredFoods = foodsInventoryInit.where((item) {
         final foodName = item.name.toLowerCase();
         return foodName.startsWith(nameRecherch);
       }).toList();
