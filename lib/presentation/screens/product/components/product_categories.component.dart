@@ -43,8 +43,8 @@ class _ProductCategoriesComponentState
                                   productsController.categoryId.value,
                               onTap: () {
                                 productsController.handleFilter(
-                                    selectedCategorie.id!,
-                                    selectedCategorie.name!);
+                                    selectedCategorie.id,
+                                    selectedCategorie.name);
                               },
                               title: selectedCategorie.name,
                             );
