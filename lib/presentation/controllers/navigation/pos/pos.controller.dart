@@ -49,8 +49,6 @@ class PosController extends GetxController {
   RxString emptySearchMessage = "".obs;
   RxList<String> searchResults = <String>[].obs;
 
-  final productsVariantList = List<ProductVariant>.empty().obs;
-
   List<CustomerEntity> customers = List<CustomerEntity>.empty().obs;
   List<CustomerEntity> customerInit = List<CustomerEntity>.empty().obs;
   Rx<CustomerEntity> customer = CustomerEntity().obs;
@@ -104,19 +102,6 @@ class PosController extends GetxController {
       final result = await tajiriSdk.productsService.getProducts(restaurantId!);
       products.assignAll(result);
       productsInit.assignAll(result);
-
-      List<ProductVariant> newFoodVariantCategories = [];
-      for (var foodData in products) {
-        final listFoodVariantCategories = foodData.variants;
-
-        if (listFoodVariantCategories.isNotEmpty) {
-          for (var value in listFoodVariantCategories) {
-            newFoodVariantCategories.add(value);
-          }
-        }
-      }
-
-      productsVariantList.assignAll(newFoodVariantCategories);
 
       isProductLoading.value = false;
       update();
@@ -308,7 +293,7 @@ class PosController extends GetxController {
       discountAmount: 0,
       pinCode: "",
       tax: 0,
-      products: orderProductDto!,
+      products: orderProductDto,
       tableId: checkListingType(user) == ListingType.table
           ? currentOrder?.tableId ?? tableCurrentId
           : null,
@@ -696,8 +681,8 @@ class PosController extends GetxController {
     } else {
       final nameRecherch = search.toLowerCase();
       products.addAll(productsInit.where((item) {
-        final foodName = item.name!.toLowerCase();
-        final categoryName = item.category!.name!.toLowerCase();
+        final foodName = item.name.toLowerCase();
+        final categoryName = item.category.name.toLowerCase();
 
         return foodName.startsWith(nameRecherch) ||
             categoryName.startsWith(nameRecherch);

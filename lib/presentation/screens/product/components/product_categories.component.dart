@@ -21,36 +21,28 @@ class _ProductCategoriesComponentState
         children: [
           productsController.categories.isEmpty
               ? const SizedBox.shrink()
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.all(8.r),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r)),
-                      height: 56.h,
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: productsController.categories.length,
-                          itemBuilder: (context, index) {
-                            final selectedCategorie =
-                                productsController.categories[index];
-                            return CategoryTabBarItemComponent(
-                              isActive: selectedCategorie.id ==
-                                  productsController.categoryId.value,
-                              onTap: () {
-                                productsController.handleFilter(
-                                    selectedCategorie.id,
-                                    selectedCategorie.name);
-                              },
-                              title: selectedCategorie.name,
-                            );
-                          }),
-                    )
-                  ],
+              : Container(
+                  padding: EdgeInsets.all(8.r),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10.r)),
+                  height: 56.h,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: productsController.categories.length,
+                      itemBuilder: (context, index) {
+                        final selectedCategorie =
+                            productsController.categories[index];
+                        return CategoryTabBarItemComponent(
+                          isActive: selectedCategorie.id ==
+                              productsController.categoryId.value,
+                          onTap: () {
+                            productsController.handleFilter(
+                                selectedCategorie.id, selectedCategorie.name);
+                          },
+                          title: selectedCategorie.name,
+                        );
+                      }),
                 )
         ],
       ),

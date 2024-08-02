@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_added_list.component.dart';
@@ -28,18 +29,16 @@ class _ProductScreenState extends State<ProductScreen>
           },
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(top: 22.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const TitleComponent(),
-              const ProductCategorieListComponent(),
-              10.verticalSpace,
-              const FoodAddedListComponent(),
-            ],
-          ),
+      body: Padding(
+        padding: EdgeInsets.only(top: 22.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const TitleComponent(),
+            const ProductCategorieListComponent(),
+            10.verticalSpace,
+            const Expanded(child: FoodAddedListComponent()),
+          ],
         ),
       ),
     );

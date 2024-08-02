@@ -83,7 +83,7 @@ class _EditProductPriceState extends State<EditProductPriceComponent> {
                       "ProductName": widget.product.name,
                       "Date": DateTime.now().toString(),
                     });
-                    productsController.updateFoodPrice(
+                    productsController.updateProductPrice(
                         context, widget.product, true);
                   },
                 ),

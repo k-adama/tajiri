@@ -13,7 +13,6 @@ class ProductsController extends GetxController {
   bool isProductLoading = false;
   final products = List<Product>.empty().obs;
   final productsInit = List<Product>.empty().obs;
-  final productsVariantList = List<ProductVariant>.empty().obs;
   final categories = List<Category>.empty().obs;
   RxString categoryId = 'all'.obs;
 
@@ -43,30 +42,25 @@ class ProductsController extends GetxController {
   Future<void> fetchProducts({bool refreshCategorieId = false}) async {
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
-      isProductLoading = true;
-      update();
+      try {
+        isProductLoading = true;
+        update();
 
-      final result = await tajiriSdk.productsService.getProducts(restaurantId!);
-      products.assignAll(result);
-      productsInit.assignAll(result);
-      if (refreshCategorieId) {
-        setCategoryId("all");
-      }
-      List<ProductVariant> newFoodVariantCategories = [];
-      for (var foodData in products) {
-        final listFoodVariantCategories = foodData.variants;
-
-        if (listFoodVariantCategories.isNotEmpty) {
-          for (var value in listFoodVariantCategories) {
-            newFoodVariantCategories.add(value);
-          }
+        final result =
+            await tajiriSdk.productsService.getProducts(restaurantId!);
+        products.assignAll(result);
+        productsInit.assignAll(result);
+        if (refreshCategorieId) {
+          setCategoryId("all");
         }
+
+        isProductLoading = false;
+        update();
+      } catch (e) {
+        isProductLoading = false;
+        update();
+        print("Fetch product error $e");
       }
-
-      productsVariantList.assignAll(newFoodVariantCategories);
-
-      isProductLoading = false;
-      update();
     }
   }
 
@@ -105,7 +99,7 @@ class ProductsController extends GetxController {
     }
   }
 
-  Future<void> updateFoodPrice(
+  Future<void> updateProductPrice(
       BuildContext context, Product product, bool isPrice) async {
     final connected = await AppConnectivityService.connectivity();
     if (connected) {

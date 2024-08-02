@@ -45,7 +45,7 @@ class _CustomSwitchButtonState extends State<CustomSwitchButtonComponent> {
                 //height: 50.h,
                 onChanged: (b) {
                   setState(() => productsController.setIsvalaible(b));
-                  productsController.updateFoodPrice(
+                  productsController.updateProductPrice(
                       context, widget.product, false);
                 },
 
