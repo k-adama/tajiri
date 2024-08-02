@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
-import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/extensions/staff.extension.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
@@ -14,8 +13,6 @@ class DrawerPageBodyComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = AppHelpersCommon.getUserInLocalStorage();
 
-    /*  bool? isShowStock =
-        user?.role?.permissions?[0].inventory == true ? true : false;*/
     return Column(
       children: [
         ListTile(
@@ -42,7 +39,6 @@ class DrawerPageBodyComponent extends StatelessWidget {
                 },
               )
             : const SizedBox(),
-
         ListTile(
           title: const DrawerBodyListRowComponent(
             name: "Gestion des produits",
@@ -54,7 +50,6 @@ class DrawerPageBodyComponent extends StatelessWidget {
             Get.toNamed(Routes.PRODUCTS);
           },
         ),
-        // if (checkListingType(user) == ListingType.waitress)
         ListTile(
           title: const DrawerBodyListRowComponent(
             name: "Gestion des serveurs",
@@ -66,7 +61,6 @@ class DrawerPageBodyComponent extends StatelessWidget {
             Get.toNamed(Routes.WAITRESS);
           },
         ),
-        //if (checkListingType(user) == ListingType.table)
         ListTile(
           title: const DrawerBodyListRowComponent(
             name: "Gestion des tables",

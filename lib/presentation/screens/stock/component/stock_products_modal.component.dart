@@ -1,15 +1,10 @@
-import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:tajiri_pos_mobile/app/config/constants/user.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/app/services/local_storage.service.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/stock/stock.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/stock/component/last_stock_added.component.dart';
@@ -17,10 +12,11 @@ import 'package:tajiri_pos_mobile/presentation/screens/stock/component/make_ajus
 import 'package:tajiri_pos_mobile/presentation/screens/stock/component/see_history_or_save_button.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/stock/component/see_stock_history.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/custom_network_image.ui.dart';
+import 'package:tajiri_sdk/src/models/inventory.model.dart';
 
 class StockProductModalComponent extends StatefulWidget {
-  Product food;
-  StockProductModalComponent({super.key, required this.food});
+  Inventory foodInventory;
+  StockProductModalComponent({super.key, required this.foodInventory});
 
   @override
   State<StockProductModalComponent> createState() =>
@@ -30,8 +26,6 @@ class StockProductModalComponent extends StatefulWidget {
 class _StockProductModalComponentState
     extends State<StockProductModalComponent> {
   final StockController stockController = Get.find();
-  late dynamic userEncoding;
-  late UserEntity user;
   bool seeHistory = false;
   int ajustementStock = 0;
   int quantity = 0;
@@ -39,9 +33,7 @@ class _StockProductModalComponentState
 
   @override
   void initState() {
-    userEncoding = LocalStorageService.instance.get(UserConstant.keyUser);
-    user = UserEntity.fromJson(jsonDecode(userEncoding));
-    quantity = widget.food.quantity ?? 0;
+    quantity = widget.foodInventory.quantity ?? 0;
     addValue = quantity + ajustementStock;
 
     super.initState();
@@ -140,8 +132,8 @@ class _StockProductModalComponentState
                         ),
                         SeeStockHistoryComponent(
                             seeHistory: seeHistory,
-                            stockList:
-                                stockController.getSortList(widget.food?.Stock))
+                            stockList: stockController
+                                .getSortList(widget.foodInventory.histories))
                       ],
                     ),
                   )
@@ -151,7 +143,7 @@ class _StockProductModalComponentState
                       Stack(
                         children: [
                           CustomNetworkImageUi(
-                            url: widget.food.imageUrl!,
+                            url: widget.foodInventory.imageUrl,
                             height: 300.h,
                             width: double.infinity,
                             radius: 10.r,
@@ -184,7 +176,7 @@ class _StockProductModalComponentState
                                   child: Padding(
                                     padding: const EdgeInsets.all(3.0),
                                     child: Text(
-                                      '${widget.food.price!}'.currencyLong(),
+                                      '${widget.foodInventory.price}'.currencyLong(),
                                       style: Style.interNormal(size: 11),
                                     ),
                                   ),
@@ -194,7 +186,7 @@ class _StockProductModalComponentState
                       ),
                       24.verticalSpace,
                       MakeAjustmentComponent(
-                        food: widget.food,
+                        food: widget.foodInventory,
                         increment: increment,
                         decrement: decrement,
                         addValue: addValue,
@@ -207,9 +199,9 @@ class _StockProductModalComponentState
                           });
                         },
                       ),
-                      LastStockAddedComponent(food: widget.food, size: size),
+                      LastStockAddedComponent(food: widget.foodInventory, size: size),
                       SeeStockOrSaveButtonComponent(
-                        food: widget.food,
+                        food: widget.foodInventory,
                         seeHistory: seeHistory,
                         addValue: addValue,
                         haveSeeHistory: haveSeeHistory,

@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/stock/stock.controller.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class LastStockAddedComponent extends StatelessWidget {
-  final Product food;
+  final Inventory food;
   final Size size;
-  LastStockAddedComponent({super.key, required this.food, required this.size});
+  LastStockAddedComponent({
+    super.key,
+    required this.food,
+    required this.size,
+  });
 
   final StockController stockController = Get.find();
   @override
@@ -25,11 +29,18 @@ class LastStockAddedComponent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text("Dernier approvisionnement"),
-              Text(stockController.lastMove(food.Stock).toString(),
-                  style: Style.interSemi(
-                    size: 11,
-                    color: Style.black,
-                  )),
+              FutureBuilder<String>(
+                future: stockController.lastMove(food.histories),
+                builder: (context, snapshot) {
+                  return Text(
+                    snapshot.data ?? '',
+                    style: Style.interSemi(
+                      size: 11,
+                      color: Style.black,
+                    ),
+                  );
+                },
+              ),
             ],
           ),
           Container(
@@ -40,7 +51,7 @@ class LastStockAddedComponent extends StatelessWidget {
                 borderRadius: BorderRadius.circular(60)),
             child: Center(
               child: Text(
-                stockController.lastSupply(food.Stock).toString(),
+                stockController.lastSupply(food.histories).toString(),
                 style: Style.interBold(
                   size: 14,
                   color: Style.black,

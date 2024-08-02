@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/stock/stock.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 import 'package:get/get.dart';
+import 'package:tajiri_sdk/src/models/inventory.model.dart';
 
 class SeeStockOrSaveButtonComponent extends StatefulWidget {
-  final Product food;
+  final Inventory food;
   bool seeHistory;
   final int addValue;
   VoidCallback haveSeeHistory;

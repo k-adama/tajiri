@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/stock_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/stock/stock.controller.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class SeeStockHistoryComponent extends StatefulWidget {
   bool seeHistory;
-  List<StockDataEnty>? stockList;
+  List<InventoryHistory>? stockList;
   SeeStockHistoryComponent(
       {super.key, required this.seeHistory, required this.stockList});
 
@@ -27,7 +27,7 @@ class _SeeStockHistoryComponentState extends State<SeeStockHistoryComponent> {
         shrinkWrap: true,
         itemCount: widget.stockList?.length ?? 0, // TODO STOCK model
         itemBuilder: (BuildContext context, int index) {
-          final stock = widget.stockList?[index];
+          final stock = widget.stockList![index];
           return Padding(
             padding: EdgeInsets.only(left: 16.r, right: 16.r),
             child: Column(
@@ -49,10 +49,22 @@ class _SeeStockHistoryComponentState extends State<SeeStockHistoryComponent> {
                           ),
                           Text("${stockController.getTypeMove(stock)} ",
                               style: Style.interBold()),
-                          Text(
-                            "${stockController.getUser(stock)}",
-                            style:
-                                Style.interNormal(color: Style.dark, size: 14),
+                          FutureBuilder<String>(
+                            future: stockController.getUser(stock),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return SizedBox();
+                              } else if (snapshot.hasError) {
+                                return Text('Error');
+                              } else {
+                                return Text(
+                                  snapshot.data ?? '',
+                                  style: Style.interNormal(
+                                      color: Style.dark, size: 14),
+                                );
+                              }
+                            },
                           ),
                         ],
                       ),

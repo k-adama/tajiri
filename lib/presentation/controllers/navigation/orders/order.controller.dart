@@ -247,7 +247,6 @@ class OrdersController extends GetxController {
 
   void updateOrderList(Order newOrder) {
     final indexInit = ordersInit.indexWhere((order) => order.id == newOrder.id);
-    print("update order list $indexInit");
     if (indexInit != -1) {
       // Replace the old order with the new order in ordersInit
       ordersInit[indexInit] = newOrder;
@@ -255,7 +254,6 @@ class OrdersController extends GetxController {
       // Add the new order to ordersInit if it doesn't exist
       ordersInit.insert(0, newOrder);
     }
-
     orders.assignAll(ordersInit);
   }
 

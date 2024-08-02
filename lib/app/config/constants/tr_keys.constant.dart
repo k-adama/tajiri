@@ -16,5 +16,5 @@ class TrKeysConstant {
   static const String SaveAppro = 'Enregistrer';
   static const String ApproMode = "Activer l'approvisionnement";
   static const String SavApproModeTitle = 'Ajoutez les nouvelles entrées puis enregistrez pour mettre à jour le stock.';
-  static const String SaveApproModeDescription = "Activiez l'approvisonnement et mettez à jour vos stocks.";
+  static const String SaveApproModeDescription = "Activez l'approvisonnement et mettez à jour vos stocks.";
 }

@@ -56,6 +56,10 @@ extension StaffExtension on Staff? {
     return isOwner || hasPermission(AppConstants.VIEW_INVENTORY);
   }
 
+  bool get canManageInventory {
+    return isOwner || hasPermission(AppConstants.MANAGE_INVENTORY);
+  }
+
   String? get idOwnerForGetOrder {
     switch (getRole) {
       case Role.CASHIER || Role.OWNER || Role.MANAGER:
