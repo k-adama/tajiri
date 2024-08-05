@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
@@ -231,7 +230,6 @@ class PosController extends GetxController {
         );
       }
     } catch (e) {
-      print("Erreur $e");
       Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
         "CustomerEntity type": newOrder?.customerId == null ? 'GUEST' : 'SAVED',
         "Order Status": status,
