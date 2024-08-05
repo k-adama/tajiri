@@ -22,14 +22,8 @@ class PdfReportComponent {
           build: (context) => [
                 buildAppBar(user, restaurant),
                 SizedBox(height: 29),
-                buildHeader(
-                    salesReportsController
-                        .convertToDateTime(startDate)
-                        .toString(),
-                    salesReportsController
-                        .convertToDateTime(endDate)
-                        .toString(),
-                    user),
+                buildHeader(salesReportsController.getStartDateInFrench(),
+                    salesReportsController.getEndDateInFrench(), user),
                 SizedBox(height: 15),
                 buildInvoice(salesData),
                 SizedBox(height: 15),
