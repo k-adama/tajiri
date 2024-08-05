@@ -1,8 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class Item {
   Item({
@@ -25,7 +27,7 @@ class Item {
 }
 
 class SalesReportsExpansionPanelListComponent extends StatefulWidget {
-  List<SalesDataEntity> salesData;
+  List<SaleItem> salesData;
   SalesReportsExpansionPanelListComponent({super.key, required this.salesData});
 
   @override
@@ -41,6 +43,8 @@ class _SalesReportsExpansionPanelListComponentState
   void initState() {
     super.initState();
     _data = generateItems(widget.salesData);
+    final e = widget.salesData.map((e) => e.toJson()).toList();
+    log("---------$e");
   }
 
   @override
@@ -166,16 +170,19 @@ class _SalesReportsExpansionPanelListComponentState
   }
 }
 
-List<Item> generateItems(List<SalesDataEntity> salesData) {
+List<Item> generateItems(List<SaleItem> salesData) {
   int numberOfItems = salesData.length;
   return List<Item>.generate(numberOfItems, (int index) {
     return Item(
-      productName: salesData[index].productName ?? "",
-      productQtyStart: salesData[index].productQtyStart ?? 0,
-      productQtySupply: salesData[index].productQtySupply ?? 0,
-      productQtySales: salesData[index].productQtySales ?? 0,
-      productPriceTotal: salesData[index].productPriceTotal ?? 0,
-      productQtyFinal: salesData[index].productQtyFinal ?? 0,
+      productName: salesData[index].itemName,
+      productQtyStart: 0,
+      // salesData[index].productQtyStart ?? 0,
+      productQtySupply: 0,
+      //salesData[index].productQtySupply ?? 0,
+      productQtySales: salesData[index].qty,
+      productPriceTotal: salesData[index].totalAmount.toInt(),
+      productQtyFinal: 0,
+      //salesData[index].productQtyFinal ?? 0,
     );
   });
 }

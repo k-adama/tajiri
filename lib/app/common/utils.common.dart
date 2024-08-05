@@ -14,7 +14,7 @@ enum ListingType {
 }
 
 final customFormatForView = DateFormat('dd-MM-yyyy');
-final customFormatForRequest = DateFormat('yyyy-MM-dd');
+final customFormatForRequest = DateFormat('yyyy-MM-dd HH:mm:ss.SSSSSS');
 
 String convertTofrenchDate(String originalDate) {
   // Parse la date d'entrée
