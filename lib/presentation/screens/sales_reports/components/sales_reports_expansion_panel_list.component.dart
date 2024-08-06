@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
@@ -43,8 +41,6 @@ class _SalesReportsExpansionPanelListComponentState
   void initState() {
     super.initState();
     _data = generateItems(widget.salesData);
-    final e = widget.salesData.map((e) => e.toJson()).toList();
-    log("---------$e");
   }
 
   @override
