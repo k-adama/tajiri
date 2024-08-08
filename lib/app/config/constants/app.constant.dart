@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tajiri_pos_mobile/domain/entities/customer.entity.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart' as taj;
 import 'package:get/get_utils/get_utils.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
@@ -281,11 +282,11 @@ String? getNamePaiementById(String? id) {
   return payment != null ? payment['name'] : null;
 }
 
-String getNameCustomerById(String? id) {
-  // final customer = customers.firstWhereOrNull(
-  //   (element) => element.id == id,
-  // );
-  return 'Client invité';
+String getNameCustomerById(String? id, List<CustomerEntity> customers) {
+  final customer = customers.firstWhereOrNull(
+    (element) => element.id == id,
+  );
+  return customer?.firstname ?? 'Client invité';
 }
 
 final tabs = [
