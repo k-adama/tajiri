@@ -14,6 +14,8 @@ import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:charset_converter/charset_converter.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
+import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
+import 'package:tajiri_pos_mobile/domain/entities/customer.entity.dart';
 
 import 'package:tajiri_pos_mobile/domain/entities/printer_model.entity.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
@@ -35,6 +37,11 @@ class BluetoothSettingController extends GetxController {
 
   final selectPaperSize = Rx<PaperSize?>(null);
 
+  //
+  final waitressList = List<Waitress>.empty().obs;
+  final customersList = List<CustomerEntity>.empty().obs;
+  final tajiriSdk = TajiriSDK.instance;
+
   getSelectSizePaper() async {
     selectPaperSize.value = await AppHelpersCommon.getPaperSize();
     print("==selectPaperSize : ${selectPaperSize.value?.value}===");
@@ -55,6 +62,16 @@ class BluetoothSettingController extends GetxController {
       await Get.find<BluetoothSettingController>().getBluetoothDevices();
     });
     super.onInit();
+  }
+
+  @override
+  void onReady() async {
+    Future.wait([
+      fetchCustomers(),
+      fetchWaitress(),
+    ]);
+
+    super.onReady();
   }
 
   Future<void> _requestPermissions() async {
@@ -315,13 +332,13 @@ class BluetoothSettingController extends GetxController {
         .format(printerModel.createdOrder?.toLocal() ?? DateTime.now());
     final restoName = restaurant?.name ?? "";
     final restoPhone = user?.phone ?? restaurant?.phone ?? "";
-    final client = getNameCustomerById(printerModel.orderCustomerId);
+    final client =
+        getNameCustomerById(printerModel.orderCustomerId, customersList);
 
     final currentUserName = "${user?.firstname ?? ""} ${user?.lastname ?? ""}";
 
     final userOrWaitressName = printerModel.orderWaitressId != null
-        ? getNameWaitressById(
-            printerModel.orderWaitressId, []) // posController.waitress)
+        ? getNameWaitressById(printerModel.orderWaitressId, waitressList)
         : currentUserName;
 
     final payementMethod = printerModel.statusOrder == "PAID"
@@ -533,5 +550,34 @@ class BluetoothSettingController extends GetxController {
           i, i + maxLength < text.length ? i + maxLength : text.length));
     }
     return lines;
+  }
+
+  Future<void> fetchCustomers() async {
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      try {
+        // Fetch Customer
+        // final result = await tajiriSdk.waitressesService.getWaitresses();
+        // waitressList.assignAll(result);
+        update();
+      } catch (e) {
+        print("======Error fetch Custommer : $e");
+        update();
+      }
+    }
+  }
+
+  Future<void> fetchWaitress() async {
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      try {
+        final result = await tajiriSdk.waitressesService.getWaitresses();
+        waitressList.assignAll(result);
+        update();
+      } catch (e) {
+        print("======Error fetch Waitress : $e");
+        update();
+      }
+    }
   }
 }
