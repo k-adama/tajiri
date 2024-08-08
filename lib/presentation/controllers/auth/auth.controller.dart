@@ -162,8 +162,10 @@ class AuthController extends GetxController {
           context,
           e.toString(),
         );
+        print( e.toString());
         isLoading = false;
         update();
+        
       }
     }
   }

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
 import 'package:tajiri_pos_mobile/app/extensions/product.extension.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
@@ -20,7 +19,6 @@ class ProductsController extends GetxController {
   String name = "";
   String description = "";
   bool isAvailable = false;
-  // final PosController _posController = Get.find();
   static final user = AppHelpersCommon.getUserInLocalStorage();
   final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
   final restaurantId = user?.restaurantId;
@@ -59,13 +57,11 @@ class ProductsController extends GetxController {
       } catch (e) {
         isProductLoading = false;
         update();
-        print("Fetch product error $e");
       }
     }
   }
 
   Future<void> fetchProductById(String idProduct) async {
-    print("====Fetch Product by id $idProduct==");
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
       try {

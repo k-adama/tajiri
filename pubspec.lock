@@ -865,10 +865,10 @@ packages:
     dependency: "direct main"
     description:
       name: pdf
-      sha256: "81d5522bddc1ef5c28e8f0ee40b71708761753c163e0c93a40df56fd515ea0f0"
+      sha256: "05df53f8791587402493ac97b9869d3824eccbc77d97855f4545cf72df3cae07"
       url: "https://pub.dev"
     source: hosted
-    version: "3.11.0"
+    version: "3.11.1"
   permission_handler:
     dependency: "direct main"
     description:
@@ -1182,8 +1182,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: main
-      resolved-ref: e3279aad71dff1945222fb55e815eb0b448626c9
+      ref: "feature/update_sale_report"
+      resolved-ref: a1dea909fee0fb84bf3d604959e0ceb8632d571f
       url: "git@github.com:tajiri-app/tajiri-sdk.git"
     source: git
     version: "0.0.1"
@@ -1263,10 +1263,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_linux
-      sha256: ab360eb661f8879369acac07b6bb3ff09d9471155357da8443fd5d3cf7363811
+      sha256: e2b9622b4007f97f504cd64c0128309dfb978ae66adbe944125ed9e1750f06af
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.1"
+    version: "3.2.0"
   url_launcher_macos:
     dependency: transitive
     description:
@@ -1287,10 +1287,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_web
-      sha256: a36e2d7981122fa185006b216eb6b5b97ede3f9a54b7a511bc966971ab98d049
+      sha256: "772638d3b34c779ede05ba3d38af34657a05ac55b06279ea6edd409e323dca8e"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.3.3"
   url_launcher_windows:
     dependency: transitive
     description:
