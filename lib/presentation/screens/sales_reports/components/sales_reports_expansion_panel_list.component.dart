@@ -171,14 +171,11 @@ List<Item> generateItems(List<SaleItem> salesData) {
   return List<Item>.generate(numberOfItems, (int index) {
     return Item(
       productName: salesData[index].itemName,
-      productQtyStart: 0,
-      // salesData[index].productQtyStart ?? 0,
-      productQtySupply: 0,
-      //salesData[index].productQtySupply ?? 0,
+      productQtyStart: salesData[index].productQtyStart ?? 0,
+      productQtySupply: salesData[index].productQtySupply ?? 0,
       productQtySales: salesData[index].qty,
       productPriceTotal: salesData[index].totalAmount.toInt(),
-      productQtyFinal: 0,
-      //salesData[index].productQtyFinal ?? 0,
+      productQtyFinal: salesData[index].productQtyFinal ?? 0,
     );
   });
 }

@@ -78,10 +78,8 @@ class PdfReportComponent {
     final data = salesData.map((item) {
       return [
         item.itemName,
-        0,
-        //item.productQtyStart ?? 0,
-        0,
-        // item.productQtySupply ?? 0,
+        item.productQtyStart ?? 0,
+        item.productQtySupply ?? 0,
         item.qty,
         item.totalAmount,
       ];
