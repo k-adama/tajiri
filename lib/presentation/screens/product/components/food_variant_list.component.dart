@@ -4,15 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/modals/edit_food_variant.modal.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class FoodVariantListComponent extends StatefulWidget {
   final ProductVariant productVariant;
-  const FoodVariantListComponent(
-      {super.key, required this.productVariant});
+  const FoodVariantListComponent({super.key, required this.productVariant});
 
   @override
   State<FoodVariantListComponent> createState() =>
@@ -24,13 +21,13 @@ class _FoodVariantListComponentState extends State<FoodVariantListComponent> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-         AppHelpersCommon.showCustomModalBottomSheet(
-              context: context,
-              modal: EditFoodVariantModal(productVariant: widget.productVariant),
-              isDarkMode: false,
-              isDrag: true,
-              radius: 12.r,
-            );
+        AppHelpersCommon.showCustomModalBottomSheet(
+          context: context,
+          modal: EditFoodVariantModal(productVariant: widget.productVariant),
+          isDarkMode: false,
+          isDrag: true,
+          radius: 12.r,
+        );
       },
       child: Padding(
         padding: EdgeInsets.only(bottom: 10.h),
@@ -67,7 +64,7 @@ class _FoodVariantListComponentState extends State<FoodVariantListComponent> {
                     ),
                   ],
                 ),
-                Container(
+                SizedBox(
                   width: 24.w,
                   height: 24.h,
                   child: SvgPicture.asset("assets/svgs/Create.svg"),
