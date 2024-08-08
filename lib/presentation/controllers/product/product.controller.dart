@@ -20,7 +20,7 @@ class ProductsController extends GetxController {
   String name = "";
   String description = "";
   bool isAvailable = false;
-  final PosController _posController = Get.find();
+  // final PosController _posController = Get.find();
   static final user = AppHelpersCommon.getUserInLocalStorage();
   final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
   final restaurantId = user?.restaurantId;
@@ -62,6 +62,41 @@ class ProductsController extends GetxController {
         print("Fetch product error $e");
       }
     }
+  }
+
+  Future<void> fetchProductById(String idProduct) async {
+    print("====Fetch Product by id $idProduct==");
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      try {
+        final order = await tajiriSdk.productsService.getProduct(idProduct);
+        updateProductList(order);
+        setCategoryId("all");
+        update();
+      } catch (e) {
+        AppHelpersCommon.showBottomSnackBar(
+          Get.context!,
+          Text(e.toString()),
+          const Duration(seconds: 2),
+          true,
+        );
+      }
+    }
+  }
+
+  void updateProductList(Product newProduct) {
+    final indexInit =
+        productsInit.indexWhere((order) => order.id == newProduct.id);
+    print("update order list $indexInit");
+    if (indexInit != -1) {
+      // Replace the old order with the new order in ordersInit
+      productsInit[indexInit] = newProduct;
+    } else {
+      // Add the new order to ordersInit if it doesn't exist
+      productsInit.insert(0, newProduct);
+    }
+
+    products.assignAll(productsInit);
   }
 
   Future<void> fetchCategories() async {
@@ -112,7 +147,9 @@ class ProductsController extends GetxController {
       try {
         await tajiriSdk.productsService
             .updateProduct(product.id, updateProductDto);
-        _posController.fetchProducts();
+        //TODO  FETCH PRODUCT BY ID WHEN UPDATE
+        fetchProductById(product.id);
+        // fetchProducts();
         AppHelpersCommon.showAlertDialog(
           context: context,
           canPop: false,
@@ -132,7 +169,8 @@ class ProductsController extends GetxController {
               } else {
                 Get.close(2);
               }
-              fetchProducts(refreshCategorieId: true);
+              fetchProductById(product.id);
+              // fetchProducts(refreshCategorieId: true);
             },
           ),
         );
@@ -162,7 +200,8 @@ class ProductsController extends GetxController {
       try {
         await tajiriSdk.productVariantsService
             .updateVariant(productVariant.id, updateProductVariantDto);
-        _posController.fetchProducts();
+        fetchProductById(productVariant.productId);
+        // fetchProducts();
         AppHelpersCommon.showAlertDialog(
           context: context,
           canPop: false,
@@ -174,7 +213,8 @@ class ProductsController extends GetxController {
             svgPicture: "assets/svgs/icon_price_tag.svg",
             redirect: () {
               Get.close(3);
-              fetchProducts(refreshCategorieId: true);
+              fetchProductById(productVariant.productId);
+              // fetchProducts(refreshCategorieId: true);
             },
           ),
         );
