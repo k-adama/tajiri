@@ -153,6 +153,15 @@ String getNameTableById(String? id, List<taj.Table> tables) {
   return table != null ? table.name : '';
 }
 
+String getNameCustomerById(String? id, List<Customer> customers) {
+  final customer = customers.firstWhereOrNull(
+    (element) => element.id == id,
+  );
+  return customer != null
+      ? "${customer.lastname}${customer.firstname ?? ""}"
+      : '_';
+}
+
 const urlSound =
     'https://xuyfavsmxnbbaefzkdam.supabase.co/storage/v1/object/public/tajiri-foods/core/mixkit-arabian-mystery-harp-notification-2489.wav';
 
@@ -280,13 +289,6 @@ List<Map<String, dynamic>> PAIEMENTS = [
 String? getNamePaiementById(String? id) {
   final payment = PAIEMENTS.firstWhereOrNull((element) => element['id'] == id);
   return payment != null ? payment['name'] : null;
-}
-
-String getNameCustomerById(String? id, List<CustomerEntity> customers) {
-  final customer = customers.firstWhereOrNull(
-    (element) => element.id == id,
-  );
-  return customer?.firstname ?? 'Client invité';
 }
 
 final tabs = [

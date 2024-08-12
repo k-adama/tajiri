@@ -10,8 +10,13 @@ import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class ApiPdfInvoiceService {
   static final user = AppHelpersCommon.getUserInLocalStorage();
+  static final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
 
-  static Future<File> generate(Order ordersData) async {
+  static Future<File> generate(
+    Order order,
+    String customerName,
+    String waitressName,
+  ) async {
     final pdf = Document();
 
     pdf.addPage(
@@ -19,12 +24,12 @@ class ApiPdfInvoiceService {
           build: (context) => [
                 buildAppBar(user),
                 SizedBox(height: 29),
-                buildHeader(ordersData),
+                buildHeader(order, customerName, waitressName),
                 SizedBox(height: 15),
-                buildInvoice(ordersData),
+                buildInvoice(order),
                 SizedBox(height: 15),
-                subTotalAndReduction(ordersData),
-                buildTotal(ordersData)
+                subTotalAndReduction(order),
+                buildTotal(order)
               ]),
     );
     return ApiPdfService.saveDocument(name: 'facture.pdf', pdf: pdf);
@@ -35,17 +40,19 @@ class ApiPdfInvoiceService {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /*  Text(
-                "${user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}",
+            Text("${restaurant?.name}",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-            Text(
-                "${user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.contactPhone : ""}",
-                style: const TextStyle(fontSize: 13))*/
+            Text("${restaurant?.phone}", style: const TextStyle(fontSize: 13))
           ],
         ),
       );
 
-  static Widget buildHeader(Order ordersData) => Container(
+  static Widget buildHeader(
+    Order order,
+    String customerName,
+    String waitressName,
+  ) =>
+      Container(
         width: double.infinity,
         child: Column(
           children: [
@@ -63,14 +70,13 @@ class ApiPdfInvoiceService {
                         information(
                             "Date",
                             DateFormat("MM/dd/yy HH:mm").format(
-                                ordersData.createdAt?.toLocal() ??
-                                    DateTime.now())),
+                                order.createdAt?.toLocal() ?? DateTime.now())),
                         Container(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Center(
                               child: Text(
-                                "N°${ordersData.orderNumber.toString()}",
+                                "N°${order.orderNumber.toString()}",
                               ),
                             ),
                           ),
@@ -82,7 +88,7 @@ class ApiPdfInvoiceService {
                       children: [
                         information(
                           "Serveur:",
-                          userOrWaitressName(ordersData, user),
+                          waitressName,
                         ),
                         SizedBox(
                           width: 15,
@@ -90,13 +96,7 @@ class ApiPdfInvoiceService {
                         SizedBox(
                           width: 15,
                         ),
-                        information(
-                          "Client:",
-                          ordersData.customerType == "SAVED"
-                              //TODO: get customer name ${ordersData.customer?.lastname ?? ""} ${ordersData.customer?.firstname ?? ""}
-                              ? "customer name"
-                              : "Client de passage",
-                        ),
+                        information("Client:", customerName),
                       ],
                     ),
                   ],

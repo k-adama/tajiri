@@ -37,19 +37,6 @@ ListingType? checkListingType(Staff? user) {
   //     : ListingType.waitress;
 }
 
-String userOrWaitressName(Order orderItem, Staff? user) {
-  // TODO : CHECK
-  final currentUserName = "${user?.firstname ?? ""} ${user?.lastname ?? ""}";
-
-  if (orderItem.tableId != null) {
-    return "table id ${orderItem.tableId}";
-  } else if (orderItem.waitressId != null) {
-    return "waitress id ${orderItem.waitressId}";
-  } else {
-    return currentUserName;
-  }
-}
-
 getInitialName(String fullName) {
   List<String> nameParts = fullName.split(" ");
   String initials = "";

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_variant_list.component.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/shimmer/food_variant_card.shimmer.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class FoodVariantAddedList extends StatefulWidget {

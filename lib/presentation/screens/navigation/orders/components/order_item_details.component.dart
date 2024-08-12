@@ -22,7 +22,6 @@ class OrderItemDetailsComponent extends StatefulWidget {
 
 class _OrderItemDetailsComponentState extends State<OrderItemDetailsComponent> {
   final OrdersController ordersController = Get.put(OrdersController());
-  //final MainController mainController = Get.put(MainController());
 
   final Order ordersData = Get.arguments;
   @override
@@ -66,9 +65,8 @@ class _OrderItemDetailsComponentState extends State<OrderItemDetailsComponent> {
                             payment, "Reçu", "TAJ#", true, ordersData, true)
                         : const SizedBox(),
                     50.verticalSpace,
-                    clientInformation(
-                        "NOM DU CLIENT", ordersData.customerType!),
-                    totalCommand("SOUS TOTAL", ordersData.subTotal ?? 0),
+                    clientInformation("NOM DU CLIENT", ordersData.customerType),
+                    totalCommand("SOUS TOTAL", ordersData.subTotal),
                     totalCommand("REMISE", 0),
                     50.verticalSpace,
                     SizedBox(
@@ -207,11 +205,10 @@ class _OrderItemDetailsComponentState extends State<OrderItemDetailsComponent> {
                         title: "Payer",
                         isLoadingColor: Style.secondaryColor,
                         onPressed: () {
-                          ordersController.currentOrderId.value =
-                              ordersData.id!;
+                          ordersController.currentOrderId.value = ordersData.id;
 
                           ordersController.currentOrderNo.value =
-                              ordersData.orderNumber!.toString();
+                              ordersData.orderNumber.toString();
                           AppHelpersCommon.showCustomModalBottomSheet(
                               paddingTop:
                                   MediaQuery.of(context).padding.top + 100.h,
@@ -232,10 +229,9 @@ class _OrderItemDetailsComponentState extends State<OrderItemDetailsComponent> {
                         textColor: Style.secondaryColor,
                         isLoadingColor: Style.secondaryColor,
                         onPressed: () {
-                          ordersController.currentOrderId.value =
-                              ordersData.id!;
+                          ordersController.currentOrderId.value = ordersData.id;
                           ordersController.currentOrderNo.value =
-                              ordersData.orderNumber!.toString();
+                              ordersData.orderNumber.toString();
                           AppHelpersCommon.showCustomModalBottomSheet(
                               paddingTop:
                                   MediaQuery.of(context).padding.top + 100.h,
@@ -411,11 +407,7 @@ class _OrderItemDetailsComponentState extends State<OrderItemDetailsComponent> {
             Text(title,
                 style: Style.interNormal(size: 16.sp, color: Style.dark)),
             Text(
-              customerType == "GUEST"
-                  ? "Client de passe"
-                  :
-                  //TODO: get customer name ${ordersData.customer?.lastname ?? ""} ${ordersData.customer?.firstname ?? ""}
-                  "customer name",
+              ordersController.customerName(ordersData),
               style: Style.interNormal(size: 14.sp, color: Style.titleDark),
             ),
           ],
