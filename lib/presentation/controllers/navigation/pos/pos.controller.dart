@@ -10,9 +10,7 @@ import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/product.extension.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
-import 'package:tajiri_pos_mobile/domain/entities/customer.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/local_cart_enties/main_item.entity.dart';
-import 'package:tajiri_pos_mobile/data/repositories/products/products.repository.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/table/table.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/waitress/waitress.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
@@ -21,7 +19,6 @@ import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.di
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class PosController extends GetxController {
-  final ProductsRepository _productsRepository = ProductsRepository();
   final KIT_ID = "1c755978-ae56-47c6-b8e6-a5e3b03577ce";
   bool isLoading = true;
   String? selectedOption;
@@ -48,9 +45,9 @@ class PosController extends GetxController {
   RxString emptySearchMessage = "".obs;
   RxList<String> searchResults = <String>[].obs;
 
-  List<CustomerEntity> customers = List<CustomerEntity>.empty().obs;
-  List<CustomerEntity> customerInit = List<CustomerEntity>.empty().obs;
-  Rx<CustomerEntity> customer = CustomerEntity().obs;
+  final customers = List<Customer>.empty().obs;
+  final customerInit = List<Customer>.empty().obs;
+  final customer = Rx<Customer?>(null);
 
   TextEditingController note = TextEditingController();
 
@@ -176,7 +173,7 @@ class PosController extends GetxController {
       update();
       handleInitialState();
 
-      customer.value = CustomerEntity();
+      customer.value = null;
       Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
         "CustomerEntity type": newOrder?.customerId == null ? 'GUEST' : 'SAVED',
         "Order Status": status,
@@ -260,7 +257,7 @@ class PosController extends GetxController {
     final user = AppHelpersCommon.getUserInLocalStorage();
     final restaurantId = user?.restaurantId;
 
-    String customeType = customer.value.id == null ? 'GUEST' : 'SAVED';
+    String customeType = customer.value?.id == null ? 'GUEST' : 'SAVED';
 
     final orderProductDto = cartItemList.map((item) {
       // TODO productTypeOfCookingId and extra not implemented in this app
@@ -284,7 +281,7 @@ class PosController extends GetxController {
       customerType: customeType,
       orderType: settleOrderId.value,
       status: status,
-      customerId: customer.value.id,
+      customerId: customer.value?.id,
       orderNotes: orderNotes.value,
       createdId: user?.id,
       couponCode: "",
@@ -306,7 +303,7 @@ class PosController extends GetxController {
   UpdateOrderDto getUpdateOrderDto(String status) {
     final user = AppHelpersCommon.getUserInLocalStorage();
 
-    String customeType = customer.value.id == null ? 'GUEST' : 'SAVED';
+    String customeType = customer.value?.id == null ? 'GUEST' : 'SAVED';
 
     final orderProductDto = cartItemList.map((item) {
       // TODO productTypeOfCookingId and extra not implemented in this app
@@ -325,7 +322,7 @@ class PosController extends GetxController {
       customerType: customeType,
       orderType: settleOrderId.value,
       status: status,
-      customerId: customer.value.id,
+      customerId: customer.value?.id,
       orderNotes: orderNotes.value,
       createdId: user?.id,
       couponCode: "",
@@ -446,19 +443,12 @@ class PosController extends GetxController {
     if (connected) {
       isCustomnersLoading = true;
       update();
-      final response = await _productsRepository.getCustomers();
-      response.when(
-        success: (data) async {
-          customers.assignAll(data!);
-          customerInit.assignAll(data);
-          isCustomnersLoading = false;
-          update();
-        },
-        failure: (failure, status) {
-          isCustomnersLoading = false;
-          update();
-        },
-      );
+      final result =
+          await tajiriSdk.customersService.getCustomers(restaurantId!);
+      customers.assignAll(result);
+      customerInit.assignAll(result);
+      isCustomnersLoading = false;
+      update();
     }
   }
 
@@ -474,7 +464,6 @@ class PosController extends GetxController {
   ) async {
     isLoadingCreateCustomer = true;
     update();
-
     if (restaurantId == null) {
       isLoadingCreateCustomer = false;
       update();
@@ -483,7 +472,6 @@ class PosController extends GetxController {
         "Aucun restaurant connecté",
       );
     }
-
     if (customerLastname.trim().isEmpty || customerPhone.trim().isEmpty) {
       isLoadingCreateCustomer = false;
       update();
@@ -492,17 +480,16 @@ class PosController extends GetxController {
         "Veuillez remplir les champs obligatoires",
       );
     }
-    Map<String, dynamic> requestData = {
-      'lastname': customerLastname,
-      'phone': customerPhone,
-      'restaurantId': restaurantId,
-    };
-    final response = await _productsRepository.createCustomers(requestData);
-    response.when(success: (data) {
-      final newCustomer = data!;
+    final CreateCustomerDto createCustomerDto = CreateCustomerDto(
+        lastname: customerLastname,
+        phone: customerPhone,
+        restaurantId: restaurantId!);
+    try {
+      final createWaitress =
+          await tajiriSdk.customersService.createCustomer(createCustomerDto);
+      final newCustomer = createWaitress;
       isLoadingCreateCustomer = false;
       update();
-
       AppHelpersCommon.showAlertDialog(
         context: context,
         canPop: false,
@@ -521,14 +508,14 @@ class PosController extends GetxController {
       customer.value = newCustomer;
       fetchCustomers();
       customerInitialState();
-    }, failure: (failure, statusCode) {
-      isLoadingCreateCustomer = false;
-      update();
+    } catch (e) {
       AppHelpersCommon.showCheckTopSnackBar(
         context,
-        statusCode.toString(),
+        e.toString(),
       );
-    });
+      isLoadingCreateCustomer = false;
+      update();
+    }
   }
 
   void customerInitialState() {

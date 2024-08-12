@@ -1183,7 +1183,7 @@ packages:
     description:
       path: "."
       ref: "feature/update_sale_report"
-      resolved-ref: a1dea909fee0fb84bf3d604959e0ceb8632d571f
+      resolved-ref: "14cf9e5b979da01ec8ea1a1b68b1453c0a4794a2"
       url: "git@github.com:tajiri-app/tajiri-sdk.git"
     source: git
     version: "0.0.1"
