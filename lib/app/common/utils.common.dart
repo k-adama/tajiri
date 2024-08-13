@@ -50,12 +50,12 @@ getInitialName(String fullName) {
   return initials.toUpperCase();
 }
 
-String getNameFromOrderDetail(OrderProduct? orderProduct) {
+String getNameFromOrderProduct(OrderProduct? orderProduct) {
   if (orderProduct == null) {
     return 'N/A';
   }
 
-  return orderProduct.product.name;
+  return orderProduct.variant?.name ?? orderProduct.product.name;
 }
 
 String paymentMethodNameByOrder(Order order) {

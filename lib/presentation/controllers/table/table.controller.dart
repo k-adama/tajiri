@@ -18,8 +18,8 @@ class TableController extends GetxController {
   late taj_sdk.Table newTable;
   Rx<taj_sdk.Table?> selectedTable = Rx<taj_sdk.Table?>(null);
 
-  static final user = AppHelpersCommon.getUserInLocalStorage();
-  final restaurantId = user?.restaurantId;
+  final user = AppHelpersCommon.getUserInLocalStorage();
+  String? get restaurantId => user?.restaurantId;
   final tajiriSdk = taj_sdk.TajiriSDK.instance;
 
   @override

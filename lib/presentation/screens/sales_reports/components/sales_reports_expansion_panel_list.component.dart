@@ -25,8 +25,9 @@ class Item {
 }
 
 class SalesReportsExpansionPanelListComponent extends StatefulWidget {
-  List<SaleItem> salesData;
-  SalesReportsExpansionPanelListComponent({super.key, required this.salesData});
+  final List<SaleItem> salesData;
+  const SalesReportsExpansionPanelListComponent(
+      {super.key, required this.salesData});
 
   @override
   State<SalesReportsExpansionPanelListComponent> createState() =>

@@ -13,7 +13,7 @@ import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
 import 'package:tajiri_pos_mobile/domain/entities/local_cart_enties/main_item.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/table/table.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/waitress/waitress.controller.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
@@ -62,9 +62,9 @@ class PosController extends GetxController {
   String? tableCurrentId;
   Color containerColor = Style.menuFlottant;
 
-  static final user = AppHelpersCommon.getUserInLocalStorage();
+  final user = AppHelpersCommon.getUserInLocalStorage();
   final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
-  final restaurantId = user?.restaurantId;
+  String? get restaurantId => user?.restaurantId;
   final tajiriSdk = TajiriSDK.instance;
 
   @override
@@ -216,17 +216,17 @@ class PosController extends GetxController {
             content: "La commande a bien été payée.",
             svgPicture: "assets/svgs/success payment 1.svg",
             redirect: () {
-              // TODO : redirect to invoice
               Get.close(2);
-              Get.to(InvoiceScreen(
-                order: newOrder,
-                isPaid: true,
-              ));
+              Get.toNamed(
+                Routes.INVOICE,
+                arguments: {"order": result, "isPaid": true},
+              );
             },
           ),
         );
       }
-    } catch (e) {
+    } catch (e, s) {
+      print(s);
       Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
         "CustomerEntity type": newOrder?.customerId == null ? 'GUEST' : 'SAVED',
         "Order Status": status,

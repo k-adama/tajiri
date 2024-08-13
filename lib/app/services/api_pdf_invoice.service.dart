@@ -9,15 +9,13 @@ import 'package:tajiri_pos_mobile/app/services/api_pdf.service.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class ApiPdfInvoiceService {
-  static final user = AppHelpersCommon.getUserInLocalStorage();
-  static final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
-
   static Future<File> generate(
     Order order,
     String customerName,
     String waitressName,
   ) async {
     final pdf = Document();
+    final user = AppHelpersCommon.getUserInLocalStorage();
 
     pdf.addPage(
       MultiPage(
@@ -35,17 +33,20 @@ class ApiPdfInvoiceService {
     return ApiPdfService.saveDocument(name: 'facture.pdf', pdf: pdf);
   }
 
-  static Widget buildAppBar(Staff? user) => Container(
-        width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("${restaurant?.name}",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-            Text("${restaurant?.phone}", style: const TextStyle(fontSize: 13))
-          ],
-        ),
-      );
+  static Widget buildAppBar(Staff? user) {
+    final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
+    return Container(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("${restaurant?.name}",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+          Text("${restaurant?.phone}", style: const TextStyle(fontSize: 13))
+        ],
+      ),
+    );
+  }
 
   static Widget buildHeader(
     Order order,
@@ -117,7 +118,7 @@ class ApiPdfInvoiceService {
 
     final data = ordersData.orderProducts.map((item) {
       int calculate = (item.price) * (item.quantity);
-      final productName = getNameFromOrderDetail(item);
+      final productName = getNameFromOrderProduct(item);
       print(productName);
       return [productName, '${item.quantity}', '${item.price}', calculate];
     }).toList();

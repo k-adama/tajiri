@@ -19,9 +19,9 @@ class ProductsController extends GetxController {
   String name = "";
   String description = "";
   bool isAvailable = false;
-  static final user = AppHelpersCommon.getUserInLocalStorage();
+  final user = AppHelpersCommon.getUserInLocalStorage();
   final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
-  final restaurantId = user?.restaurantId;
+  String? get restaurantId => user?.restaurantId;
   final tajiriSdk = TajiriSDK.instance;
 
   @override

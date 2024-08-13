@@ -124,7 +124,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                             child: Container(
                               margin: const EdgeInsets.only(left: 2),
                               child: Text(
-                                "${widget.order.orderProducts[i].quantity}x ${getNameFromOrderDetail(widget.order.orderProducts[i])}",
+                                "${widget.order.orderProducts[i].quantity}x ${getNameFromOrderProduct(widget.order.orderProducts[i])}",
                                 style: Style.interNormal(color: Style.black),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -157,7 +157,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
-                          "${getNameFromOrderDetail(orderDetail)} x ${orderDetail.quantity}",
+                          "${getNameFromOrderProduct(orderDetail)} x ${orderDetail.quantity}",
                         ),
                       );
                     }).toList(),

@@ -16,19 +16,19 @@ import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/compon
 import 'package:tajiri_sdk/tajiri_sdk.dart' as taj;
 
 class InvoiceScreen extends StatefulWidget {
-  final taj.Order? order;
-  final bool? isPaid;
-  const InvoiceScreen({super.key, this.order, this.isPaid});
+  const InvoiceScreen({super.key});
 
   @override
   State<InvoiceScreen> createState() => _InvoiceScreenState();
 }
 
 class _InvoiceScreenState extends State<InvoiceScreen> {
-  late final taj.Order arguments;
+  late final taj.Order order;
+  late bool? isPaid;
 
   bool backInvoiceScreen() {
-    if (widget.isPaid == true) {
+    print("IS PAID : $isPaid");
+    if (isPaid == true) {
       Navigator.popUntil(context, ModalRoute.withName(Routes.NAVIGATION));
       return true;
     } else {
@@ -39,7 +39,8 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
 
   @override
   void initState() {
-    arguments = Get.arguments ?? widget.order;
+    order = Get.arguments["order"];
+    isPaid = Get.arguments["isPaid"];
     if (mounted) {
       setState(() {});
     }
@@ -50,7 +51,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (widget.isPaid == true) {
+        if (isPaid == true) {
           return backInvoiceScreen();
         }
         return true;
@@ -83,7 +84,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                arguments.status == "PAID"
+                                order.status == "PAID"
                                     ? "Reçu de paiement"
                                     : "Facture",
                                 style: Style.interBold(
@@ -97,7 +98,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   InformationInvoiceComponent(
                                       title: "Date",
                                       body: DateFormat("MM/dd/yy HH:mm").format(
-                                          arguments.createdAt?.toLocal() ??
+                                          order.createdAt?.toLocal() ??
                                               DateTime.now())),
                                   Container(
                                     decoration: BoxDecoration(
@@ -108,7 +109,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Center(
                                         child: Text(
-                                          "N°${arguments.orderNumber.toString()}",
+                                          "N°${order.orderNumber.toString()}",
                                           style: Style.interBold(
                                               color: Style.secondaryColor),
                                         ),
@@ -124,8 +125,8 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   children: [
                                     InformationInvoiceComponent(
                                       title: "Serveur:",
-                                      body: controller
-                                          .tableOrWaitressName(arguments),
+                                      body:
+                                          controller.tableOrWaitressName(order),
                                     ),
                                     const Padding(
                                       padding:
@@ -138,7 +139,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                     ),
                                     InformationInvoiceComponent(
                                       title: "Client:",
-                                      body: controller.customerName(arguments),
+                                      body: controller.customerName(order),
                                     ),
                                   ],
                                 ),
@@ -151,13 +152,13 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  arguments.status == "PAID"
+                                  order.status == "PAID"
                                       ? Text("Moyen de paiment".toUpperCase())
                                       : Text("Statut".toUpperCase()),
                                   4.verticalSpace,
-                                  arguments.status == "PAID"
+                                  order.status == "PAID"
                                       ? Text(
-                                          paymentMethodNameByOrder(arguments),
+                                          paymentMethodNameByOrder(order),
                                           style: Style.interBold(),
                                         )
                                       : Text(
@@ -197,12 +198,12 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         padding: EdgeInsets.zero,
-                        itemCount: arguments.orderProducts.length,
+                        itemCount: order.orderProducts.length,
                         itemBuilder: (BuildContext context, int index) {
-                          taj.OrderProduct orderDetail =
-                              arguments.orderProducts[index];
+                          taj.OrderProduct orderProduct =
+                              order.orderProducts[index];
                           return InvoiceOrderItemComponent(
-                            orderProduct: orderDetail,
+                            orderProduct: orderProduct,
                           );
                         },
                       ),
@@ -227,7 +228,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   children: [
                                     TotalCommandComponent(
                                       name: "Sous Total",
-                                      price: arguments.subTotal,
+                                      price: order.subTotal,
                                       isTotal: false,
                                     ),
                                     const TotalCommandComponent(
@@ -243,23 +244,23 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                         ),
                       ),
                       InvoiceTotalComponent(
-                        order: arguments,
+                        order: order,
                       ),
                       5.verticalSpace,
                       Obx(() {
                         return InvoiceButtonsComponent(
-                          ordersData: arguments,
+                          ordersData: order,
                           isLoading:
                               controller.bluetoothController.isLoading.value,
                           printButtonTap: () {
-                            controller.printButtonTap(arguments);
+                            controller.printButtonTap(order);
                           },
                           shareButtonTap: () {
-                            controller.shareFacture(arguments);
+                            controller.shareFacture(order);
                           },
                           returnToOrderButtonTap: () {
                             Get.find<NavigationController>().selectIndexFunc(1);
-                            if (widget.isPaid == true) {
+                            if (isPaid == true) {
                               Navigator.popUntil(context,
                                   ModalRoute.withName(Routes.NAVIGATION));
                             } else {

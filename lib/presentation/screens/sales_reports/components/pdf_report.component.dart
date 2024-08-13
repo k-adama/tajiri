@@ -5,18 +5,15 @@ import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
 import 'package:tajiri_pos_mobile/app/services/api_pdf.service.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/sales_reports/sales_reports.controller.dart';
 import 'dart:io';
-import 'package:tajiri_sdk/src/models/sales-report.model.dart';
-import 'package:tajiri_sdk/src/models/staff.model.dart';
-import 'package:tajiri_sdk/src/models/restaurant.model.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class PdfReportComponent {
-  static final user = AppHelpersCommon.getUserInLocalStorage();
-  static final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
   static SalesReportController salesReportsController = Get.find();
   static Future<File> generate(List<SaleItem> salesData, int total,
       String startDate, String endDate) async {
     final pdf = Document();
-
+    final user = AppHelpersCommon.getUserInLocalStorage();
+    final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
     pdf.addPage(
       MultiPage(
           build: (context) => [
@@ -85,25 +82,21 @@ class PdfReportComponent {
       ];
     }).toList();
 
-    if (data == null) {
-      return Container();
-    } else {
-      return TableHelper.fromTextArray(
-        headers: headers,
-        data: data,
-        border: null,
-        headerStyle: TextStyle(fontWeight: FontWeight.bold),
-        cellHeight: 30,
-        cellAlignments: {
-          0: Alignment.centerLeft,
-          1: Alignment.centerRight,
-          2: Alignment.centerRight,
-          3: Alignment.centerRight,
-          4: Alignment.centerRight,
-          5: Alignment.centerRight,
-        },
-      );
-    }
+    return TableHelper.fromTextArray(
+      headers: headers,
+      data: data,
+      border: null,
+      headerStyle: TextStyle(fontWeight: FontWeight.bold),
+      cellHeight: 30,
+      cellAlignments: {
+        0: Alignment.centerLeft,
+        1: Alignment.centerRight,
+        2: Alignment.centerRight,
+        3: Alignment.centerRight,
+        4: Alignment.centerRight,
+        5: Alignment.centerRight,
+      },
+    );
   }
 
   static Widget buildTotal(int total) {
@@ -119,7 +112,7 @@ class PdfReportComponent {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  totalCommand("Total", total ?? 0, true),
+                  totalCommand("Total", total, true),
                 ],
               ),
             ),

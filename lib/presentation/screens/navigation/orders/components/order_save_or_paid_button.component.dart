@@ -114,7 +114,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                 borderColor: Style.secondaryColor,
                 imagePath: "assets/svgs/ion_receipt-sharpinvoice.svg",
                 onPressed: () {
-                  Get.toNamed(Routes.INVOICE, arguments: order);
+                  Get.toNamed(Routes.INVOICE, arguments: {"order": order});
                 },
               )
             ],
@@ -131,7 +131,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
             haveBorder: false,
             onPressed: () {
               // log(order.toJson().toString());
-              Get.toNamed(Routes.INVOICE, arguments: order);
+              Get.toNamed(Routes.INVOICE, arguments: {"order": order});
             },
           );
   }

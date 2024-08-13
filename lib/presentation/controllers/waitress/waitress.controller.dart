@@ -16,8 +16,8 @@ class WaitressController extends GetxController {
   late Waitress newWaitress;
   final waitressList = List<Waitress>.empty().obs;
   Rx<Waitress?> selectedWaitress = Rx<Waitress?>(null);
-  static final user = AppHelpersCommon.getUserInLocalStorage();
-  final restaurantId = user?.restaurantId;
+  final user = AppHelpersCommon.getUserInLocalStorage();
+  String? get restaurantId => user?.restaurantId;
 
   final tajiriSdk = TajiriSDK.instance;
 

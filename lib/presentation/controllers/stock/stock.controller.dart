@@ -19,9 +19,9 @@ class StockController extends GetxController {
   List<StockInventoryEntity> stockInventory = [];
   bool isProductLoading = true;
   bool checkboxstatus = false;
-  static final user = AppHelpersCommon.getUserInLocalStorage();
+  final user = AppHelpersCommon.getUserInLocalStorage();
   final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
-  final restaurantId = user?.restaurantId;
+  String? get restaurantId => user?.restaurantId;
   final tajiriSdk = TajiriSDK.instance;
 
   @override

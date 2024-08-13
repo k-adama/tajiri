@@ -249,12 +249,11 @@ class BluetoothSettingController extends GetxController {
     for (int index = 0; index < itemCount; index++) {
       final orderProduct = printerModel.orderPrinterProducts[index];
 
-      ProductVariant? foodVariant;
       if (orderProduct.variantId != null) {
         print("order prod variant ${orderProduct.variantId}");
       }
-      // TODO : TO UPDATE
-      final foodName = foodVariant?.name ?? orderProduct.productName;
+      final foodName =
+          orderProduct.productVariantName ?? orderProduct.productName;
       final quantity = orderProduct.quantity;
       final calculatePrice = orderProduct.totalPrice;
 
