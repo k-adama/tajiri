@@ -9,43 +9,51 @@ import 'package:tajiri_pos_mobile/app/services/api_pdf.service.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class ApiPdfInvoiceService {
-  static final user = AppHelpersCommon.getUserInLocalStorage();
-
-  static Future<File> generate(Order ordersData) async {
+  static Future<File> generate(
+    Order order,
+    String customerName,
+    String waitressName,
+  ) async {
     final pdf = Document();
+    final user = AppHelpersCommon.getUserInLocalStorage();
 
     pdf.addPage(
       MultiPage(
           build: (context) => [
                 buildAppBar(user),
                 SizedBox(height: 29),
-                buildHeader(ordersData),
+                buildHeader(order, customerName, waitressName),
                 SizedBox(height: 15),
-                buildInvoice(ordersData),
+                buildInvoice(order),
                 SizedBox(height: 15),
-                subTotalAndReduction(ordersData),
-                buildTotal(ordersData)
+                subTotalAndReduction(order),
+                buildTotal(order)
               ]),
     );
     return ApiPdfService.saveDocument(name: 'facture.pdf', pdf: pdf);
   }
 
-  static Widget buildAppBar(Staff? user) => Container(
-        width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /*  Text(
-                "${user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-            Text(
-                "${user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.contactPhone : ""}",
-                style: const TextStyle(fontSize: 13))*/
-          ],
-        ),
-      );
+  static Widget buildAppBar(Staff? user) {
+    final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
+    return Container(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("${restaurant?.name}",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+          Text("${restaurant?.phone}", style: const TextStyle(fontSize: 13))
+        ],
+      ),
+    );
+  }
 
-  static Widget buildHeader(Order ordersData) => Container(
+  static Widget buildHeader(
+    Order order,
+    String customerName,
+    String waitressName,
+  ) =>
+      Container(
         width: double.infinity,
         child: Column(
           children: [
@@ -63,14 +71,13 @@ class ApiPdfInvoiceService {
                         information(
                             "Date",
                             DateFormat("MM/dd/yy HH:mm").format(
-                                ordersData.createdAt?.toLocal() ??
-                                    DateTime.now())),
+                                order.createdAt?.toLocal() ?? DateTime.now())),
                         Container(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Center(
                               child: Text(
-                                "N°${ordersData.orderNumber.toString()}",
+                                "N°${order.orderNumber.toString()}",
                               ),
                             ),
                           ),
@@ -82,7 +89,7 @@ class ApiPdfInvoiceService {
                       children: [
                         information(
                           "Serveur:",
-                          userOrWaitressName(ordersData, user),
+                          waitressName,
                         ),
                         SizedBox(
                           width: 15,
@@ -90,13 +97,7 @@ class ApiPdfInvoiceService {
                         SizedBox(
                           width: 15,
                         ),
-                        information(
-                          "Client:",
-                          ordersData.customerType == "SAVED"
-                              //TODO: get customer name ${ordersData.customer?.lastname ?? ""} ${ordersData.customer?.firstname ?? ""}
-                              ? "customer name"
-                              : "Client de passage",
-                        ),
+                        information("Client:", customerName),
                       ],
                     ),
                   ],
@@ -117,7 +118,7 @@ class ApiPdfInvoiceService {
 
     final data = ordersData.orderProducts.map((item) {
       int calculate = (item.price) * (item.quantity);
-      final productName = getNameFromOrderDetail(item);
+      final productName = getNameFromOrderProduct(item);
       print(productName);
       return [productName, '${item.quantity}', '${item.price}', calculate];
     }).toList();

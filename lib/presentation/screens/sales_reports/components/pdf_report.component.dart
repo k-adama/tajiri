@@ -1,24 +1,26 @@
+import 'package:get/instance_manager.dart';
 import 'package:pdf/widgets.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
 import 'package:tajiri_pos_mobile/app/services/api_pdf.service.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/sales_reports/sales_reports.controller.dart';
 import 'dart:io';
-import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class PdfReportComponent {
-  static final user = AppHelpersCommon.getUserInLocalStorage();
-
-  static Future<File> generate(List<SalesDataEntity> salesData, int total,
+  static SalesReportController salesReportsController = Get.find();
+  static Future<File> generate(List<SaleItem> salesData, int total,
       String startDate, String endDate) async {
     final pdf = Document();
-
+    final user = AppHelpersCommon.getUserInLocalStorage();
+    final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
     pdf.addPage(
       MultiPage(
           build: (context) => [
-               // buildAppBar(user),
+                buildAppBar(user, restaurant),
                 SizedBox(height: 29),
-               // buildHeader(startDate, endDate, user),
+                buildHeader(salesReportsController.getStartDateInFrench(),
+                    salesReportsController.getEndDateInFrench(), user),
                 SizedBox(height: 15),
                 buildInvoice(salesData),
                 SizedBox(height: 15),
@@ -28,17 +30,18 @@ class PdfReportComponent {
     return ApiPdfService.saveDocument(name: 'my_order_report.pdf', pdf: pdf);
   }
 
-  static Widget buildAppBar(UserEntity? user) {
+  static Widget buildAppBar(Staff? user, Restaurant? restaurant) {
     return Container(
       width: double.infinity,
       child: Center(
         child: Column(
           children: [
             Text(
-                "${user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}",
-                style: const TextStyle(fontSize: 14)),
+              "${restaurant?.name}",
+              style: const TextStyle(fontSize: 14),
+            ),
             Text(
-              "${user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.contactPhone : ""}",
+              "${user?.phone}",
               style: const TextStyle(fontSize: 14),
             )
           ],
@@ -47,8 +50,7 @@ class PdfReportComponent {
     );
   }
 
-  static Widget buildHeader(
-          String startDate, String endDate, UserEntity? user) =>
+  static Widget buildHeader(String startDate, String endDate, Staff? user) =>
       Container(
         width: double.infinity,
         child: Center(
@@ -61,7 +63,7 @@ class PdfReportComponent {
         )),
       );
 
-  static Widget buildInvoice(List<SalesDataEntity> salesData) {
+  static Widget buildInvoice(List<SaleItem> salesData) {
     final headers = [
       'DÉSI',
       'INITIAL',
@@ -72,33 +74,29 @@ class PdfReportComponent {
 
     final data = salesData.map((item) {
       return [
-        item.productName,
+        item.itemName,
         item.productQtyStart ?? 0,
         item.productQtySupply ?? 0,
-        item.productQtySales ?? 0,
-        item.productPriceTotal ?? 0
+        item.qty,
+        item.totalAmount,
       ];
     }).toList();
 
-    if (data == null) {
-      return Container();
-    } else {
-      return TableHelper.fromTextArray(
-        headers: headers,
-        data: data,
-        border: null,
-        headerStyle: TextStyle(fontWeight: FontWeight.bold),
-        cellHeight: 30,
-        cellAlignments: {
-          0: Alignment.centerLeft,
-          1: Alignment.centerRight,
-          2: Alignment.centerRight,
-          3: Alignment.centerRight,
-          4: Alignment.centerRight,
-          5: Alignment.centerRight,
-        },
-      );
-    }
+    return TableHelper.fromTextArray(
+      headers: headers,
+      data: data,
+      border: null,
+      headerStyle: TextStyle(fontWeight: FontWeight.bold),
+      cellHeight: 30,
+      cellAlignments: {
+        0: Alignment.centerLeft,
+        1: Alignment.centerRight,
+        2: Alignment.centerRight,
+        3: Alignment.centerRight,
+        4: Alignment.centerRight,
+        5: Alignment.centerRight,
+      },
+    );
   }
 
   static Widget buildTotal(int total) {
@@ -114,7 +112,7 @@ class PdfReportComponent {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  totalCommand("Total", total ?? 0, true),
+                  totalCommand("Total", total, true),
                 ],
               ),
             ),

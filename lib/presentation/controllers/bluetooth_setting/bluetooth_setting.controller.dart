@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter_esc_pos_utils/flutter_esc_pos_utils.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as mt;
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart';
@@ -15,7 +15,6 @@ import 'package:charset_converter/charset_converter.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
-import 'package:tajiri_pos_mobile/domain/entities/customer.entity.dart';
 
 import 'package:tajiri_pos_mobile/domain/entities/printer_model.entity.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
@@ -24,6 +23,8 @@ class BluetoothSettingController extends GetxController {
   final connected = false.obs;
   final progress = false.obs;
   final user = AppHelpersCommon.getUserInLocalStorage();
+  String? get restaurantId => user?.restaurantId;
+
   final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
 
   final encodeCharset = "CP437";
@@ -38,8 +39,9 @@ class BluetoothSettingController extends GetxController {
   final selectPaperSize = Rx<PaperSize?>(null);
 
   //
+  final tableList = List<Table>.empty().obs;
   final waitressList = List<Waitress>.empty().obs;
-  final customersList = List<CustomerEntity>.empty().obs;
+  final customersList = List<Customer>.empty().obs;
   final tajiriSdk = TajiriSDK.instance;
 
   getSelectSizePaper() async {
@@ -56,7 +58,7 @@ class BluetoothSettingController extends GetxController {
   @override
   void onInit() {
     print("=============INIT BLUE CONTROLLER");
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    mt.WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await getSelectSizePaper();
       await _requestPermissions();
       await Get.find<BluetoothSettingController>().getBluetoothDevices();
@@ -69,8 +71,8 @@ class BluetoothSettingController extends GetxController {
     Future.wait([
       fetchCustomers(),
       fetchWaitress(),
+      fetchTables(),
     ]);
-
     super.onReady();
   }
 
@@ -182,7 +184,7 @@ class BluetoothSettingController extends GetxController {
     final profile = await CapabilityProfile.load();
     List<int> ticket = await demoOneLine(selectPaperSize.value!, profile);
     final result = await PrintBluetoothThermal.writeBytes(ticket);
-    print("PRINTER RESULT : $result");
+    print("PRINTER DEMO RESULT : $result");
   }
 
   Future<void> printReceipt(PrinterModelEntity printerModel) async {
@@ -247,12 +249,11 @@ class BluetoothSettingController extends GetxController {
     for (int index = 0; index < itemCount; index++) {
       final orderProduct = printerModel.orderPrinterProducts[index];
 
-      ProductVariant? foodVariant;
       if (orderProduct.variantId != null) {
         print("order prod variant ${orderProduct.variantId}");
       }
-      // TODO : TO UPDATE
-      final foodName = foodVariant?.name ?? orderProduct.productName;
+      final foodName =
+          orderProduct.productVariantName ?? orderProduct.productName;
       final quantity = orderProduct.quantity;
       final calculatePrice = orderProduct.totalPrice;
 
@@ -553,12 +554,16 @@ class BluetoothSettingController extends GetxController {
   }
 
   Future<void> fetchCustomers() async {
+    if (restaurantId == null) {
+      print("===restaurantId null");
+      return;
+    }
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
       try {
-        // Fetch Customer
-        // final result = await tajiriSdk.waitressesService.getWaitresses();
-        // waitressList.assignAll(result);
+        final result =
+            await tajiriSdk.customersService.getCustomers(restaurantId!);
+        customersList.assignAll(result);
         update();
       } catch (e) {
         print("======Error fetch Custommer : $e");
@@ -576,6 +581,23 @@ class BluetoothSettingController extends GetxController {
         update();
       } catch (e) {
         print("======Error fetch Waitress : $e");
+        update();
+      }
+    }
+  }
+
+  Future<void> fetchTables() async {
+    if (restaurantId == null) {
+      return;
+    }
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      try {
+        update();
+        final result = await tajiriSdk.tablesService.getTables(restaurantId!);
+        tableList.assignAll(result);
+        update();
+      } catch (e) {
         update();
       }
     }

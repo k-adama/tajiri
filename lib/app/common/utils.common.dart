@@ -14,7 +14,7 @@ enum ListingType {
 }
 
 final customFormatForView = DateFormat('dd-MM-yyyy');
-final customFormatForRequest = DateFormat('yyyy-MM-dd');
+final customFormatForRequest = DateFormat('yyyy-MM-dd HH:mm:ss.SSSSSS');
 
 String convertTofrenchDate(String originalDate) {
   // Parse la date d'entrée
@@ -37,19 +37,6 @@ ListingType? checkListingType(Staff? user) {
   //     : ListingType.waitress;
 }
 
-String userOrWaitressName(Order orderItem, Staff? user) {
-  // TODO : CHECK
-  final currentUserName = "${user?.firstname ?? ""} ${user?.lastname ?? ""}";
-
-  if (orderItem.tableId != null) {
-    return "table id ${orderItem.tableId}";
-  } else if (orderItem.waitressId != null) {
-    return "waitress id ${orderItem.waitressId}";
-  } else {
-    return currentUserName;
-  }
-}
-
 getInitialName(String fullName) {
   List<String> nameParts = fullName.split(" ");
   String initials = "";
@@ -63,12 +50,12 @@ getInitialName(String fullName) {
   return initials.toUpperCase();
 }
 
-String getNameFromOrderDetail(OrderProduct? orderProduct) {
+String getNameFromOrderProduct(OrderProduct? orderProduct) {
   if (orderProduct == null) {
     return 'N/A';
   }
 
-  return orderProduct.product.name;
+  return orderProduct.variant?.name ?? orderProduct.product.name;
 }
 
 String paymentMethodNameByOrder(Order order) {

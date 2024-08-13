@@ -18,7 +18,6 @@ class OrdersController extends GetxController {
   bool isProductLoading = true;
   bool isLoadingCreateWaitress = false;
   bool isLoadingTable = false;
-  RxList<Table> tableListData = List<Table>.empty().obs;
   bool isExpanded = false;
   bool isAddAndRemoveLoading = false;
   DateTime? startRangeDate;
@@ -28,12 +27,20 @@ class OrdersController extends GetxController {
   Rx<bool> isLoadingOrder = false.obs;
   RxString currentOrderId = "".obs;
   double? amount;
+
+  RxList<Table> tableListData = List<Table>.empty().obs;
   final waitress = List<Waitress>.empty().obs;
+  final customers = List<Customer>.empty().obs;
+
   RxString currentOrderNo = "".obs;
   DateTime dateTime = DateTime.now();
-  static final user = AppHelpersCommon.getUserInLocalStorage();
+
+  final user = AppHelpersCommon.getUserInLocalStorage();
+  String? get restaurantId => user?.restaurantId;
+
   bool monuted = false;
   final posController = Get.find<PosController>();
+
   final tajiriSdk = TajiriSDK.instance;
 
   @override
@@ -43,6 +50,7 @@ class OrdersController extends GetxController {
       fetchOrders(),
       fetchWaitresses(),
       fetchTables(),
+      fetchCustomers(),
     ]);
     super.onReady();
   }
@@ -59,7 +67,7 @@ class OrdersController extends GetxController {
             filter: PostgresChangeFilter(
                 type: PostgresChangeFilterType.eq,
                 column: 'restaurantId',
-                value: user?.restaurantId ?? ""),
+                value: restaurantId ?? ""),
             callback: (value) async {
               final newOrderReceveid = value.newRecord;
               final player = AudioPlayer();
@@ -207,6 +215,12 @@ class OrdersController extends GetxController {
     }
   }
 
+  String customerName(Order order) {
+    return order.customerType == "SAVED"
+        ? getNameCustomerById(order.customerId, customers)
+        : "Client de passage";
+  }
+
   void searchFilter(search) {
     orders.clear();
     update();
@@ -275,8 +289,6 @@ class OrdersController extends GetxController {
   }
 
   Future<void> fetchTables() async {
-    final restaurantId = user?.restaurantId;
-
     if (restaurantId == null) {
       return;
     }
@@ -286,7 +298,7 @@ class OrdersController extends GetxController {
       try {
         isLoadingTable = true;
         update();
-        final result = await tajiriSdk.tablesService.getTables(restaurantId);
+        final result = await tajiriSdk.tablesService.getTables(restaurantId!);
         tableListData.assignAll(result);
         isLoadingTable = false;
         update();
@@ -294,6 +306,22 @@ class OrdersController extends GetxController {
         isLoadingTable = false;
         update();
       }
+    }
+  }
+
+  Future<void> fetchCustomers() async {
+    if (restaurantId == null) {
+      print("===restaurantId null");
+      return;
+    }
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      update();
+      final result =
+          await tajiriSdk.customersService.getCustomers(restaurantId!);
+      customers.assignAll(result);
+      customers.assignAll(result);
+      update();
     }
   }
 

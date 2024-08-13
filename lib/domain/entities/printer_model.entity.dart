@@ -39,6 +39,7 @@ class OrderPrinterProduct {
   String? orderProductId;
   String? productId; // id du produit
   String? variantId;
+  String? productVariantName;
   String productName;
   String typeOfCooking;
   int productPrice;
@@ -49,6 +50,7 @@ class OrderPrinterProduct {
     required this.orderProductId,
     required this.productId,
     required this.variantId,
+    this.productVariantName,
     required this.productPrice,
     required this.typeOfCooking,
   });
@@ -61,6 +63,7 @@ class OrderPrinterProduct {
     String? productId, // id du produit
     String? productName,
     String? variantId,
+    String? productVariantName,
     String? typeOfCooking,
     int? productPrice,
   }) {
@@ -72,6 +75,7 @@ class OrderPrinterProduct {
       typeOfCooking: typeOfCooking ?? this.typeOfCooking,
       productPrice: productPrice ?? this.productPrice,
       variantId: variantId ?? this.variantId,
+      productVariantName: productVariantName ?? this.productVariantName,
     );
   }
 }
@@ -111,6 +115,7 @@ extension ToOrderPrinterProduct on OrderProduct {
       productId: productId, // id du produit
       orderProductId: id, // id de l'item orderProduct);
       variantId: variantId,
+      productVariantName: variant?.name,
     );
   }
 }

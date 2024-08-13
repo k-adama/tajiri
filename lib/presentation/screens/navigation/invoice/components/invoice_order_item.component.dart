@@ -28,7 +28,7 @@ class InvoiceOrderItemComponent extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     OrderDetailStringContent(
-                        text: getNameFromOrderDetail(orderProduct),
+                        text: getNameFromOrderProduct(orderProduct),
                         isBold: false,
                         isEnd: false),
                     Text(
@@ -37,7 +37,7 @@ class InvoiceOrderItemComponent extends StatelessWidget {
                     ),
                   ],
                 ),
-                OrderDetailNumberContent(value: orderProduct.price ?? 0),
+                OrderDetailNumberContent(value: orderProduct.price),
                 OrderDetailNumberContent(value: calculatedPrice),
               ],
             ),
