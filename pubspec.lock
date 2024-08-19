@@ -1181,11 +1181,9 @@ packages:
   tajiri_sdk:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "feature/update_sale_report"
-      resolved-ref: f1a7c86d38dd9ae92a98bfd9428d01e0aaf3b73f
-      url: "git@github.com:tajiri-app/tajiri-sdk.git"
-    source: git
+      path: "/Users/macbookpro/Documents/Tajiri_Flutter_Project/tajiri-sdk"
+      relative: false
+    source: path
     version: "0.0.1"
   term_glyph:
     dependency: transitive

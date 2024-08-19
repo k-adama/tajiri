@@ -148,12 +148,11 @@ class AuthController extends GetxController {
           LocalStorageService.instance.set(AuthConstant.keyIsDemo, "true"),
           LocalStorageService.instance
               .set(UserConstant.keyUser, jsonEncode(user)),
-            
         ]);
 
         isLoading = false;
         update();
-      } catch (e) {
+      } catch (e, s) {
         isLoading = false;
         update();
         Mixpanel.instance.track('Login',
@@ -162,10 +161,9 @@ class AuthController extends GetxController {
           context,
           e.toString(),
         );
-        print( e.toString());
+        print("Error $e; stack $s");
         isLoading = false;
         update();
-        
       }
     }
   }

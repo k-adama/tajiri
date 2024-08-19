@@ -10,9 +10,9 @@ import 'package:upgrader/upgrader.dart';
 import 'package:flutter_svg/svg.dart';
 
 class DemoLoginView extends StatefulWidget {
-  DemoLoginView({
-    Key? key,
-  }) : super(key: key);
+  const DemoLoginView({
+    super.key,
+  });
 
   @override
   State<DemoLoginView> createState() => _DemoLoginViewState();
