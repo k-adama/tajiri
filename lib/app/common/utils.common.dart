@@ -27,14 +27,7 @@ String convertTofrenchDate(String originalDate) {
 
 ListingType? checkListingType(Staff? user) {
   // ON PREN EN COMPTE LES 2;
-  return null;
-  // if (user?.restaurantUser?[0].restaurant?.listingEnable != true) {
-  //   return null;
-  // }
-
-  // return user!.restaurantUser?[0].restaurant?.listingType == "TABLE"
-  //     ? ListingType.table
-  //     : ListingType.waitress;
+  return ListingType.waitress;
 }
 
 getInitialName(String fullName) {

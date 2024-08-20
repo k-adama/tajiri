@@ -4,9 +4,11 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/instance_manager.dart';
 import 'package:proste_indexed_stack/proste_indexed_stack.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
+import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/drawer_page.component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/select_waitress.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/home/home.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/order.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/pos.screen.dart';
@@ -45,6 +47,27 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   Widget _buildUserDisplay() {
+    final userType = checkListingType(user);
+    final isWaitress = userType == ListingType.waitress;
+    final isIndexValid = navigationController.selectIndex == 1 ||
+        navigationController.selectIndex == 2;
+    final hasUser = user != null;
+    final restaurantName = restaurant?.name ?? "";
+
+    if (hasUser) {
+      if (isWaitress && isIndexValid) {
+        return const SelectWaitressComponent();
+      } else {
+        return Text(
+          restaurantName,
+          style: Style.interNormal(size: 16, color: Style.secondaryColor),
+        );
+      }
+    } else {
+      return const SizedBox();
+    }
+  }
+  /* Widget _buildUserDisplay() {
     // final isIndexValid = navigationController.selectIndex == 1 ||
     //     navigationController.selectIndex == 2;
     // final hasUser = user != null;
@@ -53,7 +76,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       restaurantName,
       style: Style.interNormal(size: 16, color: Style.secondaryColor),
     );
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {

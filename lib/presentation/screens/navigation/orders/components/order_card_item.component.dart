@@ -3,10 +3,12 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/instance_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
+import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/staff.extension.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_cancel_dialog.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_status_button.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_status_message.component.dart';
@@ -25,27 +27,28 @@ class OrderCardItemComponent extends StatefulWidget {
 
 class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
   final OrdersController _ordersController = Get.find();
+  final PosController posController = Get.find();
   final RefreshController _controller = RefreshController();
   final user = AppHelpersCommon.getUserInLocalStorage();
   void _onRefresh() async {
     _ordersController.fetchOrders();
-    /*if(checkListingType(user) == ListingType.waitress){
+    if (checkListingType(user) == ListingType.waitress) {
       _ordersController.filterByWaitress(posController.waitressCurrentId);
-    }else{
-      _ordersController.filterByTable(posController.tableCurrentId);
+    } else {
+      return;
     }
     _ordersController.fetchOrders();
-    _controller.refreshCompleted();*/
+    _controller.refreshCompleted();
   }
 
   void _onLoading() async {
     _ordersController.fetchOrders();
-    /*if(checkListingType(user) == ListingType.waitress){
+    if (checkListingType(user) == ListingType.waitress) {
       _ordersController.filterByWaitress(posController.waitressCurrentId);
-    }else{
-      _ordersController.filterByTable(posController.tableCurrentId);
+    } else {
+      return;
     }
-    _controller.refreshCompleted();*/
+    _controller.refreshCompleted();
   }
 
   @override
