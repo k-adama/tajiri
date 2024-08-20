@@ -67,16 +67,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
       return const SizedBox();
     }
   }
-  /* Widget _buildUserDisplay() {
-    // final isIndexValid = navigationController.selectIndex == 1 ||
-    //     navigationController.selectIndex == 2;
-    // final hasUser = user != null;
-    final restaurantName = restaurant?.name ?? "";
-    return Text(
-      restaurantName,
-      style: Style.interNormal(size: 16, color: Style.secondaryColor),
-    );
-  }*/
 
   @override
   Widget build(BuildContext context) {
