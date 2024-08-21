@@ -31,16 +31,14 @@ class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
   final RefreshController _controller = RefreshController();
   final user = AppHelpersCommon.getUserInLocalStorage();
   void _onRefresh() async {
-    //_ordersController.fetchOrders();
     if (checkListingType(user) == ListingType.waitress) {
       _ordersController.filterByWaitress(posController.waitressCurrentId);
     }
-   // _ordersController.fetchOrders();
+    _ordersController.fetchOrders();
     _controller.refreshCompleted();
   }
 
   void _onLoading() async {
-    //_ordersController.fetchOrders();
     if (checkListingType(user) == ListingType.waitress) {
       _ordersController.filterByWaitress(posController.waitressCurrentId);
     }
