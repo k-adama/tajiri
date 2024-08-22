@@ -30,6 +30,17 @@ class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
   final PosController posController = Get.find();
   final RefreshController _controller = RefreshController();
   final user = AppHelpersCommon.getUserInLocalStorage();
+
+  @override
+  void initState() {
+    super.initState();
+    if (checkListingType(user) == ListingType.waitress) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _ordersController.filterByWaitress(posController.waitressCurrentId);
+      });
+    }
+  }
+
   void _onRefresh() async {
     if (checkListingType(user) == ListingType.waitress) {
       _ordersController.filterByWaitress(posController.waitressCurrentId);

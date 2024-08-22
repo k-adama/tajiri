@@ -296,7 +296,6 @@ class PosController extends GetxController {
           ? currentOrder?.waitressId ?? waitressCurrentId
           : null,
     );
-    log("CREATE DTO : ${createDto.toJson()}");
     return createDto;
   }
 
