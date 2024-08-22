@@ -34,7 +34,6 @@ class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
     if (checkListingType(user) == ListingType.waitress) {
       _ordersController.filterByWaitress(posController.waitressCurrentId);
     }
-    _ordersController.fetchOrders();
     _controller.refreshCompleted();
   }
 
