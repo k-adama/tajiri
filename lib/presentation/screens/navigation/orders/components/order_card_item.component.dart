@@ -44,6 +44,8 @@ class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
   void _onRefresh() async {
     if (checkListingType(user) == ListingType.waitress) {
       _ordersController.filterByWaitress(posController.waitressCurrentId);
+    }else{
+      _ordersController.filterByTable(posController.tableCurrentId);
     }
     _controller.refreshCompleted();
   }
@@ -51,6 +53,8 @@ class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
   void _onLoading() async {
     if (checkListingType(user) == ListingType.waitress) {
       _ordersController.filterByWaitress(posController.waitressCurrentId);
+    }else{
+      _ordersController.filterByTable(posController.tableCurrentId);
     }
     _controller.refreshCompleted();
   }

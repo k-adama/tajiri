@@ -11,6 +11,7 @@ import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/cart/cart.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/select_table.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/select_waitress.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/components/add_product_button.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/components/cart_order_item.component.dart';
@@ -149,7 +150,10 @@ class _CartScreen extends State<CartScreen> {
                                       : checkListingType(user) ==
                                               ListingType.waitress
                                           ? const SelectWaitressComponent()
-                                          : const SizedBox(),
+                                          : checkListingType(user) ==
+                                                  ListingType.table
+                                              ? const SelectTableComponent()
+                                              : const SizedBox(),
                                 ],
                               ),
                             ),
