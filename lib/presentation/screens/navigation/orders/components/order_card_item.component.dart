@@ -38,13 +38,17 @@ class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _ordersController.filterByWaitress(posController.waitressCurrentId);
       });
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _ordersController.filterByWaitress(posController.tableCurrentId);
+      });
     }
   }
 
   void _onRefresh() async {
     if (checkListingType(user) == ListingType.waitress) {
       _ordersController.filterByWaitress(posController.waitressCurrentId);
-    }else{
+    } else {
       _ordersController.filterByTable(posController.tableCurrentId);
     }
     _controller.refreshCompleted();
@@ -53,7 +57,7 @@ class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
   void _onLoading() async {
     if (checkListingType(user) == ListingType.waitress) {
       _ordersController.filterByWaitress(posController.waitressCurrentId);
-    }else{
+    } else {
       _ordersController.filterByTable(posController.tableCurrentId);
     }
     _controller.refreshCompleted();
