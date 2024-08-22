@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
+import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/extensions/staff.extension.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
@@ -50,28 +51,30 @@ class DrawerPageBodyComponent extends StatelessWidget {
             Get.toNamed(Routes.PRODUCTS);
           },
         ),
-        ListTile(
-          title: const DrawerBodyListRowComponent(
-            name: "Gestion des serveurs",
-            emoji: "assets/svgs/waitress-gestion.svg",
+        if (checkListingType(user) == ListingType.waitress)
+          ListTile(
+            title: const DrawerBodyListRowComponent(
+              name: "Gestion des serveurs",
+              emoji: "assets/svgs/waitress-gestion.svg",
+            ),
+            onTap: () {
+              Mixpanel.instance.track("View Waitress",
+                  properties: {"Date": DateTime.now().toString()});
+              Get.toNamed(Routes.WAITRESS);
+            },
           ),
-          onTap: () {
-            Mixpanel.instance.track("View Waitress",
-                properties: {"Date": DateTime.now().toString()});
-            Get.toNamed(Routes.WAITRESS);
-          },
-        ),
-        ListTile(
-          title: const DrawerBodyListRowComponent(
-            name: "Gestion des tables",
-            emoji: "assets/svgs/waitress-gestion.svg",
+        if (checkListingType(user) == ListingType.table)
+          ListTile(
+            title: const DrawerBodyListRowComponent(
+              name: "Gestion des tables",
+              emoji: "assets/svgs/waitress-gestion.svg",
+            ),
+            onTap: () {
+              Mixpanel.instance.track("View Tables",
+                  properties: {"Date": DateTime.now().toString()});
+              Get.toNamed(Routes.TABLE);
+            },
           ),
-          onTap: () {
-            Mixpanel.instance.track("View Tables",
-                properties: {"Date": DateTime.now().toString()});
-            Get.toNamed(Routes.TABLE);
-          },
-        ),
         ListTile(
           title: const DrawerBodyListRowComponent(
             name: "Réglages bluetooth",

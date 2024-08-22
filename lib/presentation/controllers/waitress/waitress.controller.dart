@@ -23,7 +23,10 @@ class WaitressController extends GetxController {
 
   @override
   void onReady() async {
-    fetchWaitress();
+    Future.wait([
+      fetchWaitress(),
+    ]);
+
     super.onReady();
   }
 
@@ -35,10 +38,21 @@ class WaitressController extends GetxController {
     clearSelectWaitress();
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
+      isLoadingCreateWaitress = true;
+      update();
       try {
-        isLoadingCreateWaitress = true;
-        update();
         final result = await tajiriSdk.waitressesService.getWaitresses();
+        result.insert(
+          0,
+          Waitress(
+            id: "all",
+            name: "Tous les serveurs",
+            gender: "all",
+            restaurantId: '',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+        );
         waitressList.assignAll(result);
         isLoadingCreateWaitress = false;
         update();

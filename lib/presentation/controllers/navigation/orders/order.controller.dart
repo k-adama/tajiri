@@ -179,7 +179,7 @@ class OrdersController extends GetxController {
   Future<void> filterByWaitress(String? selectedWaitressId) async {
     isProductLoading = true;
     update();
-    if (selectedWaitressId == null) {
+    if (selectedWaitressId == null || selectedWaitressId == "all") {
       orders.assignAll(ordersInit);
     } else {
       orders.assignAll(ordersInit

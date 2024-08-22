@@ -157,6 +157,14 @@ class PosController extends GetxController {
         "Aucun restaurant connecté",
       );
     }
+    if (waitressCurrentId == 'all') {
+      isLoadingOrder.value = false;
+      update();
+      return AppHelpersCommon.showCheckTopSnackBarInfoForm(
+        context,
+        "Veuillez sélectionner le nom d'une serveuse",
+      );
+    }
 
     final createOrderDto = getCreateOrderDto(status);
     final paymentMethodName = getNamePaiementById(paymentMethodId.value);
@@ -296,7 +304,6 @@ class PosController extends GetxController {
           ? currentOrder?.waitressId ?? waitressCurrentId
           : null,
     );
-    log("CREATE DTO : ${createDto.toJson()}");
     return createDto;
   }
 
@@ -334,7 +341,6 @@ class PosController extends GetxController {
           ? currentOrder?.tableId ?? tableCurrentId
           : null,
     );
-    print(updateDto.toJson());
     return updateDto;
   }
 
