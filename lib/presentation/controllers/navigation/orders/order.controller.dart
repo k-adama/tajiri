@@ -179,8 +179,7 @@ class OrdersController extends GetxController {
   }
 
   Future<void> filterByWaitress(String? selectedWaitressId) async {
-    print(
-        "======filterByWaitress====$ordersInit=select id $selectedWaitressId=");
+    print("======filterByWaitress===select id $selectedWaitressId=");
     isProductLoading.value = true;
     update();
     if (selectedWaitressId == null || selectedWaitressId == "all") {

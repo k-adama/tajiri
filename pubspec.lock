@@ -737,10 +737,10 @@ packages:
     dependency: transitive
     description:
       name: mime
-      sha256: "2e123074287cc9fd6c09de8336dae606d1ddb88d9ac47358826db698c176a1f2"
+      sha256: "801fd0b26f14a4a58ccb09d5892c3fbdeff209594300a542492cf13fba9d247a"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.5"
+    version: "1.0.6"
   mixpanel_flutter:
     dependency: "direct main"
     description:
@@ -1183,7 +1183,7 @@ packages:
     description:
       path: "."
       ref: "feature/update_sale_report"
-      resolved-ref: "4870fd961f6b07d1f15a62e648f59f6d6c3d3704"
+      resolved-ref: "8c32c8f3f06bf344f25bb6ed45cfc80317102108"
       url: "git@github.com:tajiri-app/tajiri-sdk.git"
     source: git
     version: "0.0.1"

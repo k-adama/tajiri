@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:get/instance_manager.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
@@ -26,7 +24,7 @@ class OrdersScreen extends StatefulWidget {
 class _OrdersScreenState extends State<OrdersScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController = TabController(length: 3, vsync: this);
-  final OrdersController _ordersController = Get.find();
+  final OrdersController _ordersController = Get.put(OrdersController());
   final Staff? user = AppHelpersCommon.getUserInLocalStorage();
   final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
 

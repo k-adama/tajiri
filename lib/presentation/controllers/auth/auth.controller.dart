@@ -142,12 +142,16 @@ class AuthController extends GetxController {
       try {
         final response = await tajiriSdk.authService.demo(name, email);
         final user = await tajiriSdk.staffService.getStaff("me");
+        final restaurant =
+            await tajiriSdk.restaurantsService.getRestaurant(user.restaurantId);
         await Future.wait([
           LocalStorageService.instance
               .set(AuthConstant.keyToken, response.token),
           LocalStorageService.instance.set(AuthConstant.keyIsDemo, "true"),
           LocalStorageService.instance
               .set(UserConstant.keyUser, jsonEncode(user)),
+          LocalStorageService.instance
+              .set(RestaurantConstant.keyRestaurant, jsonEncode(restaurant))
         ]);
 
         isLoading = false;
@@ -159,6 +163,7 @@ class AuthController extends GetxController {
 
         Mixpanel.instance.identify(user.id);
         Mixpanel.instance.getGroup("Restaurant ID", user.restaurantId);
+        Mixpanel.instance.setGroup("Restaurant Name", restaurant.name);
         Mixpanel.instance.track('Login',
             properties: {"Method used": "Phone", "Status": "Succes"});
         Get.offAllNamed(Routes.NAVIGATION);
