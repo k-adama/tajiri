@@ -6,6 +6,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
+import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
 import 'dart:ui' as ui;
@@ -15,7 +16,7 @@ import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_pos_mobile/app/extensions/staff.extension.dart';
 
 class OrdersController extends GetxController {
-  bool isProductLoading = true;
+  final isProductLoading = true.obs;
   bool isLoadingCreateWaitress = false;
   bool isLoadingTable = false;
   bool isExpanded = false;
@@ -101,6 +102,7 @@ class OrdersController extends GetxController {
   }
 
   Future<void> fetchOrders() async {
+    print("====fetchOrders====");
     final DateTime today = DateTime.now();
     final DateTime sevenDaysAgo = today.subtract(const Duration(days: 2));
     String? ownerId = user?.idOwnerForGetOrder;
@@ -111,7 +113,7 @@ class OrdersController extends GetxController {
     );
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
-      isProductLoading = true;
+      isProductLoading.value = true;
       update();
 
       try {
@@ -119,10 +121,10 @@ class OrdersController extends GetxController {
         orders.assignAll(result);
         ordersInit.assignAll(result);
       } catch (e) {
-        isProductLoading = false;
+        isProductLoading.value = false;
         update();
       }
-      isProductLoading = false;
+      isProductLoading.value = false;
       update();
     }
   }
@@ -177,7 +179,9 @@ class OrdersController extends GetxController {
   }
 
   Future<void> filterByWaitress(String? selectedWaitressId) async {
-    isProductLoading = true;
+    print(
+        "======filterByWaitress====$ordersInit=select id $selectedWaitressId=");
+    isProductLoading.value = true;
     update();
     if (selectedWaitressId == null || selectedWaitressId == "all") {
       orders.assignAll(ordersInit);
@@ -186,12 +190,13 @@ class OrdersController extends GetxController {
           .where((order) => order.waitressId == selectedWaitressId)
           .toList());
     }
-    isProductLoading = false;
+    isProductLoading.value = false;
     update();
   }
 
   Future<void> filterByTable(String? selectedTableId) async {
-    isProductLoading = true;
+    print("========filterByTable======");
+    isProductLoading.value = true;
     update();
     if (selectedTableId == null) {
       orders.assignAll(ordersInit);
@@ -201,7 +206,7 @@ class OrdersController extends GetxController {
           .toList());
     }
 
-    isProductLoading = false;
+    isProductLoading.value = false;
     update();
   }
 
@@ -241,6 +246,7 @@ class OrdersController extends GetxController {
   }
 
   Future<void> fetchOrderById(String idOrder) async {
+    print("======fetchOrderById====$idOrder");
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
       try {
@@ -268,7 +274,12 @@ class OrdersController extends GetxController {
       // Add the new order to ordersInit if it doesn't exist
       ordersInit.insert(0, newOrder);
     }
-    orders.assignAll(ordersInit);
+
+    if (checkListingType(user) == ListingType.waitress) {
+      filterByWaitress(posController.waitressCurrentId);
+    } else {
+      filterByWaitress(posController.tableCurrentId);
+    }
   }
 
   Future<void> fetchWaitresses() async {

@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
@@ -19,6 +22,8 @@ class WaitressController extends GetxController {
   final user = AppHelpersCommon.getUserInLocalStorage();
   String? get restaurantId => user?.restaurantId;
 
+  OrdersController ordersController = Get.find();
+
   final tajiriSdk = TajiriSDK.instance;
 
   @override
@@ -32,6 +37,7 @@ class WaitressController extends GetxController {
 
   clearSelectWaitress() {
     selectedWaitress.value = null;
+    ordersController.filterByWaitress(null);
   }
 
   Future<void> fetchWaitress() async {

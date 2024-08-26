@@ -28,7 +28,9 @@ class _SelectWaitressComponentState extends State<SelectWaitressComponent> {
     return Obx(() {
       return SelectDropDownButton<Waitress?>(
         value: waitressController.selectedWaitress.value,
-        containerColor: posController.containerColor,
+        containerColor: waitressController.selectedWaitress.value == null
+            ? Style.dotColor
+            : posController.containerColor,
         items: [
           // Ajouter l'option "Tous les serveurs" directement ici
           DropdownMenuItem<Waitress>(
@@ -90,7 +92,6 @@ class _SelectWaitressComponentState extends State<SelectWaitressComponent> {
           })
         ],
         onChanged: (Waitress? newValue) {
-          print("Select waitress component : $newValue");
           Mixpanel.instance.track("Change Waitress", properties: {
             "Old Value": posController.waitressCurrentId,
             "New Value": newValue?.id

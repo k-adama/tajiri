@@ -34,15 +34,6 @@ class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
   @override
   void initState() {
     super.initState();
-    if (checkListingType(user) == ListingType.waitress) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _ordersController.filterByWaitress(posController.waitressCurrentId);
-      });
-    } else {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _ordersController.filterByWaitress(posController.tableCurrentId);
-      });
-    }
   }
 
   void _onRefresh() async {

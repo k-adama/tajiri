@@ -25,7 +25,9 @@ class _SelectTableComponentState extends State<SelectTableComponent> {
     return Obx(() {
       return SelectDropDownButton<taj_sdk.Table>(
         value: tableController.selectedTable.value,
-        containerColor: posController.containerColor,
+        containerColor: tableController.selectedTable.value == null
+            ? Style.dotColor
+            : posController.containerColor,
         items: [
           DropdownMenuItem<taj_sdk.Table>(
             value: null,

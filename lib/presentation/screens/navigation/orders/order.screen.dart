@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/instance_manager.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
@@ -39,58 +40,59 @@ class _OrdersScreenState extends State<OrdersScreen>
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Style.white, //lighter
-        body: GetBuilder<OrdersController>(
-            builder: (ordersController) => Column(
+        body: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Column(
                   children: [
+                    const OrdersSearchComponent(),
+                    CustomTabBarUi(
+                      tabController: _tabController,
+                      tabs: tabs,
+                    ),
                     Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
-                        child: Column(
+                      child: Obx(() {
+                        return TabBarView(
+                          controller: _tabController,
                           children: [
-                            const OrdersSearchComponent(),
-                            CustomTabBarUi(
-                              tabController: _tabController,
-                              tabs: tabs,
+                            _buildOrderTab(
+                              isLoading:
+                                  _ordersController.isProductLoading.value,
+                              orders: _ordersController.orders,
+                              filter: (order) =>
+                                  true, // No filter for the first tab
+                              restaurant: restaurant,
                             ),
-                            Expanded(
-                              child: TabBarView(
-                                controller: _tabController,
-                                children: [
-                                  _buildOrderTab(
-                                    isLoading:
-                                        _ordersController.isProductLoading,
-                                    orders: _ordersController.orders,
-                                    filter: (order) =>
-                                        true, // No filter for the first tab
-                                    restaurant: restaurant,
-                                  ),
-                                  _buildOrderTab(
-                                    isLoading:
-                                        _ordersController.isProductLoading,
-                                    orders: _ordersController.orders,
-                                    filter: (order) => AppConstants
-                                        .getStatusOrderInProgressOrDone(
-                                            order, "IN_PROGRESS"),
-                                    restaurant: restaurant,
-                                  ),
-                                  _buildOrderTab(
-                                    isLoading:
-                                        _ordersController.isProductLoading,
-                                    orders: _ordersController.orders,
-                                    filter: (order) => AppConstants
-                                        .getStatusOrderInProgressOrDone(
-                                            order, "DONE"),
-                                    restaurant: restaurant,
-                                  ),
-                                ],
-                              ),
+                            _buildOrderTab(
+                              isLoading:
+                                  _ordersController.isProductLoading.value,
+                              orders: _ordersController.orders,
+                              filter: (order) =>
+                                  AppConstants.getStatusOrderInProgressOrDone(
+                                      order, "IN_PROGRESS"),
+                              restaurant: restaurant,
+                            ),
+                            _buildOrderTab(
+                              isLoading:
+                                  _ordersController.isProductLoading.value,
+                              orders: _ordersController.orders,
+                              filter: (order) =>
+                                  AppConstants.getStatusOrderInProgressOrDone(
+                                      order, "DONE"),
+                              restaurant: restaurant,
                             ),
                           ],
-                        ),
-                      ),
+                        );
+                      }),
                     ),
                   ],
-                )),
+                ),
+              ),
+            ),
+          ],
+        ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Style.transparent,
           onPressed: () {
