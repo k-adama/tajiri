@@ -42,17 +42,7 @@ class WaitressController extends GetxController {
       update();
       try {
         final result = await tajiriSdk.waitressesService.getWaitresses();
-        result.insert(
-          0,
-          Waitress(
-            id: "all",
-            name: "Tous les serveurs",
-            gender: "all",
-            restaurantId: '',
-            createdAt: DateTime.now(),
-            updatedAt: DateTime.now(),
-          ),
-        );
+
         waitressList.assignAll(result);
         isLoadingCreateWaitress = false;
         update();
@@ -162,8 +152,9 @@ class WaitressController extends GetxController {
     }
   }
 
-  Future<void> deleteWaitress(BuildContext context, String waitressId) async {
-    if (waitressId.isEmpty) return;
+  Future<void> deleteWaitress(BuildContext context, String? waitressId) async {
+    if (waitressId == null || waitressId.isEmpty) return;
+
     isLoadingUpdateWaitress = true;
     update();
 
@@ -190,8 +181,11 @@ class WaitressController extends GetxController {
     update();
   }
 
-  Future<void> fetchWaitressById(String id) async {
+  Future<void> fetchWaitressById(String? id) async {
     print("=======fetchWaitressById========");
+    if (id == null) {
+      return;
+    }
     clearSelectWaitress();
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
@@ -210,6 +204,7 @@ class WaitressController extends GetxController {
   }
 
   void updateWaitressList(Waitress waitress) {
+    clearSelectWaitress();
     final indexInit =
         waitressList.indexWhere((table) => table.id == waitress.id);
     print("update order list $indexInit");

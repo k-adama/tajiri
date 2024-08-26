@@ -26,30 +26,29 @@ class _SelectWaitressComponentState extends State<SelectWaitressComponent> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return SelectDropDownButton<Waitress>(
+      return SelectDropDownButton<Waitress?>(
         value: waitressController.selectedWaitress.value,
         containerColor: posController.containerColor,
-        items: waitressController.waitressList.value.map((Waitress item) {
-          int index = waitressController.waitressList.value.indexOf(item);
-          return DropdownMenuItem<Waitress>(
-            value: item,
+        items: [
+          // Ajouter l'option "Tous les serveurs" directement ici
+          DropdownMenuItem<Waitress>(
+            value: null,
             child: Container(
               height: 40,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(20)),
-                color: Style.colors[index % Style.colors.length],
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                color: Style.dotColor,
               ),
               child: Row(
                 children: [
                   10.horizontalSpace,
-                  item.gender == 'MALE'
-                      ? SvgPicture.asset('assets/svgs/noto_man.svg')
-                      : SvgPicture.asset('assets/svgs/noto_woman.svg'),
+                  SvgPicture.asset(
+                      'assets/svgs/noto_man.svg'), // Icône par défaut
                   8.horizontalSpace,
-                  SizedBox(
+                  const SizedBox(
                     width: 100,
                     child: Text(
-                      '${item.name}',
+                      'Tous les serveurs',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -57,26 +56,55 @@ class _SelectWaitressComponentState extends State<SelectWaitressComponent> {
                 ],
               ),
             ),
-          );
-        }).toList(),
+          ),
+          // Générer les autres éléments de la liste
+          ...waitressController.waitressList.value.map((Waitress item) {
+            int index = waitressController.waitressList.value.indexOf(item);
+            return DropdownMenuItem<Waitress>(
+              value: item,
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  color: Style.colors[index % Style.colors.length],
+                ),
+                child: Row(
+                  children: [
+                    10.horizontalSpace,
+                    item.gender == 'MALE'
+                        ? SvgPicture.asset('assets/svgs/noto_man.svg')
+                        : SvgPicture.asset('assets/svgs/noto_woman.svg'),
+                    8.horizontalSpace,
+                    SizedBox(
+                      width: 100,
+                      child: Text(
+                        item.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          })
+        ],
         onChanged: (Waitress? newValue) {
+          print("Select waitress component : $newValue");
           Mixpanel.instance.track("Change Waitress", properties: {
             "Old Value": posController.waitressCurrentId,
             "New Value": newValue?.id
           });
           setState(() {
-            waitressController.selectedWaitress.value = newValue!;
+            waitressController.selectedWaitress.value = newValue;
             int index = waitressController.waitressList.indexOf(newValue);
-            posController.containerColor =
-                Style.colors[index % Style.colors.length];
+            posController.containerColor = newValue == null
+                ? Style.dotColor
+                : Style.colors[index % Style.colors.length];
           });
 
-          if (newValue != null) {
-            posController.waitressCurrentId = newValue.id;
-            ordersController.filterByWaitress(posController.waitressCurrentId);
-          } else {
-            ordersController.filterByWaitress(null);
-          }
+          posController.waitressCurrentId = newValue?.id;
+          ordersController.filterByWaitress(posController.waitressCurrentId);
         },
         hinText: "Tous les serveurs",
       );

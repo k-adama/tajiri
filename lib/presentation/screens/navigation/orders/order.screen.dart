@@ -22,10 +22,11 @@ class OrdersScreen extends StatefulWidget {
   State<OrdersScreen> createState() => _OrdersScreenState();
 }
 
-class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderStateMixin {
+class _OrdersScreenState extends State<OrdersScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController = TabController(length: 3, vsync: this);
   final OrdersController _ordersController = Get.find();
-    final Staff? user = AppHelpersCommon.getUserInLocalStorage();
+  final Staff? user = AppHelpersCommon.getUserInLocalStorage();
   final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
 
   @override
@@ -33,6 +34,7 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,38 +53,38 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
                               tabs: tabs,
                             ),
                             Expanded(
-                            child: TabBarView(
-                              controller: _tabController,
-                              children: [
-                                _buildOrderTab(
-                                  isLoading:
-                                      _ordersController.isProductLoading,
-                                  orders: _ordersController.orders,
-                                  filter: (order) =>
-                                      true, // No filter for the first tab
-                                  restaurant: restaurant,
-                                ),
-                                _buildOrderTab(
-                                  isLoading:
-                                      _ordersController.isProductLoading,
-                                  orders: _ordersController.orders,
-                                  filter: (order) => AppConstants
-                                      .getStatusOrderInProgressOrDone(
-                                          order, "IN_PROGRESS"),
-                                  restaurant: restaurant,
-                                ),
-                                _buildOrderTab(
-                                  isLoading:
-                                      _ordersController.isProductLoading,
-                                  orders: _ordersController.orders,
-                                  filter: (order) => AppConstants
-                                      .getStatusOrderInProgressOrDone(
-                                          order, "DONE"),
-                                  restaurant: restaurant,
-                                ),
-                              ],
+                              child: TabBarView(
+                                controller: _tabController,
+                                children: [
+                                  _buildOrderTab(
+                                    isLoading:
+                                        _ordersController.isProductLoading,
+                                    orders: _ordersController.orders,
+                                    filter: (order) =>
+                                        true, // No filter for the first tab
+                                    restaurant: restaurant,
+                                  ),
+                                  _buildOrderTab(
+                                    isLoading:
+                                        _ordersController.isProductLoading,
+                                    orders: _ordersController.orders,
+                                    filter: (order) => AppConstants
+                                        .getStatusOrderInProgressOrDone(
+                                            order, "IN_PROGRESS"),
+                                    restaurant: restaurant,
+                                  ),
+                                  _buildOrderTab(
+                                    isLoading:
+                                        _ordersController.isProductLoading,
+                                    orders: _ordersController.orders,
+                                    filter: (order) => AppConstants
+                                        .getStatusOrderInProgressOrDone(
+                                            order, "DONE"),
+                                    restaurant: restaurant,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
                           ],
                         ),
                       ),
@@ -115,10 +117,10 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
               color: Style.white,
             ),
           ),
-        )
-        );
+        ));
   }
-    bool _isRestaurantUser(Restaurant? restaurant) {
+
+  bool _isRestaurantUser(Restaurant? restaurant) {
     if (restaurant == null) {
       return false;
     }
@@ -138,7 +140,7 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
 
     final filteredOrders = orders.where(filter).toList();
     if (filteredOrders.isEmpty) {
-      return OrderListEmptyComponent();
+      return const OrderListEmptyComponent();
     }
 
     return OrderCardItemComponent(

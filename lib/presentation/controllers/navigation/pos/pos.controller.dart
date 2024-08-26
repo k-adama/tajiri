@@ -60,7 +60,7 @@ class PosController extends GetxController {
   String tableId = '';
   String? waitressCurrentId;
   String? tableCurrentId;
-  Color containerColor = Style.menuFlottant;
+  Color containerColor = Style.dotColor;
 
   final user = AppHelpersCommon.getUserInLocalStorage();
   final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
@@ -155,14 +155,6 @@ class PosController extends GetxController {
       return AppHelpersCommon.showCheckTopSnackBarInfoForm(
         context,
         "Aucun restaurant connecté",
-      );
-    }
-    if (waitressCurrentId == 'all') {
-      isLoadingOrder.value = false;
-      update();
-      return AppHelpersCommon.showCheckTopSnackBarInfoForm(
-        context,
-        "Veuillez sélectionner le nom d'une serveuse",
       );
     }
 

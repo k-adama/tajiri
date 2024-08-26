@@ -210,10 +210,13 @@ class TableController extends GetxController {
     }
   }
 
-  Future<void> fetchTablesById(String id) async {
+  Future<void> fetchTablesById(String? id) async {
     print("=======fetchTablesById========");
     clearSelectTable();
     if (restaurantId == null) {
+      return;
+    }
+    if (id == null) {
       return;
     }
     final connected = await AppConnectivityService.connectivity();
@@ -235,6 +238,7 @@ class TableController extends GetxController {
   }
 
   void updateTableList(taj_sdk.Table newTable) {
+    clearSelectTable();
     final indexInit =
         tableListData.indexWhere((table) => table.id == newTable.id);
     print("update order list $indexInit");
