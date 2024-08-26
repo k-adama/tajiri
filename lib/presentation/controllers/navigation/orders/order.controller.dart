@@ -278,7 +278,7 @@ class OrdersController extends GetxController {
     if (checkListingType(user) == ListingType.waitress) {
       filterByWaitress(posController.waitressCurrentId);
     } else {
-      filterByWaitress(posController.tableCurrentId);
+      filterByTable(posController.tableCurrentId);
     }
   }
 
