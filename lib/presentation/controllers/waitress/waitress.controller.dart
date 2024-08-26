@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
@@ -187,6 +185,7 @@ class WaitressController extends GetxController {
       ),
     );
     waitressList.removeWhere((element) => element.id == waitressId);
+    clearSelectWaitress();
     isLoadingUpdateWaitress = false;
     update();
   }

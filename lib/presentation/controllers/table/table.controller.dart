@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart' as taj_sdk;
 import 'package:tajiri_sdk/tajiri_sdk.dart';
@@ -21,6 +23,7 @@ class TableController extends GetxController {
   final user = AppHelpersCommon.getUserInLocalStorage();
   String? get restaurantId => user?.restaurantId;
   final tajiriSdk = taj_sdk.TajiriSDK.instance;
+  OrdersController ordersController = Get.find();
 
   @override
   void onReady() async {
@@ -30,7 +33,10 @@ class TableController extends GetxController {
 
   clearSelectTable() {
     selectedTable.value = null;
-    // ordersController.filterByTable(null);
+    ordersController.filterByTable(null);
+    final posController = Get.find<PosController>();
+    posController.waitressCurrentId = null;
+    posController.tableCurrentId = null;
   }
 
   Future<void> fetchTables() async {
@@ -202,6 +208,7 @@ class TableController extends GetxController {
         ),
       );
       tableListData.removeWhere((element) => element.id == tableId);
+      clearSelectTable();
       update();
     } catch (e) {
       isLoadingDeleteTable = false;
@@ -275,7 +282,7 @@ class TableController extends GetxController {
   }
 
   changeSelectTable(taj_sdk.Table? newValue) {
-    selectedTable.value = newValue!;
+    selectedTable.value = newValue;
     update();
   }
 }

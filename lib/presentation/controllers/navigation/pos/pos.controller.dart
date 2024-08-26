@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
@@ -11,8 +10,6 @@ import 'package:tajiri_pos_mobile/app/extensions/product.extension.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
 import 'package:tajiri_pos_mobile/domain/entities/local_cart_enties/main_item.entity.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/table/table.controller.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/waitress/waitress.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
@@ -369,20 +366,6 @@ class PosController extends GetxController {
     note.clear();
     currentOrder = null;
     update();
-  }
-
-  //TODO : for clear selected  waitress and table
-  resetSelectedTableOrWaitress() {
-    // reset waitress and table select
-
-    final waitressController = Get.find<WaitressController>();
-    final tableController = Get.find<TableController>();
-
-    waitressController.selectedWaitress.value = null;
-    tableController.selectedTable.value = null;
-
-    waitressCurrentId = null;
-    tableCurrentId = null;
   }
 
   void setCategoryId(String id) {
