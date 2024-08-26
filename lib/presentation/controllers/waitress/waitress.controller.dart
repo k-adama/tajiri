@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
@@ -38,6 +39,9 @@ class WaitressController extends GetxController {
   clearSelectWaitress() {
     selectedWaitress.value = null;
     ordersController.filterByWaitress(null);
+    final posController = Get.find<PosController>();
+    posController.waitressCurrentId = null;
+    posController.tableCurrentId = null;
   }
 
   Future<void> fetchWaitress() async {
