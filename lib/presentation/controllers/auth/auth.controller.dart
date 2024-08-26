@@ -152,6 +152,16 @@ class AuthController extends GetxController {
 
         isLoading = false;
         update();
+
+        user.toJson().forEach((key, value) {
+          Mixpanel.instance.getPeople().set(key, value);
+        });
+
+        Mixpanel.instance.identify(user.id);
+        Mixpanel.instance.getGroup("Restaurant ID", user.restaurantId);
+        Mixpanel.instance.track('Login',
+            properties: {"Method used": "Phone", "Status": "Succes"});
+        Get.offAllNamed(Routes.NAVIGATION);
       } catch (e, s) {
         isLoading = false;
         update();
