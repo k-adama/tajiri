@@ -158,8 +158,6 @@ class PosController extends GetxController {
     final createOrderDto = getCreateOrderDto(status);
     final paymentMethodName = getNamePaiementById(paymentMethodId.value);
 
-    print("${createOrderDto.toJson()}---${currentOrder?.id}");
-
     try {
       final result = currentOrder?.id != null
           ? await tajiriSdk.ordersService
@@ -350,7 +348,6 @@ class PosController extends GetxController {
       update();
       await handleSaveOrder(context, 'NEW');
     } catch (error) {
-      print("Erreur handleCreateOrderInProgres : $error");
       isLoadingOrder.value = false;
       update();
     } finally {

@@ -102,7 +102,6 @@ class OrdersController extends GetxController {
   }
 
   Future<void> fetchOrders() async {
-    print("====fetchOrders====");
     final DateTime today = DateTime.now();
     final DateTime sevenDaysAgo = today.subtract(const Duration(days: 2));
     String? ownerId = user?.idOwnerForGetOrder;
@@ -179,7 +178,6 @@ class OrdersController extends GetxController {
   }
 
   Future<void> filterByWaitress(String? selectedWaitressId) async {
-    print("======filterByWaitress===select id $selectedWaitressId=");
     isProductLoading.value = true;
     update();
     if (selectedWaitressId == null || selectedWaitressId == "all") {
@@ -194,7 +192,6 @@ class OrdersController extends GetxController {
   }
 
   Future<void> filterByTable(String? selectedTableId) async {
-    print("========filterByTable======");
     isProductLoading.value = true;
     update();
     if (selectedTableId == null) {
@@ -245,7 +242,6 @@ class OrdersController extends GetxController {
   }
 
   Future<void> fetchOrderById(String idOrder) async {
-    print("======fetchOrderById====$idOrder");
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
       try {
@@ -321,7 +317,6 @@ class OrdersController extends GetxController {
 
   Future<void> fetchCustomers() async {
     if (restaurantId == null) {
-      print("===restaurantId null");
       return;
     }
     final connected = await AppConnectivityService.connectivity();

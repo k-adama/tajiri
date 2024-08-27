@@ -37,12 +37,10 @@ class NavigationController extends GetxController {
     final macAdress = AppHelpersCommon.getPrinterMacAdress();
 
     if (macAdress != null) {
-      print("-------------------------------------disconnect before connected");
       await PrintBluetoothThermal.disconnect;
 
       final bool result =
           await PrintBluetoothThermal.connect(macPrinterAddress: macAdress);
-      print("state conected $result in connectToPrinter function $macAdress");
       if (result) {
         bluetoothController.macConnected.value = macAdress;
         bluetoothController.connected.value = true;

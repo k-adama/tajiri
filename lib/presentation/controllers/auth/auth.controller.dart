@@ -176,7 +176,6 @@ class AuthController extends GetxController {
           context,
           e.toString(),
         );
-        print("Error $e; stack $s");
         isLoading = false;
         update();
       }

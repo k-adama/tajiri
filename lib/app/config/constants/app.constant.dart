@@ -143,7 +143,7 @@ String getNameWaitressById(String? id, List<Waitress> waitressList) {
   final waitress = waitressList.firstWhereOrNull(
     (element) => element.id == id,
   );
-  return waitress != null ? waitress.name : 'Aucun Serveur';
+  return waitress != null ? waitress.name : '';
 }
 
 String getNameTableById(String? id, List<taj.Table> tables) {
