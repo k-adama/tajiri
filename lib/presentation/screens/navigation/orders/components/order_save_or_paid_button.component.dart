@@ -131,7 +131,11 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
             radius: 5,
             haveBorder: false,
             onPressed: () {
-              log(order.toJson().toString());
+              try {
+                log(order.toJson().toString());
+              } catch (e, s) {
+                print("Error: $e , StackTrace $s");
+              }
               Get.toNamed(Routes.INVOICE, arguments: order);
             },
           );
