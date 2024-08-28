@@ -30,6 +30,8 @@ class OrdersController extends GetxController {
   List<OrdersReportsEntity> ordersReports =
       List<OrdersReportsEntity>.empty().obs;
   Rx<bool> isLoadingOrder = false.obs;
+  Rx<bool> isLoadingPaid = false.obs;
+
   RxString currentOrderId = "".obs;
   RxString currentOrderNo = "".obs;
 
@@ -185,7 +187,8 @@ class OrdersController extends GetxController {
 
   Future<void> updateOrder(BuildContext context, String paymentMethodId) async {
     if (currentOrderId.isEmpty) return;
-    isLoadingOrder.value = true;
+    //e
+    isLoadingPaid.value = true;
     update();
     final Map<String, dynamic> params = {
       'status': "PAID",
@@ -202,7 +205,7 @@ class OrdersController extends GetxController {
         'orderNo': currentOrderNo.value
       });
 
-      isLoadingOrder.value = false;
+      isLoadingPaid.value = false;
       currentOrderId.value = "";
       currentOrderNo.value = "";
       update();
@@ -213,7 +216,7 @@ class OrdersController extends GetxController {
         context,
         status.toString(),
       );
-      isLoadingOrder.value = false;
+      isLoadingPaid.value = false;
       currentOrderId.value = "";
       update();
     });
@@ -222,6 +225,7 @@ class OrdersController extends GetxController {
   Future<void> updateOrderStatus(
       BuildContext context, String currentOrderId, String status) async {
     if (currentOrderId.isEmpty) return;
+
     isLoadingOrder.value = true;
     final response =
         await _ordersRepository.updateOrder({'status': status}, currentOrderId);
