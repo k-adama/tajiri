@@ -99,7 +99,7 @@ class OrderDetailsEntity {
       map['food'] = _food?.toJson();
     }
     if (_bundle != null) {
-      map['bundle'] = _bundle?.toJson();
+      map['bundle'] = _bundle;
     }
     return map;
   }
