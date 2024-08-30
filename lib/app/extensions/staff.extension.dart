@@ -52,6 +52,10 @@ extension StaffExtension on Staff? {
     return isOwner || hasPermission(AppConstants.UPDATE_ORDER_PRODUCTS);
   }
 
+  bool get hasViewOrderFullPermission {
+    return hasPermission(AppConstants.VIEW_ORDERS_FULL);
+  }
+
   bool get canViewInventory {
     return isOwner || hasPermission(AppConstants.VIEW_INVENTORY);
   }
@@ -65,7 +69,7 @@ extension StaffExtension on Staff? {
       case Role.CASHIER || Role.OWNER || Role.MANAGER:
         return null; // pour afficher toutes les commandes
       default:
-        return this?.id;
+        return hasViewOrderFullPermission ? null : this?.id;
     }
   }
 }
