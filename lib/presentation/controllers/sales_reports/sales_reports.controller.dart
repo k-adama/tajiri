@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
@@ -175,7 +174,7 @@ class SalesReportController extends GetxController {
   DateTime convertToDateTime(String dateTimeString) {
     List<String> parts = dateTimeString.split(' ');
     if (parts.length < 3) {
-      throw FormatException("Invalid date time format");
+      throw const FormatException("Invalid date time format");
     }
 
     String datePart = parts[0];
