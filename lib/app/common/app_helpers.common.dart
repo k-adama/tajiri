@@ -224,9 +224,11 @@ class AppHelpersCommon {
   }
 
   static showCheckTopSnackBarInfo(BuildContext context, String text,
-      {VoidCallback? onTap}) {
+      {VoidCallback? onTap,
+      Duration displayDuration = const Duration(milliseconds: 3000)}) {
     return showTopSnackBar(
         context,
+        displayDuration: displayDuration,
         CustomSnackBar.info(
           message: text,
         ),

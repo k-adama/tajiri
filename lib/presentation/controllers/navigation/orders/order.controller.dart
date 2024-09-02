@@ -26,6 +26,8 @@ class OrdersController extends GetxController {
   List<Order> orders = List<Order>.empty().obs;
   List<Order> ordersInit = List<Order>.empty().obs;
   Rx<bool> isLoadingOrder = false.obs;
+  Rx<bool> isLoadingPaid = false.obs;
+
   RxString currentOrderId = "".obs;
   double? amount;
 
@@ -131,7 +133,8 @@ class OrdersController extends GetxController {
   Future<void> updateOrder(
       material.BuildContext context, String paymentMethodId) async {
     if (currentOrderId.isEmpty) return;
-    isLoadingOrder.value = true;
+    //e
+    isLoadingPaid.value = true;
     update();
     String status = "PAID";
     final paymentValues = PaymentValueDto(
@@ -142,15 +145,16 @@ class OrdersController extends GetxController {
       status: status,
       paymentValues: [paymentValues],
     );
+    print("============PAID ORDER=============");
     try {
       await tajiriSdk.ordersService
           .updateOrder(currentOrderId.value, updateDto);
-      isLoadingOrder.value = false;
+      isLoadingPaid.value = false;
       currentOrderId.value = "";
       currentOrderNo.value = "";
       update();
     } catch (e) {
-      isLoadingOrder.value = false;
+      isLoadingPaid.value = false;
       currentOrderId.value = "";
       update();
     }
@@ -243,13 +247,20 @@ class OrdersController extends GetxController {
 
   Future<void> fetchOrderById(String idOrder) async {
     final connected = await AppConnectivityService.connectivity();
+
     if (connected) {
       try {
+        isProductLoading.value = true;
+        update();
         final order = await tajiriSdk.ordersService.getOrder(idOrder);
 
         updateOrderList(order);
+        isProductLoading.value = false;
+
         update();
       } catch (e) {
+        isProductLoading.value = false;
+        update();
         AppHelpersCommon.showBottomSnackBar(
           Get.context!,
           mt.Text(e.toString()),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/effects/animation_button.effect.dart';
 
@@ -60,7 +61,18 @@ class CustomButton extends StatelessWidget {
           ),
           backgroundColor: isGrised == true ? Style.grey100 : background,
         ),
-        onPressed: isGrised == true ? null : onPressed,
+        onPressed: isGrised == true
+            ? null
+            : isLoading
+                ? () {
+                    print("========Chargement en cours========");
+                    AppHelpersCommon.showCheckTopSnackBarInfo(
+                      context,
+                      displayDuration: const Duration(seconds: 1),
+                      "Veuillez patienter Chargement en cours...",
+                    );
+                  }
+                : onPressed,
         child: isLoading
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,

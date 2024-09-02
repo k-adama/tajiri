@@ -50,57 +50,29 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                   ),
                   4.horizontalSpace,
                   Flexible(
-                    child: Obx(() => orderController.isLoadingOrder.isTrue
-                        ? CustomButton(
-                            isLoading: orderController.isLoadingOrder.value,
-                            background: Style.primaryColor,
-                            radius: 5,
-                            title: "Payer",
-                            textColor: Style.white,
-                            isLoadingColor: Style.secondaryColor,
-                            onPressed: () {
-                              orderController.currentOrderId.value = order.id;
+                    child: Obx(
+                      () {
+                        // Définir les propriétés du bouton
+                        final bool isLoading =
+                            orderController.isLoadingPaid.value;
+                        final Color textColor =
+                            isLoading ? Style.white : Style.secondaryColor;
 
-                              orderController.currentOrderNo.value =
-                                  order.orderNumber.toString();
-                              AppHelpersCommon.showCustomModalBottomSheet(
-                                  paddingTop:
-                                      MediaQuery.of(context).padding.top +
-                                          100.h,
-                                  context: context,
-                                  modal:
-                                      const OrderPaymentsMethodesModalComponent(),
-                                  isDarkMode: false,
-                                  isDrag: true,
-                                  radius: 12);
-                            },
-                          )
-                        : CustomButton(
-                            isLoading: orderController.isLoadingOrder.value,
-                            background: Style.primaryColor,
-                            radius: 5,
-                            title: "Payer",
-                            isLoadingColor: Style.secondaryColor,
-                            textColor: Style.secondaryColor,
-                            onPressed: () {
-                              orderController.currentOrderId.value = order.id;
-                              orderController.amount =
-                                  order.grandTotal.toDouble();
-                              orderController.currentOrderNo.value =
-                                  order.orderNumber.toString();
-                              AppHelpersCommon.showCustomModalBottomSheet(
-                                  paddingTop:
-                                      MediaQuery.of(context).padding.top +
-                                          100.h,
-                                  context: context,
-                                  modal:
-                                      const OrderPaymentsMethodesModalComponent(),
-                                  isDarkMode: false,
-                                  isDrag: true,
-                                  radius: 12);
-                              // Navigator.pop(context);
-                            },
-                          )),
+                        return CustomButton(
+                          isLoading: isLoading,
+                          background: Style.primaryColor,
+                          radius: 5,
+                          title: "Payer",
+                          textColor: textColor,
+                          isLoadingColor: Style.secondaryColor,
+                          onPressed: () {
+                            // Action à effectuer lors de l'appui sur le bouton
+                            _handlePaymentButtonPress(order.id ?? "",
+                                order.orderNumber.toString(), context);
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -134,5 +106,21 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
               Get.toNamed(Routes.INVOICE, arguments: {"order": order});
             },
           );
+  }
+
+  // Méthode pour gérer l'action du bouton de paiement
+  void _handlePaymentButtonPress(
+      String orderId, String orderNumber, BuildContext context) {
+    orderController.currentOrderId.value = orderId;
+    orderController.currentOrderNo.value = orderNumber;
+    orderController.amount = order.grandTotal.toDouble();
+    AppHelpersCommon.showCustomModalBottomSheet(
+      paddingTop: MediaQuery.of(context).padding.top + 100.h,
+      context: context,
+      modal: const OrderPaymentsMethodesModalComponent(),
+      isDarkMode: false,
+      isDrag: true,
+      radius: 12,
+    );
   }
 }

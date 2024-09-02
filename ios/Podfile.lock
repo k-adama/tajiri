@@ -43,7 +43,7 @@ PODS:
   - mixpanel_flutter (2.2.0):
     - Flutter
     - Mixpanel-swift (= 4.2.0)
-  - onesignal_flutter (5.2.3):
+  - onesignal_flutter (5.2.4):
     - Flutter
     - OneSignalXCFramework (= 5.2.3)
   - OneSignalXCFramework (5.2.3):
@@ -214,7 +214,7 @@ SPEC CHECKSUMS:
   Mantle: c5aa8794a29a022dfbbfc9799af95f477a69b62d
   Mixpanel-swift: e5dd85295923e6a875acf17ccbab8d2ecb10ea65
   mixpanel_flutter: ed1e5eaea382cbbaf655d20e23478211727ee011
-  onesignal_flutter: aecb9bab7b87b6b6a0887c103932c9f5488759e5
+  onesignal_flutter: 3d348a51e0c42e112e559a5c9871e2aada3deb7a
   OneSignalXCFramework: 356e59953e157f6e45a7fdfc863073b3168b2d01
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
