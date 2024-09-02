@@ -1,20 +1,19 @@
-import 'dart:developer';
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
+import 'package:tajiri_pos_mobile/app/extensions/staff.extension.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/orders/components/order_payments_method_modal.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class OrderSaveOrPaidButtonComponent extends StatelessWidget {
-  final OrderEntity order;
+  final Order order;
   final bool isPaid;
   OrderSaveOrPaidButtonComponent(
       {super.key, required this.order, required this.isPaid});
@@ -22,6 +21,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
   final OrdersController orderController = Get.find();
   final NavigationController navigationController =
       Get.put(NavigationController());
+  final user = AppHelpersCommon.getUserInLocalStorage();
   @override
   Widget build(BuildContext context) {
     return order.status == AppConstants.orderNew ||
@@ -36,9 +36,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                     child: CustomButton(
                       isLoading: orderController.isAddAndRemoveLoading,
                       background: Style.secondaryColor,
-                      isGrised: AppHelpersCommon.getUserInLocalStorage()
-                              ?.canUpdateOrCanceledOrder() ==
-                          false,
+                      isGrised: !user.canUpdate,
                       title: "Modifier",
                       textColor: Style.white,
                       isLoadingColor: Style.white,
@@ -88,7 +86,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
                 borderColor: Style.secondaryColor,
                 imagePath: "assets/svgs/ion_receipt-sharpinvoice.svg",
                 onPressed: () {
-                  Get.toNamed(Routes.INVOICE, arguments: order);
+                  Get.toNamed(Routes.INVOICE, arguments: {"order": order});
                 },
               )
             ],
@@ -104,12 +102,8 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
             radius: 5,
             haveBorder: false,
             onPressed: () {
-              try {
-                log(order.toJson().toString());
-              } catch (e, s) {
-                print("Error: $e , StackTrace $s");
-              }
-              Get.toNamed(Routes.INVOICE, arguments: order);
+              // log(order.toJson().toString());
+              Get.toNamed(Routes.INVOICE, arguments: {"order": order});
             },
           );
   }
@@ -119,7 +113,7 @@ class OrderSaveOrPaidButtonComponent extends StatelessWidget {
       String orderId, String orderNumber, BuildContext context) {
     orderController.currentOrderId.value = orderId;
     orderController.currentOrderNo.value = orderNumber;
-
+    orderController.amount = order.grandTotal.toDouble();
     AppHelpersCommon.showCustomModalBottomSheet(
       paddingTop: MediaQuery.of(context).padding.top + 100.h,
       context: context,

@@ -3,14 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_variant_list.component.dart';
-import 'package:tajiri_pos_mobile/presentation/ui/shimmer/food_variant_card.shimmer.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class FoodVariantAddedList extends StatefulWidget {
-  final List<FoodVariantCategoryEntity>? foodVariantCategory;
-  const FoodVariantAddedList({super.key, required this.foodVariantCategory});
+  final List<ProductVariant>? productVariant;
+  const FoodVariantAddedList({super.key, required this.productVariant});
 
   @override
   State<FoodVariantAddedList> createState() => _FoodVariantAddedListState();
@@ -26,12 +25,12 @@ class _FoodVariantAddedListState extends State<FoodVariantAddedList> {
   }
 
   void _onRefresh() async {
-    await posController.fetchFoods();
+    await posController.fetchProducts();
     _controller.refreshCompleted();
   }
 
   void _onLoading() async {
-    await posController.fetchFoods();
+    await posController.fetchProducts();
     _controller.loadComplete();
   }
 
@@ -41,18 +40,9 @@ class _FoodVariantAddedListState extends State<FoodVariantAddedList> {
       body: Column(
         children: [
           20.verticalSpace,
-          widget.foodVariantCategory == null ||
-                  widget.foodVariantCategory!
-                      .isEmpty //posController.foods.isEmpty
-              ?
-              // const ShimmerProductListWidget()
-              Expanded(
-                  child: ListView.builder(
-                    itemCount: 0,
-                    itemBuilder: (context, i) {
-                      return const FoodVariantCardShimmer();
-                    },
-                  ),
+          widget.productVariant == null || widget.productVariant!.isEmpty
+              ? Expanded(
+                  child: Container(),
                 )
               : Expanded(
                   child: AnimationLimiter(
@@ -67,12 +57,12 @@ class _FoodVariantAddedListState extends State<FoodVariantAddedList> {
                       children: [
                         ListView.builder(
                             shrinkWrap: true,
-                            itemCount: widget.foodVariantCategory!.length,
+                            itemCount: widget.productVariant!.length,
                             itemBuilder: (BuildContext context, int index) {
-                              FoodVariantCategoryEntity foodVariantCategory =
-                                  widget.foodVariantCategory![index];
+                              ProductVariant productVariant =
+                                  widget.productVariant![index];
                               return FoodVariantListComponent(
-                                  foodVariantCategory: foodVariantCategory);
+                                  productVariant: productVariant);
                             }),
                       ],
                     ),

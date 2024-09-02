@@ -19,12 +19,12 @@ class CustomerListComponent extends StatefulWidget {
 }
 
 class _CustomerListComponentState extends State<CustomerListComponent> {
-  final posController = Get.find<PosController>();
+
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Obx(() => SingleChildScrollView(
+    return  SingleChildScrollView(
           child: ClipRRect(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(12.r),
@@ -123,49 +123,54 @@ class _CustomerListComponentState extends State<CustomerListComponent> {
                         const SearchCustomerComponent(),
                         SizedBox(
                           height: 400.h,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: posController.customers.length,
-                            itemBuilder: (BuildContext context, index) {
-                              final customer = posController.customers[index];
-                              return GestureDetector(
-                                onTap: () {
-                                  posController.customer.value = customer;
-                                  Get.back();
-                                },
-                                child: Container(
-                                  width: 100.w,
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(
-                                            color: Style.dividerGrey
-                                                .withOpacity(0.4),
-                                            width: 1.w)),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          width: 300.w,
-                                          child: DataCustomerInfoCard(
-                                            customer: customer,
-                                            width: (size.width - 50) * 0.60,
-                                          ),
+                          child: GetBuilder<PosController>(
+                            builder: (posController) {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: posController.customers.length,
+                                itemBuilder: (BuildContext context, index) {
+                                  final customer = posController.customers[index];
+                                  return GestureDetector(
+                                    onTap: () {
+                                    
+                                      posController.customer.value = customer;
+                                      Get.back();
+                                    },
+                                    child: Container(
+                                      width: 100.w,
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                color: Style.dividerGrey
+                                                    .withOpacity(0.4),
+                                                width: 1.w)),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SizedBox(
+                                              width: 300.w,
+                                              child: DataCustomerInfoCard(
+                                                customer: customer,
+                                                width: (size.width - 50) * 0.60,
+                                              ),
+                                            ),
+                                            const Icon(
+                                              Icons.arrow_forward_ios,
+                                              size: 20,
+                                              color: Style.dark,
+                                            )
+                                          ],
                                         ),
-                                        const Icon(
-                                          Icons.arrow_forward_ios,
-                                          size: 20,
-                                          color: Style.dark,
-                                        )
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                },
                               );
-                            },
+                            }
                           ),
                         ),
                       ],
@@ -173,6 +178,7 @@ class _CustomerListComponentState extends State<CustomerListComponent> {
                   )),
                 )),
           ),
-        ));
+        )
+        ;
   }
 }

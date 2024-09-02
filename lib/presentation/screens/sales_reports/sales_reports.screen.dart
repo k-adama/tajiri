@@ -50,11 +50,10 @@ class _SalesReportsScreenState extends State<SalesReportsScreen> {
                       children: [
                         UserOrRestaurantInformationComponent(
                           restaurantName:
-                              "${salesReportController.user!.restaurantUser != null ? salesReportController.user!.restaurantUser![0].restaurant?.name : ""}",
-                          contactPhone:
-                              "${salesReportController.user!.restaurantUser != null ? salesReportController.user!.restaurantUser![0].restaurant?.contactPhone : ""}",
+                              "${salesReportController.restaurant!.name} ",
+                          contactPhone: salesReportController.user!.phone,
                           userName:
-                              "${salesReportController.user!.lastname ?? ""} ${salesReportController.user!.firstname ?? ""}",
+                              "${salesReportController.user!.lastname} ${salesReportController.user!.firstname}",
                         ),
                         SalesReportsDatePickerInformationComponent(
                           startDate:
@@ -62,7 +61,7 @@ class _SalesReportsScreenState extends State<SalesReportsScreen> {
                           endDate: salesReportController.getEndDateInFrench(),
                         ),
                         SalesPricesComponent(
-                          total: "${salesReportController.total.value ?? 0}"
+                          total: "${salesReportController.total.value}"
                               .notCurrency(),
                           component: Positioned(
                             left: salesReportController.getTextWidth(
@@ -94,7 +93,7 @@ class _SalesReportsScreenState extends State<SalesReportsScreen> {
                     ))),
             SalesReportsShareOrBackButton(
               onTapShare: () async {
-                final pdfFile = await PdfReportComponent.generate(
+                 final pdfFile = await PdfReportComponent.generate(
                     salesReportController.sales,
                     salesReportController.total.value,
                     salesReportController.startDate,

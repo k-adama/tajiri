@@ -5,13 +5,13 @@ import 'package:get/route_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_food_tabulation.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/edit_product_price_button.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_tabulation.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/food_variant_added_list.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/product/components/product_price_modal.component.dart';
+import 'package:tajiri_sdk/src/models/product.model.dart';
 
 class EditFoodAndVariantComponent extends StatefulWidget {
   const EditFoodAndVariantComponent({super.key});
@@ -28,7 +28,7 @@ class _EditFoodAndVariantComponentState
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late RefreshController _refreshController;
-  final FoodDataEntity? foodData = Get.arguments;
+  final Product? foodData = Get.arguments;
 
   @override
   void initState() {
@@ -87,7 +87,7 @@ class _EditFoodAndVariantComponentState
                                 AppHelpersCommon.showCustomModalBottomSheet(
                                   context: context,
                                   modal: ProductPriceModalComponent(
-                                    foodData: foodData!,
+                                    product: foodData!,
                                   ),
                                   isDarkMode: false,
                                   isDrag: true,
@@ -102,10 +102,10 @@ class _EditFoodAndVariantComponentState
               ),
               EditFoodTabulation(
                 editFoodComponent: EditFoodTabulationComponent(
-                  foodData: foodData!,
+                  product: foodData!,
                 ),
                 foodVariantAddedListComponent: FoodVariantAddedList(
-                  foodVariantCategory: foodData?.foodVariantCategory,
+                  productVariant: foodData?.variants,
                 ),
               ),
             ],

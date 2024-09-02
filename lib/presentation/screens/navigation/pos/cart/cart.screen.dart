@@ -46,11 +46,12 @@ class _CartScreen extends State<CartScreen> {
   }
 
   addCount(MainItemEntity food) {
-    if (posController.foods
-            .firstWhereOrNull((element) => element.id == food.id)
+    if (posController.products
+            .firstWhereOrNull((element) => element.id == food.productId)
             ?.quantity ==
         food.quantity) return;
-    posController.addCount(context: context, foodId: food.id.toString());
+    posController.addCount(
+        context: context, productId: food.productId.toString());
   }
 
   @override
@@ -104,66 +105,66 @@ class _CartScreen extends State<CartScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      14.verticalSpace,
-                                      Text(
-                                        "TOTAL",
-                                        style: Style.interNormal(
-                                          size: 14,
-                                          color: Style.light,
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        14.verticalSpace,
+                                        Text(
+                                          "TOTAL",
+                                          style: Style.interNormal(
+                                            size: 14,
+                                            color: Style.light,
+                                          ),
                                         ),
-                                      ),
-                                      RichText(
-                                        text: TextSpan(
-                                          style: DefaultTextStyle.of(context)
-                                              .style,
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                              text:
-                                                  '${posController.totalCartValue}',
-                                              style: Style.interBold(
-                                                size: 22,
-                                                color: Style.black,
+                                        RichText(
+                                          text: TextSpan(
+                                            style: DefaultTextStyle.of(context)
+                                                .style,
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text:
+                                                    '${posController.totalCartValue}',
+                                                style: Style.interBold(
+                                                  size: 22,
+                                                  color: Style.black,
+                                                ),
                                               ),
-                                            ),
-                                            TextSpan(
-                                              text: "/FCFA",
-                                              style: Style.interNormal(
-                                                size: 8,
-                                                color: Style.light,
+                                              TextSpan(
+                                                text: "/FCFA",
+                                                style: Style.interNormal(
+                                                  size: 8,
+                                                  color: Style.light,
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                  posController.currentOrder.id != null
+                                  posController.currentOrder?.id != null
                                       ? const SizedBox()
                                       : 80.horizontalSpace,
-                                  posController.currentOrder.id != null
+                                  posController.currentOrder?.id != null
                                       ? const SizedBox()
                                       : checkListingType(user) ==
                                               ListingType.waitress
                                           ? const SelectWaitressComponent()
                                           : checkListingType(user) ==
                                                   ListingType.table
-                                              ? const SelectTableComponent() //const SelectTable()
+                                              ? const SelectTableComponent()
                                               : const SizedBox(),
                                 ],
                               ),
                             ),
-                            if (posController.currentOrder.id != null)
+                            if (posController.currentOrder?.id != null)
                               AddProductButtonComponent(
                                 onTap: () {
-                                  if (posController.currentOrder.id != null) {
+                                  if (posController.currentOrder?.id != null) {
                                     Get.close(1);
-                                    if (navigationController != null) {
-                                      navigationController.selectIndexFunc(1);
-                                    }
+                                    navigationController.selectIndexFunc(1);
                                   }
                                 },
                               )
@@ -188,7 +189,7 @@ class _CartScreen extends State<CartScreen> {
                                 add: () => addCount(cartItem),
                                 remove: () => posController.removeCount(
                                   context: context,
-                                  foodId: cartItem.id.toString(),
+                                  foodId: cartItem.productId.toString(),
                                   foodVariantId:
                                       cartItem.variant?.id.toString(),
                                 ),
@@ -235,10 +236,10 @@ class _CartScreen extends State<CartScreen> {
                     haveBorder: false,
                     radius: 5,
                     onPressed: () {
-                      final arguments =
-                          checkListingType(user) == ListingType.waitress
-                              ? {"waitressId": posController.waitressCurrentId}
-                              : {"tableId": posController.tableCurrentId};
+                      final arguments = {
+                        "waitressId": posController.waitressCurrentId,
+                        "tableId": posController.tableCurrentId
+                      };
 
                       Get.toNamed(
                         Routes.CART_SAVE,
@@ -259,10 +260,10 @@ class _CartScreen extends State<CartScreen> {
                     radius: 5,
                     haveBorder: false,
                     onPressed: () {
-                      final arguments =
-                          checkListingType(user) == ListingType.waitress
-                              ? {"waitressId": posController.waitressCurrentId}
-                              : {"tableId": posController.tableCurrentId};
+                      final arguments = {
+                        "waitressId": posController.waitressCurrentId,
+                        "tableId": posController.tableCurrentId
+                      };
                       Get.toNamed(
                         Routes.CART_PAID,
                         arguments: arguments,

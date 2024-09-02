@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/food_variant.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/custom_network_image.ui.dart';
+import 'package:tajiri_sdk/src/models/product.model.dart';
 
 class FoodVariantModal extends StatefulWidget {
-  final FoodDataEntity food;
-  const FoodVariantModal({super.key, required this.food});
+  final Product product;
+  const FoodVariantModal({super.key, required this.product});
 
   @override
   State<FoodVariantModal> createState() => _FoodVariantModalState();
@@ -36,7 +36,7 @@ class _FoodVariantModalState extends State<FoodVariantModal> {
                 Stack(
                   children: [
                     CustomNetworkImageUi(
-                      url: widget.food.imageUrl!,
+                      url: widget.product.imageUrl,
                       height: 300.h,
                       width: double.infinity,
                       radius: 10.r,
@@ -69,7 +69,7 @@ class _FoodVariantModalState extends State<FoodVariantModal> {
                             child: Padding(
                               padding: const EdgeInsets.all(3.0),
                               child: Text(
-                                '${widget.food.price!}'.currencyLong(),
+                                '${widget.product.price}'.currencyLong(),
                                 style: Style.interNormal(size: 11),
                               ),
                             ),
@@ -87,7 +87,7 @@ class _FoodVariantModalState extends State<FoodVariantModal> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.food.foodVariantCategory![0].name!,
+                            widget.product.variants[0].name,
                             style: Style.interBold(size: 20.sp),
                           ),
                           const Divider(),
@@ -95,9 +95,8 @@ class _FoodVariantModalState extends State<FoodVariantModal> {
                       ),
                     ),
                     FoodVariantComponent(
-                      foodVariant:
-                          widget.food.foodVariantCategory![0].foodVariant,
-                      food: widget.food,
+                      foodVariant: widget.product.variants,
+                      food: widget.product,
                     ),
                   ],
                 ),

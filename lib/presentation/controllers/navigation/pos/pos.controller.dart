@@ -6,34 +6,26 @@ import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/app/extensions/product.extension.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
-import 'package:tajiri_pos_mobile/domain/entities/categorie_entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/customer.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/local_cart_enties/main_item.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
-import 'package:tajiri_pos_mobile/data/repositories/products/products.repository.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/table/table.controller.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/waitress/waitress.controller.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class PosController extends GetxController {
-  final ProductsRepository _productsRepository = ProductsRepository();
   final KIT_ID = "1c755978-ae56-47c6-b8e6-a5e3b03577ce";
   bool isLoading = true;
   String? selectedOption;
   bool isAddAndRemoveLoading = false;
   final isProductLoading = true.obs;
   bool isCustomnersLoading = true;
-  final foods = List<FoodDataEntity>.empty().obs;
-  final foodsInit = List<FoodDataEntity>.empty().obs;
+  final products = List<Product>.empty().obs;
+  final productsInit = List<Product>.empty().obs;
   RxList bundlePacks = [].obs;
-  final categories = List<CategoryEntity>.empty().obs;
+  final categories = List<Category>.empty().obs;
   RxString categoryId = 'all'.obs;
   Rx<dynamic> customerSelected = null.obs;
   int totalCartValue = 0;
@@ -43,44 +35,34 @@ class PosController extends GetxController {
   RxString settleOrderId = "ON_PLACE".obs;
   RxString orderNotes = "".obs;
   RxString paymentMethodId = "d8b8d45d-da79-478f-9d5f-693b33d654e6".obs;
-  OrderEntity newOrder = OrderEntity();
-  OrderEntity currentOrder = OrderEntity();
+  Order? newOrder;
+  Order? currentOrder;
+
   Rx<bool> isLoadingOrder = false.obs;
   RxString emptySearchMessage = "".obs;
   RxList<String> searchResults = <String>[].obs;
 
-  final foodVariantCategories = List<FoodVariantCategoryEntity>.empty().obs;
-
-  List<CustomerEntity> customers = List<CustomerEntity>.empty().obs;
-  List<CustomerEntity> customerInit = List<CustomerEntity>.empty().obs;
-  Rx<CustomerEntity> customer = CustomerEntity().obs;
-
-  // RxString customerMessage = "".obs;
-  // RxString customerId = ''.obs;
-  // String customerFirstname = "";
-  // String customerLastname = "";
-  // String customerPhone = "";
+  final customers = List<Customer>.empty().obs;
+  final customerInit = List<Customer>.empty().obs;
+  final customer = Rx<Customer?>(null);
 
   TextEditingController note = TextEditingController();
 
   bool isLoadingCreateCustomer = false;
-  // Rx<bool> isPaid = false.obs;
   Map<String, dynamic>? waitressOrTableValue;
   List<Map<String, dynamic>> dropdownItems = [];
   bool listingEnable = true;
   String listingType = "waitress";
-  // String waitressId = '';
+
   String tableId = '';
   String? waitressCurrentId;
   String? tableCurrentId;
-  Color containerColor = Style.menuFlottant;
+  Color containerColor = Style.dotColor;
 
   final user = AppHelpersCommon.getUserInLocalStorage();
-
-  @override
-  void onInit() async {
-    super.onInit();
-  }
+  final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
+  String? get restaurantId => user?.restaurantId;
+  final tajiriSdk = TajiriSDK.instance;
 
   @override
   void onClose() {
@@ -90,103 +72,80 @@ class PosController extends GetxController {
 
   @override
   void onReady() async {
-    fetchFoods();
-    fetchCustomers();
+    Future.wait([
+      fetchCategories(),
+      fetchProducts(),
+      fetchCustomers(),
+    ]);
+
     super.onReady();
   }
 
-  setCurrentOrder(OrderEntity order) {
+  setCurrentOrder(Order order) {
     currentOrder = order;
     update();
   }
 
-  Future<void> fetchFoods() async {
+  Future<void> fetchProducts() async {
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isProductLoading.value = true;
-      final response = await _productsRepository.getFoods();
-      final responseBundlePacks = await _productsRepository
-          .getBundlePacks(); //TODO: GET BUNDLE PACK DOIT RETURNER PACK ENTITY ET NN DYNAMIC
+      update();
 
-      response.when(
-        success: (data) async {
-          if (data == null) {
-            return;
-          }
+      final result = await tajiriSdk.productsService.getProducts(restaurantId!);
+      products.assignAll(result);
+      productsInit.assignAll(result);
 
-          foods.assignAll(
-              data.where((element) => element.isAvailable == true).toList());
-          foodsInit.assignAll(
-              data.where((element) => element.isAvailable == true).toList());
+      isProductLoading.value = false;
+      update();
+    }
+  }
 
-          bundlePacks.assignAll(responseBundlePacks.data);
+  Future<void> fetchCategories() async {
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      isProductLoading.value = true;
+      update();
 
-          isProductLoading.value = false;
-
-          final newCategories = data
-              .where((e) {
-                return e.category != null;
-              }) // Filter out items with null category
-              .map((e) => e.category!) // Safe to use non-nullable access now
-              .toSet()
-              .toList();
-
-          newCategories.insert(
-            0,
-            CategoryEntity(
-              id: "all",
-              name: "Tout",
-              imageUrl: '🗂️',
-            ),
-          );
-          newCategories.insert(
-            newCategories.length,
-            CategoryEntity(
-              id: KIT_ID,
-              name: "Packs de vente",
-              imageUrl: '🎁',
-            ),
-          );
-          categories.assignAll(newCategories);
-
-          List<FoodVariantCategoryEntity> newFoodVariantCategories = [];
-
-          for (var foodData in data) {
-            final listFoodVariantCategories = foodData.foodVariantCategory;
-
-            if (listFoodVariantCategories!.isNotEmpty) {
-              for (var value in listFoodVariantCategories) {
-                newFoodVariantCategories.add(value);
-              }
-            }
-          }
-
-          foodVariantCategories.assignAll(newFoodVariantCategories);
-          update();
-        },
-        failure: (failure, status) {
-          isProductLoading.value = false;
-          update();
-          /*  AppHelpersCommon.showCheckTopSnackBar(
-              context,
-              status.toString(),
-            ); */
-        },
+      final newCategories =
+          await tajiriSdk.categoriesService.getCategories(restaurantId!);
+      newCategories.insert(
+        0,
+        Category(
+          id: "all",
+          name: "Tout",
+          imageUrl: '🗂️',
+          restaurantId: '',
+          mainCategoryId: '',
+        ),
       );
+      newCategories.insert(
+        newCategories.length,
+        Category(
+          id: KIT_ID,
+          name: "Packs de vente",
+          imageUrl: '🎁',
+          restaurantId: '',
+          mainCategoryId: '',
+        ),
+      );
+      categories.assignAll(newCategories);
+      handleFilter("all", "all");
+      isProductLoading.value = false;
+      update();
     }
   }
 
   int getQuantity(int index) {
     final quantity = cartItemList
-            .firstWhereOrNull((element) => element.id == foods[index].id)
+            .firstWhereOrNull(
+                (element) => element.productId == products[index].id)
             ?.quantity ??
         0;
     return quantity;
   }
 
   Future<void> handleSaveOrder(BuildContext context, String status) async {
-    final restaurantId = user?.role?.restaurantId;
-
     if (restaurantId == null) {
       isLoadingOrder.value = false;
       update();
@@ -196,43 +155,29 @@ class PosController extends GetxController {
       );
     }
 
-    final itemFoods = cartItemList.map((item) {
-      return {
-        'foodId': item.id,
-        'price': item.price,
-        'quantity': item.quantity,
-      };
-    }).toList();
+    final createOrderDto = getCreateOrderDto(status);
+    final paymentMethodName = getNamePaiementById(paymentMethodId.value);
 
-    final Map<String, dynamic> params =
-        chooseUseWaitressOrTable(status, restaurantId, itemFoods);
+    try {
+      final result = currentOrder?.id != null
+          ? await tajiriSdk.ordersService
+              .updateOrder(currentOrder!.id, getUpdateOrderDto(status))
+          : await tajiriSdk.ordersService.createOrder(createOrderDto);
 
-    String paymentMethodName = PAIEMENTS.firstWhereOrNull(
-        (element) => element['id'] == paymentMethodId.value)?['name'];
-    if (status == 'PAID') {
-      params['paymentMethodId'] = paymentMethodId.value;
-    }
-
-    final response = currentOrder.id != null
-        ? await _productsRepository.updateOrder(params, currentOrder.id!)
-        : await _productsRepository.createOrder(params);
-
-    response.when(success: (data) async {
-      newOrder = data!;
+      newOrder = result;
       update();
       handleInitialState();
 
-      customer.value = CustomerEntity();
+      customer.value = null;
       Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
-        "CustomerEntity type": newOrder.customer == null ? 'GUEST' : 'SAVED',
+        "CustomerEntity type": newOrder?.customerId == null ? 'GUEST' : 'SAVED',
         "Order Status": status,
         "Payment method": status == 'PAID' ? paymentMethodName : "",
         "Status": "Success",
-        "Products": newOrder.orderDetails?.map((item) {
-          final int foodPrice =
-              item.food != null ? item.food?.price : item.bundle['price'];
+        "Products": newOrder?.orderProducts.map((item) {
+          final int foodPrice = item.product.price;
           return {
-            'Product Name': getNameFromOrderDetail(item),
+            'Product Name': item.product.name,
             'Price': item.price,
             'Quantity': item.quantity,
             'IsVariant': item.price != foodPrice ? true : false
@@ -256,7 +201,6 @@ class PosController extends GetxController {
           ),
         );
       } else {
-        // isPaid.value = true;
         AppHelpersCommon.showAlertDialog(
           context: context,
           canPop: false,
@@ -268,25 +212,27 @@ class PosController extends GetxController {
             svgPicture: "assets/svgs/success payment 1.svg",
             redirect: () {
               Get.close(2);
-              Get.to(InvoiceScreen(
-                order: newOrder,
-                isPaid: true,
-              ));
+              Get.toNamed(
+                Routes.INVOICE,
+                arguments: {"order": result, "isPaid": true},
+              );
             },
           ),
         );
       }
-    }, failure: (failure, statusCode) {
+    } catch (e, s) {
+      print(s);
       Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
-        "CustomerEntity type": newOrder.customer == null ? 'GUEST' : 'SAVED',
+        "CustomerEntity type": newOrder?.customerId == null ? 'GUEST' : 'SAVED',
         "Order Status": status,
-        "Payment method": status == 'PAID' ? paymentMethodName : "",
+        "Payment method": status == 'PAID'
+            ? paymentMethodNameById(paymentMethodId.value)
+            : "",
         "Status": "Failure",
-        "Products": newOrder.orderDetails?.map((item) {
-          final int foodPrice =
-              item.food != null ? item.food?.price : item.bundle['price'];
+        "Products": newOrder?.orderProducts.map((item) {
+          final int foodPrice = item.product.price;
           return {
-            'Product Name': getNameFromOrderDetail(item),
+            'Product Name': item.product.name,
             'Price': item.price,
             'Quantity': item.quantity,
             'IsVariant': item.price != foodPrice ? true : false
@@ -296,41 +242,93 @@ class PosController extends GetxController {
 
       AppHelpersCommon.showCheckTopSnackBar(
         context,
-        statusCode.toString(),
+        e.toString(),
       );
       isLoadingOrder.value = false;
-    });
+    }
   }
 
-  Map<String, dynamic> chooseUseWaitressOrTable(
-      String status, String restaurantId, dynamic itemFoods) {
-    // Initialiser les paramètres communs
-    Map<String, dynamic> paramsMap = {
-      'subTotal': totalCartValue,
-      'grandTotal': totalCartValue,
-      'customerType': customer.value.id == null ? 'GUEST' : 'SAVED',
-      'status': status,
-      'customerId': customer.value.id,
-      'items': itemFoods,
-      'orderType': settleOrderId.value,
-      'orderNotes': orderNotes.value,
-      'restaurantId': restaurantId,
-      'createdId': user!.id!,
-      'couponCode': "",
-      'discountAmount': 0,
-      'pinCode': "",
-      'address': "",
-      'tax': 0,
-    };
+  CreateOrderDto getCreateOrderDto(String status) {
+    final user = AppHelpersCommon.getUserInLocalStorage();
+    final restaurantId = user?.restaurantId;
 
-    // Choisir les paramètres en fonction du type de liste
-    if (checkListingType(user) == ListingType.waitress) {
-      paramsMap['waitressId'] = currentOrder.waitressId ?? waitressCurrentId;
-    } else if (checkListingType(user) == ListingType.table) {
-      paramsMap['tableId'] = currentOrder.tableId ?? tableCurrentId;
-    }
+    String customeType = customer.value?.id == null ? 'GUEST' : 'SAVED';
 
-    return paramsMap;
+    final orderProductDto = cartItemList.map((item) {
+      // TODO productTypeOfCookingId and extra not implemented in this app
+
+      return OrderProductDto(
+        productId: item.productId!,
+        price: item.price!,
+        quantity: item.quantity ?? 0,
+        variantId: item.variant?.id,
+      );
+    }).toList();
+
+    final paiementValue = PaymentValueDto(
+        paymentMethodId: paymentMethodId.value, amount: totalCartValue);
+
+    final createDto = CreateOrderDto(
+      subTotal: totalCartValue,
+      grandTotal: totalCartValue,
+      restaurantId: restaurantId!,
+      paymentValues: status == 'PAID' ? [paiementValue] : null,
+      customerType: customeType,
+      orderType: settleOrderId.value,
+      status: status,
+      customerId: customer.value?.id,
+      orderNotes: orderNotes.value,
+      createdId: user?.id,
+      couponCode: "",
+      discountAmount: 0,
+      pinCode: "",
+      tax: 0,
+      products: orderProductDto,
+      tableId: checkListingType(user) == ListingType.table
+          ? currentOrder?.tableId ?? tableCurrentId
+          : null,
+      waitressId: checkListingType(user) == ListingType.waitress
+          ? currentOrder?.waitressId ?? waitressCurrentId
+          : null,
+    );
+    return createDto;
+  }
+
+  UpdateOrderDto getUpdateOrderDto(String status) {
+    final user = AppHelpersCommon.getUserInLocalStorage();
+
+    String customeType = customer.value?.id == null ? 'GUEST' : 'SAVED';
+
+    final orderProductDto = cartItemList.map((item) {
+      // TODO productTypeOfCookingId and extra not implemented in this app
+
+      return OrderProductDto(
+        productId: item.productId!,
+        price: item.price ?? 0,
+        quantity: item.quantity ?? 1,
+        variantId: item.variant?.id,
+      );
+    }).toList();
+
+    final updateDto = UpdateOrderDto(
+      subTotal: totalCartValue.toInt(),
+      grandTotal: totalCartValue.toInt(),
+      customerType: customeType,
+      orderType: settleOrderId.value,
+      status: status,
+      customerId: customer.value?.id,
+      orderNotes: orderNotes.value,
+      createdId: user?.id,
+      couponCode: "",
+      discountAmount: 0,
+      pinCode: "",
+      tax: 0,
+      products: orderProductDto,
+      tableId: checkListingType(user) == ListingType.table
+          ? currentOrder?.tableId ?? tableCurrentId
+          : null,
+    );
+    return updateDto;
   }
 
   Future<void> handleCreateOrder(BuildContext context) async {
@@ -363,23 +361,8 @@ class PosController extends GetxController {
     isLoadingOrder.value = false;
     settleOrderId.value = "ON_PLACE";
     note.clear();
-    currentOrder = OrderEntity();
-
+    currentOrder = null;
     update();
-  }
-
-  //TODO : for clear selected  waitress and table
-  resetSelectedTableOrWaitress() {
-    // reset waitress and table select
-
-    final waitressController = Get.find<WaitressController>();
-    final tableController = Get.find<TableController>();
-
-    waitressController.selectedWaitress.value = null;
-    tableController.selectedTable.value = null;
-
-    waitressCurrentId = null;
-    tableCurrentId = null;
   }
 
   void setCategoryId(String id) {
@@ -391,37 +374,27 @@ class PosController extends GetxController {
     setCategoryId(categoryId);
 
     if (categoryId == 'all') {
-      foods.assignAll(foodsInit);
+      products.assignAll(productsInit);
       update();
       Mixpanel.instance.track("POS Category Filter", properties: {
         "Category Name": categoryName,
-        "Number of Search Results": foods.length,
+        "Number of Search Results": products.length,
         "Number of Out of Stock":
-            foods.where((food) => food.quantity == 0).length,
-        "Number of products with variants": foods
-            .where((food) =>
-                food.foodVariantCategory != null &&
-                food.foodVariantCategory!.isNotEmpty)
-            .length
+            products.where((food) => food.quantity == 0).length,
+        "Number of products with variants":
+            products.where((food) => food.variants.isNotEmpty).length
       });
       return;
     }
 
     if (categoryId == KIT_ID) {
-      final transformedList = bundlePacks.map((bundle) {
-        return {
-          ...bundle,
-          'type': 'bundle',
-        };
-      }).toList();
-      final foodData =
-          transformedList.map((item) => FoodDataEntity.fromJson(item)).toList();
-      foods.assignAll(foodData);
+      final newData = productsInit.where((item) => item.isBundle).toList();
+      products.assignAll(newData);
       update();
 
       Mixpanel.instance.track("POS Category Filter", properties: {
         "Category Name": categoryName,
-        "Number of Search Results": transformedList.length,
+        "Number of Search Results": newData.length,
         "Number of Out of Stock": 0,
         "Number of products with variants": 0
       });
@@ -429,8 +402,8 @@ class PosController extends GetxController {
     }
 
     final newData =
-        foodsInit.where((item) => item.categoryId == categoryId).toList();
-    foods.assignAll(newData);
+        productsInit.where((item) => item.categoryId == categoryId).toList();
+    products.assignAll(newData);
     update();
 
     Mixpanel.instance.track("POS Category Filter", properties: {
@@ -438,11 +411,8 @@ class PosController extends GetxController {
       "Number of Search Results": newData.length,
       "Number of Out of Stock":
           newData.where((food) => food.quantity == 0).length,
-      "Number of products with variants": newData
-          .where((food) =>
-              food.foodVariantCategory != null &&
-              food.foodVariantCategory!.isNotEmpty)
-          .length
+      "Number of products with variants":
+          newData.where((food) => food.variants.isNotEmpty).length
     });
   }
 
@@ -451,19 +421,12 @@ class PosController extends GetxController {
     if (connected) {
       isCustomnersLoading = true;
       update();
-      final response = await _productsRepository.getCustomers();
-      response.when(
-        success: (data) async {
-          customers.assignAll(data!);
-          customerInit.assignAll(data);
-          isCustomnersLoading = false;
-          update();
-        },
-        failure: (failure, status) {
-          isCustomnersLoading = false;
-          update();
-        },
-      );
+      final result =
+          await tajiriSdk.customersService.getCustomers(restaurantId!);
+      customers.assignAll(result);
+      customerInit.assignAll(result);
+      isCustomnersLoading = false;
+      update();
     }
   }
 
@@ -479,9 +442,6 @@ class PosController extends GetxController {
   ) async {
     isLoadingCreateCustomer = true;
     update();
-
-    final restaurantId = user?.role?.restaurantId;
-
     if (restaurantId == null) {
       isLoadingCreateCustomer = false;
       update();
@@ -490,7 +450,6 @@ class PosController extends GetxController {
         "Aucun restaurant connecté",
       );
     }
-
     if (customerLastname.trim().isEmpty || customerPhone.trim().isEmpty) {
       isLoadingCreateCustomer = false;
       update();
@@ -499,17 +458,16 @@ class PosController extends GetxController {
         "Veuillez remplir les champs obligatoires",
       );
     }
-    Map<String, dynamic> requestData = {
-      'lastname': customerLastname,
-      'phone': customerPhone,
-      'restaurantId': restaurantId,
-    };
-    final response = await _productsRepository.createCustomers(requestData);
-    response.when(success: (data) {
-      final newCustomer = data!;
+    final CreateCustomerDto createCustomerDto = CreateCustomerDto(
+        lastname: customerLastname,
+        phone: customerPhone,
+        restaurantId: restaurantId!);
+    try {
+      final createWaitress =
+          await tajiriSdk.customersService.createCustomer(createCustomerDto);
+      final newCustomer = createWaitress;
       isLoadingCreateCustomer = false;
       update();
-
       AppHelpersCommon.showAlertDialog(
         context: context,
         canPop: false,
@@ -528,14 +486,14 @@ class PosController extends GetxController {
       customer.value = newCustomer;
       fetchCustomers();
       customerInitialState();
-    }, failure: (failure, statusCode) {
-      isLoadingCreateCustomer = false;
-      update();
+    } catch (e) {
       AppHelpersCommon.showCheckTopSnackBar(
         context,
-        statusCode.toString(),
+        e.toString(),
       );
-    });
+      isLoadingCreateCustomer = false;
+      update();
+    }
   }
 
   void customerInitialState() {
@@ -546,17 +504,18 @@ class PosController extends GetxController {
 
   Future<void> addCount(
       {required BuildContext context,
-      required String foodId,
-      String? foodVariantId}) async {
+      required String productId,
+      String? productVariantId}) async {
     Vibrate.feedback(FeedbackType.selection);
     MainItemEntity elementToUpdate = cartItemList.firstWhere(
-        (element) => element.id == foodId,
+        (element) => element.productId == productId,
         orElse: () => MainItemEntity());
 
-    if (foodVariantId != null) {
+    if (productVariantId != null) {
       elementToUpdate = cartItemList.firstWhere(
           (element) =>
-              element.variant != null && element.variant!.id == foodVariantId,
+              element.variant != null &&
+              element.variant!.id == productVariantId,
           orElse: () => MainItemEntity());
     }
 
@@ -569,15 +528,15 @@ class PosController extends GetxController {
 
   Future addCart(
       BuildContext context,
-      FoodDataEntity product,
-      FoodVariantEntity? foodVariant,
+      Product product,
+      ProductVariant? productVariant,
       int? quantity,
       int? price,
       bool isModifyOrder) async {
     Vibrate.feedback(FeedbackType.selection);
-    if (foodVariant == null) {
+    if (productVariant == null) {
       cartItemList.add(MainItemEntity(
-        id: product.id,
+        productId: product.id,
         quantity: quantity,
         name: product.name,
         image: product.imageUrl,
@@ -585,26 +544,26 @@ class PosController extends GetxController {
       ));
     } else {
       cartItemList.add(MainItemEntity(
-          id: product.id,
+          productId: product.id,
           quantity: quantity,
-          name: "${product.name} (${foodVariant.name}) ",
+          name: "${product.name} (${productVariant.name}) ",
           image: product.imageUrl,
-          price: price == 0 ? foodVariant.price : price,
+          price: price == 0 ? productVariant.price : price,
           variant: MainItemVariation(
-              id: foodVariant.id,
+              id: productVariant.id,
               itemId: 1,
-              name: foodVariant.name,
-              price: price == 0 ? foodVariant.price : price)));
+              name: productVariant.name,
+              price: price == 0 ? productVariant.price : price)));
     }
     isLoading = false;
     Mixpanel.instance.track("Added to Cart", properties: {
       "Product name": product.name,
       "Product ID": product.id,
-      "Category": product.category?.name,
+      "Category": product.category.name,
       "Selling Price": price == 0 ? product.price : price,
       "Quantity": quantity,
       "Stock Availability": product.quantity,
-      "IsVariant": foodVariant != null ? true : false
+      "IsVariant": productVariant != null ? true : false
     });
     update();
     calculateTotal();
@@ -616,7 +575,7 @@ class PosController extends GetxController {
       String? foodVariantId}) async {
     Vibrate.feedback(FeedbackType.selection);
     MainItemEntity elementToUpdate = cartItemList.firstWhere(
-        (element) => element.id == foodId,
+        (element) => element.productId == foodId,
         orElse: () => MainItemEntity());
 
     if (foodVariantId != null) {
@@ -638,7 +597,8 @@ class PosController extends GetxController {
             element.variant != null &&
             element.variant!.id == elementToUpdate.variant?.id);
       } else {
-        cartItemList.removeWhere((element) => element.id == elementToUpdate.id);
+        cartItemList.removeWhere(
+            (element) => element.productId == elementToUpdate.productId);
       }
       isAddAndRemoveLoading = false;
       update();
@@ -677,15 +637,15 @@ class PosController extends GetxController {
 
   void searchFilter(String search) {
     setCategoryId("all");
-    foods.clear();
+    products.clear();
     update();
     if (search.isEmpty) {
-      foods.addAll(foodsInit);
+      products.addAll(productsInit);
     } else {
       final nameRecherch = search.toLowerCase();
-      foods.addAll(foodsInit.where((item) {
-        final foodName = item.name!.toLowerCase();
-        final categoryName = item.category!.name!.toLowerCase();
+      products.addAll(productsInit.where((item) {
+        final foodName = item.name.toLowerCase();
+        final categoryName = item.category.name.toLowerCase();
 
         return foodName.startsWith(nameRecherch) ||
             categoryName.startsWith(nameRecherch);
@@ -715,30 +675,27 @@ class PosController extends GetxController {
     }
   }
 
-  void fullCartAndUpdateOrder(BuildContext context, OrderEntity order) async {
+  void fullCartAndUpdateOrder(BuildContext context, Order order) async {
     deleteCart();
     orderNotes.value = order.orderNotes!;
-    for (var i = 0; i < order.orderDetails!.length; i++) {
-      FoodDataEntity food =
-          order.orderDetails![i].food ?? order.orderDetails![i].bundle;
+    for (var i = 0; i < order.orderProducts.length; i++) {
+      Product food = order.orderProducts[i].product;
 
-      if (food.price != order.orderDetails![i].price &&
-          food.foodVariantCategory != null &&
-          food.foodVariantCategory!.isNotEmpty) {
-        final foodVariant = food.foodVariantCategory![0].foodVariant!
-            .firstWhere(
-                (element) => element.price! == order.orderDetails![i].price);
-        addCart(context, food, foodVariant, order.orderDetails![i].quantity,
-            order.orderDetails![i].price, true);
+      if (food.price != order.orderProducts[i].price && food.hasVariants) {
+        final foodVariant = food.variants.firstWhere(
+            (element) => element.price == order.orderProducts[i].price);
+        addCart(context, food, foodVariant, order.orderProducts[i].quantity,
+            order.orderProducts[i].price, true);
         continue;
       }
 
-      addCart(context, food, null, order.orderDetails![i].quantity,
-          order.orderDetails![i].price, true);
+      addCart(context, food, null, order.orderProducts[i].quantity,
+          order.orderProducts[i].price, true);
     }
     setCurrentOrder(order);
-    if (order.customer != null) {
-      customer.value = order.customer!;
+    if (order.customerId != null) {
+      //TODO :
+      // customer.value = order.customer!;
     }
 
     orderNotes.value = order.orderNotes!;

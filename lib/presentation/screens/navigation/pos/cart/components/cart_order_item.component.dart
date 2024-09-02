@@ -34,85 +34,88 @@ class CartOrderItemComponent extends StatelessWidget {
             Radius.circular(10.r),
           ),
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: (MediaQuery.of(context).size.width - 220.w) * 5 / 4, //86
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  CustomNetworkImageUi(
-                      url: cartItem?.image ?? "",
-                      height: 64.h,
-                      width: 64.h,
-                      radius: 5.r),
-                  8.horizontalSpace,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 100.w,
-                        child: Text(
-                          cartItem?.name ?? "",
-                          style: Style.interNormal(
-                            size: 12.sp,
-                            color: Style.black,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: (MediaQuery.of(context).size.width - 220.w) * 5 / 4, //86
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    CustomNetworkImageUi(
+                        url: cartItem?.image ?? "",
+                        height: 64.h,
+                        width: 64.h,
+                        radius: 5.r),
+                    8.horizontalSpace,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 100.w,
+                          child: Text(
+                            cartItem?.name ?? "",
+                            style: Style.interNormal(
+                              size: 12.sp,
+                              color: Style.black,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      2.verticalSpace,
-                      SizedBox(
-                        width: 100.w,
-                        child: Text(
-                          "${cartItem?.price}".currencyLong(),
-                          style: Style.interNormal(
-                            size: 16.sp,
-                            color: Style.black,
+                        2.verticalSpace,
+                        SizedBox(
+                          width: 100.w,
+                          child: Text(
+                            "${cartItem?.price}".currencyLong(),
+                            style: Style.interNormal(
+                              size: 16.sp,
+                              color: Style.black,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
                           ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            4.horizontalSpace,
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(4.r)),
-                  color: Style.white,
-                  border: Border.all(color: Style.white, width: 4.w)),
-              child: Row(
-                children: [
-                  AddOrRemoveButton(onTap: remove, iconData: Icons.remove),
-                  Container(
-                    height: 40.h,
-                    decoration: BoxDecoration(
-                        color: Style.lighter,
-                        borderRadius: BorderRadius.circular(2)),
-                    // padding: EdgeInsets.only(right: 10.w, left: 10.w, bottom: 2),
-                    padding:
-                        EdgeInsets.symmetric(vertical: 12.h, horizontal: 10.w),
-                    child: Text(
-                      (cartItem?.quantity).toString(),
-                      style: Style.interBold(
-                        size: 14.sp,
-                        color: Style.black,
+              4.horizontalSpace,
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(4.r)),
+                    color: Style.white,
+                    border: Border.all(color: Style.white, width: 4.w)),
+                child: Row(
+                  children: [
+                    AddOrRemoveButton(onTap: remove, iconData: Icons.remove),
+                    Container(
+                      height: 40.h,
+                      decoration: BoxDecoration(
+                          color: Style.lighter,
+                          borderRadius: BorderRadius.circular(2)),
+                      // padding: EdgeInsets.only(right: 10.w, left: 10.w, bottom: 2),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 12.h, horizontal: 10.w),
+                      child: Text(
+                        (cartItem?.quantity).toString(),
+                        style: Style.interBold(
+                          size: 14.sp,
+                          color: Style.black,
+                        ),
                       ),
                     ),
-                  ),
-                  AddOrRemoveButton(onTap: add, iconData: Icons.add),
-                ],
+                    AddOrRemoveButton(onTap: add, iconData: Icons.add),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

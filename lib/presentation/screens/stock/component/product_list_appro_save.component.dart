@@ -5,12 +5,13 @@ import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/stock/component/product_appro_card.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/shimmer/product_list.shimmer.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class ProductListApproSaveComponent extends StatefulWidget {
-  List<Map<String, dynamic>> foods;
-  Function(int quantity, dynamic food) updateQuantity;
+  List<Inventory> inventoryList;
+  final Function(int quantity, Inventory inventory) updateQuantity;
   ProductListApproSaveComponent(
-      {super.key, required this.foods, required this.updateQuantity});
+      {super.key, required this.inventoryList, required this.updateQuantity});
 
   @override
   State<ProductListApproSaveComponent> createState() =>
@@ -32,7 +33,7 @@ class _ProductListApproSaveComponentState
         children: [
           6.verticalSpace,
           Expanded(
-            child: widget.foods.isEmpty
+            child: widget.inventoryList.isEmpty
                 ? const ProductListShimmer()
                 : Container(
                     width: double.infinity,
@@ -42,15 +43,13 @@ class _ProductListApproSaveComponentState
                     child: ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
-                      itemCount: widget.foods.length,
+                      itemCount: widget.inventoryList.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final food = widget.foods[index];
-                        int addValue = food['quantityAdd'];
+                        final foodInventory = widget.inventoryList[index];
                         return ProductApproCardComponent(
-                          food: food,
-                          addValue: addValue,
+                          foodInventory: foodInventory,
                           onChanged: (change) {
-                            widget.updateQuantity(int.parse(change), food);
+                            widget.updateQuantity(int.parse(change), foodInventory);
                           },
                         );
                       },

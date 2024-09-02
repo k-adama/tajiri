@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
@@ -10,10 +9,9 @@ import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
-import 'package:tajiri_pos_mobile/data/repositories/orders/orders.repository.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
+import 'package:tajiri_pos_mobile/app/extensions/staff.extension.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class SalesReportController extends GetxController {
   TextEditingController pickStartDate = TextEditingController(
@@ -24,19 +22,19 @@ class SalesReportController extends GetxController {
       TextEditingController(text: DateFormat('HH:mm').format(DateTime.now()));
   TextEditingController pickEndTime =
       TextEditingController(text: DateFormat('HH:mm').format(DateTime.now()));
-
-  final user = AppHelpersCommon.getUserInLocalStorage();
-  final OrdersRepository _ordersRepository = OrdersRepository();
-  RxList<SalesDataEntity> sales = List<SalesDataEntity>.empty().obs;
-  final PosController posController = Get.find();
+  RxList<SaleItem> sales = List<SaleItem>.empty().obs;
   final total = 0.obs;
   bool isLoadingReport = false;
   String startDate = "";
   String endDate = "";
 
+  Staff? get user => AppHelpersCommon.getUserInLocalStorage();
+  final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
+  String? get restaurantId => user?.restaurantId;
+
+  final tajiriSdk = TajiriSDK.instance;
+
   Future<void> fetchOrdersReports() async {
-    String? ownerId =
-        user?.role?.permissions![0].dashboardUnique == true ? user?.id : null;
     startDate = "${pickStartDate.text} ${pickStartTime.text}";
     endDate = "${pickEndDate.text} ${pickEndTime.text}";
     final connected = await AppConnectivityService.connectivity();
@@ -44,43 +42,27 @@ class SalesReportController extends GetxController {
       isLoadingReport = true;
       update();
 
-      final response =
-          await _ordersRepository.getOrdersReports(startDate, endDate, ownerId);
-      response.when(
-        success: (data) async {
-          final json = response.data['sales'] as List<dynamic>;
-          final salesData =
-              json.map((item) => SalesDataEntity.fromJson(item)).toList();
+      DateTime formattedStartDate = convertToDateTime(startDate);
+      DateTime formattedSendDate = convertToDateTime(endDate);
+      try {
+        final GetOrdersDto dto = GetOrdersDto(
+          startDate: formattedStartDate,
+          endDate: formattedSendDate,
+          ownerId: user.idOwnerForGetOrder,
+        );
+        SalesReport reportsData = await tajiriSdk.ordersService.getReports(dto);
 
-          total.value = response.data['total'];
+        List<SaleItem> salesData = reportsData.sales;
+        total.value = reportsData.total.toInt();
+        sales.assignAll(salesData);
 
-          for (int i = 0; i < salesData.length; i++) {
-            final currentSalesData = salesData.toList()[i];
-            final productData = posController.bundlePacks.firstWhere(
-                (item) => item['id'] == currentSalesData.id,
-                orElse: () => null);
-            if (productData != null) {
-              if (currentSalesData.productQtyStart == null) {
-                int productPrice = productData?['price'];
-                int productPriceTotal =
-                    (currentSalesData.productQtySales ?? 0) *
-                        (productPrice ?? 0);
-                salesData[i] = currentSalesData.copyWith(
-                    productQtyStart: 0, productPriceTotal: productPriceTotal);
-              }
-            } else {}
-          }
-
-          sales.assignAll(salesData);
-          isLoadingReport = false;
-          update();
-          Get.toNamed(Routes.SALES_REPORT);
-        },
-        failure: (failure, status) {
-          isLoadingReport = false;
-          update();
-        },
-      );
+        isLoadingReport = false;
+        update();
+        Get.toNamed(Routes.SALES_REPORT);
+      } catch (e) {
+        isLoadingReport = false;
+        update();
+      }
     }
   }
 
@@ -187,5 +169,20 @@ class SalesReportController extends GetxController {
     if (text.length <= 2) return textPainter.width + 100;
     if (text.length <= 6) return textPainter.width + 80;
     return textPainter.width + 70;
+  }
+
+  DateTime convertToDateTime(String dateTimeString) {
+    List<String> parts = dateTimeString.split(' ');
+    if (parts.length < 3) {
+      throw const FormatException("Invalid date time format");
+    }
+
+    String datePart = parts[0];
+    String timePart = parts[2];
+
+    String combinedDateTimeString = "$datePart $timePart:00";
+
+    DateTime dateTime = DateTime.parse(combinedDateTimeString);
+    return dateTime;
   }
 }

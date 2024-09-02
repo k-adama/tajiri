@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
+import 'package:tajiri_pos_mobile/app/extensions/staff.extension.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/components/drawer_body_list_row.component.dart';
@@ -13,8 +14,6 @@ class DrawerPageBodyComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = AppHelpersCommon.getUserInLocalStorage();
 
-    bool? isShowStock =
-        user?.role?.permissions?[0].inventory == true ? true : false;
     return Column(
       children: [
         ListTile(
@@ -28,7 +27,7 @@ class DrawerPageBodyComponent extends StatelessWidget {
             Get.toNamed(Routes.SALES_REPORT_DATE_TIME_PICKER);
           },
         ),
-        isShowStock
+        user.canViewInventory
             ? ListTile(
                 title: const DrawerBodyListRowComponent(
                   name: "Stocks",
@@ -40,7 +39,7 @@ class DrawerPageBodyComponent extends StatelessWidget {
                   Get.toNamed(Routes.STOCK);
                 },
               )
-            : Container(),
+            : const SizedBox(),
         ListTile(
           title: const DrawerBodyListRowComponent(
             name: "Gestion des produits",

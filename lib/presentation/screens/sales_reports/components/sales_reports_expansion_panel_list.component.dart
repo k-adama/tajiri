@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class Item {
   Item({
@@ -25,8 +25,9 @@ class Item {
 }
 
 class SalesReportsExpansionPanelListComponent extends StatefulWidget {
-  List<SalesDataEntity> salesData;
-  SalesReportsExpansionPanelListComponent({super.key, required this.salesData});
+  final List<SaleItem> salesData;
+  const SalesReportsExpansionPanelListComponent(
+      {super.key, required this.salesData});
 
   @override
   State<SalesReportsExpansionPanelListComponent> createState() =>
@@ -166,15 +167,15 @@ class _SalesReportsExpansionPanelListComponentState
   }
 }
 
-List<Item> generateItems(List<SalesDataEntity> salesData) {
+List<Item> generateItems(List<SaleItem> salesData) {
   int numberOfItems = salesData.length;
   return List<Item>.generate(numberOfItems, (int index) {
     return Item(
-      productName: salesData[index].productName ?? "",
+      productName: salesData[index].itemName,
       productQtyStart: salesData[index].productQtyStart ?? 0,
       productQtySupply: salesData[index].productQtySupply ?? 0,
-      productQtySales: salesData[index].productQtySales ?? 0,
-      productPriceTotal: salesData[index].productPriceTotal ?? 0,
+      productQtySales: salesData[index].qty,
+      productPriceTotal: salesData[index].totalAmount.toInt(),
       productQtyFinal: salesData[index].productQtyFinal ?? 0,
     );
   });

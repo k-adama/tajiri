@@ -2,25 +2,30 @@ import 'dart:io';
 import 'package:flutter_esc_pos_utils/flutter_esc_pos_utils.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as mt;
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart';
 import 'package:intl/intl.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_handler/permission_handler.dart'
+    as permissionhandler;
 import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:charset_converter/charset_converter.dart';
-import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
+import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
+import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
+
+import 'package:tajiri_pos_mobile/domain/entities/printer_model.entity.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class BluetoothSettingController extends GetxController {
   final connected = false.obs;
   final progress = false.obs;
   final user = AppHelpersCommon.getUserInLocalStorage();
+  String? get restaurantId => user?.restaurantId;
+
+  final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
 
   final encodeCharset = "CP437";
 
@@ -32,6 +37,12 @@ class BluetoothSettingController extends GetxController {
   final isLoading = false.obs;
 
   final selectPaperSize = Rx<PaperSize?>(null);
+
+  //
+  final tableList = List<Table>.empty().obs;
+  final waitressList = List<Waitress>.empty().obs;
+  final customersList = List<Customer>.empty().obs;
+  final tajiriSdk = TajiriSDK.instance;
 
   getSelectSizePaper() async {
     selectPaperSize.value = await AppHelpersCommon.getPaperSize();
@@ -47,7 +58,7 @@ class BluetoothSettingController extends GetxController {
   @override
   void onInit() {
     print("=============INIT BLUE CONTROLLER");
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    mt.WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await getSelectSizePaper();
       await _requestPermissions();
       await Get.find<BluetoothSettingController>().getBluetoothDevices();
@@ -55,17 +66,27 @@ class BluetoothSettingController extends GetxController {
     super.onInit();
   }
 
+  @override
+  void onReady() async {
+    Future.wait([
+      fetchCustomers(),
+      fetchWaitress(),
+      fetchTables(),
+    ]);
+    super.onReady();
+  }
+
   Future<void> _requestPermissions() async {
     // Liste des permissions à demander
-    List<Permission> permissions = [
-      Permission.bluetooth,
-      Permission.bluetoothConnect,
-      Permission.bluetoothScan,
-      Permission.location,
+    List<permissionhandler.Permission> permissions = [
+      permissionhandler.Permission.bluetooth,
+      permissionhandler.Permission.bluetoothConnect,
+      permissionhandler.Permission.bluetoothScan,
+      permissionhandler.Permission.location,
     ];
 
     // Demander chaque permission successivement
-    for (Permission permission in permissions) {
+    for (permissionhandler.Permission permission in permissions) {
       if (!await permission.status.isGranted) {
         try {
           await permission.request();
@@ -80,7 +101,7 @@ class BluetoothSettingController extends GetxController {
     try {
       await _requestPermissions();
     } catch (e) {
-      print(e);
+      print("Erreur getBluetoothDevices $e");
     }
     progress.value = true;
     msjprogress = "En attente...";
@@ -163,10 +184,10 @@ class BluetoothSettingController extends GetxController {
     final profile = await CapabilityProfile.load();
     List<int> ticket = await demoOneLine(selectPaperSize.value!, profile);
     final result = await PrintBluetoothThermal.writeBytes(ticket);
-    print("PRINTER RESULT : $result");
+    print("PRINTER DEMO RESULT : $result");
   }
 
-  Future<void> printReceipt(OrderEntity order) async {
+  Future<void> printReceipt(PrinterModelEntity printerModel) async {
     bool conexionStatus = await PrintBluetoothThermal.connectionStatus;
     if (conexionStatus) {
       try {
@@ -179,7 +200,7 @@ class BluetoothSettingController extends GetxController {
         Mixpanel.instance.track('Print Invoice');
         final profile = await CapabilityProfile.load();
         List<int> ticket =
-            await demoReceipt(selectPaperSize.value!, profile, order);
+            await demoReceipt(selectPaperSize.value!, profile, printerModel);
         result = await PrintBluetoothThermal.writeBytes(ticket);
         print("print Receipt result:  $result");
         isLoading.value = false;
@@ -196,18 +217,19 @@ class BluetoothSettingController extends GetxController {
     return NumberFormat("#,###").format(number).replaceAll(',', '.');
   }
 
-  Future<List<int>> demoReceipt(
-      PaperSize paper, CapabilityProfile profile, OrderEntity order) async {
+  Future<List<int>> demoReceipt(PaperSize paper, CapabilityProfile profile,
+      PrinterModelEntity printerModel) async {
     final Generator ticket = Generator(paper, profile);
-    final formattedOrderGrandTotal = addMilleSeparator(order.grandTotal ?? 0);
+    final formattedOrderGrandTotal = addMilleSeparator(printerModel.grandTotal);
 
-    final leftToPay =
-        order.status == "PAID" ? "0 F" : "$formattedOrderGrandTotal F";
+    final leftToPay = printerModel.statusOrder == "PAID"
+        ? "0 F"
+        : "$formattedOrderGrandTotal F";
 
     List<int> bytes = [];
     bytes += ticket.reset();
 
-    final logoURL = user?.restaurantUser?[0].restaurant?.logoUrl;
+    final logoURL = restaurant?.logoUrl;
     // add logo restaurant
     if (logoURL != null) {
       try {
@@ -219,44 +241,32 @@ class BluetoothSettingController extends GetxController {
         print(e);
       }
     }
-    bytes += await getTitleReceipt(ticket, order);
+    bytes += await getTitleReceipt(ticket, printerModel);
 
     // get columns
     bytes += getHeaderItem(ticket);
-    int itemCount = order.orderDetails?.length ?? 0;
+    int itemCount = printerModel.orderPrinterProducts.length;
     for (int index = 0; index < itemCount; index++) {
-      final orderDetail = order.orderDetails?[index];
-      if (orderDetail != null) {
-        FoodDataEntity? food = orderDetail.food ?? orderDetail.bundle;
-        FoodVariantEntity? foodVariant;
-        if (food != null) {
-          if (food.price != orderDetail.price &&
-              food.foodVariantCategory != null &&
-              food.foodVariantCategory!.isNotEmpty) {
-            foodVariant =
-                food.foodVariantCategory![0].foodVariant!.firstWhereOrNull(
-              (element) => element.price == orderDetail.price,
-            );
-          }
-        }
+      final orderProduct = printerModel.orderPrinterProducts[index];
 
-        final foodName =
-            foodVariant?.name ?? getNameFromOrderDetail(orderDetail);
-        final quantity = orderDetail.quantity ?? 0;
-        final price = orderDetail.price ?? 0;
-        final calculatePrice = quantity * price;
-
-        final formattedPrice = addMilleSeparator(calculatePrice);
-
-        List<String> productLines =
-            splitText(foodName, getMaxCharactersPerLine(selectPaperSize.value));
-        bytes += await getColumItem(
-          productLines,
-          "$formattedPrice F",
-          ticket,
-          quantity,
-        );
+      if (orderProduct.variantId != null) {
+        print("order prod variant ${orderProduct.variantId}");
       }
+      final foodName =
+          orderProduct.productVariantName ?? orderProduct.productName;
+      final quantity = orderProduct.quantity;
+      final calculatePrice = orderProduct.totalPrice;
+
+      final formattedPrice = addMilleSeparator(calculatePrice);
+
+      List<String> productLines =
+          splitText(foodName, getMaxCharactersPerLine(selectPaperSize.value));
+      bytes += await getColumItem(
+        productLines,
+        "$formattedPrice F",
+        ticket,
+        quantity,
+      );
     }
     bytes += ticket.hr(linesAfter: 1);
 
@@ -315,25 +325,28 @@ class BluetoothSettingController extends GetxController {
 
   // Receipt refactoring
 
-  Future<List<int>> getTitleReceipt(Generator ticket, OrderEntity order) async {
+  Future<List<int>> getTitleReceipt(
+      Generator ticket, PrinterModelEntity printerModel) async {
     print("-----getTitleReceipt--------");
     var dateFormat = DateFormat("dd/MM/yyyy HH:mm", 'fr_FR');
-    final date = dateFormat.format(
-        DateTime.tryParse(order.createdAt.toString())?.toLocal() ??
-            DateTime.now());
-    final restoName =
-        "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
-    final restoPhone =
-        "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.contactPhone : user?.phone ?? ""}";
-    final client = order.customer?.firstname?.toString() ?? "Client invite";
+    final date = dateFormat
+        .format(printerModel.createdOrder?.toLocal() ?? DateTime.now());
+    final restoName = restaurant?.name ?? "";
+    final restoPhone = user?.phone ?? restaurant?.phone ?? "";
+    final client =
+        getNameCustomerById(printerModel.orderCustomerId, customersList);
 
-    final payementMethod = order.status == "PAID"
-        ? paymentMethodNameByOrder(order).isEmpty
-            ? "Cash"
-            : paymentMethodNameByOrder(order)
+    final currentUserName = "${user?.firstname ?? ""} ${user?.lastname ?? ""}";
+
+    final userOrWaitressName = printerModel.orderWaitressId != null
+        ? getNameWaitressById(printerModel.orderWaitressId, waitressList)
+        : currentUserName;
+
+    final payementMethod = printerModel.statusOrder == "PAID"
+        ? getNamePaiementById(printerModel.orderPaymentMethodId) ?? "Cash"
         : "Non paye";
 
-    print("payementMethod  $payementMethod  ${order.orderNumber}");
+    print("payementMethod  $payementMethod  ${printerModel.orderNumber}");
 
     List<int> bytes = [];
 
@@ -360,10 +373,10 @@ class BluetoothSettingController extends GetxController {
         styles: const PosStyles(align: PosAlign.center, bold: false));
     bytes += ticket.emptyLines(1);
     bytes += ticket.row(
-      await getColumns("N°: ${order.orderNumber}", payementMethod, true),
+      await getColumns("N°: ${printerModel.orderNumber}", payementMethod, true),
     );
 
-    bytes += ticket.text("Serveur: ${userOrWaitressName(order, user)}");
+    bytes += ticket.text("Serveur: $userOrWaitressName");
 
     bytes += ticket.text("Client: $client");
 
@@ -538,5 +551,55 @@ class BluetoothSettingController extends GetxController {
           i, i + maxLength < text.length ? i + maxLength : text.length));
     }
     return lines;
+  }
+
+  Future<void> fetchCustomers() async {
+    if (restaurantId == null) {
+      print("===restaurantId null");
+      return;
+    }
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      try {
+        final result =
+            await tajiriSdk.customersService.getCustomers(restaurantId!);
+        customersList.assignAll(result);
+        update();
+      } catch (e) {
+        print("======Error fetch Custommer : $e");
+        update();
+      }
+    }
+  }
+
+  Future<void> fetchWaitress() async {
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      try {
+        final result = await tajiriSdk.waitressesService.getWaitresses();
+        waitressList.assignAll(result);
+        update();
+      } catch (e) {
+        print("======Error fetch Waitress : $e");
+        update();
+      }
+    }
+  }
+
+  Future<void> fetchTables() async {
+    if (restaurantId == null) {
+      return;
+    }
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      try {
+        update();
+        final result = await tajiriSdk.tablesService.getTables(restaurantId!);
+        tableList.assignAll(result);
+        update();
+      } catch (e) {
+        update();
+      }
+    }
   }
 }

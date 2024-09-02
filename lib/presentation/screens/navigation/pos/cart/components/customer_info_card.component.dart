@@ -4,10 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/tr_keys.constant.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/domain/entities/customer.entity.dart';
+import 'package:tajiri_sdk/src/models/customer.model.dart';
 
 class CustomerInfoCardComponent extends StatelessWidget {
-  final CustomerEntity customer;
+  final Customer? customer;
   final double width;
   const CustomerInfoCardComponent(
       {super.key, required this.customer, required this.width});
@@ -29,10 +29,10 @@ class CustomerInfoCardComponent extends StatelessWidget {
               width: 300.w,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: customer.id == null
+                child: customer == null
                     ? const EmptyCustomerInfoCard()
                     : DataCustomerInfoCard(
-                        customer: customer,
+                        customer: customer!,
                         width: width,
                       ),
               ),
@@ -95,7 +95,7 @@ class EmptyCustomerInfoCard extends StatelessWidget {
 }
 
 class DataCustomerInfoCard extends StatelessWidget {
-  final CustomerEntity customer;
+  final Customer customer;
   final double width;
   const DataCustomerInfoCard(
       {super.key, required this.customer, required this.width});
@@ -113,7 +113,10 @@ class DataCustomerInfoCard extends StatelessWidget {
           ),
           child: Center(
             child: Text(
-              getInitialName("${customer.lastname} ${customer.firstname}"),
+              customer.firstname == null
+                  ? getInitialName(customer.lastname)
+                  : getInitialName(
+                      "${customer.lastname} ${customer.firstname}"),
               style: Style.interBold(
                 size: 20.sp,
                 color: Style.darker,
@@ -131,7 +134,9 @@ class DataCustomerInfoCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "${customer.lastname ?? ''} ${customer.firstname ?? ''}",
+                customer.firstname == null
+                    ? customer.lastname
+                    : "${customer.lastname} ${customer.firstname}",
                 style: Style.interBold(
                   size: 14.sp,
                   color: Style.darker,
@@ -139,7 +144,7 @@ class DataCustomerInfoCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
-                "${customer.phone}",
+                customer.phone,
                 style: Style.interNormal(
                   size: 12.sp,
                   color: Style.dark,

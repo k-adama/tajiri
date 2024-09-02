@@ -5,14 +5,13 @@ import 'package:tajiri_pos_mobile/app/services/network_exceptions.service.dart';
 import 'package:tajiri_pos_mobile/domain/entities/categorie_entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/customer.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 
 class ProductsRepository {
   HttpService server = HttpService();
 
-  Future<ApiResultService<List<FoodDataEntity>>> getFoods() async {
+  Future<ApiResultService<List<Product>>> getFoods() async {
     try {
       final client =
           server.client(requireAuth: true, requireRestaurantId: true);
@@ -22,7 +21,7 @@ class ProductsRepository {
 
       return ApiResultService.success(
         data: (response.data as List)
-            .map((element) => FoodDataEntity.fromJson(element))
+            .map((element) => Product.fromJson(element))
             .toList(),
       );
     } catch (e) {
@@ -32,7 +31,7 @@ class ProductsRepository {
     }
   }
 
-  Future<ApiResultService<FoodDataEntity>> createFood(dynamic data) async {
+  Future<ApiResultService<Product>> createFood(dynamic data) async {
     try {
       final client =
           server.client(requireAuth: true, requireRestaurantId: false);
@@ -42,7 +41,7 @@ class ProductsRepository {
       );
 
       return ApiResultService.success(
-        data: FoodDataEntity.fromJson(response.data),
+        data: Product.fromJson(response.data),
       );
     } catch (e) {
       return ApiResultService.failure(
@@ -51,8 +50,7 @@ class ProductsRepository {
     }
   }
 
-  Future<ApiResultService<FoodDataEntity>> updateFood(
-      dynamic data, String id) async {
+  Future<ApiResultService<Product>> updateFood(dynamic data, String id) async {
     try {
       final client =
           server.client(requireAuth: true, requireRestaurantId: false);
@@ -62,7 +60,7 @@ class ProductsRepository {
       );
 
       return ApiResultService.success(
-        data: FoodDataEntity.fromJson(response.data),
+        data: Product.fromJson(response.data),
       );
     } catch (e) {
       return ApiResultService.failure(
@@ -71,7 +69,7 @@ class ProductsRepository {
     }
   }
 
-  Future<ApiResultService<FoodDataEntity>> getFoodById(String id) async {
+  Future<ApiResultService<Product>> getFoodById(String id) async {
     try {
       final client =
           server.client(requireAuth: true, requireRestaurantId: true);
@@ -79,7 +77,7 @@ class ProductsRepository {
         '/products/foods/$id/',
       );
       final json = response.data as dynamic;
-      final foodData = json.map((item) => FoodDataEntity.fromJson(item));
+      final foodData = json.map((item) => Product.fromJson(item));
       return ApiResultService.success(
         data: foodData,
       );
@@ -114,11 +112,11 @@ class ProductsRepository {
       String name, String description) async {
     try {
       final user = AppHelpersCommon.getUserInLocalStorage();
-      final String restaurantId = user!.role!.restaurantId!;
+      // final String restaurantId = user!.role!.restaurantId!;
       final data = {
         "name": name,
         "description": description,
-        "restaurantId": restaurantId,
+        // "restaurantId": restaurantId,
         "isAvailable": true
       };
       final client =
@@ -179,8 +177,7 @@ class ProductsRepository {
     }
   }
 
-  Future<ApiResultService<FoodVariantEntity>> createFoodVariant(
-      dynamic data) async {
+  Future<ApiResultService<Product>> createFoodVariant(dynamic data) async {
     try {
       final client =
           server.client(requireAuth: true, requireRestaurantId: true);
@@ -190,7 +187,7 @@ class ProductsRepository {
       );
 
       return ApiResultService.success(
-        data: FoodVariantEntity.fromJson(response.data),
+        data: Product.fromJson(response.data),
       );
     } catch (e) {
       return ApiResultService.failure(
@@ -199,7 +196,7 @@ class ProductsRepository {
     }
   }
 
-  Future<ApiResultService<FoodVariantEntity>> updateFoodVariant(
+  Future<ApiResultService<Product>> updateFoodVariant(
       dynamic data, String id) async {
     try {
       final client =
@@ -210,7 +207,7 @@ class ProductsRepository {
       );
 
       return ApiResultService.success(
-        data: FoodVariantEntity.fromJson(response.data),
+        data: Product.fromJson(response.data),
       );
     } catch (e) {
       return ApiResultService.failure(
@@ -237,7 +234,7 @@ class ProductsRepository {
     }
   }
 
-  Future<ApiResultService<OrderEntity>> createOrder(dynamic data) async {
+  Future<ApiResultService<Order>> createOrder(dynamic data) async {
     try {
       final client =
           server.client(requireAuth: true, requireRestaurantId: false);
@@ -246,7 +243,7 @@ class ProductsRepository {
         data: data,
       );
       return ApiResultService.success(
-        data: OrderEntity.fromJson(response.data),
+        data: Order.fromJson(response.data),
       );
     } catch (e) {
       return ApiResultService.failure(
@@ -255,8 +252,7 @@ class ProductsRepository {
     }
   }
 
-  Future<ApiResultService<OrderEntity>> updateOrder(
-      dynamic data, String id) async {
+  Future<ApiResultService<Order>> updateOrder(dynamic data, String id) async {
     try {
       final client =
           server.client(requireAuth: true, requireRestaurantId: false);
@@ -265,7 +261,7 @@ class ProductsRepository {
         data: data,
       );
       return ApiResultService.success(
-        data: OrderEntity.fromJson(response.data),
+        data: Order.fromJson(response.data),
       );
     } catch (e) {
       return ApiResultService.failure(

@@ -12,33 +12,34 @@ class TryDemoOrNotComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-              child: Column(
-                children: [
-                  CustomButton(
-                      title: "Démo gratuite",
-                      background: Style.primaryColor,
-                      textColor: Style.secondaryColor,
-                      isLoadingColor: Style.secondaryColor,
-                      radius: 3,
-                      onPressed: () {
-                        Get.toNamed(Routes.DEMO_LOGIN);
-                      }),
-                  10.verticalSpace,
-                  SizedBox(
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CreateOrHaveAccountComponent(title:"J'ai déjà un compte", path:Routes.LOGIN,
-                            style:Style.secondaryColor),
-                        const SizedBox()
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            );
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+      child: Column(
+        children: [
+          CustomButton(
+              title: "Démo gratuite",
+              background: Style.primaryColor,
+              textColor: Style.secondaryColor,
+              isLoadingColor: Style.secondaryColor,
+              radius: 3,
+              onPressed: () {
+                Get.toNamed(Routes.DEMO_LOGIN);
+              }),
+          10.verticalSpace,
+          const SizedBox(
+            width: double.infinity,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CreateOrHaveAccountComponent(
+                    title: "J'ai déjà un compte",
+                    path: Routes.LOGIN,
+                    style: Style.secondaryColor),
+                SizedBox()
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

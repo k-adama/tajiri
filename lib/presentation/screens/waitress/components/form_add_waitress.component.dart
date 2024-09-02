@@ -72,7 +72,7 @@ class _FormAddWaitressComponentState extends State<FormAddWaitressComponent> {
               isLoadingColor: Style.secondaryColor,
               radius: 5,
               onPressed: () {
-                waitressController.handleCreateWaitress(
+                waitressController.createWaitress(
                   context,
                   gender,
                   waitressNameController.text,

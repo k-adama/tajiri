@@ -4,15 +4,16 @@ import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/effects/animation_button.effect.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bordered.text_field.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class MakeAjustmentComponent extends StatefulWidget {
-  final FoodDataEntity food;
+   Inventory food;
   final VoidCallback decrement;
   final VoidCallback increment;
   final void Function(String)? onChanged;
   final int addValue;
   final int ajustementStock;
-  const MakeAjustmentComponent(
+   MakeAjustmentComponent(
       {super.key,
       required this.food,
       required this.increment,

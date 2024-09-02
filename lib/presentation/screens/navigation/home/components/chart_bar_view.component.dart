@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/home/home.controller.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class ChartBarViewComponent extends StatefulWidget {
   final HomeController homeController;
@@ -51,7 +51,7 @@ class _ChartBarViewComponentState extends State<ChartBarViewComponent> {
     );
   }
 
-  LineChartData mainData(List<OrderEntity> orders, String viewSelected) {
+  LineChartData mainData(List<Order> orders, String viewSelected) {
     return LineChartData(
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
@@ -151,8 +151,8 @@ class _ChartBarViewComponentState extends State<ChartBarViewComponent> {
     );
   }
 
-  Widget bottomTitleWidgets(double value, TitleMeta meta,
-      List<OrderEntity> orders, String viewSelected) {
+  Widget bottomTitleWidgets(
+      double value, TitleMeta meta, List<Order> orders, String viewSelected) {
     return SideTitleWidget(
       axisSide: meta.axisSide,
       child: ChartUtils.getTextChart(orders, value, viewSelected),

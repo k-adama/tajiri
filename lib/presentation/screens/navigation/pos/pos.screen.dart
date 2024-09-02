@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:get/utils.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/app/extensions/product.extension.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/categorie_food.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/modals/food_variant.modal.dart';
@@ -17,6 +17,7 @@ import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/shimmer_product_list.widget.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/shop_product_item.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/product_in_cart.widget.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:upgrader/upgrader.dart';
 
 class PosScreen extends StatefulWidget {
@@ -35,45 +36,43 @@ class _PosScreenState extends State<PosScreen> {
   }
 
   void _onRefresh(PosController posController) async {
-    await posController.fetchFoods();
+    await posController.fetchProducts();
     posController.handleFilter('all', 'all');
     _controller.refreshCompleted();
   }
 
   void _onLoading(PosController posController) async {
-    await posController.fetchFoods();
+    await posController.fetchProducts();
     posController.handleFilter('all', 'all');
     _controller.loadComplete();
   }
 
-  addCart(FoodDataEntity food, PosController posController) {
-    if (food.quantity == 0) {
+  addCart(Product product, PosController posController) {
+    if (product.quantity == 0) {
       Mixpanel.instance.track("POS Product Out Stock Cliked", properties: {
-        "Product name": food.name,
-        "Product ID": food.id,
-        "Category": food.category?.name,
-        "Selling Price": food.price
+        "Product name": product.name,
+        "Product ID": product.id,
+        "Category": product.category.name,
+        "Selling Price": product.price
       });
       return;
     }
-    final hasVariants = food.foodVariantCategory != null &&
-        food.foodVariantCategory!.isNotEmpty;
-    if (hasVariants) {
+
+    if (product.hasVariants) {
       Mixpanel.instance.track("Product With Variant Cliked", properties: {
-        "Product name": food.name,
-        "Product ID": food.id,
-        "Category": food.category?.name,
-        "Selling Price": food.price,
-        "Stock Availability": food.quantity,
-        "Number of variants categories": food.foodVariantCategory?.length,
-        "Average of variants by category":
-            food.foodVariantCategory?[0].foodVariant?.length
+        "Product name": product.name,
+        "Product ID": product.id,
+        "Category": product.category.name,
+        "Selling Price": product.price,
+        "Stock Availability": product.quantity,
+        "Number of variants categories": product.variants.length,
+        "Average of variants by category": product.variants.length
       });
 
       AppHelpersCommon.showCustomModalBottomSheet(
         context: context,
         modal: FoodVariantModal(
-          food: food,
+          product: product,
         ),
         isDarkMode: false,
         isDrag: true,
@@ -81,15 +80,15 @@ class _PosScreenState extends State<PosScreen> {
       );
       return;
     }
-    posController.addCart(context, food, null, 1, 0, false);
+    posController.addCart(context, product, null, 1, 0, false);
   }
 
-  addCount(FoodDataEntity food, bool hasVariants, PosController posController) {
+  addCount(Product food, bool hasVariants, PosController posController) {
     if (hasVariants) {
       AppHelpersCommon.showCustomModalBottomSheet(
         context: context,
         modal: FoodVariantModal(
-          food: food,
+          product: food,
         ),
         isDarkMode: false,
         isDrag: true,
@@ -98,19 +97,18 @@ class _PosScreenState extends State<PosScreen> {
       return;
     }
     if (posController.cartItemList
-            .firstWhereOrNull((element) => element.id == food.id)
+            .firstWhereOrNull((element) => element.productId == food.id)
             ?.quantity ==
         food.quantity) return;
-    posController.addCount(context: context, foodId: food.id.toString());
+    posController.addCount(context: context, productId: food.id.toString());
   }
 
-  removeCount(
-      FoodDataEntity food, bool hasVariants, PosController posController) {
+  removeCount(Product food, bool hasVariants, PosController posController) {
     if (hasVariants) {
       AppHelpersCommon.showCustomModalBottomSheet(
         context: context,
         modal: FoodVariantModal(
-          food: food,
+          product: food,
         ),
         isDarkMode: false,
         isDrag: true,
@@ -164,7 +162,7 @@ class _PosScreenState extends State<PosScreen> {
                     return posController.isProductLoading.value
                         ? const Expanded(child: ShimmerProductListWidget())
                         : Expanded(
-                            child: posController.foods.isEmpty
+                            child: posController.products.isEmpty
                                 ? SvgPicture.asset(
                                     "assets/svgs/empty.svg",
                                     height: 300.h,
@@ -192,28 +190,23 @@ class _PosScreenState extends State<PosScreen> {
                                                 childAspectRatio: 0.66.r,
                                                 crossAxisCount: 2,
                                                 mainAxisExtent: 280.r),
-                                        itemCount: posController.foods.length,
+                                        itemCount:
+                                            posController.products.length,
                                         itemBuilder: (context, index) {
                                           //get food
-                                          final food =
-                                              posController.foods[index];
-                                          // check if food has variants
-                                          final hasVariants =
-                                              food.foodVariantCategory !=
-                                                      null &&
-                                                  food.foodVariantCategory!
-                                                      .isNotEmpty;
+                                          final product =
+                                              posController.products[index];
 
                                           // check if food is in cart
                                           final foodIsInCart = posController
                                               .cartItemList
-                                              .map((item) => item.id)
-                                              .contains(food.id);
+                                              .map((item) => item.productId)
+                                              .contains(product.id);
 
                                           return AnimationConfiguration
                                               .staggeredGrid(
                                             columnCount:
-                                                posController.foods.length,
+                                                posController.products.length,
                                             position: index,
                                             duration: const Duration(
                                                 milliseconds: 375),
@@ -223,32 +216,32 @@ class _PosScreenState extends State<PosScreen> {
                                                 child: GestureDetector(
                                                   onTap: () {
                                                     if (!foodIsInCart) {
-                                                      addCart(
-                                                          food, posController);
+                                                      addCart(product,
+                                                          posController);
                                                     } else {
                                                       addCount(
-                                                          food,
-                                                          hasVariants,
+                                                          product,
+                                                          product.hasVariants,
                                                           posController);
                                                     }
                                                   },
                                                   child:
                                                       ShopProductItemComponent(
-                                                    product: food,
+                                                    product: product,
                                                     count: posController
                                                         .getQuantity(index),
                                                     isAdd: foodIsInCart,
                                                     addCount: () => addCount(
-                                                        food,
-                                                        hasVariants,
+                                                        product,
+                                                        product.hasVariants,
                                                         posController),
                                                     removeCount: () =>
                                                         removeCount(
-                                                            food,
-                                                            hasVariants,
+                                                            product,
+                                                            product.hasVariants,
                                                             posController),
                                                     addCart: () => addCart(
-                                                        food, posController),
+                                                        product, posController),
                                                   ),
                                                 ),
                                               ),

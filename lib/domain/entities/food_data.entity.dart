@@ -2,8 +2,8 @@ import 'package:tajiri_pos_mobile/domain/entities/categorie_entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/food_variant_category.entity.dart';
 import 'package:tajiri_pos_mobile/domain/entities/stock_data.entity.dart';
 
-class FoodDataEntity {
-  FoodDataEntity({
+class Product {
+  Product({
     String? id,
     int? price,
     String? description,
@@ -35,7 +35,7 @@ class FoodDataEntity {
     _foodVariantCategory = foodVariantCategory;
   }
 
-  FoodDataEntity.fromJson(dynamic json) {
+  Product.fromJson(dynamic json) {
     _id = json['id'];
     _categoryId = json['categoryId'];
     _price = json['price'];
@@ -81,7 +81,7 @@ class FoodDataEntity {
   CategoryEntity? _category;
   List<FoodVariantCategoryEntity>? _foodVariantCategory;
 
-  FoodDataEntity copyWith({
+  Product copyWith({
     String? id,
     String? categoryId,
     String? description,
@@ -97,7 +97,7 @@ class FoodDataEntity {
     CategoryEntity? category,
     List<FoodVariantCategoryEntity>? foodVariantCategory,
   }) =>
-      FoodDataEntity(
+      Product(
         id: id ?? _id,
         categoryId: categoryId ?? _categoryId,
         isAvailable: isAvailable ?? _isAvailable,

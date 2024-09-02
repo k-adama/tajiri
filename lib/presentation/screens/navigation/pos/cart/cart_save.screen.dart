@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
@@ -10,7 +9,6 @@ import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/cart/c
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/components/customer_info_card.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/components/customer_list.component.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/components/note_field.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/components/type_command.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
 

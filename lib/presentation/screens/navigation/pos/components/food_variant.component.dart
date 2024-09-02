@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:get/instance_manager.dart';
 
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_data.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/food_variant.entity.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/update_count_product_button.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class FoodVariantComponent extends StatefulWidget {
-  final List<FoodVariantEntity>? foodVariant;
-  final FoodDataEntity? food;
+  final List<ProductVariant>? foodVariant;
+  final Product? food;
   const FoodVariantComponent({
     super.key,
     required this.foodVariant,
@@ -27,15 +24,14 @@ class FoodVariantComponent extends StatefulWidget {
 
 class _FoodVariantComponentState extends State<FoodVariantComponent> {
   final posController = Get.find<PosController>();
-  addCart(FoodDataEntity food, FoodVariantEntity foodVariant) {
-    if (food.quantity == 0) {
+  addCart(Product product, ProductVariant productVariant) {
+    if (product.quantity == 0) {
       return;
     }
-
-    posController.addCart(context, food, foodVariant, 1, 0, false);
+    posController.addCart(context, product, productVariant, 1, 0, false);
   }
 
-  addCount(FoodDataEntity food, FoodVariantEntity foodVariant) {
+  addCount(Product food, ProductVariant foodVariant) {
     if (posController.cartItemList
             .firstWhereOrNull((item) =>
                 item.variant != null && item.variant!.id == foodVariant.id)
@@ -43,8 +39,8 @@ class _FoodVariantComponentState extends State<FoodVariantComponent> {
         food.quantity) return;
     posController.addCount(
         context: context,
-        foodId: food.id.toString(),
-        foodVariantId: foodVariant.id);
+        productId: food.id.toString(),
+        productVariantId: foodVariant.id);
   }
 
   @override
@@ -54,7 +50,7 @@ class _FoodVariantComponentState extends State<FoodVariantComponent> {
       child: ListView.builder(
         itemCount: widget.foodVariant?.length ?? 0,
         itemBuilder: (BuildContext context, int index) {
-          FoodVariantEntity foodVariant = widget.foodVariant![index];
+          ProductVariant foodVariant = widget.foodVariant![index];
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -73,14 +69,14 @@ class _FoodVariantComponentState extends State<FoodVariantComponent> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                foodVariant.name ?? '',
+                                foodVariant.name,
                                 style: Style.interNormal(
                                   size: 13.sp,
                                   color: Style.titleDark,
                                 ),
                               ),
                               Text(
-                                "${foodVariant.price ?? ''}".currencyShort(),
+                                "${foodVariant.price}".currencyShort(),
                                 style: Style.interNormal(
                                   size: 13.sp,
                                   color: Style.titleDark,
@@ -91,7 +87,7 @@ class _FoodVariantComponentState extends State<FoodVariantComponent> {
                           Text(
                             widget.food!.quantity != 0
                                 ? widget.food!.quantity != 0
-                                    ? '${widget.food!.quantity ?? widget.food!.type}  en stock'
+                                    ? '${widget.food!.quantity}  en stock'
                                     : 'Rupture'
                                 : 'Rupture',
                             style: Style.interNormal(

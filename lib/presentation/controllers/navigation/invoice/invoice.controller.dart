@@ -4,273 +4,137 @@ import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/api_pdf.service.dart';
 import 'package:tajiri_pos_mobile/app/services/api_pdf_invoice.service.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
+import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
+import 'package:tajiri_pos_mobile/domain/entities/printer_model.entity.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/navigation.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class InvoiceController extends GetxController {
   final user = AppHelpersCommon.getUserInLocalStorage();
+  final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
+  String? get restaurantId => user?.restaurantId;
 
-  // BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
+  final bluetoothController =
+      Get.find<NavigationController>().bluetoothController;
 
-  // final devices = Rx<List<BluetoothDevice>>([]);
-  // List<BluetoothDevice> selectedPrinter = [];
-  // BluetoothDevice? device;
-  // final connected = false.obs;
+  //
+  final tableList = List<Table>.empty().obs;
+  final waitressList = List<Waitress>.empty().obs;
+  final customersList = List<Customer>.empty().obs;
+  final tajiriSdk = TajiriSDK.instance;
 
-  // @override
-  // void onInit() {
-  //   initPlatformState();
+  @override
+  void onReady() {
+    Future.wait([
+      fetchCustomers(),
+      fetchWaitress(),
+      fetchTables(),
+    ]);
+    super.onReady();
+  }
 
-  //   super.onInit();
-  // }
-
-  // Future<void> initPlatformState() async {
-  //   print("============INIT bluetooth==========");
-  //   bool? isConnected = await bluetooth.isConnected;
-  //   List<BluetoothDevice> _devices = [];
-
-  //   try {
-  //     _devices = await bluetooth.getBondedDevices();
-  //   } on PlatformException {
-  //     print("===PlatformException===");
-  //   }
-
-  //   bluetooth.onStateChanged().listen((state) {
-  //     switch (state) {
-  //       case BlueThermalPrinter.CONNECTED:
-  //         connected.value = true;
-  //         break;
-  //       case BlueThermalPrinter.DISCONNECTED:
-  //         connected.value = false;
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //   });
-
-  //   devices.value = _devices;
-
-  //   if (isConnected == true) {
-  //     connected.value = true;
-  //   }
-  // }
-
-  // void printNewModelFactureByBluetooth(OrderEntity order) async {
-  //   var dateFormat = DateFormat("dd/MM/yyyy HH:mm", 'fr_FR');
-
-  //   ByteData bytesAsset = await rootBundle.load("assets/images/logo_taj.png");
-  //   Uint8List imageBytesFromAsset = bytesAsset.buffer
-  //       .asUint8List(bytesAsset.offsetInBytes, bytesAsset.lengthInBytes);
-
-  //   Mixpanel.instance.track('Print Invoice');
-  //   final sizeMedium = Size.medium.val;
-  //   print("========$sizeMedium");
-
-  //   bluetooth.printNewLine();
-
-  //   bluetooth.printNewLine();
-  //   final restoName =
-  //       "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
-  //   bluetooth.printCustom(
-  //     restoName,
-  //     Size.boldLarge.val,
-  //     Align.center.val,
-  //   );
-
-  //   bluetooth.printCustom(
-  //     dateFormat.format(
-  //         DateTime.tryParse(order.createdAt.toString())?.toLocal() ??
-  //             DateTime.now()),
-  //     sizeMedium,
-  //     Align.center.val,
-  //   );
-  //   bluetooth.printNewLine();
-  //   bluetooth.printCustom(
-  //     "Client: ${order.customer?.firstname?.toString() ?? "Client"} ${order.customer?.lastname?.toString() ?? "invite"}",
-  //     sizeMedium,
-  //     Align.center.val,
-  //   );
-  //   bluetooth.printCustom(
-  //     "Serveur:  ${userOrWaitressName(order, user)}",
-  //     sizeMedium,
-  //     Align.center.val,
-  //   );
-  //   bluetooth.printNewLine();
-  //   bluetooth.printCustom(
-  //     "N.#: ${order.orderNumber}",
-  //     sizeMedium,
-  //     Align.center.val,
-  //   );
-  //   bluetooth.printNewLine();
-  //   order.status == "PAID"
-  //       ? bluetooth.printCustom(
-  //           "MOYEN DE PAIMENT: ${order.paymentMethod?.name ?? ""}",
-  //           sizeMedium,
-  //           Align.center.val,
-  //         )
-  //       : bluetooth.printCustom(
-  //           "STATUT: Non paye",
-  //           sizeMedium,
-  //           Align.center.val,
-  //         );
-  //   bluetooth.printNewLine();
-  //   bluetooth.printCustom("--------------------------------", 10, 10);
-  //   bluetooth.printNewLine();
-
-  //   int itemCount = order.orderDetails?.length ?? 0;
-  //   for (int index = 0; index < itemCount; index++) {
-  //     final orderDetail = order.orderDetails?[index];
-  //     if (orderDetail != null) {
-  //       final foodName = orderDetail.food?.name ?? orderDetail.bundle?['name'];
-  //       final quantity = orderDetail.quantity ?? 0;
-  //       final price = orderDetail.price ?? 0;
-  //       final calculatePrice = quantity * price;
-  //       generateLine(truncatedString("$quantity $foodName", longueurMax: 10),
-  //           "$calculatePrice F", sizeMedium);
-  //     }
-  //   }
-  //   bluetooth.printNewLine();
-  //   bluetooth.printCustom("--------------------------------", sizeMedium, 10);
-  //   bluetooth.printNewLine();
-  //   bluetooth.printLeftRight(
-  //     "TOTAL TTC",
-  //     "${order.grandTotal ?? 0} FCFA",
-  //     Size.boldLarge.val,
-  //   );
-  //   bluetooth.printNewLine();
-  //   bluetooth.printNewLine();
-  //   bluetooth.printCustom(
-  //     "Merci d'etre passe",
-  //     sizeMedium,
-  //     Align.center.val,
-  //   );
-  //   bluetooth.printCustom("A bientot !", sizeMedium, Align.center.val);
-  //   bluetooth.printNewLine();
-  //   bluetooth.printImageBytes(imageBytesFromAsset);
-  //   bluetooth.paperCut();
-  //   bluetooth.drawerPin5();
-  // }
-
-  // List<String> truncatedString(String chaine, {int longueurMax = 13}) {
-  //   List<String> morceaux = [];
-  //   int index = 0;
-
-  //   while (index < chaine.length) {
-  //     if (index + longueurMax >= chaine.length) {
-  //       // Si la fin de la chaîne est atteinte, ajoute le reste de la chaîne
-  //       morceaux.add(chaine.substring(index));
-  //     } else {
-  //       // Sinon, ajoute une sous-chaîne de longueur maximale 13
-  //       morceaux.add(chaine.substring(index, index + longueurMax));
-  //     }
-  //     // Met à jour l'index pour le prochain morceau
-  //     index += longueurMax;
-  //   }
-
-  //   return morceaux;
-  // }
-
-  // generateLine(List<String> elements, String amount, int sizeMedium) {
-  //   for (var i = 0; i < elements.length; i++) {
-  //     if (i == 0) {
-  //       bluetooth.printLeftRight("${elements[i]}", "$amount", sizeMedium);
-  //     } else {
-  //       bluetooth.printLeftRight("${elements[i]}", "", sizeMedium);
-  //     }
-  //   }
-
-  //   bluetooth.printNewLine();
-  // }
-
-  // void notConnectedPrint(BuildContext context) {
-  //   showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return LayoutBuilder(builder: (context, constraints) {
-  //           return SimpleDialog(
-  //             title: SizedBox(
-  //                 height: constraints.maxHeight * 0.7,
-  //                 width: 300.r,
-  //                 child: ListView.builder(
-  //                   itemCount: devices.value.length,
-  //                   itemBuilder: (c, i) {
-  //                     return ListTile(
-  //                       leading: const Icon(Icons.print),
-  //                       title: Text(devices.value[i].name ?? "Pas de nom"),
-  //                       subtitle:
-  //                           Text(devices.value[i].address ?? "Pas d'adresse"),
-  //                       onTap: () async {
-  //                         selectedPrinter.add(devices.value[i]);
-  //                         bluetooth.connect(devices.value[i]);
-  //                         connected.value = true;
-  //                         Navigator.pop(context);
-  //                       },
-  //                     );
-  //                   },
-  //                 )),
-  //           );
-  //         });
-  //       });
-  // }
-
-  void shareFacture(OrderEntity order) async {
+  void shareFacture(Order order) async {
     Mixpanel.instance.track("Share Ticket to customer", properties: {
       "Order Status": order.status,
       "Customer type": order.customerType,
       "Total Price": order.grandTotal,
-      "Payment method":
-          order.paymentMethod != null ? order.paymentMethod?.name : ""
+      "Payment method": order.payments.isNotEmpty
+          ? getNamePaiementById(order.payments[0].paymentMethodId)
+          : ""
     });
 
-    final pdfFile = await ApiPdfInvoiceService.generate(order);
+    final customer = customerName(order);
+    final waitressName = tableOrWaitressName(order);
+
+    final pdfFile = await ApiPdfInvoiceService.generate(
+      order,
+      customer,
+      waitressName,
+    );
 
     ApiPdfService.shareFile(pdfFile);
   }
-}
 
-enum Size {
-  medium, //normal size text
-  bold, //only bold text
-  boldMedium, //bold with medium
-  boldLarge, //bold with large
-  extraLarge //extra large
-}
-
-enum Align {
-  left, //ESC_ALIGN_LEFT
-  center, //ESC_ALIGN_CENTER
-  right, //ESC_ALIGN_RIGHT
-}
-
-extension PrintSize on Size {
-  int get val {
-    switch (this) {
-      case Size.medium:
-        return 0;
-      case Size.bold:
-        return 1;
-      case Size.boldMedium:
-        return 2;
-      case Size.boldLarge:
-        return 3;
-      case Size.extraLarge:
-        return 4;
-      default:
-        return 0;
+  void printButtonTap(Order order) {
+    if (bluetoothController.isLoading.value) {
+      return;
+    }
+    if (bluetoothController.connected.value == false) {
+      Get.toNamed(Routes.SETTING_BLUETOOTH);
+    } else {
+      final printerModel = order.toPrinterModelEntity(
+        user?.lastname,
+        restaurant?.name,
+        restaurant?.phone,
+      );
+      bluetoothController.printReceipt(printerModel);
     }
   }
-}
 
-extension PrintAlign on Align {
-  int get val {
-    switch (this) {
-      case Align.left:
-        return 0;
-      case Align.center:
-        return 1;
-      case Align.right:
-        return 2;
-      default:
-        return 0;
+  String tableOrWaitressName(Order order) {
+    if (order.waitressId != null) {
+      return getNameWaitressById(order.waitressId, waitressList);
+    } else if (order.tableId != null) {
+      return getNameTableById(order.tableId, tableList);
+    } else {
+      return "";
+    }
+  }
+
+  String customerName(Order order) {
+    return order.customerType == "SAVED"
+        ? getNameCustomerById(order.customerId, customersList)
+        : "Client de passage";
+  }
+
+  Future<void> fetchCustomers() async {
+    if (restaurantId == null) {
+      print("===restaurantId null");
+      return;
+    }
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      try {
+        final result =
+            await tajiriSdk.customersService.getCustomers(restaurantId!);
+        customersList.assignAll(result);
+        update();
+      } catch (e) {
+        print("======Error fetch Custommer : $e");
+        update();
+      }
+    }
+  }
+
+  Future<void> fetchWaitress() async {
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      try {
+        final result = await tajiriSdk.waitressesService.getWaitresses();
+        waitressList.assignAll(result);
+        update();
+      } catch (e) {
+        print("======Error fetch Waitress : $e");
+        update();
+      }
+    }
+  }
+
+  Future<void> fetchTables() async {
+    if (restaurantId == null) {
+      return;
+    }
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      try {
+        update();
+        final result = await tajiriSdk.tablesService.getTables(restaurantId!);
+        tableList.assignAll(result);
+        update();
+      } catch (e) {
+        update();
+      }
     }
   }
 }

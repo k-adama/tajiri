@@ -77,21 +77,22 @@ class _WaitressScreenState extends State<WaitressScreen> {
                           _onLoading(waitressController);
                         },
                         child: ListView.builder(
-                          itemCount: waitressController.waitress.length,
+                          itemCount: waitressController.waitressList.length,
                           itemBuilder: (context, index) {
-                            final waitress = waitressController.waitress[index];
+                            final waitress =
+                                waitressController.waitressList[index];
                             return WaitressCardComponent(
                               waitress: waitress,
                               onSelectedPopupMenuButton: (value) {
                                 if (value == 'edit') {
                                   Get.toNamed(Routes.EDIT_WAITRESS, arguments: {
                                     'id': waitress.id,
-                                    'name': waitress.name ?? "",
+                                    'name': waitress.name,
                                     'gender': waitress.gender,
                                   });
                                 } else if (value == 'delete') {
-                                  waitressController.deleteWaitressName(
-                                      context, waitress.id!);
+                                  waitressController.deleteWaitress(
+                                      context, waitress.id);
                                 }
                               },
                             );

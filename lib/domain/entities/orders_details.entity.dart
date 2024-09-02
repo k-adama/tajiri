@@ -10,7 +10,7 @@ class OrderDetailsEntity {
     String? orderId,
     String? createdAt,
     String? updatedAt,
-    FoodDataEntity? food,
+    Product? food,
     dynamic bundle,
   }) {
     _id = id;
@@ -34,7 +34,7 @@ class OrderDetailsEntity {
     _orderId = json['orderId'];
     _createdAt = json['createdAt'];
     _updatedAt = json['updatedAt'];
-    _food = json['food'] != null ? FoodDataEntity.fromJson(json['food']) : null;
+    _food = json['food'] != null ? Product.fromJson(json['food']) : null;
     _bundle = json['bundle'];
   }
 
@@ -46,7 +46,7 @@ class OrderDetailsEntity {
   String? _orderId;
   String? _createdAt;
   String? _updatedAt;
-  FoodDataEntity? _food;
+  Product? _food;
   dynamic? _bundle;
 
   String? get id => _id;
@@ -57,7 +57,7 @@ class OrderDetailsEntity {
   String? get orderId => _orderId;
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
-  FoodDataEntity? get food => _food;
+  Product? get food => _food;
   dynamic get bundle => _bundle;
 
   OrderDetailsEntity copyWith({
@@ -69,7 +69,7 @@ class OrderDetailsEntity {
     String? orderId,
     String? createdAt,
     String? updatedAt,
-    FoodDataEntity? food,
+    Product? food,
     dynamic? bundle,
   }) =>
       OrderDetailsEntity(

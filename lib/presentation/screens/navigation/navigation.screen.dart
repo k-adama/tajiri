@@ -26,6 +26,7 @@ class NavigationScreen extends StatefulWidget {
 class _NavigationScreenState extends State<NavigationScreen> {
   final navigationController = Get.find<NavigationController>();
   final user = AppHelpersCommon.getUserInLocalStorage();
+  final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
 
   late List<IndexedStackChild> list;
   void handleBottomNavBarTap(int index) {
@@ -53,15 +54,14 @@ class _NavigationScreenState extends State<NavigationScreen> {
     final isIndexValid = navigationController.selectIndex == 1 ||
         navigationController.selectIndex == 2;
     final hasUser = user != null;
+    final restaurantName = restaurant?.name ?? "";
 
     if (hasUser) {
       if (isWaitress && isIndexValid) {
-        return const SelectWaitressComponent(); // const SelectWaitress();
+        return const SelectWaitressComponent();
       } else if (isTable && isIndexValid) {
         return const SelectTableComponent();
       } else {
-        final restaurantName =
-            "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
         return Text(
           restaurantName,
           style: Style.interNormal(size: 16, color: Style.secondaryColor),

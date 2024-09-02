@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
-import 'package:tajiri_pos_mobile/domain/entities/table.entiy.dart';
-import 'package:tajiri_pos_mobile/data/repositories/tables/tables.repository.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/orders/order.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull.dialog.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart' as taj_sdk;
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class TableController extends GetxController {
-  final TablesRepository _tablesRepository = TablesRepository();
-  RxList<TableEntity> tableListData = List<TableEntity>.empty().obs;
+  RxList<taj_sdk.Table> tableListData = List<taj_sdk.Table>.empty().obs;
   bool isLoadingTable = false;
   bool isLoadingEdetingTable = false;
   bool isLoadingDeleteTable = false;
-  bool isListView = true;
   String tableName = "";
   String tableDescription = "";
   String tableNumberOfPlace = "";
   String? tableId;
-  TableEntity newTable = TableEntity();
-  Rx<TableEntity?> selectedTable = Rx<TableEntity?>(null);
-  // OrdersController ordersController = Get.find();
+  late taj_sdk.Table newTable;
+  Rx<taj_sdk.Table?> selectedTable = Rx<taj_sdk.Table?>(null);
+
+  final user = AppHelpersCommon.getUserInLocalStorage();
+  String? get restaurantId => user?.restaurantId;
+  final tajiriSdk = taj_sdk.TajiriSDK.instance;
+  OrdersController ordersController = Get.find();
 
   @override
   void onReady() async {
@@ -30,80 +33,75 @@ class TableController extends GetxController {
 
   clearSelectTable() {
     selectedTable.value = null;
-    // ordersController.filterByTable(null);
+    ordersController.filterByTable(null);
+    final posController = Get.find<PosController>();
+    posController.waitressCurrentId = null;
+    posController.tableCurrentId = null;
   }
 
   Future<void> fetchTables() async {
     clearSelectTable();
+    if (restaurantId == null) {
+      return;
+    }
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isLoadingTable = true;
       update();
-      final response = await _tablesRepository.getTables();
-      response.when(
-        success: (data) async {
-          tableListData.assignAll(data!);
-          isLoadingTable = false;
-          update();
-        },
-        failure: (failure, status) {
-          isLoadingTable = false;
-          update();
-        },
-      );
+      try {
+        isLoadingTable = true;
+        update();
+        final result = await tajiriSdk.tablesService.getTables(restaurantId!);
+        tableListData.assignAll(result);
+        isLoadingTable = false;
+        update();
+      } catch (e) {
+        isLoadingTable = false;
+        update();
+      }
     }
-  }
-
-  changeSelectTable(TableEntity? newValue) {
-    selectedTable.value = newValue!;
-    update();
   }
 
   Future<void> saveTable(BuildContext context, String tableName,
       String tableDescription, String tableNumberOfPlace) async {
+    final persons = int.tryParse(tableNumberOfPlace);
+    if (tableName.isEmpty || tableNumberOfPlace.isEmpty) {
+      isLoadingTable = false;
+      update();
+      return AppHelpersCommon.showCheckTopSnackBarInfoForm(
+        context,
+        "Veuillez remplir tous les champs obligatoires",
+      );
+    }
+
+    if (persons == null) {
+      isLoadingTable = false;
+      update();
+      return AppHelpersCommon.showCheckTopSnackBarInfoForm(
+        context,
+        "Veuillez remplir tous les champs obligatoires",
+      );
+    }
+    final taj_sdk.CreateTableDto createTableDto = taj_sdk.CreateTableDto(
+        name: tableName,
+        description: tableDescription,
+        persons: persons,
+        imageUrl: "https://image.com",
+        status: true,
+        restaurantId: restaurantId!);
+
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
-      isLoadingTable = true;
-      update();
-      final user = AppHelpersCommon.getUserInLocalStorage();
-      final restaurantId = user?.role?.restaurantId;
-      if (restaurantId == null) {
-        print("====${restaurantId} null====");
-        return;
-      }
+      try {
+        isLoadingTable = true;
+        update();
+        final result =
+            await tajiriSdk.tablesService.createTable(createTableDto);
 
-      final persons = int.tryParse(tableNumberOfPlace);
+        newTable = result;
 
-      if (tableName.isEmpty || tableNumberOfPlace.isEmpty) {
         isLoadingTable = false;
         update();
-        return AppHelpersCommon.showCheckTopSnackBarInfoForm(
-          context,
-          "Veuillez remplir tous les champs obligatoires",
-        );
-      }
-
-      if (persons == null) {
-        isLoadingTable = false;
-        update();
-        return AppHelpersCommon.showCheckTopSnackBarInfoForm(
-          context,
-          "Veuillez remplir tous les champs obligatoires",
-        );
-      }
-      Map<String, dynamic> requestData = {
-        'name': tableName,
-        'description': tableDescription,
-        'persons': persons,
-        "status": true,
-        "restaurantId": restaurantId,
-      };
-
-      final response = await _tablesRepository.createTable(requestData);
-      response.when(success: (data) async {
-        newTable = data!;
-        update();
-        tableInitialState();
 
         AppHelpersCommon.showAlertDialog(
           context: context,
@@ -119,107 +117,144 @@ class TableController extends GetxController {
             },
           ),
         );
-        fetchTables();
-      }, failure: (failure, status) {
+        fetchTablesById(result.id);
+        tableInitialState();
+      } catch (e) {
         isLoadingTable = false;
         update();
-      });
+        AppHelpersCommon.showBottomSnackBar(
+          Get.context!,
+          Text(e.toString()),
+          const Duration(seconds: 2),
+          true,
+        );
+      }
     }
   }
 
-  Future<void> updateTableName(BuildContext context, String tableId) async {
+  Future<void> updateTable(BuildContext context, String tableId) async {
+    final persons = int.tryParse(tableNumberOfPlace);
+
+    if (persons == null) {
+      isLoadingEdetingTable = false;
+      update();
+      return AppHelpersCommon.showCheckTopSnackBarInfoForm(
+        context,
+        "Veuillez remplir tous les champs obligatoires",
+      );
+    }
+    final UpdateTableDto updateTableDto = UpdateTableDto(
+      name: tableName,
+      description: tableDescription,
+      persons: persons,
+    );
+
+    try {
+      final result =
+          await tajiriSdk.tablesService.updateTable(tableId, updateTableDto);
+      isLoadingEdetingTable = false;
+      update();
+      AppHelpersCommon.showAlertDialog(
+        context: context,
+        canPop: false,
+        child: SuccessfullDialog(
+          haveButton: false,
+          isCustomerAdded: false,
+          title: "Table modifiée",
+          content: "La $tableName a bien été modifiée",
+          svgPicture: "assets/svgs/table 1.svg",
+          redirect: () {
+            Get.close(2);
+          },
+        ),
+      );
+      updateTableList(result);
+      tableInitialState();
+      isLoadingEdetingTable = false;
+      update();
+    } catch (e) {
+      isLoadingEdetingTable = false;
+      update();
+      AppHelpersCommon.showBottomSnackBar(
+        Get.context!,
+        Text(e.toString()),
+        const Duration(seconds: 2),
+        true,
+      );
+    }
+  }
+
+  Future<void> deleteTable(BuildContext context, String tableId) async {
+    if (tableId.isEmpty) return;
+    try {
+      isLoadingDeleteTable = true;
+      update();
+
+      await tajiriSdk.tablesService.deleteTable(tableId);
+      isLoadingDeleteTable = false;
+      update();
+      AppHelpersCommon.showAlertDialog(
+        context: context,
+        canPop: false,
+        child: SuccessfullDialog(
+          haveButton: false,
+          isCustomerAdded: false,
+          title: "Table supprimée",
+          content: "La $tableName a bien été supprimée",
+          svgPicture: "assets/svgs/table 1.svg",
+          redirect: () {
+            Get.close(2);
+          },
+        ),
+      );
+      tableListData.removeWhere((element) => element.id == tableId);
+      clearSelectTable();
+      update();
+    } catch (e) {
+      isLoadingDeleteTable = false;
+      update();
+      print("Error delete table $e");
+    }
+  }
+
+  Future<void> fetchTablesById(String? id) async {
+    print("=======fetchTablesById========");
+    clearSelectTable();
+    if (restaurantId == null) {
+      return;
+    }
+    if (id == null) {
+      return;
+    }
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
-      isLoadingEdetingTable = true;
+      isLoadingTable = true;
       update();
       try {
-        final persons = int.tryParse(tableNumberOfPlace);
-
-        if (persons == null) {
-          isLoadingEdetingTable = false;
-          update();
-          return AppHelpersCommon.showCheckTopSnackBarInfoForm(
-            context,
-            "Veuillez remplir tous les champs obligatoires",
-          );
-        }
-
-        Map<String, dynamic> updateData = {
-          'name': tableName,
-          'description': tableDescription,
-          'persons': persons,
-        };
-
-        final response =
-            await _tablesRepository.updateTable(updateData, tableId);
-
-        response.when(success: (data) {
-          tableId = "";
-          AppHelpersCommon.showAlertDialog(
-            context: context,
-            canPop: false,
-            child: SuccessfullDialog(
-              haveButton: false,
-              isCustomerAdded: false,
-              title: "Table modifiée",
-              content: "La $tableName a bien été modifiée",
-              svgPicture: "assets/svgs/table 1.svg",
-              redirect: () {
-                Get.close(2);
-              },
-            ),
-          );
-          fetchTables();
-          tableInitialState();
-          isLoadingEdetingTable = false;
-          update();
-        }, failure: (failure, status) {
-          AppHelpersCommon.showCheckTopSnackBar(
-            context,
-            status.toString(),
-          );
-          isLoadingEdetingTable = false;
-          tableId = "";
-          update();
-        });
+        isLoadingTable = true;
+        update();
+        final result = await tajiriSdk.tablesService.getTable(id);
+        updateTableList(result);
+        isLoadingTable = false;
+        update();
       } catch (e) {
-        print(e);
-        isLoadingEdetingTable = false;
+        isLoadingTable = false;
         update();
       }
     }
   }
 
-  Future<void> deleteTableName(BuildContext context, String tableId) async {
-    final connected = await AppConnectivityService.connectivity();
-    if (connected) {
-      isLoadingDeleteTable = true;
-      update();
-      final response = await _tablesRepository.deleteTable(tableId);
-      response.when(success: (data) {
-        tableId = "";
-        isLoadingDeleteTable = false;
-        update();
-      }, failure: (failure, status) {
-        AppHelpersCommon.showAlertDialog(
-          context: context,
-          canPop: false,
-          child: SuccessfullDialog(
-            haveButton: false,
-            isCustomerAdded: false,
-            title: "Table supprimée",
-            content: "La $tableName a bien été supprimée",
-            svgPicture: "assets/svgs/table 1.svg",
-            redirect: () {
-              Get.close(2);
-            },
-          ),
-        );
-        fetchTables();
-        tableId = "";
-        isLoadingDeleteTable = false;
-        update();
-      });
+  void updateTableList(taj_sdk.Table newTable) {
+    clearSelectTable();
+    final indexInit =
+        tableListData.indexWhere((table) => table.id == newTable.id);
+    print("update order list $indexInit");
+    if (indexInit != -1) {
+      // Replace the old table with the new table in tablesInit
+      tableListData[indexInit] = newTable;
+    } else {
+      // Add the new table to tableInit if it doesn't exist
+      tableListData.insert(0, newTable);
     }
   }
 
@@ -243,6 +278,11 @@ class TableController extends GetxController {
 
   void setTableNumberPlace(String text) {
     tableNumberOfPlace = text.trim();
+    update();
+  }
+
+  changeSelectTable(taj_sdk.Table? newValue) {
+    selectedTable.value = newValue;
     update();
   }
 }

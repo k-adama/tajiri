@@ -1,83 +1,100 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as material;
 import 'package:get/get_instance/get_instance.dart';
+import 'package:flutter/material.dart' as mt;
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
-import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/common/utils.common.dart';
 import 'package:tajiri_pos_mobile/app/config/constants/app.constant.dart';
-import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_pos_mobile/app/services/app_connectivity.service.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/orders_reports.entity.dart';
-import 'package:tajiri_pos_mobile/domain/entities/user.entity.dart';
-import 'package:tajiri_pos_mobile/data/repositories/orders/orders.repository.dart';
 import 'dart:ui' as ui;
 import 'package:audioplayers/audioplayers.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/pos/pos.controller.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
+import 'package:tajiri_pos_mobile/app/extensions/staff.extension.dart';
 
 class OrdersController extends GetxController {
-  final OrdersRepository _ordersRepository = OrdersRepository();
-  bool isProductLoading = true;
+  final isProductLoading = true.obs;
+  bool isLoadingCreateWaitress = false;
+  bool isLoadingTable = false;
   bool isExpanded = false;
   bool isAddAndRemoveLoading = false;
-  List<OrderEntity> orders = List<OrderEntity>.empty().obs;
-  List<OrderEntity> ordersInit = List<OrderEntity>.empty().obs;
-  List<OrderEntity> ordersPending = List<OrderEntity>.empty().obs;
-  List<OrderEntity> ordersPaid = List<OrderEntity>.empty().obs;
-  List<OrdersReportsEntity> ordersReports =
-      List<OrdersReportsEntity>.empty().obs;
+  DateTime? startRangeDate;
+  DateTime? endRangeDate;
+  List<Order> orders = List<Order>.empty().obs;
+  List<Order> ordersInit = List<Order>.empty().obs;
   Rx<bool> isLoadingOrder = false.obs;
   Rx<bool> isLoadingPaid = false.obs;
 
   RxString currentOrderId = "".obs;
+  double? amount;
+
+  RxList<Table> tableListData = List<Table>.empty().obs;
+  final waitress = List<Waitress>.empty().obs;
+  final customers = List<Customer>.empty().obs;
+
   RxString currentOrderNo = "".obs;
-
-  DateTime? startRangeDate;
-  DateTime? endRangeDate;
-
   DateTime dateTime = DateTime.now();
-  final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
-  bool monuted = false;
 
+  final user = AppHelpersCommon.getUserInLocalStorage();
+  String? get restaurantId => user?.restaurantId;
+
+  bool monuted = false;
   final posController = Get.find<PosController>();
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
+  final tajiriSdk = TajiriSDK.instance;
 
   @override
   void onReady() {
     streamOrdersChange();
-    fetchOrders();
+    Future.wait([
+      fetchOrders(),
+      fetchWaitresses(),
+      fetchTables(),
+      fetchCustomers(),
+    ]);
     super.onReady();
   }
 
   streamOrdersChange() async {
     final supabase = Supabase.instance.client;
-    final channel = supabase
-        .from('orders')
-        .stream(primaryKey: ['id'])
-        .eq('restaurantId', user?.role?.restaurantId ?? "")
-        .order('createdAt')
-        .limit(1);
-    channel.listen((eventList) async {
-      if (monuted) {
-        if (eventList[0]['status'] == AppConstants.orderNew) {
-          final player = AudioPlayer();
-          await player.play(
-              UrlSource(
-                  'https://xuyfavsmxnbbaefzkdam.supabase.co/storage/v1/object/public/tajiri-foods/core/mixkit-arabian-mystery-harp-notification-2489.wav'),
-              mode: PlayerMode.mediaPlayer);
-        }
-        fetchOrders();
-      }
-      monuted = true;
-      update();
-    });
+
+    supabase
+        .channel("orderUpdate")
+        .onPostgresChanges(
+            table: 'orders',
+            event: PostgresChangeEvent.all,
+            schema: 'public',
+            filter: PostgresChangeFilter(
+                type: PostgresChangeFilterType.eq,
+                column: 'restaurantId',
+                value: restaurantId ?? ""),
+            callback: (value) async {
+              final newOrderReceveid = value.newRecord;
+              final player = AudioPlayer();
+              await player.play(UrlSource(urlSound),
+                  mode: PlayerMode.mediaPlayer);
+
+              if (newOrderReceveid['status'] == AppConstants.orderNew) {
+                final player = AudioPlayer();
+                await player.play(UrlSource(urlSound),
+                    mode: PlayerMode.mediaPlayer);
+              }
+              try {
+                final idOrder = newOrderReceveid['id'];
+                if (idOrder == null) {
+                  throw "ID NULL";
+                }
+                fetchOrderById(idOrder);
+              } catch (e) {
+                fetchOrders();
+              }
+
+              update();
+            })
+        .subscribe();
   }
 
   setRangeDate(DateTime startDate, DateTime endDate) {
@@ -88,179 +105,98 @@ class OrdersController extends GetxController {
 
   Future<void> fetchOrders() async {
     final DateTime today = DateTime.now();
-    final DateTime sevenDaysAgo = today.subtract(const Duration(days: 2));
-    String startDate =
-        DateFormat("yyyy-MM-dd").format(startRangeDate ?? sevenDaysAgo);
-    String endDate = DateFormat("yyyy-MM-dd").format(endRangeDate ?? today);
-    String? ownerId = (user?.role?.permissions![0].dashboardUnique ?? false)
-        ? user?.id
-        : null;
-    final connected = await AppConnectivityService.connectivity();
-
-    if (connected) {
-      isProductLoading = true;
-      update();
-      final response =
-          await _ordersRepository.getOrders(startDate, endDate, ownerId);
-      response.when(
-        success: (data) async {
-          final json = data as List<dynamic>;
-          final orderData =
-              json.map((item) => OrderEntity.fromJson(item)).toList();
-
-          ordersInit.assignAll(orderData);
-          if (checkListingType(user) == ListingType.waitress) {
-            filterByWaitress(posController.waitressCurrentId);
-          } else if (checkListingType(user) == ListingType.table) {
-            filterByTable(posController.tableCurrentId);
-          } else {
-            orders.assignAll(orderData);
-          }
-
-          isProductLoading = false;
-          update();
-        },
-        failure: (failure, status) {},
-      );
-    }
-  }
-
-  Future<void> fetchOrdersReports(
-      String startDate, String endDate, String ownerId) async {
-    final connected = await AppConnectivityService.connectivity();
-    if (connected) {
-      isProductLoading = true;
-      update();
-
-      final response =
-          await _ordersRepository.getOrdersReports(startDate, endDate, ownerId);
-      response.when(
-        success: (data) async {
-          final json = response as List<dynamic>;
-          final orderData =
-              json.map((item) => OrdersReportsEntity.fromJson(item)).toList();
-          ordersReports.assignAll(orderData);
-          isProductLoading = false;
-          update();
-        },
-        failure: (failure, status) {},
-      );
-    }
-  }
-
-  bool isToday(DateTime orderDate) {
-    DateTime today = DateTime.now();
-    return orderDate.day == today.day &&
-        orderDate.month == today.month &&
-        orderDate.year == today.year;
-  }
-
-  bool isYesterday(DateTime orderDate) {
-    DateTime today = DateTime.now();
-    DateTime yesterday = DateTime(today.year, today.month, today.day - 1);
-    return orderDate.day == yesterday.day &&
-        orderDate.month == yesterday.month &&
-        orderDate.year == yesterday.year;
-  }
-
-  List<OrderEntity> getOrdersByDate(String date, List<OrderEntity> orders) {
-    return orders.where((order) {
-      DateTime orderDate = DateTime.parse(order.createdAt ?? "");
-      if (date == "Aujourd'hui") {
-        return isToday(orderDate);
-      } else if (date == "Hier") {
-        return isYesterday(orderDate);
-      }
-      return !isYesterday(orderDate) && !isToday(orderDate);
-    }).toList();
-  }
-
-  getPayment(OrderEntity order) {
-    final payment = PAIEMENTS.firstWhere(
-      (item) => item['id'] == order.paymentMethodId,
-      orElse: () => <String,
-          String>{}, // Provide an empty Map<String, String> as the default value
+    final DateTime sevenDaysAgo = today.subtract(const Duration(days: 14));
+    String? ownerId = user?.idOwnerForGetOrder;
+    final GetOrdersDto dto = GetOrdersDto(
+      startDate: startRangeDate ?? sevenDaysAgo,
+      endDate: endRangeDate ?? today,
+      ownerId: ownerId,
     );
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      isProductLoading.value = true;
+      update();
 
-    return payment;
+      try {
+        final result = await tajiriSdk.ordersService.getOrders(dto);
+        orders.assignAll(result);
+        ordersInit.assignAll(result);
+      } catch (e) {
+        isProductLoading.value = false;
+        update();
+      }
+      isProductLoading.value = false;
+      update();
+    }
   }
 
-  Future<void> updateOrder(BuildContext context, String paymentMethodId) async {
+  Future<void> updateOrder(
+      material.BuildContext context, String paymentMethodId) async {
     if (currentOrderId.isEmpty) return;
     //e
     isLoadingPaid.value = true;
     update();
-    final Map<String, dynamic> params = {
-      'status': "PAID",
-      'paymentMethodId': paymentMethodId
-    };
-
-    final response =
-        await _ordersRepository.updateOrder(params, currentOrderId.value);
-
-    response.when(success: (data) {
-      Mixpanel.instance.track("Order PAID", properties: {
-        'user': '${user?.lastname ?? ""} ${user?.firstname ?? ""}',
-        'restaurant': user!.restaurantUser![0].restaurant?.name ?? "",
-        'orderNo': currentOrderNo.value
-      });
-
+    String status = "PAID";
+    final paymentValues = PaymentValueDto(
+      paymentMethodId: paymentMethodId,
+      amount: amount!.toInt(),
+    );
+    final updateDto = UpdateOrderDto(
+      status: status,
+      paymentValues: [paymentValues],
+    );
+    print("============PAID ORDER=============");
+    try {
+      await tajiriSdk.ordersService
+          .updateOrder(currentOrderId.value, updateDto);
       isLoadingPaid.value = false;
       currentOrderId.value = "";
       currentOrderNo.value = "";
       update();
-
-      Get.back();
-    }, failure: (failure, status) {
-      AppHelpersCommon.showCheckTopSnackBar(
-        context,
-        status.toString(),
-      );
+    } catch (e) {
       isLoadingPaid.value = false;
       currentOrderId.value = "";
       update();
-    });
+    }
   }
 
-  Future<void> updateOrderStatus(
-      BuildContext context, String currentOrderId, String status) async {
+  Future<void> updateOrderStatus(material.BuildContext context,
+      String currentOrderId, String status) async {
     if (currentOrderId.isEmpty) return;
-
+    final UpdateOrderDto updateOrderDto = UpdateOrderDto(status: status);
     isLoadingOrder.value = true;
-    final response =
-        await _ordersRepository.updateOrder({'status': status}, currentOrderId);
-
-    response.when(success: (data) {
-      isLoadingOrder.value = false;
-      update();
-      fetchOrders();
-    }, failure: (failure, status) {
-      AppHelpersCommon.showCheckTopSnackBar(
-        context,
-        status.toString(),
+    try {
+      await tajiriSdk.ordersService.updateOrder(currentOrderId, updateOrderDto);
+      await fetchOrders();
+    } catch (e) {
+      AppHelpersCommon.showBottomSnackBar(
+        Get.context!,
+        mt.Text(e.toString()),
+        const Duration(seconds: 2),
+        true,
       );
-      isLoadingOrder.value = false;
-      currentOrderId = "";
-      update();
-    });
+    }
+    isLoadingOrder.value = false;
+    currentOrderId = "";
+    update();
   }
 
   Future<void> filterByWaitress(String? selectedWaitressId) async {
-    isProductLoading = true;
+    isProductLoading.value = true;
     update();
-    if (selectedWaitressId == null) {
+    if (selectedWaitressId == null || selectedWaitressId == "all") {
       orders.assignAll(ordersInit);
     } else {
       orders.assignAll(ordersInit
           .where((order) => order.waitressId == selectedWaitressId)
           .toList());
     }
-    isProductLoading = false;
+    isProductLoading.value = false;
     update();
   }
 
   Future<void> filterByTable(String? selectedTableId) async {
-    isProductLoading = true;
+    isProductLoading.value = true;
     update();
     if (selectedTableId == null) {
       orders.assignAll(ordersInit);
@@ -270,24 +206,24 @@ class OrdersController extends GetxController {
           .toList());
     }
 
-    isProductLoading = false;
+    isProductLoading.value = false;
     update();
   }
 
-  String tableOrWaitressName(OrderEntity orderItem) {
-    if (checkListingType(user) == ListingType.waitress) {
-      return orderItem.waitressId != null ? orderItem.waitress?.name ?? "" : "";
+  String tableOrWaitressName(Order order) {
+    if (order.waitressId != null) {
+      return getNameWaitressById(order.waitressId, waitress);
+    } else if (order.tableId != null) {
+      return getNameTableById(order.tableId, tableListData);
     } else {
-      return orderItem.tableId != null ? orderItem.table?.name ?? "" : "";
+      return "";
     }
   }
 
-  tableOrWaitessNoNullOrNotEmpty(OrderEntity orderItem) {
-    if (user?.restaurantUser![0].restaurant?.listingType == "TABLE") {
-      return orderItem.tableId != null ? true : false;
-    } else {
-      return orderItem.waitressId != null ? true : false;
-    }
+  String customerName(Order order) {
+    return order.customerType == "SAVED"
+        ? getNameCustomerById(order.customerId, customers)
+        : "Client de passage";
   }
 
   void searchFilter(search) {
@@ -309,9 +245,105 @@ class OrdersController extends GetxController {
     }
   }
 
-  double getTextWidth(String text, TextStyle style) {
-    final TextPainter textPainter = TextPainter(
-      text: TextSpan(text: text, style: style),
+  Future<void> fetchOrderById(String idOrder) async {
+    final connected = await AppConnectivityService.connectivity();
+
+    if (connected) {
+      try {
+        isProductLoading.value = true;
+        update();
+        final order = await tajiriSdk.ordersService.getOrder(idOrder);
+
+        updateOrderList(order);
+        isProductLoading.value = false;
+
+        update();
+      } catch (e) {
+        isProductLoading.value = false;
+        update();
+        AppHelpersCommon.showBottomSnackBar(
+          Get.context!,
+          mt.Text(e.toString()),
+          const Duration(seconds: 2),
+          true,
+        );
+      }
+    }
+  }
+
+  void updateOrderList(Order newOrder) {
+    final indexInit = ordersInit.indexWhere((order) => order.id == newOrder.id);
+    if (indexInit != -1) {
+      // Replace the old order with the new order in ordersInit
+      ordersInit[indexInit] = newOrder;
+    } else {
+      // Add the new order to ordersInit if it doesn't exist
+      ordersInit.insert(0, newOrder);
+    }
+
+    if (checkListingType(user) == ListingType.waitress) {
+      filterByWaitress(posController.waitressCurrentId);
+    } else {
+      filterByTable(posController.tableCurrentId);
+    }
+  }
+
+  Future<void> fetchWaitresses() async {
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      try {
+        isLoadingCreateWaitress = true;
+        update();
+        final result = await tajiriSdk.waitressesService.getWaitresses();
+        waitress.assignAll(result);
+        isLoadingCreateWaitress = false;
+        update();
+      } catch (e) {
+        isLoadingCreateWaitress = false;
+        update();
+      }
+    }
+  }
+
+  Future<void> fetchTables() async {
+    if (restaurantId == null) {
+      return;
+    }
+
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      try {
+        isLoadingTable = true;
+        update();
+        final result = await tajiriSdk.tablesService.getTables(restaurantId!);
+        tableListData.assignAll(result);
+        isLoadingTable = false;
+        update();
+      } catch (e) {
+        isLoadingTable = false;
+        update();
+      }
+    }
+  }
+
+  Future<void> fetchCustomers() async {
+    if (restaurantId == null) {
+      return;
+    }
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      update();
+      final result =
+          await tajiriSdk.customersService.getCustomers(restaurantId!);
+      customers.assignAll(result);
+      customers.assignAll(result);
+      update();
+    }
+  }
+
+  double getTextWidth(String text, material.TextStyle style) {
+    final material.TextPainter textPainter = material.TextPainter(
+      text: material.TextSpan(text: text, style: style),
       maxLines: 1,
       textDirection:
           ui.TextDirection.ltr, // Use TextDirection.ltr for left-to-right text
@@ -319,5 +351,15 @@ class OrdersController extends GetxController {
     if (text.length <= 6) return textPainter.width + 20;
     if (text.length > 6 && text.length <= 10) return textPainter.width + 25;
     return textPainter.width + 80;
+  }
+
+  getPayment(Order order) {
+    final payment = PAIEMENTS.firstWhere(
+      (item) => item['id'] == order.payments[0].paymentMethodId,
+      orElse: () => <String,
+          String>{}, // Provide an empty Map<String, String> as the default value
+    );
+
+    return payment;
   }
 }

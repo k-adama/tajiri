@@ -7,15 +7,10 @@ import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.
 class SplashController extends GetxController {
   Future<void> getToken() async {
     final storage = LocalStorageService.instance;
-
-    if (storage == null) {
-      Get.offAllNamed(Routes.DEMO_APP);
-      return;
-    }
     if (storage.get(AuthConstant.keyToken) == null) {
       if (storage.get(AuthConstant.keyOnboarding) != null) {
         Get.offAllNamed(Routes.LOGIN); //LOGIN
-      }else{
+      } else {
         Get.offAllNamed(Routes.DEMO_APP);
       }
     } else {

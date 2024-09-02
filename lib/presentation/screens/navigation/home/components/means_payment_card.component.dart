@@ -39,7 +39,7 @@ class MeansPaymentCardComponent extends StatelessWidget {
                   style: Style.interNormal(size: 8.sp, color: Style.darker),
                 ),
                 GetBuilder<HomeController>(builder: (homeController) {
-                  final dynamic payment =
+                  /* final dynamic payment =
                       homeController.paymentsMethodAmount.firstWhere(
                     (itemPy) => itemPy.id == meansOfpayment['id'],
                     orElse: () => PaymentMethodDataEntity(
@@ -47,9 +47,10 @@ class MeansPaymentCardComponent extends StatelessWidget {
                       total: 0,
                       name: meansOfpayment['name'],
                     ),
-                  );
-
-                  final total = payment.total ?? 0;
+                  );*/
+                  int total =
+                      homeController.calculateTotalAmountByPaymentMenthode(
+                          meansOfpayment['id']);
                   return RichText(
                     text: TextSpan(
                       text: "$total".notCurrency(),

@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:tajiri_pos_mobile/domain/entities/order.entity.dart';
+import 'package:get/get.dart';
+import 'package:tajiri_pos_mobile/domain/entities/customer.entity.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart' as taj;
+import 'package:get/get_utils/get_utils.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class AppConstants {
   AppConstants._();
+
+//user permissions
+  static const String UPDATE_ORDER_PRODUCTS = 'UPDATE_ORDER_PRODUCTS';
+  static const String CANCEL_ORDER = "CANCEL_ORDER";
+  static const String VIEW_ORDERS_FULL = 'VIEW_ORDERS_FULL';
+  static const String VIEW_INVENTORY = "VIEW_INVENTORY";
+  static const String MANAGE_INVENTORY = "MANAGE_INVENTORY";
 
   /// shared preferences keys
   static const String orderCooking = 'COOKING';
@@ -80,7 +91,7 @@ class AppConstants {
   static const Duration productCartSnackbarDuration =
       Duration(days: 6000000000000000);
 
-  static bool getStatusOrderInProgressOrDone(OrderEntity order, String status) {
+  static bool getStatusOrderInProgressOrDone(taj.Order order, String status) {
     bool checking = false;
     switch (status) {
       case "IN_PROGRESS":
@@ -96,7 +107,7 @@ class AppConstants {
     return checking;
   }
 
-  static String getStatusInFrench(OrderEntity order) {
+  static String getStatusInFrench(taj.Order order) {
     String status = "";
     switch (order.status) {
       case orderCooking:
@@ -128,6 +139,32 @@ class AppConstants {
     return status;
   }
 }
+
+String getNameWaitressById(String? id, List<Waitress> waitressList) {
+  final waitress = waitressList.firstWhereOrNull(
+    (element) => element.id == id,
+  );
+  return waitress != null ? waitress.name : '';
+}
+
+String getNameTableById(String? id, List<taj.Table> tables) {
+  final table = tables.firstWhereOrNull(
+    (element) => element.id == id,
+  );
+  return table != null ? table.name : '';
+}
+
+String getNameCustomerById(String? id, List<Customer> customers) {
+  final customer = customers.firstWhereOrNull(
+    (element) => element.id == id,
+  );
+  return customer != null
+      ? "${customer.lastname}${customer.firstname ?? ""}"
+      : '_';
+}
+
+const urlSound =
+    'https://xuyfavsmxnbbaefzkdam.supabase.co/storage/v1/object/public/tajiri-foods/core/mixkit-arabian-mystery-harp-notification-2489.wav';
 
 enum ShopStatus { notRequested, newShop, edited, approved, rejected }
 
@@ -250,6 +287,11 @@ List<Map<String, dynamic>> PAIEMENTS = [
   },
 ];
 
+String? getNamePaiementById(String? id) {
+  final payment = PAIEMENTS.firstWhereOrNull((element) => element['id'] == id);
+  return payment != null ? payment['name'] : null;
+}
+
 final tabs = [
   const Tab(text: "Toutes"),
   const Tab(text: "En cours"),
@@ -325,5 +367,3 @@ const List<Map<String, dynamic>> TABLE = [
   {'id': '3', 'name': 'Table 3'},
   {'id': '4', 'name': 'Table 4'}
 ];
-
-
