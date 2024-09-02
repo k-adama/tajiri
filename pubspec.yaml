@@ -33,7 +33,7 @@ dependencies:
   tajiri_sdk:
     git:
       url: git@github.com:tajiri-app/tajiri-sdk.git
-      ref: feature/update_sale_report
+      ref: main
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

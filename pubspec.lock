@@ -21,10 +21,10 @@ packages:
     dependency: transitive
     description:
       name: app_links
-      sha256: "50437e5916e6f56c1ca53e967cbfd6d53b3451465b41eef05ba1533bf1e1c5ea"
+      sha256: "7e058edbc78bd40b6a8227941b955f38320a4e799bc0983c8146bda41593a491"
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.0"
+    version: "6.3.1"
   app_links_linux:
     dependency: transitive
     description:
@@ -769,10 +769,10 @@ packages:
     dependency: "direct main"
     description:
       name: onesignal_flutter
-      sha256: e733de4494edb651f768600c00481753a9015dc23518eadce72f339154454531
+      sha256: "979792033137058a9836df1407d5662b04ffcfc98d38a11176da6201be8a400c"
       url: "https://pub.dev"
     source: hosted
-    version: "5.2.3"
+    version: "5.2.4"
   os_detect:
     dependency: transitive
     description:
@@ -1182,8 +1182,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "feature/update_sale_report"
-      resolved-ref: "8c32c8f3f06bf344f25bb6ed45cfc80317102108"
+      ref: main
+      resolved-ref: "8ede8fcd1fe935290e12792513eacf4655d92243"
       url: "git@github.com:tajiri-app/tajiri-sdk.git"
     source: git
     version: "0.0.1"
@@ -1303,10 +1303,10 @@ packages:
     dependency: transitive
     description:
       name: uuid
-      sha256: "83d37c7ad7aaf9aa8e275490669535c8080377cfa7a7004c24dfac53afffaa90"
+      sha256: f33d6bb662f0e4f79dcd7ada2e6170f3b3a2530c28fc41f49a411ddedd576a77
       url: "https://pub.dev"
     source: hosted
-    version: "4.4.2"
+    version: "4.5.0"
   vector_graphics:
     dependency: transitive
     description:
