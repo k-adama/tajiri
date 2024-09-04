@@ -9,16 +9,16 @@ import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/outline_bo
 import 'package:upgrader/upgrader.dart';
 import 'package:flutter_svg/svg.dart';
 
-class DemoLoginView extends StatefulWidget {
-  const DemoLoginView({
+class DemoLoginScreen extends StatefulWidget {
+  const DemoLoginScreen({
     super.key,
   });
 
   @override
-  State<DemoLoginView> createState() => _DemoLoginViewState();
+  State<DemoLoginScreen> createState() => _DemoLoginScreenState();
 }
 
-class _DemoLoginViewState extends State<DemoLoginView> {
+class _DemoLoginScreenState extends State<DemoLoginScreen> {
   @override
   void initState() {
     super.initState();

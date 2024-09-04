@@ -23,7 +23,8 @@ void main() async {
     url: Environment.supabaseUrl,
     anonKey: Environment.supabaseToken,
   );
-    TajiriSDK.initialize(env: EnvType.production, debugEnable: false);
+  TajiriSDK.initialize(env: EnvType.production, debugEnable: false);
+
   try {
     await Mixpanel.init(Environment.mixpanelToken, trackAutomaticEvents: true);
   } catch (e) {

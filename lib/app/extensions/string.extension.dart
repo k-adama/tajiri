@@ -6,7 +6,12 @@ extension FormatAmountExtension on String {
   }
 
   String currencyLong() {
-    return "${NumberFormat("#,##0", "fr_FR").format(double.tryParse(this))} FCFA";
+    try {
+      return "${NumberFormat("#,##0", "fr_FR").format(double.tryParse(this))} FCFA";
+    } catch (e) {
+      print("Error $e , StackTrace ${StackTrace.current}");
+      return "";
+    }
   }
 
   String notCurrency() {

@@ -5,7 +5,11 @@ abstract class Routes {
   static const LOGIN = _Paths.LOGIN;
   static const SPLASH = _Paths.SPLASH;
   static const DEMO_APP = _Paths.DEMO_APP;
+  static const CHOOSE_ROLE = _Paths.CHOOSE_ROLE;
+
   static const NAVIGATION = _Paths.NAVIGATION;
+  static const SALE_DEPOSIT_NAVIGATION = _Paths.SALE_DEPOSIT_NAVIGATION;
+
   static const DEMO_LOGIN = _Paths.DEMO_LOGIN;
   static const TUTORIELS = _Paths.TUTORIELS;
   static const SALES_REPORT = _Paths.SALES_REPORT;
@@ -31,7 +35,10 @@ abstract class _Paths {
   static const LOGIN = '/login';
   static const SPLASH = "/splash";
   static const DEMO_APP = "/demo_app";
+  static const CHOOSE_ROLE = "/chosse_role";
+
   static const NAVIGATION = "/navigation";
+  static const SALE_DEPOSIT_NAVIGATION = "/sale_deposit_navigation";
   static const DEMO_LOGIN = "/demo_login";
   static const TUTORIELS = "/tutoriels";
   static const SALES_REPORT = "/sales_report";

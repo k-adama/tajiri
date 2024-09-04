@@ -13,7 +13,7 @@ class ShopProductItemComponent extends StatelessWidget {
   final VoidCallback? addCount;
   final VoidCallback? removeCount;
   final bool isAdd;
-
+  final Color? cardColor;
   final int count;
 
   const ShopProductItemComponent({
@@ -24,6 +24,7 @@ class ShopProductItemComponent extends StatelessWidget {
     this.count = 0,
     this.addCount,
     this.removeCount,
+    this.cardColor,
   });
 
   @override
@@ -36,7 +37,7 @@ class ShopProductItemComponent extends StatelessWidget {
         borderRadius: BorderRadius.all(
           Radius.circular(10.r),
         ),
-        color: Style.white,
+        color: cardColor ?? Style.white,
       ),
       child: Padding(
         padding: EdgeInsets.all(14.r),

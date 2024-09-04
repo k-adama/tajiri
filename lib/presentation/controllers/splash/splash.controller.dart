@@ -7,14 +7,16 @@ import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.
 class SplashController extends GetxController {
   Future<void> getToken() async {
     final storage = LocalStorageService.instance;
-    if (storage.get(AuthConstant.keyToken) == null) {
-      if (storage.get(AuthConstant.keyOnboarding) != null) {
-        Get.offAllNamed(Routes.LOGIN); //LOGIN
-      } else {
-        Get.offAllNamed(Routes.DEMO_APP);
-      }
-    } else {
-      Get.offAllNamed(Routes.NAVIGATION);
-    }
+    Get.offAllNamed(Routes.CHOOSE_ROLE);
+
+    // if (storage.get(AuthConstant.keyToken) == null) {
+    //   if (storage.get(AuthConstant.keyOnboarding) != null) {
+    //     Get.offAllNamed(Routes.LOGIN); //LOGIN
+    //   } else {
+    //     Get.offAllNamed(Routes.DEMO_APP);
+    //   }
+    // } else {
+    //   Get.offAllNamed(Routes.NAVIGATION);
+    // }
   }
 }

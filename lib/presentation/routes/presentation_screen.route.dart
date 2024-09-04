@@ -1,6 +1,7 @@
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/auth/auth.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/bluetooth_setting/bluetooth_setting.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/sale_deposit/sale_deposit_navigation/sale_deposit_navigation.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/sales_reports/sales_reports.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/stock/stock.binding.dart';
@@ -8,6 +9,7 @@ import 'package:tajiri_pos_mobile/presentation/controllers/table/table.binding.d
 import 'package:tajiri_pos_mobile/presentation/controllers/product/product.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/tutoriel/tutoriel.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/waitress/waitress.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/auth/choose_role.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/demo_login.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/auth/login.screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -19,6 +21,7 @@ import 'package:tajiri_pos_mobile/presentation/screens/demo/demo.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/navigation.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_paid.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/sale_deposit_navigation.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/date_time_picker.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/sales_reports.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_save.screen.dart';
@@ -56,12 +59,21 @@ class PresentationScreenRoute {
       binding: NavigationBiding(),
     ),
     GetPage(
+      name: _Paths.SALE_DEPOSIT_NAVIGATION,
+      page: () => const SaleDepositNavigationScreen(),
+      binding: SaleDepositNavigationBinding(),
+    ),
+    GetPage(
         name: _Paths.LOGIN,
         page: () => const LoginScreen(),
         binding: AuthBinding()),
     GetPage(
         name: _Paths.DEMO_LOGIN,
-        page: () => DemoLoginView(),
+        page: () => const DemoLoginScreen(),
+        binding: AuthBinding()),
+    GetPage(
+        name: _Paths.CHOOSE_ROLE,
+        page: () => const ChooseRoleScreen(),
         binding: AuthBinding()),
     GetPage(
       name: _Paths.TUTORIELS,
