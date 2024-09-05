@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_design_system/tajiri_design_system.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
@@ -64,9 +66,98 @@ class _DepositProductScreenState extends State<DepositProductScreen> {
               ),
             ),
             16.verticalSpace,
+            const DepositProductComponent(),
+            8.verticalSpace,
+            const DepositProductComponent(),
           ],
         ),
       )),
+    );
+  }
+}
+
+class DepositProductComponent extends StatelessWidget {
+  const DepositProductComponent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+      ),
+      child: Row(
+        children: [
+          Image.asset(
+            "assets/images/product_picture.jpg",
+            width: 44,
+            height: 44,
+            fit: BoxFit.cover,
+          ),
+          8.horizontalSpace,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("Product name"),
+                5.verticalSpace,
+                Wrap(
+                  children: [
+                    ProductChips(
+                      title: "12.000 FCFA",
+                      color: tajiriDesignSystem.appColors.mainYellow500,
+                      isbold: true,
+                    ),
+                    5.horizontalSpace,
+                    ProductChips(
+                      title: "Stock 20",
+                      color: tajiriDesignSystem.appColors.mainGrey100,
+                      isbold: false,
+                    ),
+                    5.horizontalSpace,
+                    ProductChips(
+                      title: "Casier",
+                      color: tajiriDesignSystem.appColors.mainGrey100,
+                      isbold: false,
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+          const Icon(Icons.keyboard_arrow_right_rounded)
+        ],
+      ),
+    );
+  }
+}
+
+class ProductChips extends StatelessWidget {
+  final String title;
+  final Color color;
+
+  final bool isbold;
+
+  const ProductChips(
+      {super.key,
+      required this.title,
+      required this.color,
+      required this.isbold});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: tajiriDesignSystem.appBorderRadius.xs,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+      child: Text(
+        title,
+        style:
+            TextStyle(fontWeight: isbold ? FontWeight.w700 : FontWeight.w400),
+      ),
     );
   }
 }
