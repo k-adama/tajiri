@@ -24,7 +24,6 @@ void main() async {
     anonKey: Environment.supabaseToken,
   );
   TajiriSDK.initialize(env: EnvType.production, debugEnable: false);
-
   try {
     await Mixpanel.init(Environment.mixpanelToken, trackAutomaticEvents: true);
   } catch (e) {

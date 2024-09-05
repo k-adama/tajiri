@@ -4,36 +4,35 @@ import 'package:get/get.dart';
 import 'package:proste_indexed_stack/proste_indexed_stack.dart';
 import 'package:tajiri_design_system/tajiri_design_system.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/sale_deposit/sale_deposit_navigation/sale_deposit_navigation.controller.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/sale_deposit_client/sale_deposit_client.screen.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/sale_deposit_pos/sale_deposit_pos.screen.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/sale_deposit_product/sale_deposit_product.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/sale_deposit/deposit_navigation/deposit_navigation.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/sale_deposit_client/deposit_client.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_pos/deposit_pos.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_product/deposit_product.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/keyboard_dismisser.ui.dart';
 import 'package:upgrader/upgrader.dart';
 
 TajiriDesignSystem tajiriDesignSystem = TajiriDesignSystem.instance;
 
-class SaleDepositNavigationScreen extends StatefulWidget {
-  const SaleDepositNavigationScreen({super.key});
+class DepositNavigationScreen extends StatefulWidget {
+  const DepositNavigationScreen({super.key});
 
   @override
-  State<SaleDepositNavigationScreen> createState() =>
-      _SaleDepositNavigationScreenState();
+  State<DepositNavigationScreen> createState() =>
+      _DepositNavigationScreenState();
 }
 
-class _SaleDepositNavigationScreenState
-    extends State<SaleDepositNavigationScreen> {
+class _DepositNavigationScreenState extends State<DepositNavigationScreen> {
   late List<IndexedStackChild> list;
 
   @override
   void initState() {
     list = [
-      IndexedStackChild(child: const SaleDepositClientScreen()),
+      IndexedStackChild(child: const DepositClientScreen()),
       IndexedStackChild(
-        child: const SaleDepositPosScreen(),
+        child: const DepositPosScreen(),
       ),
       IndexedStackChild(
-        child: const SaleDepositProductScreen(),
+        child: const DepositProductScreen(),
       ),
     ];
     super.initState();
@@ -41,7 +40,7 @@ class _SaleDepositNavigationScreenState
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<SaleDepositNavigationController>(
+    return GetBuilder<DepositNavigationController>(
       builder: (saleDepositNavigationController) => UpgradeAlert(
         child: KeyboardDismisserUi(
           child: Scaffold(
@@ -53,6 +52,27 @@ class _SaleDepositNavigationScreenState
                 elevation: 0,
                 iconTheme: const IconThemeData(color: Style.secondaryColor),
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                actions: [
+                  if (saleDepositNavigationController.selectIndex != 1)
+                    Center(
+                      child: GestureDetector(
+                        onTap: saleDepositNavigationController.addIconTap,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          width: 24,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            color: tajiriDesignSystem.appColors.mainGrey950,
+                            borderRadius: tajiriDesignSystem.appBorderRadius.xs,
+                          ),
+                          child: const Icon(
+                            Icons.add,
+                            color: Style.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
             drawer: Drawer(

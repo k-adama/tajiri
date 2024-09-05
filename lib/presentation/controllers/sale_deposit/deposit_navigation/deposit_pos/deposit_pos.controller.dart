@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/sale_deposit_pos/components/sale_deposit_categorie_food.component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_pos/components/deposit_categorie_food.component.dart';
 
-class SaleDepositPosController extends GetxController {
+class DepositPosController extends GetxController {
   final productIsLoad = false.obs;
 
   final categories = List<SaleDepositCategorieFood>.empty().obs;

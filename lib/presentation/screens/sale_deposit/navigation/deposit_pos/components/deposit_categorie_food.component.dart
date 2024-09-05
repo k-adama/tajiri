@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/sale_deposit/sale_deposit_navigation/sale_deposit_pos/sale_deposit_pos.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/sale_deposit/deposit_navigation/deposit_pos/deposit_pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/categorie_item.button.dart';
 
-class SaleDepositCategorieFoodComponent extends StatelessWidget {
-  final SaleDepositPosController saleDepositPosController;
-  const SaleDepositCategorieFoodComponent(
+class DepositCategorieFoodComponent extends StatelessWidget {
+  final DepositPosController saleDepositPosController;
+  const DepositCategorieFoodComponent(
       {super.key, required this.saleDepositPosController});
 
   @override
@@ -18,7 +18,7 @@ class SaleDepositCategorieFoodComponent extends StatelessWidget {
       height: (screenSize.height / 3) - 180.h,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 8.w),
-        child: GetBuilder<SaleDepositPosController>(builder: (_) {
+        child: GetBuilder<DepositPosController>(builder: (_) {
           return ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,

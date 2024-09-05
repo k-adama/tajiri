@@ -7,21 +7,21 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tajiri_design_system/tajiri_design_system.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/sale_deposit/sale_deposit_navigation/sale_deposit_pos/sale_deposit_pos.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/sale_deposit/deposit_navigation/deposit_pos/deposit_pos.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/components/shop_product_item.component.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/sale_deposit_pos/components/sale_deposit_categorie_food.component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_pos/components/deposit_categorie_food.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/shimmer_product_list.widget.dart';
 
 final tajiriDesignSystem = TajiriDesignSystem.instance;
 
-class SaleDepositPosScreen extends StatefulWidget {
-  const SaleDepositPosScreen({super.key});
+class DepositPosScreen extends StatefulWidget {
+  const DepositPosScreen({super.key});
 
   @override
-  State<SaleDepositPosScreen> createState() => _SaleDepositPosScreenState();
+  State<DepositPosScreen> createState() => _DepositPosScreenState();
 }
 
-class _SaleDepositPosScreenState extends State<SaleDepositPosScreen> {
+class _DepositPosScreenState extends State<DepositPosScreen> {
   final RefreshController _controller = RefreshController();
 
   final List<String> items = [
@@ -41,8 +41,8 @@ class _SaleDepositPosScreenState extends State<SaleDepositPosScreen> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       resizeToAvoidBottomInset: false,
-      body: GetBuilder<SaleDepositPosController>(
-          builder: (saleDepositposController) {
+      body:
+          GetBuilder<DepositPosController>(builder: (saleDepositposController) {
         return Stack(
           children: [
             Column(
@@ -56,7 +56,7 @@ class _SaleDepositPosScreenState extends State<SaleDepositPosScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SaleDepositCategorieFoodComponent(
+                        DepositCategorieFoodComponent(
                           saleDepositPosController: saleDepositposController,
                         ),
                         Divider(

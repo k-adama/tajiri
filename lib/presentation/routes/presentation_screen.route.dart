@@ -1,7 +1,7 @@
 import 'package:get/route_manager.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/auth/auth.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/bluetooth_setting/bluetooth_setting.binding.dart';
-import 'package:tajiri_pos_mobile/presentation/controllers/sale_deposit/sale_deposit_navigation/sale_deposit_navigation.binding.dart';
+import 'package:tajiri_pos_mobile/presentation/controllers/sale_deposit/deposit_navigation/deposit_navigation.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/sales_reports/sales_reports.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/navigation/invoice/invoice.binding.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/stock/stock.binding.dart';
@@ -21,7 +21,7 @@ import 'package:tajiri_pos_mobile/presentation/screens/demo/demo.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/invoice/invoice.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/navigation.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_paid.screen.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/sale_deposit_navigation.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_navigation.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/components/date_time_picker.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sales_reports/sales_reports.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/navigation/pos/cart/cart_save.screen.dart';
@@ -60,8 +60,8 @@ class PresentationScreenRoute {
     ),
     GetPage(
       name: _Paths.SALE_DEPOSIT_NAVIGATION,
-      page: () => const SaleDepositNavigationScreen(),
-      binding: SaleDepositNavigationBinding(),
+      page: () => const DepositNavigationScreen(),
+      binding: DepositNavigationBinding(),
     ),
     GetPage(
         name: _Paths.LOGIN,
