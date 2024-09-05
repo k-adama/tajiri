@@ -22,10 +22,8 @@ class _DepositAddClientScreenState extends State<DepositAddClientScreen> {
           style: Style.interBold(),
         ),
       ),
-      body: Container(
-        child: Center(
-          child: Text("Nouveau Client"),
-        ),
+      body: const Center(
+        child: Text("Nouveau Client"),
       ),
     );
   }

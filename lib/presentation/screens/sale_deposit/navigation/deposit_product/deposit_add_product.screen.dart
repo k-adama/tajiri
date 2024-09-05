@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 
-class SaleDepositAddProductScreen extends StatefulWidget {
-  const SaleDepositAddProductScreen({super.key});
+class DepositAddProductScreen extends StatefulWidget {
+  const DepositAddProductScreen({super.key});
 
   @override
-  State<SaleDepositAddProductScreen> createState() =>
-      _SaleDepositAddProductScreenState();
+  State<DepositAddProductScreen> createState() =>
+      _DepositAddProductScreenState();
 }
 
-class _SaleDepositAddProductScreenState
-    extends State<SaleDepositAddProductScreen> {
+class _DepositAddProductScreenState extends State<DepositAddProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

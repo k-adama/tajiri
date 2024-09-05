@@ -5,7 +5,7 @@ import 'package:proste_indexed_stack/proste_indexed_stack.dart';
 import 'package:tajiri_design_system/tajiri_design_system.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/sale_deposit/deposit_navigation/deposit_navigation.controller.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/sale_deposit_client/deposit_client.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_client/deposit_client.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_pos/deposit_pos.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_product/deposit_product.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/keyboard_dismisser.ui.dart';

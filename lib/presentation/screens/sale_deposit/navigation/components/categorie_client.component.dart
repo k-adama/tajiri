@@ -6,11 +6,11 @@ import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/effects/animat
 
 final tajiriDesignSystem = TajiriDesignSystem.instance;
 
-class CategorieClientComponent extends StatelessWidget {
+class CategorieCardDepositComponent extends StatelessWidget {
   final VoidCallback onTap;
   final bool isSelected;
   final String name;
-  const CategorieClientComponent(
+  const CategorieCardDepositComponent(
       {super.key,
       required this.onTap,
       required this.isSelected,

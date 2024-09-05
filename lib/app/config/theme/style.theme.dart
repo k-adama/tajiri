@@ -22,6 +22,7 @@ class Style {
     Color(0xFF0000DD),
   ];
 
+  static const Color bgColor = Color(0xffEFF0F7);
   static const Color light = Color(0xFFBCC4D1);
   static const Color lighter = Color(0xFFF2F7FF);
   static const Color dark = Color(0xFF565E6B);

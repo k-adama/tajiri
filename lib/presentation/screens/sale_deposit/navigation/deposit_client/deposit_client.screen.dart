@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_design_system/tajiri_design_system.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/sale_deposit_client/components/categorie_client.component.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/sale_deposit_client/components/client_item.component.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/sale_deposit_client/deposit_client_details.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/components/categorie_client.component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_client/components/client_item.component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_client/deposit_client_details.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/search.text_field.dart';
 
 final tajiriDesignSystem = TajiriDesignSystem.instance;
@@ -32,7 +29,7 @@ class _DepositClientScreenState extends State<DepositClientScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffEFF0F7),
+      backgroundColor: Style.bgColor,
       body: SingleChildScrollView(
           child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
@@ -58,7 +55,7 @@ class _DepositClientScreenState extends State<DepositClientScreen> {
                 itemCount: categorieNames.length,
                 itemBuilder: (context, index) {
                   final categoryName = categorieNames[index];
-                  return CategorieClientComponent(
+                  return CategorieCardDepositComponent(
                     onTap: () {
                       setState(() {
                         selectedCategory = categoryName;
