@@ -76,7 +76,7 @@ class _ChooseRoleScreenState extends State<ChooseRoleScreen> {
                           title: "Client",
                           description: "Dépôt, grossiste ...",
                           onTap: () {
-                            Get.offAllNamed(Routes.SALE_DEPOSIT_NAVIGATION);
+                            Get.offAllNamed(Routes.DEPOSIT_NAVIGATION);
                           },
                         ),
                       )

@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_design_system/tajiri_design_system.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/components/categorie_client.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_client/components/client_item.component.dart';
-import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_client/deposit_client_details.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/search.text_field.dart';
 
 final tajiriDesignSystem = TajiriDesignSystem.instance;
@@ -70,7 +70,7 @@ class _DepositClientScreenState extends State<DepositClientScreen> {
             16.verticalSpace,
             ClientItemComponent(
               onTap: () {
-                Get.to(DepositClientDetailScreen());
+                Get.toNamed(Routes.DEPOSIT_CLIENT_DETAILS);
               },
               asset: "🥩",
               title: "Le comptoir Bar - Restaurant",

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/domain/entities/means_paiement_entity.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_client/components/amount_to_paid.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
+import 'package:tajiri_pos_mobile/presentation/ui/widgets/dialogs/successfull_second.dialog.dart';
 
 class EnterReceveidAmountScreen extends StatefulWidget {
   final MeansOfPaymentEntity meansOfPaymentEntity;
@@ -75,7 +78,32 @@ class _EnterReceveidAmountScreenState extends State<EnterReceveidAmountScreen> {
                 textColor: Style.white,
                 background: tajiriDesignSystem.appColors.mainBlue500,
                 radius: 4,
-                onPressed: () {},
+                onPressed: () {
+                  AppHelpersCommon.showAlertDialog(
+                    context: context,
+                    canPop: false,
+                    child: SuccessfullSecondDialog(
+                      content:
+                          'Le paiement a été enregistré avec succès.  Vous pouvez enregistrer de nouvelles commandes depuis l’onglet menu.',
+                      title: "Opération éffectuée",
+                      redirect: () {},
+                      asset: "assets/svgs/confirmOrderIcon.svg",
+                      button: CustomButton(
+                        isUnderline: true,
+                        textColor: Style.bluebrandColor,
+                        background: tajiriDesignSystem.appColors.mainBlue50,
+                        underLineColor: Style.bluebrandColor,
+                        title: 'Imprimer la facture',
+                        onPressed: () {
+                          Get.close(3);
+                        },
+                      ),
+                      closePressed: () {
+                        Get.close(3);
+                      },
+                    ),
+                  );
+                },
               ),
             ),
             (MediaQuery.of(context).padding.bottom + 10).verticalSpace,

@@ -91,6 +91,7 @@ dependencies:
   flutter_image_compress: ^2.2.0
   dropdown_button2: ^2.3.9
   sliver_tools: ^0.2.12
+  smooth_page_indicator: ^1.2.0+3
   
 flutter_launcher_icons:
   android: "launcher_icon"

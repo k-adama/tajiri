@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
@@ -97,17 +98,20 @@ class CustomButton extends StatelessWidget {
                         10.horizontalSpace,
                       ],
                     ),
-                  Text(
-                    title,
-                    style: Style.interNormal(
-                      size: 15,
-                      color: isGrised == true
-                          ? Style.selectedItemsText
-                          : textColor,
-                      underLineColor: underLineColor,
-                      isUnderLine: isUnderline,
-                      letterSpacing: -14 * 0.01,
-                    ).copyWith(fontWeight: FontWeight.w500),
+                  Flexible(
+                    child: Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: Style.interNormal(
+                        size: 15,
+                        color: isGrised == true
+                            ? Style.selectedItemsText
+                            : textColor,
+                        underLineColor: underLineColor,
+                        isUnderLine: isUnderline,
+                        letterSpacing: -14 * 0.01,
+                      ).copyWith(fontWeight: FontWeight.w500),
+                    ),
                   ),
                   if (imagePath.isNotEmpty) 10.horizontalSpace,
                   if (imagePath.isNotEmpty) SvgPicture.asset(imagePath)

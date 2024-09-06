@@ -21,6 +21,8 @@ class Style {
     Color(0xFF6666FF),
     Color(0xFF0000DD),
   ];
+  static const Color bluebrandColor = Color(0xFF0000DD);
+  static const Color btnColor = Color(0xFFE5E5FF);
 
   static const Color bgColor = Color(0xffEFF0F7);
   static const Color light = Color(0xFFBCC4D1);

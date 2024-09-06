@@ -8,7 +8,8 @@ abstract class Routes {
   static const CHOOSE_ROLE = _Paths.CHOOSE_ROLE;
 
   static const NAVIGATION = _Paths.NAVIGATION;
-  static const SALE_DEPOSIT_NAVIGATION = _Paths.SALE_DEPOSIT_NAVIGATION;
+  static const DEPOSIT_NAVIGATION = _Paths.DEPOSIT_NAVIGATION;
+  static const DEPOSIT_CLIENT_DETAILS = _Paths.DEPOSIT_CLIENT_DETAILS;
 
   static const DEMO_LOGIN = _Paths.DEMO_LOGIN;
   static const TUTORIELS = _Paths.TUTORIELS;
@@ -38,7 +39,9 @@ abstract class _Paths {
   static const CHOOSE_ROLE = "/chosse_role";
 
   static const NAVIGATION = "/navigation";
-  static const SALE_DEPOSIT_NAVIGATION = "/sale_deposit_navigation";
+  static const DEPOSIT_NAVIGATION = "/deposit_navigation";
+  static const DEPOSIT_CLIENT_DETAILS = "/deposit_client_details";
+
   static const DEMO_LOGIN = "/demo_login";
   static const TUTORIELS = "/tutoriels";
   static const SALES_REPORT = "/sales_report";
