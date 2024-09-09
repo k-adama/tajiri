@@ -1,13 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tajiri_design_system/tajiri_design_system.dart';
+import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/main.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/components/categorie_client.component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_product/deposit_details_product.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/search.text_field.dart';
-
-final tajiriDesignSystem = TajiriDesignSystem.instance;
 
 class DepositProductScreen extends StatefulWidget {
   const DepositProductScreen({super.key});
@@ -81,53 +79,58 @@ class DepositProductComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
-      ),
-      child: Row(
-        children: [
-          Image.asset(
-            "assets/images/product_picture.jpg",
-            width: 44,
-            height: 44,
-            fit: BoxFit.cover,
-          ),
-          8.horizontalSpace,
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("Product name"),
-                5.verticalSpace,
-                Wrap(
-                  children: [
-                    ProductChips(
-                      title: "12.000 FCFA",
-                      color: tajiriDesignSystem.appColors.mainYellow500,
-                      isbold: true,
-                    ),
-                    5.horizontalSpace,
-                    ProductChips(
-                      title: "Stock 20",
-                      color: tajiriDesignSystem.appColors.mainGrey100,
-                      isbold: false,
-                    ),
-                    5.horizontalSpace,
-                    ProductChips(
-                      title: "Casier",
-                      color: tajiriDesignSystem.appColors.mainGrey100,
-                      isbold: false,
-                    ),
-                  ],
-                )
-              ],
+    return GestureDetector(
+      onTap: () {
+        Get.to(const DepositDetailsProduct());
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+        ),
+        child: Row(
+          children: [
+            Image.asset(
+              "assets/images/product_picture.jpg",
+              width: 44,
+              height: 44,
+              fit: BoxFit.cover,
             ),
-          ),
-          const Icon(Icons.keyboard_arrow_right_rounded)
-        ],
+            8.horizontalSpace,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Product name"),
+                  5.verticalSpace,
+                  Wrap(
+                    children: [
+                      ProductChips(
+                        title: "12.000 FCFA",
+                        color: tajiriDesignSystem.appColors.mainYellow500,
+                        isbold: true,
+                      ),
+                      5.horizontalSpace,
+                      ProductChips(
+                        title: "Stock 20",
+                        color: tajiriDesignSystem.appColors.mainGrey100,
+                        isbold: false,
+                      ),
+                      5.horizontalSpace,
+                      ProductChips(
+                        title: "Casier",
+                        color: tajiriDesignSystem.appColors.mainGrey100,
+                        isbold: false,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            const Icon(Icons.keyboard_arrow_right_rounded)
+          ],
+        ),
       ),
     );
   }

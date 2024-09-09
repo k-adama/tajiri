@@ -103,7 +103,7 @@ class OutlinedBorderTextField extends StatelessWidget {
           textInputAction: textInputAction,
           maxLines: isMultiLines == false ? 1 : 10,
           decoration: InputDecoration(
-            labelText: isLabelUsername! ? "téléphone " : "mot de passe",
+            labelText: isLabelUsername == true ? "téléphone " : "mot de passe",
             suffixIconConstraints:
                 BoxConstraints(maxHeight: 30.h, maxWidth: 30.h),
             suffixIcon: suffixIcon,
@@ -126,7 +126,7 @@ class OutlinedBorderTextField extends StatelessWidget {
                     borderSide: BorderSide(
                       color: differBorderColor ?? Style.black,
                     ),
-                    borderRadius: borderRaduis!,
+                    borderRadius: borderRaduis ?? BorderRadius.circular(10),
                   )
                 : InputBorder.none,
             errorBorder: haveBorder == true
@@ -134,7 +134,7 @@ class OutlinedBorderTextField extends StatelessWidget {
                     borderSide: BorderSide(
                       color: differBorderColor ?? Style.black,
                     ),
-                    borderRadius: borderRaduis!,
+                    borderRadius: borderRaduis ?? BorderRadius.circular(10),
                   )
                 : InputBorder.none,
             border: UnderlineInputBorder(),
@@ -144,7 +144,7 @@ class OutlinedBorderTextField extends StatelessWidget {
                     borderSide: BorderSide(
                       color: differBorderColor ?? Style.black,
                     ),
-                    borderRadius: borderRaduis!,
+                    borderRadius: borderRaduis ?? BorderRadius.circular(10),
                   )
                 : InputBorder.none,
             focusedBorder: haveBorder == true
@@ -152,7 +152,7 @@ class OutlinedBorderTextField extends StatelessWidget {
                     borderSide: BorderSide(
                       color: differBorderColor ?? Style.black,
                     ),
-                    borderRadius: borderRaduis!,
+                    borderRadius: borderRaduis ?? BorderRadius.circular(10),
                   )
                 : InputBorder.none,
           ),

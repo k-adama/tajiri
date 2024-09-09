@@ -87,7 +87,9 @@ class _ClientPaiementTabComponentState extends State<ClientPaiementTabComponent>
                 color: Style.white,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const OrderInfoHeaderComponent(),
+              child: const OrderInfoHeaderComponent(
+                orderStatus: "Cash",
+              ),
             );
           } else if (isLoading) {
             return const Center(child: CircularProgressIndicator());

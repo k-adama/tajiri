@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tajiri_design_system/tajiri_design_system.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/main.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/components/categorie_client.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_client/components/client_item.component.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/search.text_field.dart';
-
-final tajiriDesignSystem = TajiriDesignSystem.instance;
 
 class DepositClientScreen extends StatefulWidget {
   const DepositClientScreen({super.key});

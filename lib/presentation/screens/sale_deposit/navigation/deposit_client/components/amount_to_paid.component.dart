@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tajiri_design_system/tajiri_design_system.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
-
-final tajiriDesignSystem = TajiriDesignSystem.instance;
+import 'package:tajiri_pos_mobile/main.dart';
 
 class TotalAmountToPaidComponent extends StatelessWidget {
   const TotalAmountToPaidComponent({super.key});

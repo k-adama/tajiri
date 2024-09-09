@@ -185,11 +185,13 @@ class AppHelpersCommon {
   static void showAlertDialog({
     required BuildContext context,
     required Widget child,
+    bool isTransparent = false,
+    Color backgroundColor = Style.white,
     bool canPop = true,
     double radius = 16,
   }) {
     AlertDialog alert = AlertDialog(
-      backgroundColor: Style.white,
+      backgroundColor: isTransparent ? Style.transparent : backgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(radius.r),

@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <!-- image picker -->
+	<key>NSCameraUsageDescription</key>
+	<string>Tajiri souhaite accéder à la caméra car nous avons besoin de cela pour vous permettre d'ajouter l'image d'un produit.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Tajiri souhaite accéder au microphone car nous avons besoin de cela pour vous permettre d'enregistrer des vidéos pour l'ajout de produits.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Tajiri souhaite accéder à la photothèque car nous avons besoin de cela pour vous permettre d'ajouter l'image d'un produit à partir de vos photos.</string>
+	<!-- end image picker -->
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

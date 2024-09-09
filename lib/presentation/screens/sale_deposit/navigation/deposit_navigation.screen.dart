@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:proste_indexed_stack/proste_indexed_stack.dart';
-import 'package:tajiri_design_system/tajiri_design_system.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/main.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/sale_deposit/deposit_navigation/deposit_navigation.controller.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/components/add_icon.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_client/deposit_client.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_pos/deposit_pos.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_product/deposit_product.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/keyboard_dismisser.ui.dart';
 import 'package:upgrader/upgrader.dart';
-
-TajiriDesignSystem tajiriDesignSystem = TajiriDesignSystem.instance;
 
 class DepositNavigationScreen extends StatefulWidget {
   const DepositNavigationScreen({super.key});
@@ -55,21 +54,8 @@ class _DepositNavigationScreenState extends State<DepositNavigationScreen> {
                 actions: [
                   if (saleDepositNavigationController.selectIndex != 1)
                     Center(
-                      child: GestureDetector(
+                      child: AddIconComponent(
                         onTap: saleDepositNavigationController.addIconTap,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          width: 24,
-                          height: 24,
-                          decoration: BoxDecoration(
-                            color: tajiriDesignSystem.appColors.mainGrey950,
-                            borderRadius: tajiriDesignSystem.appBorderRadius.xs,
-                          ),
-                          child: const Icon(
-                            Icons.add,
-                            color: Style.white,
-                          ),
-                        ),
                       ),
                     ),
                 ],

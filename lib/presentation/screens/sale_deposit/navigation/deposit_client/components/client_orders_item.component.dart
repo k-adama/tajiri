@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tajiri_design_system/tajiri_design_system.dart';
 import 'package:tajiri_pos_mobile/app/common/app_helpers.common.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/extensions/string.extension.dart';
+import 'package:tajiri_pos_mobile/main.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
-
-final tajiriDesignSystem = TajiriDesignSystem.instance;
 
 class ClientOrdersItemComponent extends StatefulWidget {
   const ClientOrdersItemComponent({
@@ -56,20 +54,18 @@ class _ClientOrdersItemComponentState extends State<ClientOrdersItemComponent> {
               subtitle: isExpanded
                   ? null
                   : Row(
-                      children: [
-                        for (int i = 0; i < 2; i++)
-                          if (i < 3)
-                            Flexible(
-                              child: Container(
-                                margin: const EdgeInsets.only(left: 2),
-                                child: Text(
-                                  "Vin de Bordeau x2",
-                                  style: Style.interNormal(color: Style.black),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            )
-                      ],
+                      children: List.generate(3, (index) => null).map((_) {
+                        return Flexible(
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 2),
+                            child: Text(
+                              "Vin de Bordeau x2nnnn",
+                              style: Style.interNormal(color: Style.black),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
               onExpansionChanged: (value) {
                 setState(() {
@@ -125,7 +121,8 @@ class OrderStatusComponent extends StatelessWidget {
 }
 
 class OrderInfoHeaderComponent extends StatelessWidget {
-  const OrderInfoHeaderComponent({super.key});
+  final String? orderStatus;
+  const OrderInfoHeaderComponent({super.key, this.orderStatus});
 
   @override
   Widget build(BuildContext context) {
@@ -150,8 +147,8 @@ class OrderInfoHeaderComponent extends StatelessWidget {
               ),
             ],
           ),
-          const OrderStatusComponent(
-            text: "Non payée",
+          OrderStatusComponent(
+            text: orderStatus ?? "Non payée",
           ),
         ],
       ),

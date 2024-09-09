@@ -5,10 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
-import 'package:tajiri_design_system/tajiri_design_system.dart';
+import 'package:tajiri_pos_mobile/main.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
-
-TajiriDesignSystem tajiriDesignSystem = TajiriDesignSystem.instance;
 
 class ChooseRoleScreen extends StatefulWidget {
   const ChooseRoleScreen({super.key});

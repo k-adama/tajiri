@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sliver_tools/sliver_tools.dart';
-import 'package:tajiri_design_system/tajiri_design_system.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
+import 'package:tajiri_pos_mobile/main.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/sale_deposit/deposit_navigation/deposit_client/deposit_client.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_client/components/client_order_tab.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_client/components/client_paiement_tab.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_client/components/recap_info.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_client/deposit_add_paiement.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/buttons/custom.button.dart';
-
-TajiriDesignSystem tajiriDesignSystem = TajiriDesignSystem.instance;
 
 class DepositClientDetailScreen extends StatefulWidget {
   const DepositClientDetailScreen({super.key});
@@ -121,7 +119,10 @@ class _DepositClientDetailScreenState extends State<DepositClientDetailScreen>
                             ],
                           ),
                           30.verticalSpace,
-                          const Text("Historique"),
+                          Text(
+                            "Historique",
+                            style: Style.interBold(size: 20),
+                          ),
                         ],
                       ),
                     ),

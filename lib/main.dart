@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:tajiri_design_system/tajiri_design_system.dart';
 import 'package:tajiri_pos_mobile/app/config/env/environment.env.dart';
 import 'package:tajiri_pos_mobile/app/config/theme/style.theme.dart';
 import 'package:tajiri_pos_mobile/app/mixpanel/mixpanel.dart';
@@ -16,6 +17,7 @@ import 'package:tajiri_pos_mobile/presentation/controllers/splash/splash.binding
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/custom_range_slider.widget.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
+final tajiriDesignSystem = TajiriDesignSystem.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
