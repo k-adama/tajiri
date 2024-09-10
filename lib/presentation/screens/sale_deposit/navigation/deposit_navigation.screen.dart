@@ -7,6 +7,7 @@ import 'package:tajiri_pos_mobile/main.dart';
 import 'package:tajiri_pos_mobile/presentation/controllers/sale_deposit/deposit_navigation/deposit_navigation.controller.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/components/add_icon.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_client/deposit_client.screen.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_pos/deposit_cart/deposit_cart.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_pos/deposit_pos.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_product/deposit_product.screen.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/keyboard_dismisser.ui.dart';
@@ -52,12 +53,21 @@ class _DepositNavigationScreenState extends State<DepositNavigationScreen> {
                 iconTheme: const IconThemeData(color: Style.secondaryColor),
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 actions: [
-                  if (saleDepositNavigationController.selectIndex != 1)
-                    Center(
-                      child: AddIconComponent(
-                        onTap: saleDepositNavigationController.addIconTap,
-                      ),
-                    ),
+                  saleDepositNavigationController.selectIndex != 1
+                      ? Center(
+                          child: AddIconComponent(
+                            onTap: saleDepositNavigationController.addIconTap,
+                          ),
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            Get.to(() => const DepositCartScreen());
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: SvgPicture.asset("assets/svgs/cart.svg"),
+                          ),
+                        ),
                 ],
               ),
             ),

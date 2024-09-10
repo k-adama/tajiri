@@ -73,10 +73,10 @@ class _DepositPosScreenState extends State<DepositPosScreen> {
                   ]),
                 ),
                 Obx(() {
-                  return saleDepositposController.productIsLoad.value
+                  return saleDepositposController.isProductLoading.value
                       ? const Expanded(child: ShimmerProductListWidget())
                       : Expanded(
-                          child: false
+                          child: saleDepositposController.products.isEmpty
                               ? SvgPicture.asset(
                                   "assets/svgs/empty.svg",
                                   height: 300.h,
@@ -104,8 +104,11 @@ class _DepositPosScreenState extends State<DepositPosScreen> {
                                               childAspectRatio: 0.66.r,
                                               crossAxisCount: 2,
                                               mainAxisExtent: 280.r),
-                                      itemCount: 5,
+                                      itemCount: saleDepositposController
+                                          .products.length,
                                       itemBuilder: (context, index) {
+                                        final product = saleDepositposController
+                                            .products[index];
                                         return AnimationConfiguration
                                             .staggeredGrid(
                                           columnCount: 5,
@@ -118,7 +121,7 @@ class _DepositPosScreenState extends State<DepositPosScreen> {
                                               child: GestureDetector(
                                                 onTap: () {},
                                                 child: ShopProductItemComponent(
-                                                  product: null,
+                                                  product: product,
                                                   count: 5,
                                                   cardColor: Colors.transparent,
                                                   isAdd: false,

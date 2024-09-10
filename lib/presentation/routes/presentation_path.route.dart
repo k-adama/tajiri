@@ -11,6 +11,8 @@ abstract class Routes {
   static const DEPOSIT_NAVIGATION = _Paths.DEPOSIT_NAVIGATION;
   static const DEPOSIT_CLIENT_DETAILS = _Paths.DEPOSIT_CLIENT_DETAILS;
 
+  static const DEPOSIT_CART = _Paths.DEPOSIT_CART;
+
   static const DEMO_LOGIN = _Paths.DEMO_LOGIN;
   static const TUTORIELS = _Paths.TUTORIELS;
   static const SALES_REPORT = _Paths.SALES_REPORT;
@@ -41,6 +43,7 @@ abstract class _Paths {
   static const NAVIGATION = "/navigation";
   static const DEPOSIT_NAVIGATION = "/deposit_navigation";
   static const DEPOSIT_CLIENT_DETAILS = "/deposit_client_details";
+  static const DEPOSIT_CART = "/deposit_cart";
 
   static const DEMO_LOGIN = "/demo_login";
   static const TUTORIELS = "/tutoriels";
