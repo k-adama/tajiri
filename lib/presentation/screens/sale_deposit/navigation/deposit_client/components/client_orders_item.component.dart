@@ -7,8 +7,10 @@ import 'package:tajiri_pos_mobile/main.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class ClientOrdersItemComponent extends StatefulWidget {
+  final String? order;
   const ClientOrdersItemComponent({
     super.key,
+    this.order,
   });
   @override
   State<ClientOrdersItemComponent> createState() =>
@@ -49,6 +51,7 @@ class _ClientOrdersItemComponentState extends State<ClientOrdersItemComponent> {
                 children: [
                   OrderInfoHeaderComponent(),
                   8.verticalSpace,
+                  Text(widget.order ?? ""),
                 ],
               ),
               subtitle: isExpanded
@@ -59,7 +62,7 @@ class _ClientOrdersItemComponentState extends State<ClientOrdersItemComponent> {
                           child: Container(
                             margin: const EdgeInsets.only(left: 2),
                             child: Text(
-                              "Vin de Bordeau x2nnnn",
+                              "Vin de Bordeau x2",
                               style: Style.interNormal(color: Style.black),
                               overflow: TextOverflow.ellipsis,
                             ),

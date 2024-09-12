@@ -6,6 +6,7 @@ import 'package:tajiri_pos_mobile/main.dart';
 import 'package:tajiri_pos_mobile/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/components/categorie_client.component.dart';
 import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_client/components/client_item.component.dart';
+import 'package:tajiri_pos_mobile/presentation/screens/sale_deposit/navigation/deposit_client/example_pagination_page.dart';
 import 'package:tajiri_pos_mobile/presentation/ui/widgets/text_fields/search.text_field.dart';
 
 class DepositClientScreen extends StatefulWidget {
@@ -74,7 +75,10 @@ class _DepositClientScreenState extends State<DepositClientScreen> {
               title: "Le comptoir Bar - Restaurant",
               description: "Cocody Ivoire Trade Center - 07 00 00 00 00",
             ),
-            const ClientItemComponent(
+            ClientItemComponent(
+              onTap: () {
+                Get.to(ExamplePaginationPage());
+              },
               asset: "🍾",
               title: "Maquis la Luna",
               description: "Cocody Village Blockhauss - 07 00 00 00 00",
